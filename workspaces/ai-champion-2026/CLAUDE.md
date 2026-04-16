@@ -5,13 +5,8 @@ A workspace for improving an AI chatbot's behavior, routing logic, and response
 quality inside the Product Support ticketing interface. Work is organized by
 task type, not by pipeline stages.
 
-## Who Rosie is
-→ See root `_config/rosie-profile.md` (canonical profile, sign-off rules, 2026 goals)
-→ See root `_config/communication-style.md` (output tone and formatting)
-
-## Product context
-→ See `_config/ai-chatbot-principles.md` for the chatbot's operating principles, metrics, and scope
-→ See `_config/ticketing-architecture.md` for the Product Support ticketing interface architecture reference
+## Orientation
+Rosie is a Product Support lead working on AI chatbot enablement. Sign-off rules and output tone are defined at the repo root (see root `CLAUDE.md`). The chatbot operates inside a Product Support ticketing interface; Rosie has visibility into the frontline support workflow but not into the chatbot's underlying AI infrastructure.
 
 ---
 
@@ -104,12 +99,12 @@ ai-champion-2026/
 
 ---
 
-## What I should always remember
-- Rosie has visibility into the frontline Product Support (Frontline) workflow —
+## What to always remember
+- Rosie has visibility into the Product Support (Frontline) workflow —
   NOT into the chatbot's underlying AI infrastructure
 - All new ticketing-interface assets are built INACTIVE — a product leader reviews and toggles live
 - Think step by step before recommending actions
-- Flag anything that needs my manager or a product leader to sign off on explicitly
+- Flag anything that needs Rosie's manager or a product leader to sign off on explicitly
 
 ---
 
@@ -122,7 +117,7 @@ Before finalizing ANY deliverable in this workspace, execute the quality gate an
 - Procedure monitoring reports and improvement proposals
 - Flagged ticket investigation findings
 - Confluence-ready action plans
-- Stakeholder comms (to a manager, product leader, or product engineer)
+- Stakeholder comms (to a manager, a product leader, or a product engineer)
 
 **After every deliverable:**
 1. Run output checklist (`_config/output-checklist.md`)
@@ -130,6 +125,8 @@ Before finalizing ANY deliverable in this workspace, execute the quality gate an
 3. Capture learnings AND propagate to rules if applicable
 
 **Do not close a productive session without completing all three steps.**
+
+**After context compaction:** re-read this file + `CONTEXT.md` before resuming.
 
 > **Response gate — active every turn.** See root CLAUDE.md. Every tool-using response
 > must pass the hard checkpoint before shipping. Hooks fire automatically after file edits
@@ -161,16 +158,6 @@ Before finalizing ANY deliverable in this workspace, execute the quality gate an
 - Do not make assumptions about the chatbot's internal AI infrastructure — Rosie cannot see or verify it
 - Do not toggle ticketing-interface assets live without product-leader sign-off
 - Do not skip reading `CONTEXT.md` at session start
-
----
-
-## State update protocol
-After every meaningful work increment in this workspace:
-1. Update `CONTEXT.md` → set the "Current State" table
-2. Capture any learning in `LEARNINGS.md` if it changes how outputs should be produced
-
-After context compaction:
-Re-read this file + `CONTEXT.md` before resuming.
 
 ## Where to go next
 → Read `CONTEXT.md` to find the current state and determine what to work on

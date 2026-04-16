@@ -7,7 +7,7 @@ interface, and this workspace.
 
 ## Workspace architecture — design around real work, not idealized process
 
-Stage-based pipeline architecture (Path A / Path B with 5–6 stages each)
+Stage-based pipeline architecture (multiple parallel tracks, each with 5–6 stages)
 created more friction than value in this workspace. The real work is either
 **recurring** (weekly snapshots), **ongoing** (procedure monitoring), or
 **reactive** (flagged tickets) — none of which fits a linear stage pipeline.
@@ -88,19 +88,6 @@ runtime of.
 
 ---
 
-## What good looks like — chatbot-work outputs
+## What good looks like — the "thoughtful but not executable" trap
 
-Final plans in this workspace are **Confluence-ready**:
-
-- Plain English, numbered steps, no jargon
-- Action steps specific enough to execute without further research — exact
-  navigation paths, asset names, configurations
-- Sign-off requirements explicitly named, not implied ("needs the product
-  leader to toggle live" appears as a numbered step, not a footnote)
-- Every plan defines a feedback loop: how do we know if this is working?
-- Every plan names an owner per step
-
-This standard exists because the default failure mode for chatbot-work
-outputs is "thoughtful but not executable" — a doc that reads well in
-review but leaves the next person guessing at three configuration details
-they then have to chase down. Exec-ready discipline removes that chase.
+The default failure mode for chatbot-work outputs is "thoughtful but not executable" — a doc that reads well in review but leaves the next person guessing at three configuration details they then have to chase down. The Confluence-ready discipline in CLAUDE.md (exact navigation paths, named owners per step, explicit sign-off requirements) exists to remove that chase. If a plan is thoughtful but fails executability, the reader is about to spend an hour doing research the author should have done.

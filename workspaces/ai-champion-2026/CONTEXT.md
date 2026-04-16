@@ -27,16 +27,16 @@ arrives, not an idealized pipeline:
 |------|--------------|
 | New ticketing procedure (go-live) | A product leader |
 | Procedure changes or improvements | A product leader |
-| Workflow change affecting the Product Support org | My manager |
-| Change to escalation rules | My manager + a product leader |
+| Workflow change affecting the Product Support org | Rosie's manager |
+| Change to escalation rules | Rosie's manager + a product leader |
 
-All new ticketing-interface assets are built INACTIVE. The product leader
+All new ticketing-interface assets are built INACTIVE. A product leader
 reviews and toggles them live — never unilaterally.
 
 ## Why the architecture looks like this
 
-The workspace previously ran on a stage-based pipeline (Path A / Path B with
-5–6 stages each). Real work didn't fit: snapshots are recurring, procedure
+The workspace previously ran on a stage-based pipeline with parallel tracks
+of 5–6 stages each. Real work didn't fit: snapshots are recurring, procedure
 monitoring is ongoing, flagged tickets are reactive — none of that is linear.
 Task-type folders replaced the pipeline in April 2026. The fam runs the same
 governance protocols here (P1–P8, checkpoint bar, state updates) as in every
