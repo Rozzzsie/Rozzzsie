@@ -12,13 +12,15 @@ deck missed real workflow distinctions because the agents only had a
 pre-digested version of the source. Corrections were accurate once the
 complete source file was provided.
 
-The failure mode is predictable: a summary drops the exact details that
-matter most for Product Support workflow impact — tier boundaries, plan-ID
-transitions, the one-line caveat that changes how a rep handles a ticket.
-Customer-facing changelogs describe what changed for the customer; they do
-not cover how reps should handle the change day-to-day. That gap is the
-value-add of a Playbook update over a changelog, and it's exactly what a
-summary destroys.
+The failure mode is predictable. For example: a customer-facing changelog
+might say "refreshed the plan-selection experience"; what the summary
+dropped was that customers on legacy pricing now see an extra confirmation
+step the first time they open the picker — so reps will get a wave of
+"is this a charge?" tickets the Monday after release, and the correct
+response is different from the standard upgrade-flow answer. Customer-facing
+changelogs describe what changed for the customer; they do not cover how
+reps should handle the change day-to-day. That gap is the value-add of a
+Playbook update over a changelog, and it's exactly what a summary destroys.
 
 **Rule:** every draft must include a "PS Workflow Impact" section, and
 every subagent prompt must carry the raw source. Save source files where
@@ -65,7 +67,7 @@ documentation backend.
 
 ---
 
-## Token hygiene for Slack scanner vs. bot — they are different tokens
+## Slack scanner vs. bot — different tokens, different reasons
 
 The scanner and the FAQ agent use different Slack tokens for different
 reasons, and conflating them wastes a debugging session:

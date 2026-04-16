@@ -5,8 +5,8 @@
 This is where the fam is applied to cross-team documentation ownership —
 keeping a product Playbook in sync with live product changes for an
 influencer marketing platform, and standing up a Confluence-grounded FAQ
-agent on top of it. The domain is thin; the pipeline and the agent are the
-workspace's operational shape.
+agent on top of it. The pipeline and the agent are the workspace's
+operational shape.
 
 ## How the work is shaped
 
@@ -35,7 +35,7 @@ publishing itself sits with Rosie. This split shows up elsewhere in the fam
 ## Why the architecture looks like this
 
 The Playbook lives in Confluence, but its upstream truth lives in scattered
-product-team surfaces — Docs, Slides, Slack, the vendor's public updates
+product-team surfaces — Docs, Slides, Slack, the platform's public updates
 page. Before the pipeline, staleness was the default and detection was
 manual. The fam runs the same governance protocols here (P1–P8, checkpoint
 bar, state updates) as in every other workspace; the shape of the work —

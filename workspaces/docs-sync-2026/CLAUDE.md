@@ -1,16 +1,18 @@
 # CLAUDE.md — Cross-Team Docs Sync 2026
 
 ## What this workspace is
-A workspace that keeps an internal product Playbook in sync with ongoing product
-changes for an influencer marketing platform, and serves as a live knowledge
-assistant for Product Support questions grounded in that Playbook. Two modes:
-an Ops pipeline that drafts Confluence updates from detected source changes,
-and a Q&A mode that answers product questions with Confluence-backed sources.
+*This workspace is where the fam is applied to cross-team documentation ownership. The two-mode shape below is the operational form that work takes.*
+
+Two modes: an Ops pipeline that drafts Confluence updates from detected source
+changes, and a Q&A mode that answers product questions with Confluence-backed
+sources. Together they keep an internal product Playbook in sync with ongoing
+product changes for an influencer marketing platform and serve as a live
+knowledge assistant for Product Support questions grounded in that Playbook.
 
 ## Orientation
 Rosie is a Product Support lead working on cross-team documentation ownership
-for an influencer marketing platform inside the Company. Sign-off rules and
-output tone are defined at the repo root (see root `CLAUDE.md`). She owns the
+for an influencer marketing platform. Sign-off rules and output tone are
+defined at the repo root (see root `CLAUDE.md`). She owns the
 Confluence Playbook directly — no sign-off is required to publish — but
 strategic scope and priority calls route through the Product Support &
 Engineering lead.
@@ -50,7 +52,7 @@ Slack signals: [N platform-relevant / none] (from today's scan)
 Triggered by: "run check", "review drafts", "apply", or any pipeline task.
 
 **Workflow:**
-1. Check the leadership DM channel for new insights — surface anything
+1. Check the PS&E lead DM for new insights — surface anything
    platform-relevant before running
 2. Run the pipeline check — detects changes, classifies them, drafts updates
 3. Review generated drafts in the local drafts store
@@ -64,10 +66,10 @@ Triggered by: "run check", "review drafts", "apply", or any pipeline task.
 Triggered by: any product question.
 
 Steps:
-1. Search the leadership DM channel for relevant context
+1. Search the PS&E lead DM for relevant context
 2. Use the local page map to identify the most relevant Confluence pages
 3. Fetch live content from those pages via the Confluence client
-4. If the question touches recent product changes, also check the vendor's
+4. If the question touches recent product changes, also check the platform's
    public product-updates page (login-gated, JS-rendered; ask Rosie to paste
    content if the scrape fails)
 5. Answer with page titles + Confluence links as sources
