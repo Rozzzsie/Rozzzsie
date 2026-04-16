@@ -31,11 +31,11 @@ Not every output type needs every section. Use this guide:
 - [ ] **Neutral tone** — no emotional qualifiers ("entirely from scratch," "first-ever"), no narrative arcs ("emerged as," "took on increasing"), no superlatives. State what was done and what it achieved — let the facts carry the weight.
 
 ### 2. Stakeholder match
-- [ ] Communication style matches the target (my manager / a product leader / the PS&E lead / team async) per `communication-style.md`
+- [ ] Communication style matches the target (manager / product leader / PS&E lead / team async) per `communication-style.md`
 - [ ] Tone and length are calibrated — no over-explaining, no under-specifying
 
 ### 3. Sign-off flags
-- [ ] Any item requiring my manager, a product leader, the PS&E lead, or a senior stakeholder sign-off is explicitly flagged — not implied
+- [ ] Any item requiring a manager, product leader, PS&E lead, or senior stakeholder sign-off is explicitly flagged — not implied
 - [ ] Sign-off scope is specific (what exactly needs approval, not "please review")
 
 ### 4. Ready-to-use criteria
@@ -70,9 +70,9 @@ Not every output type needs every section. Use this guide:
 - [ ] No known pitfalls repeated
 
 ### 8. Scope and boundaries
-- [ ] Stays within Rosie's visibility boundary (no assumptions about internal AI infrastructure, etc.)
-- [ ] Does not act unilaterally on decisions that belong to my manager or other decision-makers
-- [ ] Confidential content (private workspaces) never leaks into public-facing or stakeholder-facing outputs
+- [ ] Stays within Rosie's visibility boundary (only references internal AI infrastructure where Rosie has direct visibility, etc.)
+- [ ] Does not act unilaterally on decisions that belong to a manager or other decision-makers
+- [ ] Public-facing and stakeholder-facing outputs draw only from shareable content; private-workspace material stays in its workspace
 
 ### 9. Knowledge asset quality (skills, reference docs, FAQ content)
 - [ ] **Grounded** — every claim is traceable to a source (Confluence page, LEARNINGS.md, validated edge case). No hallucinated features or procedures.
