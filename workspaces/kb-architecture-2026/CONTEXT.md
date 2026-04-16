@@ -3,7 +3,7 @@
 ## What this workspace is
 
 *This is where the fam is applied to KB programme management for two AI
-products — an AI-driven media analysis platform and a generative-AI brand
+products — an AI-powered media analysis interface and a generative-AI brand
 monitoring tool. The four-stage pipeline + human-review gate is the
 workspace's operational shape.*
 

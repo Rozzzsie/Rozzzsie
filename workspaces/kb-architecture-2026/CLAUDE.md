@@ -5,8 +5,8 @@
 tooling. The four-stage pipeline and snippet authoring rules below are the
 operational form that work takes.*
 
-A Product Support knowledge bank for two AI products — an AI-driven media
-analysis platform and a generative-AI brand monitoring tool. The KB is a
+A Product Support knowledge bank for two AI products — an AI-powered media
+analysis interface and a generative-AI brand monitoring tool. The KB is a
 two-layer structure (Core Articles + modular Snippets), and this workspace
 automates the detection of upstream product changes, the classification of
 which KB articles they affect, and the drafting of updates — always behind a
@@ -47,12 +47,12 @@ it belongs in the KB.
   gap in the current KB: retrieval agents can be scoped by filter/config
   surfaces rather than by project-level instructions. Do not write anything
   that contradicts what config surfaces can actually scope.
-- **The media analysis platform's outputs are non-deterministic by design** —
+- **The media analysis interface's outputs are non-deterministic by design** —
   variability is expected behavior, not a defect. Never frame it as a bug.
 - **Sales framing must not appear in support language** — internal GTM and
   sales enablement references are reference-only. Translate positioning; do
   not reproduce it.
-- **The media analysis platform does not use the open internet** — it is
+- **The media analysis interface does not use the open internet** — it is
   grounded in account data only.
 - **Prompts in the brand monitoring tool cannot be edited after creation** —
   deletion permanently removes data. Always warn before delete.
