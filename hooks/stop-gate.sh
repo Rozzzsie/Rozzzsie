@@ -155,6 +155,8 @@ for ws in $workspace_hits; do
 done
 
 # Check 5: CHANGELOG entry quality
+# Assumes bottom-append CHANGELOG format (newest entry = last non-header line).
+# Reverse-chronological (newest-at-top) layouts would need head -1 instead of tail -1.
 changelogs_to_check="CHANGELOG.md"
 for ws in $workspace_hits; do
   changelogs_to_check="${changelogs_to_check} ${ws}/CHANGELOG.md"
@@ -320,7 +322,11 @@ last_retro_line=$(grep -n 'retrospective' CHANGELOG.md 2>/dev/null | tail -1 || 
 if [[ -n "$last_retro_line" ]]; then
   last_retro_date=$(echo "$last_retro_line" | grep -oE '\[20[0-9]{2}-[0-9]{2}-[0-9]{2}\]' | head -1 | tr -d '[]' || true)
   if [[ -n "$last_retro_date" ]]; then
-    retro_epoch=$(date -j -f "%Y-%m-%d" "$last_retro_date" +%s 2>/dev/null || date -d "$last_retro_date" +%s 2>/dev/null || echo "0")
+    if [[ "$(uname)" == "Darwin" ]]; then
+      retro_epoch=$(date -j -f "%Y-%m-%d" "$last_retro_date" +%s 2>/dev/null || echo "0")
+    else
+      retro_epoch=$(date -d "$last_retro_date" +%s 2>/dev/null || echo "0")
+    fi
     now_epoch=$(date +%s)
     retro_age_days=$(( (now_epoch - retro_epoch) / 86400 ))
     if [[ "$retro_age_days" -gt 14 ]]; then
