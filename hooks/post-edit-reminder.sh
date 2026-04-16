@@ -34,6 +34,6 @@ fi
 jq -n '{
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "CHECKPOINT BAR — append this line at the END of your next response:\n[checkpoint: P3 — <status> | P4 — <status> | P5 — <status>]\nThis is Tier 2. Stop-gate blocks without a ## Checkpoint bar section in your P3 trace.\n---\nSUPERVISE LAYER — post-edit gate (HARD GATE):\nP4: Update CONTEXT.md + append CHANGELOG.md if this was a meaningful work increment.\nP5: Did anything surprise you? If yes, capture in LEARNINGS.md AND propagate to rules (update CLAUDE.md / output-checklist.md).\nP6: If the file you just edited is in personal-learnings/, P6 (cross-pollination) is specifically due — seed relevant workspace LEARNINGS.md files now."
+    "additionalContext": "CHECKPOINT BAR — append this line at the END of your next response:\n[checkpoint: P3 — <status> | P4 — <status> | P5 — <status>]\nThis is Tier 2. Stop-gate blocks without a ## Checkpoint bar section in your P3 trace.\n---\nSUPERVISE LAYER — post-edit gate (HARD GATE):\nP4: Update CONTEXT.md + append CHANGELOG.md if this was a meaningful work increment.\nP5: Did anything surprise you? If yes, capture in LEARNINGS.md AND propagate to rules (update CLAUDE.md / output-checklist.md).\nP6: If the file you just edited is in a personal or lightweight workspace, P6 (cross-pollination) is specifically due — seed relevant workspace LEARNINGS.md files now."
   }
 }'

@@ -63,6 +63,6 @@ fi
 jq -n '{
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "SUPERVISE LAYER — Bash file-write detected (V-3.2-003 heuristic):\nP4: Update CONTEXT.md + append CHANGELOG.md if this was a meaningful work increment.\nP5: Did anything surprise you? If yes, capture in LEARNINGS.md AND propagate to rules.\nP6: If the write target is in personal-learnings/, P6 (cross-pollination) is due.\nThis is a heuristic — if this was a false positive (no actual file write), ignore."
+    "additionalContext": "SUPERVISE LAYER — Bash file-write detected (V-3.2-003 heuristic):\nP4: Update CONTEXT.md + append CHANGELOG.md if this was a meaningful work increment.\nP5: Did anything surprise you? If yes, capture in LEARNINGS.md AND propagate to rules.\nP6: If the write target is in a personal or lightweight workspace, P6 (cross-pollination) is due.\nThis is a heuristic — if this was a false positive (no actual file write), ignore."
   }
 }'

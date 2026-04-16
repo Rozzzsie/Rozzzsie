@@ -72,7 +72,7 @@ P4  (Tier 1): Update CONTEXT.md + CHANGELOG.md immediately after every meaningfu
               the command. Do NOT infer external state from conversation history.
 P5  (Tier 2): Two steps — (1) capture surprises in LEARNINGS.md, (2) propagate to CLAUDE.md/checklist rules.
               A learning only in LEARNINGS.md is an observation, not an iteration. Log [P5] to session-log.md.
-P6  (Tier 3): After logging to personal-learnings/LEARNINGS.md, seed relevant workspace LEARNINGS files immediately.
+P6  (Tier 3): After logging to a personal or lightweight workspace LEARNINGS file, seed relevant workspace LEARNINGS files immediately.
 P7  (Tier 1): Commit + push before closing. Stop hook blocks on: uncommitted changes, unpushed commits,
               stale state files, short CHANGELOG entries, no-diff CONTEXT.md, missing p3-trace, missing session-log entries.
 DIGEST
