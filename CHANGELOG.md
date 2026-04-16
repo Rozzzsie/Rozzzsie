@@ -1,0 +1,25 @@
+# CHANGELOG — Rozzzsie
+
+Five architectural shifts, not individual fixes.
+
+---
+
+## Protocols v3.3 — roles map + Luma translator rail (2026-04-14)
+
+The governance OS grew a named roles map and its first decision-surface sub-agent. Seven roles (Root, Luma, Deputies, Codex-wrapper, Breakline, Brindle, Rosie) formalized in a single table. Luma — a translator rail that converts Root's dense output into decision-shaped frames — shipped as a user-level sub-agent descriptor with zero tools and inherited model. Doctrine locked: Root never simplifies for Rosie anymore; the model is not the product, the harness is.
+
+## v3.3.1 structural rollup — scope-symmetry family retired (2026-04-15)
+
+An 8-instance bug family that accumulated over 5 days was retired in a single patch. All 8 bugs shared the same shape: enforcement gates whose grep and validation reached different layers (different file scopes, different time windows, different workspace tiers). Fix: a shared helper library became the single source of truth for workspace list + tier semantics; both the stop-gate and the pre-commit hook source it. The pre-commit hook itself moved from untracked `.git/hooks/` to version-controlled `_config/hooks/` with an installer script — closing a meta-gap where governance enforcement code lived outside governance.
+
+## Symlink-canonical pattern for versioned governance docs (2026-04-15)
+
+Governance docs that carry a semver version now use a symlink-canonical pattern: the canonical file carries the full version in its filename (`agent-protocols-3.3.1.md`); a stable symlink (`agent-protocols.md`) sits alongside it and retargets on every version bump. All ~14 live references point at the symlink path — they never need updating. Same engineering shape as the pre-commit hook pattern: one-time setup cost, ongoing one-line `ln -sfn` on every bump, references stable forever. Replaced a 14-file rename sweep that had already fired twice in one week.
+
+## Stop-gate hard gates — Check 3 + Check 8 patches (2026-04-15)
+
+Two structural bugs in the session-close enforcement gate were fixed together: (1) governance-only sessions that touched root state files (LEARNINGS.md, CLAUDE.md, `_config/*`) without updating the root CHANGELOG now fail closed — previously they slipped through because the gate classified governance files as "state" and only demanded CHANGELOG for non-state files. (2) Session-log greps now scope to the current session's entry only — previously, prior sessions' valid propagation claims became perpetual blockers for future sessions. Both are scope-symmetry fixes: the gate's grep and its validation were reaching different layers.
+
+## Scope-drift cleanup — the system catches its own mistakes (2026-04-16)
+
+22 CHANGELOG entries and ~20 CONTEXT.md commits were logged in the wrong workspace for ~10 hours of productive work. The session opened in one workspace for brainstorming; when the initiative pivoted to architecture work, state writes continued landing by inertia. The drift went undetected until the next session, when a Luma-framed decision produced three cleanup options. The fix was a 7-file migration; the learning was that new initiatives need an explicit workspace-assignment decision before the first state write. The protocol said "update CONTEXT.md" but never specified *which* — the implicit default was the drift vector.
