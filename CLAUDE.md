@@ -1,7 +1,7 @@
 # CLAUDE.md — Rozzzsie Root Workspace
 
 ## What this is
-Rosie Zhao's model workspace. All AI-assisted work lives here.
+Rosie's model workspace. All AI-assisted work lives here.
 Claude Code loads this file in every session opened anywhere under Rozzzsie/.
 
 ## Mandatory startup — every session
@@ -66,7 +66,7 @@ Do not improvise the format. P8 cross-references the self-reported counts agains
 | `workspaces/team-leadership-2026/` | Supports Rosie's informal L4 leadership work: hiring, coaching, team comms, performance |
 | `workspaces/ai-champion-2026/` | AI champion work: improving an AI chatbot's behavior, routing, and response quality in the Product Support ticketing interface |
 | `workspaces/docs-sync-2026/` | Product docs sync: Confluence docs sync, product release tracking, cross-functional alignment, client ticket support |
-| `workspaces/kb-architecture-2026/` | Product Support Knowledge Bank for an AI-driven media analysis workspace + a generative-AI brand monitoring tool: snippet library complete (37 snippets, 8 buckets); pipeline built; second tool rescope pending. A co-owner on the KB work. |
+| `workspaces/kb-architecture-2026/` | Product Support Knowledge Bank for an AI-driven media analysis workspace + a generative-AI brand monitoring tool: snippet library complete (37 snippets, 8 buckets); pipeline built; second tool rescope pending. Co-owned with a peer specialist. |
 
 ## Input layer convention
 Every workspace has an `_input/` folder for raw materials (Slack exports, meeting transcripts, ticket data, etc.).
@@ -81,7 +81,7 @@ Every workspace has an `_input/` folder for raw materials (Slack exports, meetin
 - Place folders next to what they describe — design specs live in `_config/designs/`, implementation plans in `_config/plans/`
 - Before creating any new folder, ask: (1) would someone seeing this name know what's inside? (2) does it belong next to the things it describes?
 
-## Versioned-file naming convention (shipped 2026-04-15 eve-9, Option C)
+## Versioned-file naming convention (shipped 2026-04-15, Option C)
 Governance docs that carry a semver version (currently: `agent-protocols`) use the **symlink-canonical pattern** — same shape as the pre-commit hook (`.git/hooks/pre-commit → ../../_config/hooks/pre-commit`):
 - **Canonical file** carries the full version in its filename: `_config/agent-protocols-3.3.1.md`. When version bumps to 3.3.2 or 3.4.0, the canonical is renamed to match.
 - **Stable symlink** sits alongside: `_config/agent-protocols.md → agent-protocols-3.3.1.md`. All live references — workspace CLAUDE.md files, hooks, output-checklist, roles-map, design docs — point at the symlink path (`_config/agent-protocols.md`). The symlink retargets on version bump; references never need updating.
@@ -156,9 +156,9 @@ At the start of any session that falls on or after a new week since the last ret
 
 ## What to always remember
 - Rosie is building toward L4 — every output should reflect that standard
-- My manager is the decision-maker — Rosie supports, advises, and prepares
+- Rosie's manager is the decision-maker — Rosie supports, advises, and prepares
 - Every output should be concrete and ready to use
-- Flag anything that needs my manager, a product leader, or the PS&E lead to sign off on
+- Flag anything that needs Rosie's manager, a product leader, or the Product Support & Engineering lead to sign off on
 - Think step by step before recommending actions
 
 ## Brindle companion

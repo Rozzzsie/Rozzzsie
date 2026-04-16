@@ -31,11 +31,11 @@ Not every output type needs every section. Use this guide:
 - [ ] **Neutral tone** — no emotional qualifiers ("entirely from scratch," "first-ever"), no narrative arcs ("emerged as," "took on increasing"), no superlatives. State what was done and what it achieved — let the facts carry the weight.
 
 ### 2. Stakeholder match
-- [ ] Communication style matches the target (manager / product leader / PS&E lead / team async) per `communication-style.md`
+- [ ] Communication style matches the target (manager / product leader / Product Support & Engineering lead / team async) per `communication-style.md`
 - [ ] Tone and length are calibrated — no over-explaining, no under-specifying
 
 ### 3. Sign-off flags
-- [ ] Any item requiring a manager, product leader, PS&E lead, or senior stakeholder sign-off is explicitly flagged — not implied
+- [ ] Any item requiring a manager, product leader, Product Support & Engineering lead, or senior stakeholder sign-off is explicitly flagged — not implied
 - [ ] Sign-off scope is specific (what exactly needs approval, not "please review")
 
 ### 4. Ready-to-use criteria
