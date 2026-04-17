@@ -4,6 +4,18 @@
 
 ---
 
+| Layer | Type |
+|---|---|
+| Infrastructure | Knowledge maintenance — monitors sources, detects drift, drafts updates, queues for human review |
+| Infrastructure | Slack knowledge agent — answers internal product questions in real-time from docs, in-thread |
+| Infrastructure | Codified workflows *(Claude.ai Skill)* — structured runbook: parse → classify → templated outputs, ready to invoke |
+| Workflow | Meeting → action routing — classifies items, routes to right folder, creates follow-up files |
+| Intelligence | Performance intelligence — raw metrics → signals → calibrated snapshots + auto-slides |
+| Intelligence | Structured judgment — complex inputs → concrete recommendation for a decision-maker |
+| Content | Dual-audience content — same material in two registers: human notes + bot-ready format |
+
+---
+
 ## Infrastructure
 
 **Knowledge maintenance**
