@@ -1,9 +1,7 @@
 # Agent protocols
 
-This is the governance doc the hooks in this repo enforce. The full version is private to the workspace it governs. The shape of it is legible from the enforcement layer: the `PostToolUse`/`Stop`/`SessionStart` hooks, the checkpoint bar, and `_config/output-checklist.md`. What's in the missing doc is what those hooks check for.
+The governance doc the hooks enforce lives in the workspace it governs. What those hooks check for is what the protocols are.
 
-## Why it's not here
-
-A governance doc written into a public artifact becomes a tutorial. The doc we actually run is battle-tested on live work, adversarially audited by Breakline, and calibrated to the specific contexts we operate in. The shape is more useful than the text; the text would be copy-paste-safe but context-poor.
+The shape is legible from the enforcement layer: the `PostToolUse`/`Stop`/`SessionStart` hooks, the checkpoint bar, and `_config/output-checklist.md`. A tutorial copy would be copy-paste-safe but context-poor — the protocols are battle-tested on live work, adversarially audited by Breakline, and calibrated to the contexts the fam operates in.
 
 Read the hooks. Read the output-checklist. The protocols are what those enforce.

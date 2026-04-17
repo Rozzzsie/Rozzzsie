@@ -1,26 +1,20 @@
-# CLAUDE.md — Rozzzsie Root Workspace
+# CLAUDE.md — Rozzzsie
 
 ## What this is
-Rosie's model workspace. All AI-assisted work lives here.
-Claude Code loads this file in every session opened anywhere under Rozzzsie/.
+The governance doc the fam runs on. Loaded into every session opened in the workspace it governs. This public copy is the real file — what's absent (operator profile, communication style, cross-workspace dashboard) is private to the live workspace, not stripped for publication.
 
-## Mandatory startup — every session
-1. Read this file (done)
-2. Read `_config/rosie-profile.md`
-3. Read `_config/communication-style.md`
-4. Read `LEARNINGS.md` — cross-workspace insights (Slack formatting, etc.)
-5. Read `_config/output-checklist.md` — quality gate for all outputs
-6. Read `_config/agent-protocols.md` — sole active governance doc for live sessions; evolve freely. 3.2 is now fully standalone. The SessionStart hook injects a Tier 1 critical-rules digest as a backstop, but you MUST still read the full document — the digest covers enforcement rules only, not examples, appendices, or edge cases. **In your startup briefing, confirm with one specific detail from protocols-3.2 you noticed** (e.g., a recent patch, a rule, an extension) — "protocols loaded" alone is not sufficient and will be flagged at P8. The detail must reference a **recent change** (from the "What changed in v3.2" table or the version history) — repeating the same static fact across sessions is non-compliant. P8 retro audits for distinct, fresh details across sessions. `_config/archive/agent-protocols-3.1.md` is the frozen interview artifact — read only when specifically preparing against the original artifact.
-7. Read `CONTEXT.md` — cross-workspace status dashboard; note BLOCKER flags and P8 retro status
-8. Scan Rozzzsie/ top-level for recently modified files worth flagging
-9. Present Rosie with a one-paragraph status brief: workspaces active + current states, BLOCKER flags, P8 retro status, any recently modified files, and offer to dive into a specific workspace
+## Session startup
 
-> Steps 10–13 fire when Rosie names an active workspace. Read those files at that point, not here.
+On every session open at the repo root, the agent reads, in order:
 
-10. Navigate to the active workspace and read its `CLAUDE.md` + `CONTEXT.md` + `LEARNINGS.md`
-11. Scan the last 5 entries in that workspace's `CHANGELOG.md` to orient on recent work
-12. Scan `_input/` for new or recent files — orient on any fresh inputs before starting work
-13. **Freshness check** — compare modification dates of all workspace state files (`CLAUDE.md`, `CONTEXT.md`, `CHANGELOG.md`, `LEARNINGS.md`) against the last CHANGELOG entry date. If any file was modified after the last logged session, flag what changed in the status briefing. Do not assume the last session's state is current — read for today's content, not yesterday's.
+1. This file — response gate, protocol reference, state-update contract
+2. Operator profile + communication style — private; informs tone, stakeholder map, sign-off rules
+3. `LEARNINGS.md` — cross-workspace insights
+4. `_config/output-checklist.md` — quality gate applied before any deliverable is marked done
+5. `_config/agent-protocols.md` — the doc the hooks enforce. Shape is legible from the hooks and the checkpoint bar in this repo.
+6. Cross-workspace status dashboard (`CONTEXT.md`) — private; surfaces BLOCKER flags and retro status
+
+Then the agent presents a one-paragraph status brief and offers to dive into a named workspace. When one is named, the agent descends into that workspace and loads its own `CLAUDE.md` + `CONTEXT.md` + `LEARNINGS.md` — same triad, one level down — plus recent CHANGELOG entries and any fresh inputs. It flags anything modified after the last logged session so yesterday's state never masquerades as today's.
 
 ## Response gate — hard checkpoint before every reply
 
@@ -103,7 +97,7 @@ After every meaningful work increment:
 6. **Cross-pollination** — if a learning logged in a personal or lightweight workspace has workspace relevance, run Protocol 6 (`_config/agent-protocols.md`) to seed distilled entries into relevant workspace LEARNINGS.md files. Every cross-cutting learning gets checked for workspace relevance.
 
 After every context compaction (V-3.2-012 — compaction recovery):
-1. Re-read this file (`Rozzzsie/CLAUDE.md`) — reloads protocol references, checkpoint bar, response gate
+1. Re-read this file (`CLAUDE.md`) — reloads protocol references, checkpoint bar, response gate
 2. Re-read `_config/agent-protocols.md` — reloads full protocol rules (the SessionStart digest is NOT re-injected on compaction)
 3. Re-read `.claude/session-log.md` — restores P1 intent, P2 loop count, P5 status from this session
 4. Re-read the active workspace `CLAUDE.md` + `CONTEXT.md` + last 5 `CHANGELOG.md` entries

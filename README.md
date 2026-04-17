@@ -2,6 +2,10 @@
 
 A living snapshot of the agent fam and the governance OS they run on.
 
+Seven agents. Eleven protocols and a checkpoint bar, mechanically enforced by hooks that fail session-close when any of them slips. Adversarial audits run against the governance doc itself — the fam writes the rules, Breakline tries to break them, the fam decides what to fix.
+
+**Start here:** [`agents/breakline.md`](agents/breakline.md) — the adversarial auditor. The clearest single page on how the fam operates.
+
 ## The fam
 
 **Rosie** — architect + decision-maker. The one whose taste the fam is tuned to.
@@ -22,15 +26,15 @@ A living snapshot of the agent fam and the governance OS they run on.
 
 Rozzzsie runs a governance OS (v3.3.1) with four layers the fam operates under:
 
-- **Protocols** (P1–P8) — intent confirmation, loop detection, quality gate, state update, learning capture, cross-pollination, session close, weekly retrospective.
+- **Protocols** (P1–P8, plus sub-protocols P1B/P2B/P3B for Codex validation) — intent confirmation, loop detection, quality gate, state update, learning capture, cross-pollination, session close, weekly retrospective.
 - **Hooks** — `PostToolUse`, `Stop`, `SessionStart`. Reminders fire automatically; the stop-gate blocks session-close on protocol failures.
 - **Checkpoint bar** — every tool-using response carries `[checkpoint: P3 — ... | P4 — ... | P5 — ...]`. Verifiable friction.
 - **Session lifecycle** — startup briefing, state updates after every meaningful increment, p3-trace at close, CONTEXT + CHANGELOG current before commit.
 
 ## What's in this repo
 
-- `_config/` — protocols (stub), output-checklist, profile, communication style
+- `_config/` — the protocols pointer and the output-checklist
 - `agents/` — fam character briefs
 - `hooks/` — the enforcement layer (the hooks the protocols reference)
-- `workspaces/` — four sanitized L4 work surfaces, anonymized per the Company's disclosure register
+- `workspaces/` — four sanitized work surfaces, anonymized for public sharing
 - `LEARNINGS.md` / `CHANGELOG.md` — curated slices

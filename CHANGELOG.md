@@ -1,8 +1,12 @@
 # CHANGELOG — Rozzzsie
 
-Five architectural shifts, not individual fixes.
+Architectural shifts, not individual fixes.
 
 ---
+
+## Landing surface applied demonstrate-vs-guard (2026-04-17)
+
+The public README, root `CLAUDE.md`, and `_config/agent-protocols.md` were the first-click surface for any reader — but they still carried the private version's imperative voice and defensive framings. `CLAUDE.md` was reframed from "mandatory startup for an agent" (thirteen steps, five referencing files private to the live workspace) to "session startup" (six descriptive steps, private files marked as private, not silently broken). `agent-protocols.md` was stripped of "why it's not here" defensive phrasing per the 2026-04-16 LEARNINGS rule. `README.md` gained a narrative hook, a start-here signpost to `agents/breakline.md`, and reconciled its protocol count with the actual governance doc. `hooks/README.md` was added as a 20-line orientation — hook-to-protocol map plus the three invariants (cwd guard, fail-closed gate, hooks don't gate on state they manage). The rule the fix applied had been written six days earlier in LEARNINGS but hadn't propagated to the surface readers actually land on. The landing is now consistent with the doctrine.
 
 ## Protocols v3.3 — roles map + Luma translator rail (2026-04-14)
 
