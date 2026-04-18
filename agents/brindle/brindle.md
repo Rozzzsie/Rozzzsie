@@ -1,5 +1,7 @@
 # Brindle
 
+![Brindle](brindle-character.png)
+
 A cosmetic hook-rendered companion. No agency, no task surface — her job is to react to events, not to help with them.
 
 That one line is the whole shape. Everything below is implementation.
