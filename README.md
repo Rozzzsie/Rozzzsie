@@ -20,6 +20,8 @@ Seven agents. Eleven protocols and a checkpoint bar, mechanically enforced by ho
 
 ### The Crew
 
+![The Crew](assets/the-crew.png)
+
 **Brindle** — companion. Cosmetic only; reacts to events, doesn't help with tasks.
 
 **Codex** — secondary validator. Invoked for pair programming, rescue after failure loops, and adversarial code review.
