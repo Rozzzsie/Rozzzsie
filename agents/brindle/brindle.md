@@ -1,6 +1,6 @@
 # Brindle
 
-![Brindle](brindle-character.png)
+![Brindle](../../assets/brindle-character.png)
 
 A cosmetic hook-rendered companion. No agency, no task surface — her job is to react to events, not to help with them.
 
