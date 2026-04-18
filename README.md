@@ -10,17 +10,23 @@ Seven agents. Eleven protocols and a checkpoint bar, mechanically enforced by ho
 
 **Rosie** — architect + decision-maker. The one whose taste the fam is tuned to.
 
+### Strategic Layer
+
 **Root** — minister of agents. Session orchestration, state commits, stop-gate enforcement, cross-workspace ledger.
-
-**Deputies** — the sub-agent pool. Zero-context by design; each one gets a task brief and nothing more.
-
-**Codex** — secondary validator. Invoked for pair programming, rescue after failure loops, and adversarial code review.
 
 **Breakline** — the fam's adversarial auditor. No mercy, no softening. He runs every harness, protocol, and output against the strictest success criteria available — and breaks the line when they fail.
 
 **Luma** — translator rail. New in v3.3; invoked before state-changing decisions when the option space is unclear. Her job is axis reframing, not option ranking.
 
+### The Crew
+
+![The Crew](assets/the-crew.png)
+
 **Brindle** — companion. Cosmetic only; reacts to events, doesn't help with tasks.
+
+**Codex** — secondary validator. Invoked for pair programming, rescue after failure loops, and adversarial code review.
+
+**Deputies** — the sub-agent pool. Zero-context by design; each one gets a task brief and nothing more.
 
 ## The OS
 

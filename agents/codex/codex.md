@@ -1,5 +1,7 @@
 # Codex
 
+![Codex](../../assets/codex.png)
+
 Codex is external. The wrapper is how the fam reaches it.
 
 Codex is external infrastructure — a separate model from a separate provider, invoked through a CLI. The reach is narrow: three specific triggers, bounded budgets, findings that come back with terminal status. The wrapper exists so an outside validator can be invoked under the same governance the fam runs on.

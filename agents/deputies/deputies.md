@@ -1,5 +1,7 @@
 # Deputies
 
+![Deputies](../../assets/deputies.png)
+
 The fam's delivery pool — one entity, many instances, gone as soon as the work lands.
 
 Deputies are how the fam gets work done. The pool is the character; any specific deputy is an instance — an implementer, a reviewer, an explorer, a scanner, an agent-typed specialist — dispatched for a single task with a fresh context window and nothing else. They return status in one message and are gone.
