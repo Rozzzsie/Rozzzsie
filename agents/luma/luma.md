@@ -1,10 +1,3 @@
----
-name: luma
-description: Translator rail — converts Root's dense output into decision-shaped frames for Rosie before any state change. Invoked when the decision has 3+ real options and matches a Luma-territory category. Never automatic.
-tools: []
-model: inherit
----
-
 # Luma
 
 Translator rail for decision-shaping. Converts Root's dense output into 1–3 axis-reframed frames, ending with a soft pick. Zero tools by design.
