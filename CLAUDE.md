@@ -37,7 +37,7 @@ Missed: <list of response descriptions, or "none">
 ```
 Do not improvise the format. P8 cross-references the self-reported counts against transcript samples.
 
-**Protocol quick reference (lifecycle-ordered, v3.0):**
+**Protocol quick reference (lifecycle-ordered):**
 | # | Protocol | Hook | What it checks |
 |---|----------|------|----------------|
 | P1 | Intent confirmation | — | Agent restated what/why/scope/approach, Rosie confirmed |
@@ -51,8 +51,11 @@ Do not improvise the format. P8 cross-references the self-reported counts agains
 | P6 | Cross-pollination | PostToolUse | Learning entry seeded to relevant workspaces |
 | P7 | Session close | Stop | State files current, committed, pushed |
 | P8 | Weekly retrospective | SessionStart | 7+ days since last retro; audits insights buffer |
+| P9 | Autonomous iteration loop | — | Partially formalized as Teacher agent (v3.4); auto-promotion conditions still open |
 
 **Insights buffer (new 2026-04-11):** `★ Insight ─...` cards emitted during sessions are now captured mechanically at session close by the `insights-capture.py` Stop hook and appended to `.claude/insights-buffer.md`. P8 retro audits the buffer weekly, promotes recurring patterns to LEARNINGS/CLAUDE/protocols, and archives the rest to `.claude/insights-archive/YYYY-MM.md`. Insight cards are therefore **not ephemeral** — don't hold back on emitting them, the capture layer is now doing the work the agent used to have to decide about.
+
+**Teacher learning layer (new 2026-04-20 — v3.4):** Teacher is the 8th role — a Task-tool sub-agent at [`agents/teacher/teacher.md`](agents/teacher/teacher.md) that reads already-captured governance signal (insights-buffer + retro-candidates + LEARNINGS deltas) and authors structured rule-change proposals into `.claude/teacher-proposals.md`. P8-primary invocation (step 6.5 inside the weekly retro); Rosie-secondary manual between P8s. Propose-only on all governance surfaces; strict-validated direct-write on a narrow pre-approved list with degrade-to-propose fallback. Silent-override is the failure mode — every Teacher write surfaces in proposals AND session-log AND the next P8 retro. Memory = the proposals file itself.
 
 ## Workspaces
 | Workspace | Purpose |
@@ -77,8 +80,8 @@ Every workspace has an `_input/` folder for raw materials (Slack exports, meetin
 
 ## Versioned-file naming convention (shipped 2026-04-15, Option C)
 Governance docs that carry a semver version (currently: `agent-protocols`) use the **symlink-canonical pattern** — same shape as the pre-commit hook (`.git/hooks/pre-commit → ../../_config/hooks/pre-commit`):
-- **Canonical file** carries the full version in its filename: `_config/agent-protocols-3.3.1.md`. When version bumps to 3.3.2 or 3.4.0, the canonical is renamed to match.
-- **Stable symlink** sits alongside: `_config/agent-protocols.md → agent-protocols-3.3.1.md`. All live references — workspace CLAUDE.md files, hooks, output-checklist, roles-map, design docs — point at the symlink path (`_config/agent-protocols.md`). The symlink retargets on version bump; references never need updating.
+- **Canonical file** carries the full version in its filename: `_config/agent-protocols-3.4.0.md`. When version bumps to 3.4.1 or 3.5.0, the canonical is renamed to match.
+- **Stable symlink** sits alongside: `_config/agent-protocols.md → agent-protocols-3.4.0.md`. All live references — workspace CLAUDE.md files, hooks, output-checklist, roles-map, design docs — point at the symlink path (`_config/agent-protocols.md`). The symlink retargets on version bump; references never need updating.
 - **Rule**: on every version bump (patch OR minor OR major), do two things: (1) `git mv` the canonical to the new full-version filename; (2) `ln -sfn <new-canonical> _config/agent-protocols.md` to retarget the symlink. References are untouched forever. Historical CHANGELOG/CONTEXT entries keep their original path strings — past facts stay past-accurate.
 - **Why this shape**: semver visibility (Finder / `ls` shows current version instantly via the canonical) plus reference stability (the ~14-file rename cost at 3.2 → 3.3 is now a one-line `ln -sfn` command). Same engineering win as the pre-commit VC meta-gap close — canonical tracked + stable reference path.
 - **When to apply to a new doc**: any governance doc that will carry a semver version in its header. One-off reference docs without a version don't need this.
