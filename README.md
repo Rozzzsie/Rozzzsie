@@ -18,8 +18,6 @@ Eight agents. Twelve protocols and a checkpoint bar, mechanically enforced by ho
 
 **Luma** — translator rail. New in v3.3; invoked before state-changing decisions when the option space is unclear. Her job is axis reframing, not option ranking.
 
-**Teacher** — learning layer. New in v3.4; reads the governance catchment (insights-buffer + retro-candidates + LEARNINGS deltas) and authors structured proposals for Rosie to review at the weekly P8 retro. Propose-only on governance surfaces — silent-override is the failure mode.
-
 ### The Crew
 
 ![The Crew](assets/the-crew.png)
@@ -29,6 +27,8 @@ Eight agents. Twelve protocols and a checkpoint bar, mechanically enforced by ho
 **Codex** — secondary validator. Invoked for pair programming, rescue after failure loops, and adversarial code review.
 
 **Deputies** — the sub-agent pool. Zero-context by design; each one gets a task brief and nothing more.
+
+**Teacher** — learning layer. New in v3.4; reads the governance catchment (insights-buffer + retro-candidates + LEARNINGS deltas) and authors structured proposals for Rosie to review at the weekly P8 retro. Never writes rules directly — silent-override is the failure mode.
 
 ## About Brindle
 
