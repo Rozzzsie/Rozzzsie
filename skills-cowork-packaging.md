@@ -39,6 +39,7 @@ Co-Work handles:
 - **Weekly performance snapshots** — pull metrics, extract signals, generate the report, deliver to the channel
 - **Recurring batch work** — scanning, summarizing, filing across multiple sources on a schedule
 - **Standardized reporting** — any fixed process that produces the same output shape every time, without nuance or exception handling
+- **Knowledge base pipeline runs** — sync and refresh source material on a schedule, so Skills and Slack bot agents always work with current material
 
 ---
 
@@ -79,8 +80,8 @@ A live Claude.ai Skill built for the Klear PSX workflow.
 4. Set the cadence — it runs without manual triggering
 
 **Who owns what:**
-- **Skills:** whoever owns the workflow owns the skill. The PS rep closest to the problem builds and maintains it.
-- **Co-Work tasks:** team lead or ops owner configures the scheduled task. Output destination determines who reviews.
+- **Skills:** whoever owns the workflow owns the skill. The Product Support Lead / PS rep closest to the problem builds and maintains it.
+- **Co-Work tasks:** team lead / product lead / ops owner configures the scheduled task. Output destination determines who reviews.
 
 ---
 
