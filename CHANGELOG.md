@@ -4,12 +4,6 @@ Architectural shifts, not individual fixes.
 
 ---
 
-## personal-learnings workspace bootstrapped; weekly digest fetch failed (2026-04-20)
-
-Created `personal-learnings/_input/` as a new lightweight workspace for weekly AI agent digest inputs. First fetch attempt against `aiagentstore.ai/ai-agent-news/this-week` failed at both network (allowlist block) and HTTP (403 Forbidden) layers — no content retrieved. Failure documented in `_input/2026-04-20_digest-fetch-failed.md` with three concrete recovery paths: RSS feed check, browser-cookie curl, or manual email-digest drop.
-
----
-
 ## types-of-work.md added (2026-04-17)
 
 First-cut OS capabilities reference artifact. 7 live types across 4 layers (Infrastructure / Workflow / Intelligence / Content) + 3 horizon items for the council. Swept from all 4 active workspaces. Delivered to Dhruv Gupta as Ask 1 of council onboarding.
