@@ -4,6 +4,20 @@ Architectural shifts, not individual fixes.
 
 ---
 
+## Protocols v3.4.2 — reference layer operationalized (2026-04-20)
+
+Governance files come in three flavors: **activity** (CHANGELOG — everything meaningful that happened), **meta** (LEARNINGS + retro-candidates + insights-buffer — reflection on activity), and **reference** (curated-evidence files with stable look-up answers to specific queries). Rozzzsie had the first two from day one; the third was the gap. This patch pair names the taxonomy (v3.4.1) and operationalizes it (v3.4.2).
+
+Named in v3.4.1 after studying a neighboring Second Brain pattern — activity and meta layers were already covered, but reference-layer files (the kind you cite rather than re-derive) were missing. Absorb-not-import doctrine captured at the same time: learn from the architecture, adopt it in this OS's own way. First-wave reference-layer artifacts seeded; a root-level AGENTS.md routing dispatcher added as a complementary primitive.
+
+Operationalized in v3.4.2 after Rosie flagged a recurring pattern: she'd been asking the same "what costs what, which path for which job" question across sessions and getting inconsistent answers each time. That pattern is the diagnostic — *a question re-asked across 2+ sessions (especially one verified at session start and double-checked at session end) is signal that the answer belongs in a reference-layer file, not re-derived each session.* The right response is **author the file**, not **answer it more carefully this session**.
+
+First canonical reference-layer file landed alongside a cross-pollination convention: reference-layer files get pointer rows in workspace CLAUDE.md startup loadouts so future sessions load the answer at startup rather than reconstructing it. A reference file nobody knows exists is an orphan. Teacher gets a new catchment stream at next P8 — re-asked-question audit alongside LEARNINGS deltas + retro-candidates + insights-buffer — so the pattern becomes machine-detectable across session boundaries.
+
+Presentation: protocols doc header now reads v3.4.2. README OS version bumped to match. The three-layer taxonomy (activity / meta / reference) is the recommended classification frame for future governance files at file-creation time — which flavor answers which query.
+
+---
+
 ## Protocols v3.4 — Teacher learning layer + Brindle-graduated framing (2026-04-20)
 
 The governance OS grew an 8th role. Teacher is the pattern detector + proposal author on the governance catchment — insights-buffer, retro-candidates, and LEARNINGS deltas, all three streams already curated upstream. Invoked at the weekly P8 retro as step 6.5, and manually between P8s when Rosie asks. Authors 1–3 structured proposals into `.claude/teacher-proposals.md` per invocation; Rosie decides accept / modify / reject / defer; Root executes approved proposals at P8.
