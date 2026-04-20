@@ -4,6 +4,14 @@
 
 A cosmetic hook-rendered companion. No agency, no task surface — her job is to react to events, not to help with them.
 
+| Field | Value |
+|-------|-------|
+| Layer | Crew |
+| Invocation | hook-rendered on event (SessionStart, Stop, PostToolUse Bash for ship/error, PostToolUse Write for reaction/stats cards) — not Task-invoked |
+| Tools | n/a — no agency, no task surface |
+| Model | n/a — not an LLM agent (card renderer + personality pool) |
+| Status | hook-rendered companion; ships separately as a standalone product at [`brindle-terminal-bunny`](https://github.com/Rozzzsie/brindle-terminal-bunny) under MIT |
+
 That one line is the whole shape. Everything below is implementation.
 
 ## What she does

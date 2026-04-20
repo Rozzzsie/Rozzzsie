@@ -4,6 +4,14 @@
 
 Codex is external. The wrapper is how the fam reaches it.
 
+| Field | Value |
+|-------|-------|
+| Layer | Crew |
+| Invocation | `/codex:review`, `/codex:rescue`, `/codex:adversarial-review`, `/codex:pair` slash commands (Protocols 1B / 2B / 3B — pair programming, rescue after failure loops, adversarial code review) |
+| Tools | external CLI (Codex wrapper); accesses its own tool surface outside Claude Code |
+| Model | external — Codex's own model, not Claude |
+| Status | external tool wrapped as a Claude Code plugin |
+
 Codex is external infrastructure — a separate model from a separate provider, invoked through a CLI. The reach is narrow: three specific triggers, bounded budgets, findings that come back with terminal status. The wrapper exists so an outside validator can be invoked under the same governance the fam runs on.
 
 ## What it does

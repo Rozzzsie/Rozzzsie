@@ -4,6 +4,14 @@
 
 The fam's delivery pool — one entity, many instances, gone as soon as the work lands.
 
+| Field | Value |
+|-------|-------|
+| Layer | Crew |
+| Invocation | Task tool with any `subagent_type` (e.g., `general-purpose`, `Explore`, `Plan`, domain-specific deputies) — summoned per task, zero-context by design |
+| Tools | inherit (task-dependent; each Deputy receives exactly the tool surface the Task prompt specifies) |
+| Model | inherit (task-dependent) |
+| Status | sub-agent pool — fresh instance per invocation, retained only for the duration of the task |
+
 Deputies are how the fam gets work done. The pool is the character; any specific deputy is an instance — an implementer, a reviewer, an explorer, a scanner, an agent-typed specialist — dispatched for a single task with a fresh context window and nothing else. They return status in one message and are gone.
 
 ## What they do
