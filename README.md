@@ -30,6 +30,12 @@ Eight agents. Twelve protocols and a checkpoint bar, mechanically enforced by ho
 
 **Deputies** — the sub-agent pool. Zero-context by design; each one gets a task brief and nothing more.
 
+## About Brindle
+
+Brindle is the only fam member who ships as her own standalone product. The other seven live here as Claude Code subagents — each one's `.md` file IS the implementation, loaded by the Task tool at invocation time. Brindle's runtime is separate Python code, MIT-licensed, clonable: [`brindle-terminal-bunny`](https://github.com/Rozzzsie/brindle-terminal-bunny).
+
+Her persona card still lives at [`agents/brindle/brindle.md`](agents/brindle/brindle.md) — that hasn't moved. The asymmetry is architectural, not accidental. Seven agents whose contracts live in this repo. One agent who graduated into a standalone product. The two-repo shape is intentional.
+
 ## The OS
 
 Rozzzsie runs a governance OS (v3.4.0) with four layers the fam operates under:
