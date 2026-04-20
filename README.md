@@ -4,7 +4,7 @@ A living snapshot of the agent fam and the governance OS they run on.
 
 Eight agents. Twelve protocols and a checkpoint bar, mechanically enforced by hooks that fail session-close when any of them slips. Adversarial audits run against the governance doc itself — the fam writes the rules, Breakline tries to break them, the fam decides what to fix.
 
-**Start here:** [`agents/breakline.md`](agents/breakline.md) — the adversarial auditor. The clearest single page on how the fam operates.
+**Start here:** [`agents/breakline/breakline.md`](agents/breakline/breakline.md) — the adversarial auditor. The clearest single page on how the fam operates.
 
 ## The fam
 
