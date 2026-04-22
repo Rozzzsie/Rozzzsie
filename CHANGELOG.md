@@ -4,6 +4,10 @@ Architectural shifts, not individual fixes.
 
 ---
 
+## [2026-04-22] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
+
+---
+
 ## Protocols v3.4.2 — reference layer operationalized (2026-04-20)
 
 Governance files come in three flavors: **activity** (CHANGELOG — everything meaningful that happened), **meta** (LEARNINGS + retro-candidates + insights-buffer — reflection on activity), and **reference** (curated-evidence files with stable look-up answers to specific queries). Rozzzsie had the first two from day one; the third was the gap. This patch pair names the taxonomy (v3.4.1) and operationalizes it (v3.4.2).
