@@ -16,7 +16,7 @@ Eight agents. Twelve protocols and a checkpoint bar, mechanically enforced by ho
 
 **Breakline** — the fam's adversarial auditor. No mercy, no softening. He runs every harness, protocol, and output against the strictest success criteria available — and breaks the line when they fail.
 
-**Luma** — translator rail. New in v3.3; invoked before state-changing decisions when the option space is unclear. Her job is axis reframing, not option ranking.
+**Luma** — consultant rail. New in v3.3 as translator; promoted to consultant in v3.4.3 after her first organic post-promotion invocation produced a load-bearing axis-reframe that the controller would not have surfaced alone. She now delivers a weighted recommendation with evidence at the end of her frames, not just option enumeration. Toolset includes read access to the governance surface so she can verify artifacts she frames against. Her job is axis reframing first; recommendation second; option ranking never.
 
 ### The Crew
 
@@ -38,12 +38,22 @@ Her persona card still lives at [`agents/brindle/brindle.md`](agents/brindle/bri
 
 ## The OS
 
-Rozzzsie runs a governance OS (v3.4.2) with four layers the fam operates under:
+Rozzzsie runs a governance OS (v3.5.2) with four layers the fam operates under:
 
 - **Protocols** (P1–P9, plus sub-protocols P1B/P2B/P3B for Codex validation) — intent confirmation, loop detection, quality gate, state update, learning capture, cross-pollination, session close, weekly retrospective, autonomous iteration loop.
 - **Hooks** — `PostToolUse`, `Stop`, `SessionStart`. Reminders fire automatically; the stop-gate blocks session-close on protocol failures.
 - **Checkpoint bar** — every tool-using response carries `[checkpoint: P3 — ... | P4 — ... | P5 — ...]`. Verifiable friction.
 - **Session lifecycle** — startup briefing, state updates after every meaningful increment, p3-trace at close, CONTEXT + CHANGELOG current before commit.
+
+## What's new in v3.5 (cumulative through v3.5.2)
+
+- **Synthesis-Surface Pre-Render Pattern (v3.5.0)** — a new architectural primitive: hook-side render scripts pre-compute mechanical content for synthesis-heavy surfaces, agent fills `<JUDGMENT: ___>` slots inline. Reference implementation: SessionStart briefing — ~60–90s of synthesis collapses to ~10–15s of slot-fill on clean state. Surfaces queued for the pattern: P8 weekly retro, P7 session-close summary, CONTEXT updates, compaction recovery. Inv 9 (silent-fallback observability) added: every synthesis surface gets a P8 retro audit step counting `FALLBACK (legacy)` markers, threshold default 2/week.
+
+- **Bidirectional contract (v3.5.1)** — synthesis surfaces are bidirectional: read-render on open is useless if the write side (what populates the state files the render reads) is unbounded. v3.5.0 shipped only the read face; v3.5.1 names both. SessionStart briefing's write surface (the carry-forward block in `.remember/remember.md`) is now capped at ≤500 chars / ≤8 lines (links-not-prose for rich content). Read-side budget enforcement landed as belt-and-suspenders. New PostToolUse hook instruments first-tool-call latency for mechanical regression detection — the controller no longer relies on noticing slowness; the distribution is read at P8.
+
+- **Luma promoted translator → consultant (v3.4.3)** — Luma's first organic post-promotion invocation immediately produced a load-bearing axis-reframe (outside-lens-vs-inside-lens on a retention pressure-test). Promotion formalized: she now delivers a weighted recommendation with evidence at the end of her frames, not just option enumeration. Toolset extended with read access on the root governance surface so she can verify artifacts she frames against. Doctrine: **Root never simplifies for the controller — that's Luma's territory.** The four-role split (Root = doer; Luma = consultant; Teacher = proposal author; controller = decider) holds.
+
+- **v3.5.2 sprint consolidation (2026-04-25)** — Protocol 8 gains step 6.7 (Hook fire-rate audit): a script consumes `.claude/hook-fires.jsonl` v1.0 schema, flags `🔴 SILENT-CANDIDATE` on <80% fire-rate + `🔴 ABSENT-FROM-FIRELOG` for hooks missing from registered inventory. Structural fix for the silent-governance-hook-regressions family caught at instance #3 in 8 days. Plus a checkpoint-bar Tier 2 corrective+formative PostToolUse hook (Frame 3 / Option B) — agent-discipline plateaus around 50% miss rate under multi-edit cadence; hook-side correction takes over. Plus Luma pre-dispatch discipline (2-line handoff: Category + Options before Root-suggests dispatches), axis-reframe sub-categories named for session-log machine-tagging (3 axes: demonstrate-vs-guard, completeness-vs-shape, methodology-vs-character), and a Codex P3B mandate on hook-lifecycle code. Codex P3B caught 7 real defects across the 24h hook-lifecycle ship cluster — strongest evidence yet for the rule's signal quality.
 
 ## What's new in v3.4 (cumulative through v3.4.2)
 

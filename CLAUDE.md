@@ -80,8 +80,8 @@ Every workspace has an `_input/` folder for raw materials (Slack exports, meetin
 
 ## Versioned-file naming convention (shipped 2026-04-15, Option C)
 Governance docs that carry a semver version (currently: `agent-protocols`) use the **symlink-canonical pattern** — same shape as the pre-commit hook (`.git/hooks/pre-commit → ../../_config/hooks/pre-commit`):
-- **Canonical file** carries the full version in its filename: `_config/agent-protocols-3.4.0.md`. When version bumps to 3.4.1 or 3.5.0, the canonical is renamed to match.
-- **Stable symlink** sits alongside: `_config/agent-protocols.md → agent-protocols-3.4.0.md`. All live references — workspace CLAUDE.md files, hooks, output-checklist, roles-map, design docs — point at the symlink path (`_config/agent-protocols.md`). The symlink retargets on version bump; references never need updating.
+- **Canonical file** carries the full version in its filename: `_config/agent-protocols-3.5.2.md` (current). When version bumps to 3.5.3 or 3.6.0, the canonical is renamed to match.
+- **Stable symlink** sits alongside: `_config/agent-protocols.md → agent-protocols-3.5.2.md`. All live references — workspace CLAUDE.md files, hooks, output-checklist, roles-map, design docs — point at the symlink path (`_config/agent-protocols.md`). The symlink retargets on version bump; references never need updating.
 - **Rule**: on every version bump (patch OR minor OR major), do two things: (1) `git mv` the canonical to the new full-version filename; (2) `ln -sfn <new-canonical> _config/agent-protocols.md` to retarget the symlink. References are untouched forever. Historical CHANGELOG/CONTEXT entries keep their original path strings — past facts stay past-accurate.
 - **Why this shape**: semver visibility (Finder / `ls` shows current version instantly via the canonical) plus reference stability (the ~14-file rename cost at 3.2 → 3.3 is now a one-line `ln -sfn` command). Same engineering win as the pre-commit VC meta-gap close — canonical tracked + stable reference path.
 - **When to apply to a new doc**: any governance doc that will carry a semver version in its header. One-off reference docs without a version don't need this.
@@ -152,10 +152,10 @@ At the start of any session that falls on or after a new week since the last ret
 - Goal: reduce repeated mistakes to zero over time — if the same trap appears twice, it should become a rule
 
 ## What to always remember
-- Rosie is building toward L4 — every output should reflect that standard
-- Rosie's manager is the decision-maker — Rosie supports, advises, and prepares
+- The controller is building toward Team Lead standard — every output should reflect that bar
+- The controller's manager is the decision-maker — the controller supports, advises, and prepares
 - Every output should be concrete and ready to use
-- Flag anything that needs Rosie's manager, a product leader, or the Product Support & Engineering lead to sign off on
+- Flag anything that needs the controller's manager, a product leader, or the Product Support & Engineering lead to sign off on
 - Think step by step before recommending actions
 
 ## Brindle companion

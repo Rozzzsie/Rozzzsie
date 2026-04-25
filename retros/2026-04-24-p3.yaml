@@ -1,0 +1,210 @@
+# P8 Retro Sidecar — 2026-04-24 (P8 retro #3, sanitized public snapshot)
+#
+# This is the public-grain version of the sidecar. Stakeholder names dropped,
+# workspace-specific paths in `target_surface` genericized, `detail_ref`
+# cross-pointers stripped (the narrative .md they referenced is private).
+# The dashboard at `dashboard/index.html` (sprint-1, queued) renders from this file.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Narrative: private `_retro/2026-04-24-retro.md`. Public CONTEXT.md describes the
+# governance state at the same window grain.
+# If this file and the narrative disagree, the narrative wins. Regenerate from narrative.
+
+retro_id: "2026-04-24-p3"
+retro_date: "2026-04-24"
+window_start: "2026-04-17"
+window_end: "2026-04-24"
+prior_retro: "2026-04-17-p2-non-interactive"
+interactive_mode: true
+trigger_source: "sessionstart-hook-overdue-parser-false-positive"
+
+findings:
+  # Inherited from 2026-04-17 retro (5 candidates carried)
+  - id: "1.1"
+    title: "Codex review verification rule"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "retro-candidates"
+    recommendation: "carry-forward"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "_config/agent-protocols.md"
+    blocked_by: ["2.3"]  # Partially addressed by Teacher proposal #3
+  - id: "1.2"
+    title: "env-var rename audit rule"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "retro-candidates"
+    recommendation: "defer"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "_config/output-checklist.md"
+  - id: "1.3"
+    title: "AI-bot pipeline-optimization prohibition rule"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "retro-candidates"
+    recommendation: "defer"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "workspaces/<ai-champion>/CLAUDE.md"
+  - id: "1.4"
+    title: "writing-plans map-extension promotion"
+    category: "promotion"
+    evidence_count: 3
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "ready-to-accept"
+    status: "approved"
+    execution_target_week: "2026-04-26"
+    target_surface: "~/.claude/skills/writing-plans-rozzzsie/SKILL.md"
+  - id: "1.5"
+    title: "axis-challenge Luma rule-level propagation (3 sub-candidates)"
+    category: "promotion"
+    evidence_count: 3
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "ready-to-accept"
+    status: "pre-ship"
+    execution_target_week: "2026-04-25"
+    target_surface: "_config/agent-protocols.md"
+    enforcement_log_ref: "_retro/enforcement-gates/2026-04-25-5.md"
+
+  # New this retro (10 candidates)
+  - id: "2.1"
+    title: "Hook-side checkpoint-bar enforcement (Tier 2)"
+    category: "teacher-proposal"
+    evidence_count: 10  # 71% miss rate observed = 10/14 substantive responses
+    source_catchment: "mixed"
+    recommendation: "accept"
+    status: "approved"
+    execution_target_week: "2026-04-26"
+    target_surface: ".claude/hooks/checkpoint-bar-enforce.py"
+    alternative_framings: 4
+  - id: "2.2"
+    title: "Silent-governance-hook fire-rate audit + Protocol 8 step 6.7"
+    category: "teacher-proposal"
+    evidence_count: 5
+    source_catchment: "mixed"
+    recommendation: "accept"
+    status: "approved"
+    execution_target_week: "2026-04-26"
+    target_surface: ".claude/hooks/lib/audit-hook-fire-rates.py"
+  - id: "2.3"
+    title: "Luma pre-dispatch gate + Codex P3B hook-lifecycle"
+    category: "teacher-proposal"
+    evidence_count: 5
+    source_catchment: "retro-candidates"
+    recommendation: "accept"
+    status: "pre-ship"
+    execution_target_week: "2026-04-25"
+    target_surface: "_config/agent-protocols.md"
+    enforcement_log_ref: "_retro/enforcement-gates/2026-04-25-3.md"
+  - id: "2.4"
+    title: "Public-repo verification checklist (5-point)"
+    category: "rule-extension"
+    evidence_count: 5
+    source_catchment: "retro-candidates"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-04-24"
+    target_surface: "_config/output-checklist.md#15"
+  - id: "2.5"
+    title: "CN interview register calibration"
+    category: "rule-extension"
+    evidence_count: 4  # 4 calibration rules
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-04-24"
+    target_surface: "_config/output-checklist.md#5"
+  - id: "2.6"
+    title: "Ownership-verification routing-authority surrogate"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-04-24"
+    target_surface: "_config/output-checklist.md#14"
+  - id: "2.7"
+    title: "git add -A overreach pre-commit scan rule"
+    category: "rule-extension"
+    evidence_count: 1  # family instance #12
+    source_catchment: "retro-candidates"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-04-24"
+    target_surface: "_config/output-checklist.md#10"
+  - id: "2.8"
+    title: "Substitute-word-vs-repo-vocabulary collision design gate"
+    category: "promotion"
+    evidence_count: 1
+    source_catchment: "retro-candidates"
+    recommendation: "accept"
+    status: "approved"
+    execution_target_week: "2026-04-26"
+    target_surface: "~/.claude/skills/writing-plans-rozzzsie/SKILL.md"
+  - id: "2.9"
+    title: "Ship-validation gaps family promotion"
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "defer"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "_config/output-checklist.md#16"  # candidate
+  - id: "2.10"
+    title: "P3-trace per-session archival (methodology gap)"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "retro-candidates"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-04-24"
+    target_surface: "_config/agent-protocols.md#protocol-8-step-6"
+
+proposal_backlog:
+  pending_before_retro: 3
+  approved_not_executed: 6   # tonight's batch executed 6 (2.4/2.5/2.6/2.7/2.10 land tonight + 1.4 fork-deferred), 6 remain for weekend
+  executed_this_cycle: 5
+  authored_this_cycle: 0     # Teacher-skip decision per retro § 8
+
+# Hook health pending Teacher #2 audit script (sprint Item 2)
+hook_health:
+  sessionstart_protocol_digest: null
+  stop_gate: null
+  poststop_insights_capture: null
+  postedit_p4_reminder: null
+  measurement_window_days: null
+  measurement_window_session_count: null
+  flagged_hooks: null
+
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.29           # this retro session, 2/7 missed
+  checkpoint_bar_prior_session_rate: 0.71  # 2026-04-23 evening v3.5.1 ship
+  luma_tally_by_category:
+    axis_reframe: 8
+    silent_assumption_catch: 5
+    polish_layer_text_diagnosis: 1
+    pre_authoring: 1
+    tightening: 2
+    meta_review: 2
+    total: 19
+  codex_invocations: 1
+  teacher_invocations: 1
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null   # tracking begins 2026-04-25 v3.5.2 codification
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 3       # Datapoints captured 2026-04-24
+  median_first_tool_latency_sec: 365.0
+  p95_first_tool_latency_sec: 520.0
+  max_first_tool_latency_sec: 520.0
+  threshold_violations: 3       # All 3 sessions > 120s threshold
+
+meta_finding:
+  headline: "Propose-only doctrine rate-limiting step has migrated from Teacher authorship cadence to controller decision cadence on pending proposals"
+
+schema_version: "1.0"

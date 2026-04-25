@@ -16,17 +16,17 @@ Not every output type needs every section. Use this guide:
 | **Stakeholder comms** (Slack, email, Confluence) | 1, 2, 3, 4, 5, 6, 7, 8 (all) |
 | **Pipeline outputs** (snippets, drafts, sync runs) | 1, 4, 5, 6, 7, 8 |
 | **Knowledge assets** (skills, reference docs, FAQ content) | 1, 4, 7, 8, 9 |
-| **Internal docs** (plans, specs, analyses for Rosie only) | 1, 4, 7, 8 (+ 5 if doc contains terminal-rendered templates) |
+| **Internal docs** (plans, specs, analyses for the controller only) | 1, 4, 7, 8 (+ 5 if doc contains terminal-rendered templates) |
 | **File renames, moves, or deletes** | 10 |
 | **Architectural fixes that kill a pattern** (stale directive, deprecated flag, removed file, changed API/render path) | 11 |
 | **Audits, retros, attacker tests** (any task that produces a findings list) | 1, 4, 7, 8, 12 |
 
 ## The checklist
 
-### 1. L4 Framing
+### 1. Team Lead framing
 - [ ] **Insight first** — leads with the pattern and the "why," not just the observation
 - [ ] **Proactive** — anticipates what the recipient will need next
-- [ ] **Ownership** — Rosie owns the recommendation; decision-maker owns the decision
+- [ ] **Ownership** — the controller owns the recommendation; decision-maker owns the decision
 - [ ] **Elevating** — makes the recipient's job easier, not harder
 - [ ] **Neutral tone** — no emotional qualifiers ("entirely from scratch," "first-ever"), no narrative arcs ("emerged as," "took on increasing"), no superlatives. State what was done and what it achieved — let the facts carry the weight.
 
@@ -42,7 +42,7 @@ Not every output type needs every section. Use this guide:
 - [ ] Can be shared or acted on without further editing
 - [ ] Decision is made or clearly framed for the reader
 - [ ] Action items are numbered, specific, and owned
-- [ ] No gaps that require Rosie to fill in before sending
+- [ ] No gaps that require the controller to fill in before sending
 - [ ] Any claims about external system state (API keys, credentials, live services, file contents, test results) were verified directly — not inferred from conversation history
 
 ### 5. Format and platform
@@ -70,7 +70,7 @@ Not every output type needs every section. Use this guide:
 - [ ] No known pitfalls repeated
 
 ### 8. Scope and boundaries
-- [ ] Stays within Rosie's visibility boundary (only references internal AI infrastructure where Rosie has direct visibility, etc.)
+- [ ] Stays within the controller's visibility boundary (only references internal AI infrastructure where the controller has direct visibility, etc.)
 - [ ] Does not act unilaterally on decisions that belong to a manager or other decision-makers
 - [ ] Public-facing and stakeholder-facing outputs draw only from shareable content; private-workspace material stays in its workspace
 
@@ -113,7 +113,7 @@ Fires when the output is a findings list (adversarial audit, P8 retro, attacker 
 ## How to use this checklist
 - **Self-review**: Before finalizing, run through the checklist mentally or explicitly. Flag any item that fails.
 - **Self-correction**: If an item fails, fix it before marking done. Do not ship with known failures.
-- **If unsure**: Surface the uncertainty to Rosie rather than guessing.
+- **If unsure**: Surface the uncertainty to the controller rather than guessing.
 
 ## This checklist evolves
 When a new pattern, trap, or quality standard is identified, add it here. This is a living document — the Supervise layer only works if it stays current.

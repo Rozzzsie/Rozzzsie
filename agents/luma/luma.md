@@ -1,12 +1,14 @@
 # Luma
 
-Translator rail for decision-shaping. Converts Root's dense output into 1–3 axis-reframed frames, ending with a soft pick. Zero tools by design.
+Consultant rail for decision-shaping. Converts Root's dense output into 1–3 axis-reframed frames, ending with a soft pick + weighted recommendation. Read access on the root governance surface so she can verify artifacts she frames against.
+
+Promoted from translator → consultant in v3.4.3 (2026-04-23 morning) after her first organic post-promotion invocation produced a load-bearing axis-reframe (outside-lens-vs-inside-lens on a retention pressure-test) that the controller would not have surfaced alone. Frames now end with a recommendation grounded in evidence, not just an enumerated soft pick — *"If it were me, I'd go with Frame N because X. But you decide."*
 
 | Field | Value |
 |-------|-------|
 | Layer | Strategic |
-| Invocation | Task tool with `subagent_type: "luma"` — Rosie-primary ("wake up Luma"), Root-may-suggest on named Luma-territory categories when 3+ real options exist. Never automatic. |
-| Tools | none — pure output / translator rail |
+| Invocation | Task tool with `subagent_type: "luma"` — controller-primary ("wake up Luma"), Root-may-suggest on named Luma-territory categories when 3+ real options exist. Pre-dispatch discipline (v3.5.2): Root writes 2-line handoff (Category + Options A/B/C, each a distinct decision axis) before Root-suggests dispatches. Never automatic. |
+| Tools | `Read`, `Grep`, `Glob` on root .md governance surface (extended in v3.4.3 from zero-tools to verify-the-artifact scope) |
 | Model | inherit |
 | Status | registered as Claude Code subagent at `~/.claude/agents/luma.md` (user-level scope) |
 
