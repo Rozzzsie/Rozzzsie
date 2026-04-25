@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rozzzsie Governance Dashboard — P8 2026-04-24-p3</title>
+  <link rel="stylesheet" href="assets/dashboard.css">
+</head>
+<body>
+  <main class="container">
+
+    <header class="hero">
+      <div class="hero-eyebrow">Rozzzsie Governance Dashboard</div>
+      <h1>P8 Retro #2026-04-24-p3</h1>
+      <p class="hero-tagline">Evaluation as continuous governing function, not terminal checkpoint.</p>
+      <div class="hero-meta">
+        <div><strong>Window</strong> 2026-04-17 → 2026-04-24</div>
+        <div><strong>Mode</strong> interactive</div>
+        <div><strong>Trigger</strong> sessionstart-hook-overdue-parser-false-positive</div>
+        <div><strong>Schema</strong> v1.0</div>
+      </div>
+    </header>
+
+    <section>
+      <h2 class="section-title">Decision velocity <span class="section-title-suffix">findings triaged + terminal status assigned</span></h2>
+      <div class="tiles">
+        
+    <div class="tile">
+      <div class="tile-value">15</div>
+      <div class="tile-label">Findings triaged</div>
+      
+    </div>
+    
+        
+    <div class="tile">
+      <div class="tile-value">11</div>
+      <div class="tile-label">Accepted / shipped</div>
+      <div class="tile-detail">5 executed · 4 approved · 2 pre-ship</div>
+    </div>
+    
+        
+    <div class="tile">
+      <div class="tile-value">4</div>
+      <div class="tile-label">Deferred</div>
+      <div class="tile-detail">Each with explicit watch entry or carry-forward</div>
+    </div>
+    
+        
+    <div class="tile">
+      <div class="tile-value">0</div>
+      <div class="tile-label">Rejected</div>
+      
+    </div>
+    
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Discipline + dispatch <span class="section-title-suffix">governance health under load</span></h2>
+      <div class="bands">
+        <div class="band">
+          <h3>Discipline metrics</h3>
+          <div class="kv-row">
+            <span class="kv-key">Checkpoint-bar miss rate (this retro)</span>
+            <span class="kv-val">29%</span>
+          </div>
+          <div class="kv-row"><span class="kv-key">Prior-session miss rate</span><span class="kv-val">71%</span></div>
+          <div class="kv-row">
+            <span class="kv-key">Codex invocations</span>
+            <span class="kv-val">1</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-key">Teacher invocations</span>
+            <span class="kv-val">1</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-key">Luma invocations (total)</span>
+            <span class="kv-val">19</span>
+          </div>
+        </div>
+        <div class="band">
+          <h3>Luma tally by category</h3>
+          <div class="tally">
+            
+        <div class="tally-row">
+          <div class="tally-label">axis-reframe</div>
+          <div class="tally-bar"><div class="tally-fill" style="width: 42.1%"></div></div>
+          <div class="tally-count">8</div>
+        </div>
+        
+        <div class="tally-row">
+          <div class="tally-label">silent-assumption-catch</div>
+          <div class="tally-bar"><div class="tally-fill" style="width: 26.3%"></div></div>
+          <div class="tally-count">5</div>
+        </div>
+        
+        <div class="tally-row">
+          <div class="tally-label">polish-layer-text-diagnosis</div>
+          <div class="tally-bar"><div class="tally-fill" style="width: 5.3%"></div></div>
+          <div class="tally-count">1</div>
+        </div>
+        
+        <div class="tally-row">
+          <div class="tally-label">pre-authoring</div>
+          <div class="tally-bar"><div class="tally-fill" style="width: 5.3%"></div></div>
+          <div class="tally-count">1</div>
+        </div>
+        
+        <div class="tally-row">
+          <div class="tally-label">tightening</div>
+          <div class="tally-bar"><div class="tally-fill" style="width: 10.5%"></div></div>
+          <div class="tally-count">2</div>
+        </div>
+        
+        <div class="tally-row">
+          <div class="tally-label">meta-review</div>
+          <div class="tally-bar"><div class="tally-fill" style="width: 10.5%"></div></div>
+          <div class="tally-count">2</div>
+        </div>
+        
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Proposal backlog cohort <span class="section-title-suffix">authoring → approval → execution flow</span></h2>
+      <div class="bands">
+        <div class="band">
+          <h3>This cycle</h3>
+          <div class="cohort">
+            <div class="cohort-stage"><span class="cohort-label">Pending before retro</span><span class="cohort-count">3</span></div>
+            <div class="cohort-arrow">↓</div>
+            <div class="cohort-stage"><span class="cohort-label">Approved (not yet executed)</span><span class="cohort-count">6</span></div>
+            <div class="cohort-arrow">↓</div>
+            <div class="cohort-stage"><span class="cohort-label">Executed this cycle</span><span class="cohort-count">5</span></div>
+            <div class="cohort-arrow">↓</div>
+            <div class="cohort-stage"><span class="cohort-label">Authored this cycle</span><span class="cohort-count">0</span></div>
+          </div>
+        </div>
+        <div class="band">
+          <h3>Latency observations</h3>
+          <div class="kv-row">
+            <span class="kv-key">Source</span>
+            <span class="kv-val kv-val-mono">.claude/session-start-latency.log</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-key">Window session count</span>
+            <span class="kv-val">3</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-key">Median first-tool latency</span>
+            <span class="kv-val">365s</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-key">P95 first-tool latency</span>
+            <span class="kv-val">520s</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-key">Max</span>
+            <span class="kv-val">520s</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-key">Threshold violations (&gt;120s)</span>
+            <span class="kv-val">3</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Findings detail <span class="section-title-suffix">15 items, every one statused</span></h2>
+      <div class="findings">
+        <div class="findings-row header">
+          <div>id</div>
+          <div>title</div>
+          <div>status</div>
+          <div>category</div>
+        </div>
+        
+    <div class="findings-row">
+      <div class="finding-id">1.1</div>
+      <div class="finding-title">Codex review verification rule</div>
+      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-cat">rule-clarification</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">1.2</div>
+      <div class="finding-title">env-var rename audit rule</div>
+      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-cat">rule-extension</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">1.3</div>
+      <div class="finding-title">AI-bot pipeline-optimization prohibition rule</div>
+      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-cat">rule-extension</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">1.4</div>
+      <div class="finding-title">writing-plans map-extension promotion</div>
+      <div><span class="pill pill-approved">approved</span></div>
+      <div class="finding-cat">promotion</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">1.5</div>
+      <div class="finding-title">axis-challenge Luma rule-level propagation (3 sub-candidates)</div>
+      <div><span class="pill pill-pre-ship">pre-ship</span></div>
+      <div class="finding-cat">promotion</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.1</div>
+      <div class="finding-title">Hook-side checkpoint-bar enforcement (Tier 2)</div>
+      <div><span class="pill pill-approved">approved</span></div>
+      <div class="finding-cat">teacher-proposal</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.2</div>
+      <div class="finding-title">Silent-governance-hook fire-rate audit + Protocol 8 step 6.7</div>
+      <div><span class="pill pill-approved">approved</span></div>
+      <div class="finding-cat">teacher-proposal</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.3</div>
+      <div class="finding-title">Luma pre-dispatch gate + Codex P3B hook-lifecycle</div>
+      <div><span class="pill pill-pre-ship">pre-ship</span></div>
+      <div class="finding-cat">teacher-proposal</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.4</div>
+      <div class="finding-title">Public-repo verification checklist (5-point)</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-extension</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.5</div>
+      <div class="finding-title">CN interview register calibration</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-extension</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.6</div>
+      <div class="finding-title">Ownership-verification routing-authority surrogate</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-extension</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.7</div>
+      <div class="finding-title">git add -A overreach pre-commit scan rule</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-extension</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.8</div>
+      <div class="finding-title">Substitute-word-vs-repo-vocabulary collision design gate</div>
+      <div><span class="pill pill-approved">approved</span></div>
+      <div class="finding-cat">promotion</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.9</div>
+      <div class="finding-title">Ship-validation gaps family promotion</div>
+      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-cat">meta-observation</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.10</div>
+      <div class="finding-title">P3-trace per-session archival (methodology gap)</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-clarification</div>
+    </div>
+    
+      </div>
+
+      
+      <div class="callout">
+        <div class="callout-eyebrow">Meta-finding</div>
+        <div class="callout-text">Propose-only doctrine rate-limiting step has migrated from Teacher authorship cadence to controller decision cadence on pending proposals</div>
+      </div>
+      
+    </section>
+
+    <footer class="scope-honest">
+      <h4>About this dashboard (sprint-1 v1)</h4>
+      <p>This is a single-retro snapshot rendered from <code>retros/2026-04-24-p3.yaml</code> — the most recent P8 weekly retrospective in the Rozzzsie governance OS. The render is mechanical (hook-side / build-side); judgment slots and multi-retro trend graphs are sprint-2 surface, gated on the schema surviving 3+ retro cycles.</p>
+      <p>Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry — tokens, latency, error rates, eval scores. This dashboard surfaces governance evolution: proposal lifecycle from authoring to executed, hook fire-rate health, checkpoint-bar discipline trends, Luma tally by category, decision velocity per retro, family-pattern detection across weeks. Same <em>shape</em> (quantitative metrics on a temporal axis), different <em>semantics</em> (governance health, not service health). The arxiv anchor is <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a> — <em>"evaluation as continuous governing function, not terminal checkpoint."</em></p>
+      <p>The narrative <code>.md</code> retro is private; this <code>.yaml</code> sidecar is the public-grain summary, sanitized for stakeholder names and specific workspace paths. Render provenance: <code>dashboard/render.py</code> reads the sidecar and emits this <code>index.html</code> on push. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate.</p>
+      <p style="color: var(--text-subtle);">Schema v1.0 · Rozzzsie OS v3.5.2</p>
+    </footer>
+    
+  </main>
+</body>
+</html>

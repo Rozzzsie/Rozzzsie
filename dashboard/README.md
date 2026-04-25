@@ -13,12 +13,34 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 - **Render**: HTML single-page rendered from the sidecar(s) and dropped into this `dashboard/` subtree on push. GitHub Pages serves the same subtree.
 - **Update cadence**: sprint-1 ships static-rendered v1 from a single retro. Sprint-2 unlocks multi-retro aggregation once 3+ retros' sidecars exist.
 
-## What's here (placeholder until v1 lands)
+## What's here
 
 - `README.md` (this file) — the architecture and intent
-- *(coming)* `index.html` — the render itself
-- *(coming)* `assets/` — CSS + any static assets the render needs
+- `index.html` — **v1 shipped 2026-04-25 evening.** Pre-rendered single-retro snapshot from `../retros/2026-04-24-p3.yaml`
+- `assets/dashboard.css` — director-audience styling: typographic hierarchy, generous whitespace, status-pill semantics, no-JS, print-friendly
+- `render.py` — Python renderer (stdlib + optional PyYAML); reads a sidecar YAML and emits `index.html`. Run via `python3 dashboard/render.py [sidecar.yaml] [out.html]`. Used build-side for v1 (pre-rendered + checked in); sprint-2+ may auto-render via GitHub Action.
 - *(coming, sprint-2)* `trend.html` — multi-retro trend page once schema has survived 3 cycles
+
+## To enable as a website
+
+GitHub Pages serves any file in this repo from the `main` branch root, including `dashboard/index.html`. To enable:
+1. Repository → Settings → Pages
+2. Source: "Deploy from a branch" → `main` / `(root)`
+3. Save
+4. URL: `https://<owner>.github.io/<repo>/dashboard/index.html`
+
+Alternatively, just open `dashboard/index.html` in a browser locally — the render is fully self-contained (CSS in `assets/`, no JS).
+
+## Re-rendering after a new sidecar
+
+When a new P8 retro lands and a sidecar is added to `retros/`, regenerate the dashboard:
+
+```bash
+cd dashboard/
+python3 render.py ../retros/2026-05-01-p4.yaml index.html  # example
+```
+
+For v1: the renderer uses the most recent retro as the single source. v2 (multi-retro trend) is the natural extension surface once 3+ sidecars exist.
 
 ## Build provenance
 
