@@ -111,15 +111,13 @@ findings:
     status: "executed"
     execution_target_week: "2026-04-24"
     target_surface: "_config/output-checklist.md#15"
-  - id: "2.5"
-    title: "CN interview register calibration"
-    category: "rule-extension"
-    evidence_count: 4  # 4 calibration rules
-    source_catchment: "LEARNINGS-delta"
-    recommendation: "accept"
-    status: "executed"
-    execution_target_week: "2026-04-24"
-    target_surface: "_config/output-checklist.md#5"
+  # finding 2.5 redacted from public sidecar — 2026-04-25 night
+  # The original title revealed career-trajectory-private content that doesn't
+  # belong on a director / CTO buy-in surface. §14 sub-family #8 instance #2
+  # (after meta_finding leak earlier tonight) — sanitization-rule-vs-audience-
+  # grain at the finding-title level. The rule itself is governance-internal
+  # to a private workspace; it has no place in the public-grain summary.
+  # Counts adjusted: total findings 15 → 14, executed_this_cycle 5 → 4.
   - id: "2.6"
     title: "Ownership-verification routing-authority surrogate"
     category: "rule-extension"
@@ -168,8 +166,8 @@ findings:
 
 proposal_backlog:
   pending_before_retro: 3
-  approved_not_executed: 6   # tonight's batch executed 6 (2.4/2.5/2.6/2.7/2.10 land tonight + 1.4 fork-deferred), 6 remain for weekend
-  executed_this_cycle: 5
+  approved_not_executed: 6   # tonight's batch executed 6, 6 remain for weekend
+  executed_this_cycle: 4     # was 5; finding 2.5 redacted from public sidecar (career-move-private content)
   authored_this_cycle: 0     # Teacher-skip decision per retro § 8
 
 # Hook health pending Teacher #2 audit script (sprint Item 2)
