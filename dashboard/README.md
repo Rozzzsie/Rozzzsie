@@ -1,6 +1,31 @@
 # Dashboard / Observability Layer
 
+**Current release:** **v1.1** (2026-04-25 evening). [Live at `rozzzsie.github.io/Rozzzsie/dashboard/`](https://rozzzsie.github.io/Rozzzsie/dashboard/) · Tag: `dashboard-v1.1` · Renderer: [`render.py`](render.py) (`DASHBOARD_VERSION = "1.1"`).
+
 The dashboard is the OS observability surface — a render of the governance state into a shape leadership and external readers can browse without diving into the protocol doc, the retro narratives, or the proposals file. Sprint-1 scope: render the most recent P8 retro from its sidecar YAML, governance-architect framing copy, explicit "v2 will add multi-retro trend graphs" placeholder. Sprint-2: multi-retro aggregation, audience-extension paths, eventual co-emission of sidecar at retro session close (per Protocol 7).
+
+## Release notes
+
+### v1.1 — 2026-04-25 evening (polish release, post-v1 review)
+
+- **Copy polish.** Verbose label tightening across the discipline + latency bands. "Checkpoint-bar miss rate (this retro)" → "Current checkpoint miss rate" · "Prior-session miss rate" → "Prior session" · "Luma invocations (total)" → "Luma invocations" · "Window session count" → "Sessions in window" · "P95 first-tool latency" → "P95" · "Threshold violations (>120s)" → "Violations (>120s)". Director-skim grain.
+- **Meta-finding callout louder.** Was a thin 3px green strip; now a full-bordered card with 6px accent rail, an architectural ◆ icon at 1.75rem, bolder eyebrow, larger callout-text, subtle shadow. The "architect gold" insight at the bottom of the page now reads as the eye-magnet it should always have been.
+- **Scope-honest footer layout fix.** Was sitting bottom-left only because `.scope-honest p { max-width: 64ch }` constrained paragraph width without anything balancing the right side. Moved max-width to the parent section + added `margin: 4rem auto 0` so the footer reads as a deliberate centered narrow block.
+- **README dashboard pointer.** The repo README now surfaces the live dashboard URL above the agent fold; `dashboard/` and `retros/` finally listed in "What's in this repo".
+- **URL fix carried forward (`d66b8e8`).** The earlier-tonight URL claim was corrected from a memory-not-artifact assertion (org-page form) to the verified project-page form (`rozzzsie.github.io/Rozzzsie/dashboard/`). All four URL mentions now consistent.
+
+### v1.0 — 2026-04-25 (initial ship, commit `a7e0305`)
+
+- Sprint-1 single-retro render shipped per Luma's 2026-04-25 evening consult (Frame 1 + Frame 3 stacked: subtree-in-Rozzzsie-public, scope-honest single-retro v1).
+- 6 sections: hero with EDD-arxiv anchor / decision velocity tiles / discipline + dispatch bands / proposal backlog cohort + latency observations / 15-finding detail table / scope-honest footer.
+- Renderer: `render.py` (stdlib + optional PyYAML; minimal YAML subset parser fallback so the renderer runs anywhere `python3` runs).
+- Director-audience styling: typographic hierarchy, status-pill semantics, no-JS, print-friendly, mobile-responsive.
+
+### v2 (queued, gated on schema-stability review at 2026-05-15)
+
+- Multi-retro trend rendering once 3+ sidecars accumulate
+- Sparkline-style miss-rate trends + Teacher-invocations-over-time visualization
+- Audience-extension paths (interviewer mode, internal-vs-external surface variants)
 
 ## Why this exists
 

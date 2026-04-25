@@ -4,6 +4,18 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+## Dashboard v1.1 — observability layer polish release (2026-04-25)
+
+The OS observing itself — first public-grain artifact that lets a reader see governance evolution without reading the protocol doc, the retro narratives, or the proposals file. Live at [`rozzzsie.github.io/Rozzzsie/dashboard/`](https://rozzzsie.github.io/Rozzzsie/dashboard/), tagged `dashboard-v1.1`. Frame 1 + Frame 3 stacked per Luma's 2026-04-25 evening consult — subtree-in-Rozzzsie-public for consistency-with-spine + scope-honest single-retro v1 over multi-retro-faked-from-n=1.
+
+v1.0 shipped earlier the same evening (commit `a7e0305`): six sections rendered mechanically from the canonical sidecar — hero with EDD-arxiv anchor, decision-velocity tiles, discipline + dispatch bands, proposal-backlog cohort flow + latency observations, 15-finding detail table with color-coded status pills, scope-honest footer. v1.1 is a polish release: copy tightened on six discipline+latency labels for director-skim grain; meta-finding callout upgraded with architectural ◆ icon + 6px accent rail + bolder typography (the "architect gold" insight at the bottom now reads as the eye-magnet it should always have been); scope-honest footer layout fixed (was bottom-left only because of an unbalanced max-width; now centered narrow block); Luma-tally-bar label column widened from 13ch to 28ch so longer category names like *silent-assumption-catch* and *polish-layer-text-diagnosis* render fully instead of bleeding past their column. README dashboard pointer added so the URL is visible above the agent fold.
+
+The arxiv anchor — [EDD 2024](https://arxiv.org/abs/2411.13768), *"evaluation as continuous governing function, not terminal checkpoint"* — is the thesis line the dashboard plants. Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry; this dashboard surfaces governance evolution. Same shape, different semantics. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on the schema v1.0 stability review at 2026-05-15).
+
+Render contract: `dashboard/render.py` reads the most recent sidecar from `retros/` and emits `dashboard/index.html` on push. The renderer is stdlib + optional PyYAML, with a minimal YAML subset parser fallback so it runs anywhere `python3` runs. `DASHBOARD_VERSION = "1.1"` in the renderer is the canonical version surface; bumped on every change that lands a visible-grain difference for readers.
+
+---
+
 ## Protocols v3.5.2 — sprint consolidation (2026-04-25)
 
 A weekend architecture sprint consolidated into one minor-patch bump. Three structural additions land together because they're the same shape of governance failure mode — silent regressions and discipline plateaus where agent-side enforcement degrades under load.

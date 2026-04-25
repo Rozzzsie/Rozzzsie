@@ -36,6 +36,15 @@ except ImportError:
     HAS_YAML = False
 
 
+# ─── Release ──────────────────────────────────────────────────────────────────
+#
+# Dashboard release version. Bumped on every change that lands a visible-grain
+# difference for readers (copy polish, visual hierarchy, layout fix, schema
+# extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
+# and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
+DASHBOARD_VERSION = "1.1"
+
+
 # ─── YAML loader ──────────────────────────────────────────────────────────────
 
 def load_sidecar(path: Path) -> dict[str, Any]:
@@ -417,11 +426,11 @@ def render_dashboard(sc: dict[str, Any]) -> str:
     </section>
 
     <footer class="scope-honest">
-      <h4>About this dashboard (sprint-1 v1)</h4>
+      <h4>About this dashboard (sprint-1 v{DASHBOARD_VERSION})</h4>
       <p>This is a single-retro snapshot rendered from <code>retros/{html.escape(str(sc.get("retro_id", "")))}.yaml</code> — the most recent P8 weekly retrospective in the Rozzzsie governance OS. The render is mechanical (hook-side / build-side); judgment slots and multi-retro trend graphs are sprint-2 surface, gated on the schema surviving 3+ retro cycles.</p>
       <p>Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry — tokens, latency, error rates, eval scores. This dashboard surfaces governance evolution: proposal lifecycle from authoring to executed, hook fire-rate health, checkpoint-bar discipline trends, Luma tally by category, decision velocity per retro, family-pattern detection across weeks. Same <em>shape</em> (quantitative metrics on a temporal axis), different <em>semantics</em> (governance health, not service health). The arxiv anchor is <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a> — <em>"evaluation as continuous governing function, not terminal checkpoint."</em></p>
       <p>The narrative <code>.md</code> retro is private; this <code>.yaml</code> sidecar is the public-grain summary, sanitized for stakeholder names and specific workspace paths. Render provenance: <code>dashboard/render.py</code> reads the sidecar and emits this <code>index.html</code> on push. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate.</p>
-      <p style="color: var(--text-subtle);">Schema v{html.escape(str(sc.get("schema_version", "—")))} · Rozzzsie OS v3.5.2</p>
+      <p style="color: var(--text-subtle);">Dashboard v{DASHBOARD_VERSION} · Schema v{html.escape(str(sc.get("schema_version", "—")))} · Rozzzsie OS v3.5.2</p>
     </footer>
     """
 

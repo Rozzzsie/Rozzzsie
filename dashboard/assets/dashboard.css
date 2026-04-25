@@ -353,7 +353,7 @@ section {
 
 .tally-row {
   display: grid;
-  grid-template-columns: 13ch 1fr 3ch;
+  grid-template-columns: 28ch 1fr 3ch;
   gap: 0.75rem;
   align-items: center;
   font-size: 0.88rem;
@@ -364,6 +364,9 @@ section {
   font-size: 0.82rem;
   text-transform: lowercase;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .tally-bar {
