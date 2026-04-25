@@ -108,6 +108,14 @@ body {
   font-weight: 600;
 }
 
+.hero-context {
+  margin-top: 1.5rem;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  max-width: 75ch;
+  line-height: 1.55;
+}
+
 /* — Section titles — */
 
 section {
@@ -437,27 +445,36 @@ section {
   font-weight: 500;
 }
 
-/* — Scope-honest footer — centered narrow block, deliberate "footer card" pattern */
+/* — Scope-honest footer — thin attribution band, full container width (v1.2: industry-standard) */
 
 .scope-honest {
-  max-width: 64ch;
-  margin: 4rem auto 0;
-  padding-top: 2rem;
+  margin-top: 4rem;
+  padding-top: 1.25rem;
   border-top: 1px solid var(--border);
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+  text-align: center;
   line-height: 1.6;
 }
 
-.scope-honest h4 {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 0.5rem;
+.scope-honest p {
+  margin: 0;
 }
 
-.scope-honest p {
-  margin-bottom: 0.75rem;
+.scope-honest a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent);
+}
+
+.scope-honest a:hover {
+  border-bottom-style: solid;
+}
+
+.scope-honest .sep {
+  margin: 0 0.5rem;
+  color: var(--text-subtle);
+  opacity: 0.5;
 }
 
 .scope-honest a {
