@@ -388,35 +388,57 @@ section {
   text-align: right;
 }
 
-/* — Meta-finding callout — */
+/* — Meta-finding callout — louder visual hierarchy so reviewers' eyes land here */
 
 .callout {
   background: var(--accent-soft);
-  border-left: 3px solid var(--accent);
-  padding: 1rem 1.25rem;
-  border-radius: 4px;
-  margin-top: 1.5rem;
+  border-left: 6px solid var(--accent);
+  border-top: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding: 1.5rem 1.75rem;
+  border-radius: 6px;
+  margin-top: 2rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(42, 77, 74, 0.08);
+}
+
+.callout-icon {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: -0.1rem;
+}
+
+.callout-body {
+  flex: 1;
+  min-width: 0;
 }
 
 .callout-eyebrow {
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
-  font-weight: 600;
-  margin-bottom: 0.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
 .callout-text {
   color: var(--text);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  font-weight: 500;
 }
 
-/* — Scope-honest footer — */
+/* — Scope-honest footer — centered narrow block, deliberate "footer card" pattern */
 
 .scope-honest {
-  margin-top: 4rem;
+  max-width: 64ch;
+  margin: 4rem auto 0;
   padding-top: 2rem;
   border-top: 1px solid var(--border);
   font-size: 0.85rem;
@@ -433,7 +455,6 @@ section {
 
 .scope-honest p {
   margin-bottom: 0.75rem;
-  max-width: 64ch;
 }
 
 .scope-honest a {

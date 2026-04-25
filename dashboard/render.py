@@ -322,10 +322,10 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         <div class="band">
           <h3>Discipline metrics</h3>
           <div class="kv-row">
-            <span class="kv-key">Checkpoint-bar miss rate (this retro)</span>
+            <span class="kv-key">Current checkpoint miss rate</span>
             <span class="kv-val">{miss_pct}</span>
           </div>
-          {f'<div class="kv-row"><span class="kv-key">Prior-session miss rate</span><span class="kv-val">{prior_miss * 100:.0f}%</span></div>' if isinstance(prior_miss, (int, float)) else ""}
+          {f'<div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">{prior_miss * 100:.0f}%</span></div>' if isinstance(prior_miss, (int, float)) else ""}
           <div class="kv-row">
             <span class="kv-key">Codex invocations</span>
             <span class="kv-val">{discipline.get("codex_invocations", 0)}</span>
@@ -335,7 +335,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
             <span class="kv-val">{discipline.get("teacher_invocations", 0)}</span>
           </div>
           <div class="kv-row">
-            <span class="kv-key">Luma invocations (total)</span>
+            <span class="kv-key">Luma invocations</span>
             <span class="kv-val">{luma_total}</span>
           </div>
         </div>
@@ -370,7 +370,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
             <span class="kv-val kv-val-mono">{html.escape(str(latency.get("source", "—")))}</span>
           </div>
           <div class="kv-row">
-            <span class="kv-key">Window session count</span>
+            <span class="kv-key">Sessions in window</span>
             <span class="kv-val">{latency.get("window_session_count", "—")}</span>
           </div>
           <div class="kv-row">
@@ -378,7 +378,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
             <span class="kv-val">{latency_median:.0f}s</span>
           </div>
           <div class="kv-row">
-            <span class="kv-key">P95 first-tool latency</span>
+            <span class="kv-key">P95</span>
             <span class="kv-val">{latency_p95:.0f}s</span>
           </div>
           <div class="kv-row">
@@ -386,7 +386,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
             <span class="kv-val">{latency_max:.0f}s</span>
           </div>
           <div class="kv-row">
-            <span class="kv-key">Threshold violations (&gt;120s)</span>
+            <span class="kv-key">Violations (&gt;120s)</span>
             <span class="kv-val">{latency_violations}</span>
           </div>
         </div>
@@ -407,8 +407,11 @@ def render_dashboard(sc: dict[str, Any]) -> str:
 
       {f'''
       <div class="callout">
-        <div class="callout-eyebrow">Meta-finding</div>
-        <div class="callout-text">{html.escape(str(meta.get("headline", "")))}</div>
+        <div class="callout-icon" aria-hidden="true">◆</div>
+        <div class="callout-body">
+          <div class="callout-eyebrow">Meta-finding</div>
+          <div class="callout-text">{html.escape(str(meta.get("headline", "")))}</div>
+        </div>
       </div>
       ''' if meta.get("headline") else ""}
     </section>

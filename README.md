@@ -6,6 +6,8 @@ Eight agents. Twelve protocols and a checkpoint bar, mechanically enforced by ho
 
 **Start here:** [`agents/breakline/breakline.md`](agents/breakline/breakline.md) — the adversarial auditor. The clearest single page on how the fam operates.
 
+**Live dashboard:** [**rozzzsie.github.io/Rozzzsie/dashboard/**](https://rozzzsie.github.io/Rozzzsie/dashboard/) — the OS observing itself. Decision velocity, discipline metrics, Luma tally by category, proposal backlog cohort flow, latency observations, full findings detail with status pills, meta-finding callout. Renders mechanically from the most recent P8 retro sidecar at [`retros/`](retros/) on every push to `main`. Sprint-1 v1: single-retro snapshot; sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate. The arxiv anchor is [EDD 2024](https://arxiv.org/abs/2411.13768) — *evaluation as continuous governing function, not terminal checkpoint.*
+
 ## The fam
 
 **Rosie** — architect + decision-maker. The one whose taste the fam is tuned to.
@@ -65,8 +67,11 @@ Rozzzsie runs a governance OS (v3.5.2) with four layers the fam operates under:
 
 ## What's in this repo
 
-- `_config/` — the protocols pointer and the output-checklist
-- `agents/` — fam character briefs
-- `hooks/` — the enforcement layer (the hooks the protocols reference)
-- `workspaces/` — four sanitized work surfaces, anonymized for public sharing
-- `LEARNINGS.md` / `CHANGELOG.md` — curated slices
+- [`dashboard/`](dashboard/) — **the OS observability layer**, sprint-1 v1 shipped. Renders the most recent P8 retro from its YAML sidecar into a static HTML dashboard ([live at `rozzzsie.github.io/Rozzzsie/dashboard/`](https://rozzzsie.github.io/Rozzzsie/dashboard/)). Frame 1 + Frame 3 stacked per Luma's 2026-04-25 evening consult: subtree-in-Rozzzsie-public for consistency-with-spine, scope-honest single-retro v1 over multi-retro-faked-from-n=1 v1.
+- [`retros/`](retros/) — **sanitized retro sidecars** the dashboard renders from. One file per P8 (filename pattern: `YYYY-MM-DD-pN.yaml`), 11 fields × N findings. Stakeholder names dropped, workspace paths genericized, narrative `.md` retros stay private; sidecar is the public-grain summary. Schema v1.0 (canonical-symlink pattern), stability review at 2026-05-15 once 3+ retros accumulate.
+- [`agents/`](agents/) — **fam character briefs.** One subfolder per agent (Root / Luma / Teacher / Breakline / Codex / Brindle / Deputies). Each agent's `.md` is its system prompt.
+- [`hooks/`](hooks/) — **the enforcement layer** (the hooks the protocols reference). Stop-gate, post-edit reminder, session-start digest, insights-capture, plus the v3.5.x synthesis-surface render hooks.
+- [`workspaces/`](workspaces/) — **four sanitized work surfaces**, anonymized for public sharing.
+- [`_config/`](_config/) — the protocols pointer + output-checklist (the quality gate every deliverable runs through).
+- [`CONTEXT.md`](CONTEXT.md) — sanitized public snapshot of the cross-workspace governance state. The full live `CONTEXT.md` is private; this is the shape, not the live content.
+- [`LEARNINGS.md`](LEARNINGS.md) / [`CHANGELOG.md`](CHANGELOG.md) — curated slices: most-valuable-five cross-workspace insights + most-valuable-five architectural shifts. Earlier entries archived in private; what survives here is what generalizes broadest.
