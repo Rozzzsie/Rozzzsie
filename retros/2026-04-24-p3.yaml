@@ -2,8 +2,12 @@
 #
 # This is the public-grain version of the sidecar. Stakeholder names dropped,
 # workspace-specific paths in `target_surface` genericized, `detail_ref`
-# cross-pointers stripped (the narrative .md they referenced is private).
-# The dashboard at `dashboard/index.html` (sprint-1, queued) renders from this file.
+# cross-pointers stripped (the narrative .md they referenced is private),
+# and `meta_finding` redacted when its headline carries governance-internal
+# observation (controller-decision-cadence specifics, doctrine-internal
+# rate-limiting commentary, etc.). The dashboard at `dashboard/index.html`
+# renders from this file; absent meta_finding gracefully suppresses the
+# callout via `if meta.get("headline") else ""` in render.py.
 #
 # Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
 # Narrative: private `_retro/2026-04-24-retro.md`. Public CONTEXT.md describes the
@@ -204,7 +208,9 @@ latency_observations:
   max_first_tool_latency_sec: 520.0
   threshold_violations: 3       # All 3 sessions > 120s threshold
 
-meta_finding:
-  headline: "Propose-only doctrine rate-limiting step has migrated from Teacher authorship cadence to controller decision cadence on pending proposals"
+# meta_finding redacted from public sidecar — the 2026-04-24 retro's
+# meta-finding carried controller-decision-cadence governance-internal
+# observation that doesn't belong on a director / CTO buy-in surface.
+# Dashboard's meta-finding callout suppresses gracefully when absent.
 
 schema_version: "1.0"
