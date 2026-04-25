@@ -26,6 +26,6 @@ For each public-surfaced sidecar:
 
 ## What this enables
 
-- **Dashboard rendering** — the dashboard at `dashboard/index.html` (sprint-1 not yet shipped; placeholder at `dashboard/README.md`) consumes this folder's `*.yaml` files as its data layer.
+- **Dashboard rendering** — the dashboard at [`rozzzsie.github.io/Rozzzsie/dashboard/`](https://rozzzsie.github.io/Rozzzsie/dashboard/) (sprint-1 v1 shipped 2026-04-25 evening; source at `dashboard/index.html` + `dashboard/render.py`) consumes this folder's `*.yaml` files as its data layer.
 - **External reader scan** — a reader can browse this folder and see the *shape* of the retro discipline (15 findings, terminal status on each, decision velocity, family-pattern detection) without needing access to the private narrative.
 - **Trend substrate (sprint-2)** — once 3+ sidecars accumulate, multi-retro trend graphs become the natural next surface; the schema is stable enough now to support that without breaking changes.

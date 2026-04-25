@@ -21,13 +21,9 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 - `render.py` — Python renderer (stdlib + optional PyYAML); reads a sidecar YAML and emits `index.html`. Run via `python3 dashboard/render.py [sidecar.yaml] [out.html]`. Used build-side for v1 (pre-rendered + checked in); sprint-2+ may auto-render via GitHub Action.
 - *(coming, sprint-2)* `trend.html` — multi-retro trend page once schema has survived 3 cycles
 
-## To enable as a website
+## Live URL
 
-GitHub Pages serves any file in this repo from the `main` branch root, including `dashboard/index.html`. To enable:
-1. Repository → Settings → Pages
-2. Source: "Deploy from a branch" → `main` / `(root)`
-3. Save
-4. URL: `https://<owner>.github.io/<repo>/dashboard/index.html`
+**[rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` directly. HTTPS enforced; first build runs on every push to `main`. The `/Rozzzsie/` segment is the repo name; this is project-page hosting, not org-page (which would require a separate repo named `rozzzsie.github.io`).
 
 Alternatively, just open `dashboard/index.html` in a browser locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
