@@ -4,6 +4,12 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+## personal-learnings workspace bootstrapped — fetch-failed note (2026-04-27)
+
+Weekly digest agent run attempted: fetch of `aiagentstore.ai` blocked by network allowlist; `personal-learnings/` workspace did not exist. Created `personal-learnings/_input/` directory and committed a failure note at `personal-learnings/_input/2026-04-27_digest-fetch-failed.md` documenting both blockers and the fix path. No digest or analysis produced this cycle.
+
+---
+
 ## Dashboard v1.2 — observability layer, Luma layer-mismatch reframe applied (2026-04-25)
 
 The OS observing itself — first public-grain artifact that lets a reader see governance evolution without reading the protocol doc, the retro narratives, or the proposals file. Live at [`rozzzsie.github.io/Rozzzsie/dashboard/`](https://rozzzsie.github.io/Rozzzsie/dashboard/), tagged `dashboard-v1.2`. Frame 1 + Frame 3 stacked per Luma's 2026-04-25 evening consult on the v1.0 architecture (subtree-in-Rozzzsie-public for consistency-with-spine + scope-honest single-retro v1 over multi-retro-faked-from-n=1); v1.2 layered Luma's second consult of the night on top — **layer-mismatch reframe**: the v1.1 about-section weirdness wasn't footer-styling, it was the category error of treating positioning prose as a dashboard element. Frame 1 + 2 enhancements composite shipped: dashboard footer becomes a thin attribution band (industry-standard, all bands at 1080px container width, no narrow-column snap), hero gains a 30-word "what this is" beat for cold-landings, dashboard/README reordered to lead with positioning prose ("What this is" at top) and collapse developer-facing content into a `<details>` block. The L5 thesis still lands on cold-dashboard-landing via the hero subtitle + new context beat; second-click on README is also smooth.
