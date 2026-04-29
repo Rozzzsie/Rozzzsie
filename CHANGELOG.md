@@ -4,6 +4,10 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+[2026-04-29] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
+
+---
+
 ## personal-learnings workspace bootstrapped — fetch-failed note (2026-04-27)
 
 Weekly digest agent run attempted: fetch of `aiagentstore.ai` blocked by network allowlist; `personal-learnings/` workspace did not exist. Created `personal-learnings/_input/` directory and committed a failure note at `personal-learnings/_input/2026-04-27_digest-fetch-failed.md` documenting both blockers and the fix path. No digest or analysis produced this cycle.

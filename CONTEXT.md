@@ -11,8 +11,8 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 | Field | Value |
 |-------|-------|
 | Protocols version | v3.5.2 |
-| Last weekly retrospective (P8) | 2026-04-24 — first full interactive in 15 days, 15/15 items triaged with terminal status |
-| Next P8 due | 2026-05-01 |
+| Last weekly retrospective (P8) | 2026-04-29 — automated draft generated; awaiting Rosie's interactive review (prior interactive: 2026-04-24, 15/15 triaged) |
+| Next P8 due | 2026-05-06 |
 | Active fam roles | 8 (Root / Luma / Teacher / Breakline / Codex / Brindle / Deputies + the controller as architect-decider) |
 | Hook layer | Project-scope governance hooks + user-scope companion hooks; Hook fire-rate audit (Protocol 8 step 6.7) ships in v3.5.2 |
 | Synthesis-Surface Pre-Render Pattern | v1 reference implementation shipped on SessionStart briefing (2026-04-23), bidirectional contract codified v3.5.1 |
