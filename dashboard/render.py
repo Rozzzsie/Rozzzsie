@@ -370,8 +370,6 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         else None
     )
 
-    luma_total = (discipline.get("luma_tally_by_category") or {}).get("total")
-
     # Latency — pre-format with graceful "—" suppression for null/redacted values
     # (sidecars redact discipline_metrics + latency_observations to null when traceable
     # to specific session windows; the renderer must not crash on `:.0f` against None).
@@ -384,12 +382,6 @@ def render_dashboard(sc: dict[str, Any]) -> str:
     latency_max_str = f"{latency_max:.0f}s" if isinstance(latency_max, (int, float)) else "—"
     latency_violations_str = str(latency_violations) if latency_violations is not None else "—"
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
-
-    # Discipline counters — sidecar contract suppresses rows when fields are null
-    # (null = unmeasured this cycle, e.g., requires human-distilled retro narrative;
-    # 0 = measured-zero and still renders since `isinstance(0, int)` is True).
-    codex_count = discipline.get("codex_invocations")
-    teacher_count = discipline.get("teacher_invocations")
 
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
     tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
