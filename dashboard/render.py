@@ -239,9 +239,15 @@ def render_finding_row(f: dict[str, Any]) -> str:
 def render_tally(tally: dict[str, Any]) -> str:
     if not tally:
         return "<p class='kv-row'><span class='kv-key'>(no data)</span></p>"
-    total = tally.get("total", 0) or sum(
-        v for k, v in tally.items() if isinstance(v, int) and k != "total"
-    )
+    # Null-vs-measured-zero contract: distinguish "unmeasured this cycle" (total
+    # null AND no concrete int categories — categorization requires human-distilled
+    # Luma-output narrative review) from "measured zero" (concrete int values
+    # totaling 0). Same shape as the discipline-counter null suppression.
+    total_raw = tally.get("total")
+    int_values = [v for k, v in tally.items() if isinstance(v, int) and k != "total"]
+    if total_raw is None and not int_values:
+        return "<p class='kv-row'><span class='kv-key'>(unmeasured this cycle)</span></p>"
+    total = total_raw if isinstance(total_raw, int) else sum(int_values)
     if total == 0:
         return "<p class='kv-row'><span class='kv-key'>(no invocations this window)</span></p>"
     rows = []
