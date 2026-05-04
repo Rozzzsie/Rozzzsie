@@ -11,7 +11,7 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 | Field | Value |
 |-------|-------|
 | Protocols version | v3.9.3 |
-| Last weekly retrospective (P10) | 2026-05-03 (P4 sidecar, public-grain; metrics backfilled 2026-05-04) — covers v3.9.x ship cycle (window 2026-04-26 → 2026-05-03), 12 findings × 11 fields; `discipline_metrics` + `latency_observations` computed from hook firelogs (Codex/Teacher/Luma counts remain `null` pending narrative review). Prior interactive: 2026-04-24 (P3, 15/15 triaged); intervening 2026-04-29 automated draft (narrative-only, no public sidecar). |
+| Last weekly retrospective (P10) | 2026-05-03 (P4 sidecar, public-grain; metrics backfilled 2026-05-04 + `fam_dispatch_distribution` section added with v1.4 dashboard ship 2026-05-04) — covers v3.9.x ship cycle (window 2026-04-26 → 2026-05-03), 12 findings × 11 fields; `discipline_metrics` + `latency_observations` + `fam_dispatch_distribution` computed from hook firelogs + transcript scan (Luma reframe-axis category breakdown remains `null` pending narrative review). Prior interactive: 2026-04-24 (P3, 15/15 triaged); intervening 2026-04-29 automated draft (narrative-only, no public sidecar). |
 | Next P10 due | 2026-05-10 |
 | Active fam roles | 8 (Root / Luma / Teacher / Breakline / Codex / Brindle / Deputies + the controller as architect-decider) |
 | Hook layer | Project-scope governance hooks + user-scope companion hooks; Hook fire-rate audit (Protocol 10 step 6.7) shipped v3.5.2; checkpoint-bar Tier 2 enforcement extended through v3.8.0 |
@@ -47,7 +47,7 @@ Two private workspaces (lightweight personal-learning log + sandbox for fun buil
 - Synthesis-Surface Pre-Render Pattern (reference implementation on SessionStart shipped v3.5.0; extended to additional surfaces through v3.5.x–v3.9.x cycles)
 - Teacher proposal cadence + auto-promotion gating (P8 firmware ON as of v3.9.1 — Teacher agent + grammars + ledger + auto-promote-enabled gate; gate still controller-supervised in observation window)
 - v3.9.3 Pn-token doctrine + Reading A doctrine override (shipped 2026-05-03; cascade renumber across 6 protocols, env-var rename `AUTO_PROMOTE_ENABLED`)
-- Dashboard / observability layer (sprint-1 v1.2 live at `rozzzsie.github.io/Rozzzsie/dashboard/`; sprint-2 trend rendering unlocks at 3+ retro sidecars)
+- Dashboard / observability layer (sprint-1 v1.4 live at `rozzzsie.github.io/Rozzzsie/dashboard/` — Frame 2 fam-dispatch widget + measurement-surface anchor shipped 2026-05-04; sprint-2 trend rendering unlocks at 3+ retro sidecars)
 - Sidecar schema v1.0 stability review window: 2026-05-15 (3+ retro cycles needed before mid-week emission unlocks)
 
 ---

@@ -4,6 +4,8 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+[2026-05-04] | dashboard v1.4 — Frame 2 fam-dispatch widget shipped; Luma reframe-axis tally relocated to deep-dive panel; measurement-surface explicit beat added to hero; Roles-map "Deputies" definition disambiguated in private Rozzzsie tree
+
 [2026-05-04] | retros/2026-05-03-p4.yaml phase-3 metrics backfill — `discipline_metrics` + `latency_observations` computed from `.claude/hook-fires.jsonl` (47 sessions / 2,573 substantive turns / 592 missed bars) and `.claude/session-start-latency.log` (66 datapoints; median 89.5s / p95 546s / max 1420s / 22 violations >120s); dashboard re-renders against backfilled sidecar; Codex/Teacher/Luma invocation counts + Luma tally by category remain `null` (require human-distilled retro narrative review)
 
 [2026-05-04] | personal-learnings/_input/ weekly digest — fetch failed (second consecutive week); aiagentstore.ai returns 403 on WebFetch and is blocked by curl allowlist; recurring-failure escalation flag added to failure note
@@ -11,6 +13,16 @@ Architectural shifts, not individual fixes. The most valuable five.
 [2026-04-29] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
 
 ---
+
+## Dashboard v1.4 — Frame 2 fam-dispatch widget, measurement-surface anchor (2026-05-04)
+
+The dashboard's first architectural shift since v1.2: a new top-band widget surfaces fam-wide agent activity (frequency-axis) with explicit sub-band split for **dispatch axis** (Agent-tool subagents — Deputies 31 / Luma 26 / Codex 13 / silent-failure-hunter 4 / Breakline 3 / Teacher 2; total 79) and **reactions axis** (Brindle's hook-driven companion presence — 299 reactions across 54 starts + 210 mid-session reactions + 35 closes). The two axes are intentionally separated because the underlying measurements are different units; conflating them into a single bar list would have let the high-cardinality reactions axis visually overpower the dispatch rails (Luma's verdict 2026-05-04, agentId `a1adfd3a3b6c72055`, persisted at `_config/designs/2026-05-04-luma-dashboard-fam-dispatch-vs-luma-facet-verdict.md`). The "Discipline + dispatch" band loses its three Codex/Teacher/Luma scalar rows (now redundant with the canonical fam widget) and becomes "Discipline" — checkpoint-bar discipline only. The Luma reframe-axis tally relocates from band-tier prominence to a smaller "Luma reframe-axis facet (deep-dive)" panel below "Findings detail," with empty-state copy that names the structural reality of categorization being human-distilled review work (not auto-extracted from transcripts).
+
+The hero context paragraph gains an explicit measurement-surface anchor — *"Measurement surface — what fired and how often, not what each rail is for."* — locking the dashboard's scope vs the Roles map's: dashboard records observed behavior, Roles map prescribes intended function. The two surfaces are allowed to diverge by design, so future v1.x widget decisions don't accidentally re-collapse them. This is the operationalization of Risk #2 from Luma's verdict ("v1's consultant trio framing is a doctrine artifact, not a measurement choice").
+
+0-count rows in the dispatch axis (Deputies row this cycle would surface as 0 if no plugin-bundled subagents fired) render with a `kv-row-muted` CSS class — opacity 0.55 + italic count — so absence reads as measurement signal, not as "we forgot the row." This is the same null-vs-zero contract pattern surfaced in PR #3's discipline counter fix, applied at a new surface.
+
+Render contract additions: `dashboard/render.py` gains `render_fam_dispatch_widget()` with sub-band split + role labels + 0-count muted treatment, plus an updated `render_tally()` empty-state copy for the state-#2 case (total>0 + categories null). Schema additions to `retros/2026-05-03-p4.yaml`: new `fam_dispatch_distribution` section with `dispatch_axis` and `reactions_axis` sub-keys, each carrying a `subagents` list-of-dicts and a `total`. 7-test smoke suite at `dashboard/test_render_fam_dispatch.py` covers both-bands / role-labels / brindle-detail / 0-count-muted / dispatch-only / reactions-only / empty-input states. `DASHBOARD_VERSION = "1.4"`.
 
 ## personal-learnings workspace bootstrapped — fetch-failed note (2026-04-27)
 
