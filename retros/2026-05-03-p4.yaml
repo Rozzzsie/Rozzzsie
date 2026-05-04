@@ -221,4 +221,43 @@ latency_observations:
 # governance-cycle cadence and Pn-token doctrine boundary discovery. Dashboard's
 # meta-finding callout suppresses gracefully when absent.
 
+# Fam dispatch + reactions distribution — frequency-axis activity across the
+# 8-member fam (Roles map: Root / Luma / Teacher / Breakline / Codex / Brindle /
+# Deputies / controller). Computed from `~/.claude/projects/-Users-rosie-zhao-
+# RosieRoot/*.jsonl` over the cycle window 2026-04-26 → 2026-05-03 (UTC). Two
+# sub-axes are intentionally split because the underlying measurements are
+# different units: `dispatch_axis` counts Agent-tool subagent dispatches +
+# specialist `/codex:*` review-style slash commands; `reactions_axis` counts
+# hook-driven companion reactions (Brindle's session_start / reaction / session_
+# end markers, per-session deduplicated against context-echo amplification).
+# The session count differs from `latency_observations.window_session_count`
+# (66 vs 54) because some sessions errored before SessionStart hook fired or
+# had companion muted; this is a known cross-source variance, not a bug.
+#
+# "Deputies" = the general-purpose sub-agent pool (Root parallel-fanout for
+# multi-step tasks, NOT consultant work). Named consultant rails (Luma /
+# Teacher / Codex / Breakline / silent-failure-hunter) get their own rows.
+# Plugin-bundled subagents that fire (none this cycle) would aggregate into
+# a future "plugin-bundled" row if they cross attention threshold.
+#
+# Render: `render_fam_dispatch_widget()` emits two labeled sub-bands; rows
+# with count=0 render with muted/dashed visual treatment so absence reads
+# as measurement signal (not "we forgot the row").
+fam_dispatch_distribution:
+  source: "~/.claude/projects/-Users-rosie-zhao-RosieRoot/*.jsonl"
+  cycle_window: "2026-04-26 → 2026-05-03"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",              count: 31, role: "general-purpose / Root parallel-fanout (not consultant)" }
+      - { name: "luma",                  count: 26, role: "consultant" }
+      - { name: "codex",                 count: 13, role: "consultant", detail: "12 Agent codex-rescue + 1 /codex:adversarial-review slash" }
+      - { name: "silent-failure-hunter", count:  4, role: "adversarial-reviewer" }
+      - { name: "breakline",             count:  3, role: "adversarial-auditor" }
+      - { name: "teacher",               count:  2, role: "learning-layer" }
+    total: 79
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 299, role: "companion (hook-driven)", detail: "54 session_starts + 210 reactions + 35 session_ends across 54 sessions" }
+    total: 299
+
 schema_version: "1.0"

@@ -42,7 +42,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "1.3"
+DASHBOARD_VERSION = "1.4"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -264,13 +264,80 @@ def render_tally(tally: dict[str, Any]) -> str:
         </div>
         """
         )
-    # total > 0 but no measured categories — scalar known, breakdown pending review
+    # total > 0 but no measured categories — scalar known, breakdown is human-distilled
+    # review work, not auto-extracted telemetry. Empty-state copy makes the structural
+    # reality legible (per Rosie's pick 2026-05-04 from the four-candidate set).
     if not rows:
         return (
-            f"<p class='kv-row'><span class='kv-key'>{total} invocations · "
-            f"category breakdown pending narrative review</span></p>"
+            f"<p class='kv-row'><span class='kv-key'>{total} invocations this cycle</span></p>"
+            f"<p class='kv-row kv-row-detail'><span class='kv-key'>"
+            f"Per-axis bars populate when narrative review runs — categorization isn't "
+            f"auto-extracted from transcripts</span></p>"
         )
     return "".join(rows)
+
+
+def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
+    """Render the fam-wide dispatch + reactions widget with sub-band split.
+
+    The two sub-axes carry different units (dispatches vs reactions) and are
+    rendered as labeled sub-bands so the unit-asymmetry is structurally legible.
+    Rows with count=0 render with a muted CSS class (`kv-row-muted`) so absence
+    reads as measurement signal — not "we forgot the row."
+    """
+    if not fam:
+        return (
+            "<p class='kv-row'><span class='kv-key'>"
+            "(no fam activity recorded this cycle)</span></p>"
+        )
+
+    sub_bands = []
+
+    def _render_sub_band(label: str, axis: dict[str, Any]) -> str:
+        subagents = axis.get("subagents") or []
+        total = axis.get("total")
+        # Sort descending by count so highest-volume rails surface first
+        rows_sorted = sorted(subagents, key=lambda r: -(r.get("count") or 0))
+        rows_html = []
+        for r in rows_sorted:
+            name = html.escape(str(r.get("name", "—")))
+            count = r.get("count") or 0
+            role = html.escape(str(r.get("role", "")))
+            detail = r.get("detail")
+            muted = " kv-row-muted" if count == 0 else ""
+            detail_html = (
+                f'<span class="fam-row-detail">{html.escape(str(detail))}</span>'
+                if detail else ""
+            )
+            rows_html.append(
+                f'<div class="kv-row fam-row{muted}">'
+                f'<span class="kv-key">{name}</span>'
+                f'<span class="kv-val">{count}</span>'
+                f'<span class="fam-row-role">{role}</span>'
+                f'{detail_html}'
+                f'</div>'
+            )
+        total_html = (
+            f'<div class="kv-row fam-row-total">'
+            f'<span class="kv-key">total</span>'
+            f'<span class="kv-val">{total}</span>'
+            f'</div>'
+            if isinstance(total, int) else ""
+        )
+        return (
+            f'<div class="fam-sub-band">'
+            f'<h4 class="fam-sub-band-label">{html.escape(label)}</h4>'
+            f'{"".join(rows_html)}'
+            f'{total_html}'
+            f'</div>'
+        )
+
+    if "dispatch_axis" in fam:
+        sub_bands.append(_render_sub_band("Dispatch axis", fam["dispatch_axis"]))
+    if "reactions_axis" in fam:
+        sub_bands.append(_render_sub_band("Reactions axis", fam["reactions_axis"]))
+
+    return "".join(sub_bands)
 
 
 def render_dashboard(sc: dict[str, Any]) -> str:
@@ -303,8 +370,6 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         else None
     )
 
-    luma_total = (discipline.get("luma_tally_by_category") or {}).get("total")
-
     # Latency — pre-format with graceful "—" suppression for null/redacted values
     # (sidecars redact discipline_metrics + latency_observations to null when traceable
     # to specific session windows; the renderer must not crash on `:.0f` against None).
@@ -318,14 +383,10 @@ def render_dashboard(sc: dict[str, Any]) -> str:
     latency_violations_str = str(latency_violations) if latency_violations is not None else "—"
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
 
-    # Discipline counters — sidecar contract suppresses rows when fields are null
-    # (null = unmeasured this cycle, e.g., requires human-distilled retro narrative;
-    # 0 = measured-zero and still renders since `isinstance(0, int)` is True).
-    codex_count = discipline.get("codex_invocations")
-    teacher_count = discipline.get("teacher_invocations")
-
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
     tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
+    fam_dispatch = sc.get("fam_dispatch_distribution") or {}
+    fam_dispatch_html = render_fam_dispatch_widget(fam_dispatch)
 
     body = f"""
     <header class="hero">
@@ -342,6 +403,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         Governance health metrics from the most recent P10 weekly retrospective in the Rozzzsie OS.
         Same shape as LangSmith / Langfuse / DashChat dashboards (quantitative metrics on a temporal axis);
         different semantics — governance evolution, not service telemetry.
+        Measurement surface — what fired and how often, not what each rail is for.
       </p>
     </header>
 
@@ -356,7 +418,14 @@ def render_dashboard(sc: dict[str, Any]) -> str:
     </section>
 
     <section>
-      <h2 class="section-title">Discipline + dispatch <span class="section-title-suffix">governance health under load</span></h2>
+      <h2 class="section-title">Specialist agent dispatches <span class="section-title-suffix">fam-wide activity, this cycle</span></h2>
+      <div class="fam-widget">
+        {fam_dispatch_html}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Discipline <span class="section-title-suffix">governance health under load</span></h2>
       <div class="bands">
         <div class="band">
           <h3>Discipline metrics</h3>
@@ -365,15 +434,6 @@ def render_dashboard(sc: dict[str, Any]) -> str:
             <span class="kv-val">{miss_pct}</span>
           </div>
           {f'<div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">{prior_miss * 100:.0f}%</span></div>' if isinstance(prior_miss, (int, float)) else ""}
-          {f'<div class="kv-row"><span class="kv-key">Codex invocations</span><span class="kv-val">{codex_count}</span></div>' if isinstance(codex_count, int) else ""}
-          {f'<div class="kv-row"><span class="kv-key">Teacher invocations</span><span class="kv-val">{teacher_count}</span></div>' if isinstance(teacher_count, int) else ""}
-          {f'<div class="kv-row"><span class="kv-key">Luma invocations</span><span class="kv-val">{luma_total}</span></div>' if isinstance(luma_total, int) else ""}
-        </div>
-        <div class="band">
-          <h3>Luma tally by category</h3>
-          <div class="tally">
-            {tally_html}
-          </div>
         </div>
       </div>
     </section>
@@ -444,6 +504,17 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         </div>
       </div>
       ''' if meta.get("headline") else ""}
+    </section>
+
+    <section class="deep-dive">
+      <h2 class="section-title">Luma reframe-axis facet <span class="section-title-suffix">deep-dive · narrative-review-pending</span></h2>
+      <div class="bands">
+        <div class="band">
+          <div class="tally">
+            {tally_html}
+          </div>
+        </div>
+      </div>
     </section>
 
     <footer class="scope-honest">

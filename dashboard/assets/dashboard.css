@@ -504,3 +504,96 @@ section {
     box-shadow: none;
   }
 }
+
+/* ─── Fam dispatch widget (v1.4) ─────────────────────────────────────── */
+
+.fam-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--band-bg, #f7f7f8);
+  border-radius: 8px;
+}
+
+.fam-sub-band {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fam-sub-band-label {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-fg, #6a6a72);
+}
+
+.fam-row {
+  display: grid;
+  grid-template-columns: 11ch 5ch 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.2rem 0;
+}
+
+.fam-row .kv-key {
+  font-weight: 500;
+}
+
+.fam-row .kv-val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.fam-row-role {
+  color: var(--muted-fg, #6a6a72);
+  font-size: 0.88rem;
+}
+
+.fam-row-detail {
+  display: block;
+  grid-column: 3 / -1;
+  margin-top: 0.1rem;
+  color: var(--muted-fg, #6a6a72);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.fam-row-total {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border-color, #d8d8de);
+  font-weight: 600;
+}
+
+.kv-row-muted,
+.fam-row-muted {
+  opacity: 0.55;
+}
+
+.kv-row-muted .kv-val,
+.fam-row-muted .kv-val {
+  font-style: italic;
+  color: var(--muted-fg, #6a6a72);
+}
+
+/* ─── Luma facet deep-dive panel (relocated v1.4) ────────────────────── */
+
+.deep-dive .section-title {
+  font-size: 1rem;
+  color: var(--muted-fg, #6a6a72);
+}
+
+.deep-dive .bands {
+  background: transparent;
+}
+
+.kv-row-detail .kv-key {
+  font-style: italic;
+  color: var(--muted-fg, #6a6a72);
+  font-size: 0.88rem;
+}
