@@ -51,29 +51,29 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 
 ## Architecture (sprint-1)
 
-- **Source data**: each P8 retro emits a YAML sidecar parallel to the narrative `.md`. Filename pattern: `_retro/YYYY-MM-DD-pN.yaml` (private; sanitized excerpts surface here for the public render).
-- **Schema**: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private) + stable symlink. Symlink-canonical pattern, mirrors `agent-protocols-3.5.2.md` precedent.
+- **Source data**: each P10 retro emits a YAML sidecar parallel to the narrative `.md` (P10 was P8 in v3.5.x; the v3.9.3 cascade renumbered the weekly retro slot). Filename pattern: `_retro/YYYY-MM-DD-pN.yaml` (private; sanitized excerpts surface here for the public render).
+- **Schema**: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private) + stable symlink. Symlink-canonical pattern, mirrors `agent-protocols-3.9.3.md` precedent.
 - **Render**: HTML single-page rendered from the sidecar(s) and dropped into this `dashboard/` subtree on push. GitHub Pages serves the same subtree at `rozzzsie.github.io/Rozzzsie/dashboard/`.
 - **Update cadence**: sprint-1 ships static-rendered v1.x from a single retro. Sprint-2 unlocks multi-retro aggregation once 3+ retros' sidecars exist.
 
 ## What's here
 
 - `README.md` (this file) — positioning prose + release notes + developer reference (this collapsible)
-- `index.html` — pre-rendered single-retro snapshot from `../retros/2026-04-24-p3.yaml` (most recent sidecar)
+- `index.html` — pre-rendered single-retro snapshot. Currently rendered against `../retros/2026-04-24-p3.yaml`; the next `render.py` run will re-render against `../retros/2026-05-03-p4.yaml` (the most recent sidecar, shipped with the v3.9.3 reframe).
 - `assets/dashboard.css` — director-audience styling: typographic hierarchy, status-pill semantics, no-JS, print-friendly
 - `render.py` — Python renderer (stdlib + optional PyYAML); reads a sidecar YAML and emits `index.html`. `DASHBOARD_VERSION` constant carries the canonical version surface.
 - *(coming, sprint-2)* `trend.html` — multi-retro trend page once schema has survived 3 cycles
 
 ## Re-rendering after a new sidecar
 
-When a new P8 retro lands and a sidecar is added to `../retros/`, regenerate the dashboard:
+When a new P10 retro lands and a sidecar is added to `../retros/`, regenerate the dashboard:
 
 ```bash
 cd dashboard/
-python3 render.py ../retros/2026-05-01-p4.yaml index.html  # example
+python3 render.py ../retros/2026-05-03-p4.yaml index.html  # example
 ```
 
-The renderer defaults to `../retros/2026-04-24-p3.yaml` → `./index.html` if no args given. For v1.x: uses the most recent retro as the single source. v2 (multi-retro trend) is the natural extension surface once 3+ sidecars exist.
+The renderer defaults to `../retros/2026-04-24-p3.yaml` → `./index.html` if no args given (sprint-1 v1.x); the default will retarget to the most recent sidecar in a sprint-2 patch. For v1.x: uses the most recent retro as the single source. v2 (multi-retro trend) is the natural extension surface once 3+ sidecars exist.
 
 ## Build provenance
 

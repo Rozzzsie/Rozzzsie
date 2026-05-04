@@ -1,0 +1,202 @@
+# P10 Retro Sidecar — 2026-05-03 (P10 retro #4, sanitized public snapshot)
+#
+# This is the public-grain version of the sidecar covering the v3.9.x ship cycle
+# (v3.9.0 → v3.9.3). Stakeholder names dropped, workspace-specific paths in
+# `target_surface` genericized to governance paths only, `detail_ref`
+# cross-pointers stripped (the narrative .md they referenced is private),
+# and discipline_metrics + latency_observations redacted when traceable to
+# specific sessions. The dashboard at `dashboard/index.html` renders from
+# this file; absent metrics gracefully suppress their callouts.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Narrative: private `_retro/2026-05-03-retro.md`.
+# If this file and the narrative disagree, the narrative wins. Regenerate from narrative.
+#
+# Note on numbering: this is the first retro published under v3.9.3 protocol numbering
+# (P10 = Weekly retrospective; was P8 in v3.5.x and earlier). Cascade detail in
+# CLAUDE.md "Protocol quick reference."
+
+retro_id: "2026-05-03-p4"
+retro_date: "2026-05-03"
+window_start: "2026-04-26"
+window_end: "2026-05-03"
+prior_retro: "2026-04-24-p3"
+interactive_mode: true
+trigger_source: "weekly-cadence-rolling-retro-with-v3.9.x-ship-bracket"
+
+findings:
+  # v3.9.x protocol formalization cluster
+  - id: "1.1"
+    title: "P8 (autonomous iteration loop) firmware formalization — YAML-grammar DSL + Teacher-awareness layer"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "design-iteration"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-02"
+    target_surface: "_config/agent-protocols.md"
+
+  - id: "1.2"
+    title: "P8 firmware gate ON (auto-promote-enabled, controller-supervised observation)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "design-iteration"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-02"
+    target_surface: "_config/agent-protocols.md"
+
+  - id: "1.3"
+    title: "Pn-token lifecycle cascade renumber (clean permutation across 6 protocols)"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "design-iteration"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-03"
+    target_surface: "_config/agent-protocols.md"
+
+  - id: "1.4"
+    title: "Reading A doctrine override — Pn-token doctrine + symlink-canonical analogy boundary"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-03"
+    target_surface: "_config/agent-protocols.md"
+
+  - id: "1.5"
+    title: "AUTO_PROMOTE_ENABLED env-var decouple (drop P-prefix; protocol-numbering-independent)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-03"
+    target_surface: "hooks/lib/promotion-gate.sh"
+
+  # Adversarial-audit batch (Silent-Failure-Hunter pass against v3.9.0 surface)
+  - id: "2.1"
+    title: "Stop-gate firing bug — rate-limit + unpushed-commit false-positive interaction"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "adversarial-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-02"
+    target_surface: "hooks/stop-gate.sh"
+
+  - id: "2.2"
+    title: "Pipefail bug in subagent-nudge.sh (CRITICAL — silent suppression of subprocess failures)"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "adversarial-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-02"
+    target_surface: "hooks/subagent-nudge.sh"
+
+  - id: "2.3"
+    title: "26 Silent-Failure-Hunter findings triaged (7 CRITICAL + 8 HIGH TDD-fixed in Phase 1; 11 deferred to Phases 2-4)"
+    category: "meta-observation"
+    evidence_count: 26
+    source_catchment: "adversarial-audit"
+    recommendation: "accept"
+    status: "partial-executed"
+    execution_target_week: "2026-05-02"
+    target_surface: "hooks/ + protocols + tests"
+
+  - id: "2.4"
+    title: "Audit-test substring tighten — column-delimiter context for symmetric assertIn / assertNotIn pairs"
+    category: "rule-clarification"
+    evidence_count: 6
+    source_catchment: "adversarial-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-03"
+    target_surface: "hooks/tests/test_audit_hook_fire_rates.py"
+
+  - id: "2.5"
+    title: "Stop-gate [P1] case-insensitive grep fix — n=4 case-sensitive-grep family (n=1 fixed; n=3 deferred per ship-discipline)"
+    category: "rule-clarification"
+    evidence_count: 4
+    source_catchment: "family-extension"
+    recommendation: "accept"
+    status: "partial-executed"
+    execution_target_week: "2026-05-03"
+    target_surface: "hooks/stop-gate.sh"
+
+  # Identity-candidate observations carried forward
+  - id: "3.1"
+    title: "SFH adversarial review + TDD integration as systematic risk-surface mapping pattern"
+    category: "promotion"
+    evidence_count: 2
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "_config/agent-protocols.md"
+
+  - id: "3.2"
+    title: "Gate discipline + demotion-strategy for graduated authority (P8 firmware OFF→ON path)"
+    category: "promotion"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "_config/agent-protocols.md"
+
+proposal_backlog:
+  pending_before_retro: 5
+  approved_not_executed: 2   # 3.1, 3.2 carried forward to next P10
+  executed_this_cycle: 9     # 5 v3.9.x rule changes + 4 audit-driven fixes (2.1-2.4) + 2.5 partial
+  authored_this_cycle: 2     # 3.1 + 3.2 promotion candidates from LEARNINGS deltas
+
+# Hook health — public sidecar reports stability category, exact session counts private
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active (case-sensitive-grep family n=4 — 1 fixed in this cycle, 3 deferred)"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  measurement_window_days: 7
+  measurement_window_session_count: null
+  flagged_hooks: null
+
+# Discipline metrics redacted from public sidecar — exact rates traceable to specific
+# session windows; the v3.8.0 Tier 2 hook-side enforcement substantively reduced
+# checkpoint-bar misses relative to the 2026-04-24-p3 baseline. Dashboard render
+# suppresses callouts when fields are null.
+discipline_metrics:
+  checkpoint_bar_miss_rate: null
+  checkpoint_bar_prior_session_rate: null
+  luma_tally_by_category:
+    axis_reframe: null
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: null
+  codex_invocations: null
+  teacher_invocations: null
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations redacted — same rationale as discipline_metrics.
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: null
+  median_first_tool_latency_sec: null
+  p95_first_tool_latency_sec: null
+  max_first_tool_latency_sec: null
+  threshold_violations: null
+
+# meta_finding redacted from public sidecar — operator-internal observation about
+# governance-cycle cadence and Pn-token doctrine boundary discovery. Dashboard's
+# meta-finding callout suppresses gracefully when absent.
+
+schema_version: "1.0"

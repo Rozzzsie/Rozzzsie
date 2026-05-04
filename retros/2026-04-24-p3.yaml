@@ -167,7 +167,7 @@ findings:
 proposal_backlog:
   pending_before_retro: 3
   approved_not_executed: 6   # tonight's batch executed 6, 6 remain for weekend
-  executed_this_cycle: 4     # was 5; finding 2.5 redacted from public sidecar (career-move-private content)
+  executed_this_cycle: 4     # was 5; one finding redacted from public sidecar (operator-private content)
   authored_this_cycle: 0     # Teacher-skip decision per retro § 8
 
 # Hook health pending Teacher #2 audit script (sprint Item 2)

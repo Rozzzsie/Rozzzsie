@@ -27,7 +27,7 @@ Skills and Co-Work are complementary, not competing. A Skill is the procedure la
 The rep is in the loop. They invoke the skill, review the output, decide what to send.
 
 Skills handle:
-- **Frontline ticketing** — parse the ticket, classify it, draft a reply + PSX handoff summary
+- **Frontline ticketing** — parse the ticket, classify it, draft a reply + tier-2 handoff summary
 - **Any triage workflow** — escalation checklists, onboarding procedures, structured classification
 - **In-the-moment judgment calls** — wherever the output needs a human decision point before it reaches the customer
 
@@ -43,20 +43,20 @@ Co-Work handles:
 
 ---
 
-## The proof-of-concept: Klear Ticket Troubleshooter
+## The proof-of-concept: ticket-triage skill
 
-A live Claude.ai Skill built for the Klear PSX workflow.
+A live Claude.ai Skill built for a frontline ticket-triage workflow in a product-support org.
 
 **What it does:**
-- Parses an inbound Klear ticket
+- Parses an inbound support ticket
 - Classifies it: inquiry / problem / admin request
-- Drafts a customer-facing reply + a PSX handoff summary, ready to paste
+- Drafts a customer-facing reply + a tier-2 handoff summary, ready to paste
 
 **How to invoke:**
 1. Open Claude.ai → Customize → Skills
 2. Upload `SKILL.md` + all files from the `reference/` folder
 3. Start a new conversation and invoke the skill
-4. Pull the ticket directly via Intercom MCP — no export or attachment needed
+4. Pull the ticket directly via the support-tool MCP (e.g., Intercom) — no export or attachment needed
 
 **What it demonstrates:**
 - Expert knowledge packaged once, reusable by the whole team
@@ -85,9 +85,9 @@ A live Claude.ai Skill built for the Klear PSX workflow.
 
 ---
 
-## Open questions for the council
+## Open questions for the rollout
 
 - Which PS workflows are highest-friction and most standardized? → Skill candidates
 - Which recurring reports have a fixed output shape and no HITL gate? → Co-Work candidates
 - What's the maintenance model — who updates a skill when the underlying procedure changes?
-- How do Skills interact with MCP connectors already in play (Intercom MCP, Confluence MCP)?
+- How do Skills interact with the MCP connectors already in play (e.g., Intercom MCP, Confluence MCP)?
