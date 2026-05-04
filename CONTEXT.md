@@ -6,7 +6,7 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 
 ---
 
-## Governance OS state (snapshot 2026-04-27)
+## Governance OS state (snapshot 2026-05-04)
 
 | Field | Value |
 |-------|-------|
