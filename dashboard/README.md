@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v1.2** (2026-04-25 night) · Tag: `dashboard-v1.2` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v1.3** (2026-05-04) · Tag: `dashboard-v1.3` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,13 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v1.3 — 2026-05-04 (re-render against `2026-05-03-p4.yaml` + v3.9.3 cascade + null-handling fix)
+
+- **Re-render against the new sidecar.** Source data updated from `retros/2026-04-24-p3.yaml` → `retros/2026-05-03-p4.yaml` (the P4 sidecar shipped with the v3.9.3 reframe, covering the v3.9.x ship cycle, window 2026-04-26 → 2026-05-03, 12 findings × 11 fields). Default sidecar arg in `render.py` retargeted to match.
+- **v3.9.3 Pn-token cascade lands in the renderer.** Hero header `P8 Retro #...` → `P10 Retro #...`; hero subtitle "...most recent P8 weekly retrospective..." → "...most recent P10 weekly retrospective..."; HTML `<title>` tag likewise. Sidecar finding titles that name the *new* P8 (autonomous iteration loop, was P9 in v3.4-v3.9.0) propagate verbatim — those are correct content under v3.9.3 numbering, not residual cascade.
+- **OS version bump in footer attribution.** Thin attribution band now reads `Dashboard v1.3 · Schema v1.0 · Rozzzsie OS v3.9.3 · EDD 2024 · Source · About`.
+- **Null-handling bug fix (real graceful suppression).** v1.0–v1.2's design intent was "absent metrics gracefully suppress their callouts" but only `miss_pct` + `meta_finding.headline` were actually implemented that way. The `2026-05-03-p4.yaml` sidecar surfaced the gap by redacting `discipline_metrics` + `latency_observations` to null (operator-traceable to specific session windows); `:.0f` against `None` crashed the renderer at first run. Fixed: `latency_median`, `latency_p95`, `latency_max`, `latency_violations`, `window_session_count` now pre-format with `"—"` fallback when null; `codex_invocations` + `teacher_invocations` get `or 0` coercion (since `dict.get(K, 0)` only fires on missing keys, not on `null` values). Behavior now matches design intent across all dashboard bands.
 
 ### v1.2 — 2026-04-25 night (Frame 1 + 2 enhancements composite per Luma reframe)
 
@@ -59,7 +66,7 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 ## What's here
 
 - `README.md` (this file) — positioning prose + release notes + developer reference (this collapsible)
-- `index.html` — pre-rendered single-retro snapshot. Currently rendered against `../retros/2026-04-24-p3.yaml`; the next `render.py` run will re-render against `../retros/2026-05-03-p4.yaml` (the most recent sidecar, shipped with the v3.9.3 reframe).
+- `index.html` — pre-rendered single-retro snapshot. Currently rendered against `../retros/2026-05-03-p4.yaml` (the most recent sidecar, shipped with the v3.9.3 reframe).
 - `assets/dashboard.css` — director-audience styling: typographic hierarchy, status-pill semantics, no-JS, print-friendly
 - `render.py` — Python renderer (stdlib + optional PyYAML); reads a sidecar YAML and emits `index.html`. `DASHBOARD_VERSION` constant carries the canonical version surface.
 - *(coming, sprint-2)* `trend.html` — multi-retro trend page once schema has survived 3 cycles
@@ -73,7 +80,7 @@ cd dashboard/
 python3 render.py ../retros/2026-05-03-p4.yaml index.html  # example
 ```
 
-The renderer defaults to `../retros/2026-04-24-p3.yaml` → `./index.html` if no args given (sprint-1 v1.x); the default will retarget to the most recent sidecar in a sprint-2 patch. For v1.x: uses the most recent retro as the single source. v2 (multi-retro trend) is the natural extension surface once 3+ sidecars exist.
+The renderer defaults to `../retros/2026-05-03-p4.yaml` → `./index.html` if no args given (v1.3+; v1.0–v1.2 defaulted to `2026-04-24-p3.yaml`). For v1.x: uses the most recent retro as the single source. v2 (multi-retro trend) is the natural extension surface once 3+ sidecars exist; the default-arg pattern retires once the renderer auto-selects the most recent sidecar by glob.
 
 ## Build provenance
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rozzzsie Governance Dashboard — P8 2026-04-24-p3</title>
+  <title>Rozzzsie Governance Dashboard — P10 2026-05-03-p4</title>
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
 <body>
@@ -11,16 +11,16 @@
 
     <header class="hero">
       <div class="hero-eyebrow">Rozzzsie Governance Dashboard</div>
-      <h1>P8 Retro #2026-04-24-p3</h1>
+      <h1>P10 Retro #2026-05-03-p4</h1>
       <p class="hero-tagline">Evaluation as continuous governing function, not terminal checkpoint.</p>
       <div class="hero-meta">
-        <div><strong>Window</strong> 2026-04-17 → 2026-04-24</div>
+        <div><strong>Window</strong> 2026-04-26 → 2026-05-03</div>
         <div><strong>Mode</strong> interactive</div>
-        <div><strong>Trigger</strong> sessionstart-hook-overdue-parser-false-positive</div>
+        <div><strong>Trigger</strong> weekly-cadence-rolling-retro-with-v3.9.x-ship-bracket</div>
         <div><strong>Schema</strong> v1.0</div>
       </div>
       <p class="hero-context">
-        Governance health metrics from the most recent P8 weekly retrospective in the Rozzzsie OS.
+        Governance health metrics from the most recent P10 weekly retrospective in the Rozzzsie OS.
         Same shape as LangSmith / Langfuse / DashChat dashboards (quantitative metrics on a temporal axis);
         different semantics — governance evolution, not service telemetry.
       </p>
@@ -31,21 +31,21 @@
       <div class="tiles">
         
     <div class="tile">
-      <div class="tile-value">14</div>
+      <div class="tile-value">12</div>
       <div class="tile-label">Findings triaged</div>
       
     </div>
     
         
     <div class="tile">
-      <div class="tile-value">10</div>
+      <div class="tile-value">8</div>
       <div class="tile-label">Accepted / shipped</div>
-      <div class="tile-detail">4 executed · 4 approved · 2 pre-ship</div>
+      <div class="tile-detail">8 executed · 0 approved · 0 pre-ship</div>
     </div>
     
         
     <div class="tile">
-      <div class="tile-value">4</div>
+      <div class="tile-value">2</div>
       <div class="tile-label">Deferred</div>
       <div class="tile-detail">Each with explicit watch entry or carry-forward</div>
     </div>
@@ -67,62 +67,26 @@
           <h3>Discipline metrics</h3>
           <div class="kv-row">
             <span class="kv-key">Current checkpoint miss rate</span>
-            <span class="kv-val">29%</span>
+            <span class="kv-val">—</span>
           </div>
-          <div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">71%</span></div>
+          
           <div class="kv-row">
             <span class="kv-key">Codex invocations</span>
-            <span class="kv-val">1</span>
+            <span class="kv-val">0</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Teacher invocations</span>
-            <span class="kv-val">1</span>
+            <span class="kv-val">0</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Luma invocations</span>
-            <span class="kv-val">19</span>
+            <span class="kv-val">0</span>
           </div>
         </div>
         <div class="band">
           <h3>Luma tally by category</h3>
           <div class="tally">
-            
-        <div class="tally-row">
-          <div class="tally-label">axis-reframe</div>
-          <div class="tally-bar"><div class="tally-fill" style="width: 42.1%"></div></div>
-          <div class="tally-count">8</div>
-        </div>
-        
-        <div class="tally-row">
-          <div class="tally-label">silent-assumption-catch</div>
-          <div class="tally-bar"><div class="tally-fill" style="width: 26.3%"></div></div>
-          <div class="tally-count">5</div>
-        </div>
-        
-        <div class="tally-row">
-          <div class="tally-label">polish-layer-text-diagnosis</div>
-          <div class="tally-bar"><div class="tally-fill" style="width: 5.3%"></div></div>
-          <div class="tally-count">1</div>
-        </div>
-        
-        <div class="tally-row">
-          <div class="tally-label">pre-authoring</div>
-          <div class="tally-bar"><div class="tally-fill" style="width: 5.3%"></div></div>
-          <div class="tally-count">1</div>
-        </div>
-        
-        <div class="tally-row">
-          <div class="tally-label">tightening</div>
-          <div class="tally-bar"><div class="tally-fill" style="width: 10.5%"></div></div>
-          <div class="tally-count">2</div>
-        </div>
-        
-        <div class="tally-row">
-          <div class="tally-label">meta-review</div>
-          <div class="tally-bar"><div class="tally-fill" style="width: 10.5%"></div></div>
-          <div class="tally-count">2</div>
-        </div>
-        
+            <p class='kv-row'><span class='kv-key'>(no invocations this window)</span></p>
           </div>
         </div>
       </div>
@@ -134,13 +98,13 @@
         <div class="band">
           <h3>This cycle</h3>
           <div class="cohort">
-            <div class="cohort-stage"><span class="cohort-label">Pending before retro</span><span class="cohort-count">3</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Pending before retro</span><span class="cohort-count">5</span></div>
             <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Approved (not yet executed)</span><span class="cohort-count">6</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Approved (not yet executed)</span><span class="cohort-count">2</span></div>
             <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Executed this cycle</span><span class="cohort-count">4</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Executed this cycle</span><span class="cohort-count">9</span></div>
             <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Authored this cycle</span><span class="cohort-count">0</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Authored this cycle</span><span class="cohort-count">2</span></div>
           </div>
         </div>
         <div class="band">
@@ -151,30 +115,30 @@
           </div>
           <div class="kv-row">
             <span class="kv-key">Sessions in window</span>
-            <span class="kv-val">3</span>
+            <span class="kv-val">—</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Median first-tool latency</span>
-            <span class="kv-val">365s</span>
+            <span class="kv-val">—</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">P95</span>
-            <span class="kv-val">520s</span>
+            <span class="kv-val">—</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Max</span>
-            <span class="kv-val">520s</span>
+            <span class="kv-val">—</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Violations (&gt;120s)</span>
-            <span class="kv-val">3</span>
+            <span class="kv-val">—</span>
           </div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2 class="section-title">Findings detail <span class="section-title-suffix">14 items, every one statused</span></h2>
+      <h2 class="section-title">Findings detail <span class="section-title-suffix">12 items, every one statused</span></h2>
       <div class="findings">
         <div class="findings-row header">
           <div>id</div>
@@ -185,100 +149,86 @@
         
     <div class="findings-row">
       <div class="finding-id">1.1</div>
-      <div class="finding-title">Codex review verification rule</div>
-      <div><span class="pill pill-deferred">deferred</span></div>
-      <div class="finding-cat">rule-clarification</div>
+      <div class="finding-title">P8 (autonomous iteration loop) firmware formalization — YAML-grammar DSL + Teacher-awareness layer</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-extension</div>
     </div>
     
     <div class="findings-row">
       <div class="finding-id">1.2</div>
-      <div class="finding-title">env-var rename audit rule</div>
-      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-title">P8 firmware gate ON (auto-promote-enabled, controller-supervised observation)</div>
+      <div><span class="pill pill-executed">executed</span></div>
       <div class="finding-cat">rule-extension</div>
     </div>
     
     <div class="findings-row">
       <div class="finding-id">1.3</div>
-      <div class="finding-title">AI-bot pipeline-optimization prohibition rule</div>
-      <div><span class="pill pill-deferred">deferred</span></div>
-      <div class="finding-cat">rule-extension</div>
+      <div class="finding-title">Pn-token lifecycle cascade renumber (clean permutation across 6 protocols)</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-clarification</div>
     </div>
     
     <div class="findings-row">
       <div class="finding-id">1.4</div>
-      <div class="finding-title">writing-plans map-extension promotion</div>
-      <div><span class="pill pill-approved">approved</span></div>
-      <div class="finding-cat">promotion</div>
+      <div class="finding-title">Reading A doctrine override — Pn-token doctrine + symlink-canonical analogy boundary</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-clarification</div>
     </div>
     
     <div class="findings-row">
       <div class="finding-id">1.5</div>
-      <div class="finding-title">axis-challenge Luma rule-level propagation (3 sub-candidates)</div>
-      <div><span class="pill pill-pre-ship">pre-ship</span></div>
-      <div class="finding-cat">promotion</div>
+      <div class="finding-title">AUTO_PROMOTE_ENABLED env-var decouple (drop P-prefix; protocol-numbering-independent)</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-extension</div>
     </div>
     
     <div class="findings-row">
       <div class="finding-id">2.1</div>
-      <div class="finding-title">Hook-side checkpoint-bar enforcement (Tier 2)</div>
-      <div><span class="pill pill-approved">approved</span></div>
-      <div class="finding-cat">teacher-proposal</div>
+      <div class="finding-title">Stop-gate firing bug — rate-limit + unpushed-commit false-positive interaction</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-clarification</div>
     </div>
     
     <div class="findings-row">
       <div class="finding-id">2.2</div>
-      <div class="finding-title">Silent-governance-hook fire-rate audit + Protocol 8 step 6.7</div>
-      <div><span class="pill pill-approved">approved</span></div>
-      <div class="finding-cat">teacher-proposal</div>
+      <div class="finding-title">Pipefail bug in subagent-nudge.sh (CRITICAL — silent suppression of subprocess failures)</div>
+      <div><span class="pill pill-executed">executed</span></div>
+      <div class="finding-cat">rule-clarification</div>
     </div>
     
     <div class="findings-row">
       <div class="finding-id">2.3</div>
-      <div class="finding-title">Luma pre-dispatch gate + Codex P3B hook-lifecycle</div>
-      <div><span class="pill pill-pre-ship">pre-ship</span></div>
-      <div class="finding-cat">teacher-proposal</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">2.4</div>
-      <div class="finding-title">Public-repo verification checklist (5-point)</div>
-      <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">rule-extension</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">2.6</div>
-      <div class="finding-title">Ownership-verification routing-authority surrogate</div>
-      <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">rule-extension</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">2.7</div>
-      <div class="finding-title">git add -A overreach pre-commit scan rule</div>
-      <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">rule-extension</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">2.8</div>
-      <div class="finding-title">Substitute-word-vs-repo-vocabulary collision design gate</div>
-      <div><span class="pill pill-approved">approved</span></div>
-      <div class="finding-cat">promotion</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">2.9</div>
-      <div class="finding-title">Ship-validation gaps family promotion</div>
-      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-title">26 Silent-Failure-Hunter findings triaged (7 CRITICAL + 8 HIGH TDD-fixed in Phase 1; 11 deferred to Phases 2-4)</div>
+      <div><span class="pill pill-partial-executed">partial-executed</span></div>
       <div class="finding-cat">meta-observation</div>
     </div>
     
     <div class="findings-row">
-      <div class="finding-id">2.10</div>
-      <div class="finding-title">P3-trace per-session archival (methodology gap)</div>
+      <div class="finding-id">2.4</div>
+      <div class="finding-title">Audit-test substring tighten — column-delimiter context for symmetric assertIn / assertNotIn pairs</div>
       <div><span class="pill pill-executed">executed</span></div>
       <div class="finding-cat">rule-clarification</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">2.5</div>
+      <div class="finding-title">Stop-gate [P1] case-insensitive grep fix — n=4 case-sensitive-grep family (n=1 fixed; n=3 deferred per ship-discipline)</div>
+      <div><span class="pill pill-partial-executed">partial-executed</span></div>
+      <div class="finding-cat">rule-clarification</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">3.1</div>
+      <div class="finding-title">SFH adversarial review + TDD integration as systematic risk-surface mapping pattern</div>
+      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-cat">promotion</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">3.2</div>
+      <div class="finding-title">Gate discipline + demotion-strategy for graduated authority (P8 firmware OFF→ON path)</div>
+      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-cat">promotion</div>
     </div>
     
       </div>
@@ -288,9 +238,9 @@
 
     <footer class="scope-honest">
       <p>
-        Dashboard v1.2
+        Dashboard v1.3
         <span class="sep">·</span> Schema v1.0
-        <span class="sep">·</span> Rozzzsie OS v3.5.2
+        <span class="sep">·</span> Rozzzsie OS v3.9.3
         <span class="sep">·</span> <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard">Source</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard#readme">About</a>
