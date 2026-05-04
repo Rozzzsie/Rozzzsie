@@ -273,6 +273,69 @@ def render_tally(tally: dict[str, Any]) -> str:
     return "".join(rows)
 
 
+def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
+    """Render the fam-wide dispatch + reactions widget with sub-band split.
+
+    The two sub-axes carry different units (dispatches vs reactions) and are
+    rendered as labeled sub-bands so the unit-asymmetry is structurally legible.
+    Rows with count=0 render with a muted CSS class (`kv-row-muted`) so absence
+    reads as measurement signal — not "we forgot the row."
+    """
+    if not fam:
+        return (
+            "<p class='kv-row'><span class='kv-key'>"
+            "(no fam activity recorded this cycle)</span></p>"
+        )
+
+    sub_bands = []
+
+    def _render_sub_band(label: str, axis: dict[str, Any]) -> str:
+        subagents = axis.get("subagents") or []
+        total = axis.get("total")
+        # Sort descending by count so highest-volume rails surface first
+        rows_sorted = sorted(subagents, key=lambda r: -(r.get("count") or 0))
+        rows_html = []
+        for r in rows_sorted:
+            name = html.escape(str(r.get("name", "—")))
+            count = r.get("count") or 0
+            role = html.escape(str(r.get("role", "")))
+            detail = r.get("detail")
+            muted = " kv-row-muted" if count == 0 else ""
+            detail_html = (
+                f'<span class="fam-row-detail">{html.escape(str(detail))}</span>'
+                if detail else ""
+            )
+            rows_html.append(
+                f'<div class="kv-row fam-row{muted}">'
+                f'<span class="kv-key">{name}</span>'
+                f'<span class="kv-val">{count}</span>'
+                f'<span class="fam-row-role">{role}</span>'
+                f'{detail_html}'
+                f'</div>'
+            )
+        total_html = (
+            f'<div class="kv-row fam-row-total">'
+            f'<span class="kv-key">total</span>'
+            f'<span class="kv-val">{total}</span>'
+            f'</div>'
+            if isinstance(total, int) else ""
+        )
+        return (
+            f'<div class="fam-sub-band">'
+            f'<h4 class="fam-sub-band-label">{html.escape(label)}</h4>'
+            f'{"".join(rows_html)}'
+            f'{total_html}'
+            f'</div>'
+        )
+
+    if "dispatch_axis" in fam:
+        sub_bands.append(_render_sub_band("Dispatch axis", fam["dispatch_axis"]))
+    if "reactions_axis" in fam:
+        sub_bands.append(_render_sub_band("Reactions axis", fam["reactions_axis"]))
+
+    return "".join(sub_bands)
+
+
 def render_dashboard(sc: dict[str, Any]) -> str:
     findings = sc.get("findings", []) or []
     backlog = sc.get("proposal_backlog", {}) or {}
