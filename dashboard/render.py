@@ -435,6 +435,12 @@ def render_dashboard(sc: dict[str, Any]) -> str:
           </div>
           {f'<div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">{prior_miss * 100:.0f}%</span></div>' if isinstance(prior_miss, (int, float)) else ""}
         </div>
+        <div class="band band-muted">
+          <h3>Luma reframe-axis facet <span class="band-title-suffix">deep-dive · narrative-review-pending</span></h3>
+          <div class="tally">
+            {tally_html}
+          </div>
+        </div>
       </div>
     </section>
 
@@ -504,17 +510,6 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         </div>
       </div>
       ''' if meta.get("headline") else ""}
-    </section>
-
-    <section class="deep-dive">
-      <h2 class="section-title">Luma reframe-axis facet <span class="section-title-suffix">deep-dive · narrative-review-pending</span></h2>
-      <div class="bands">
-        <div class="band">
-          <div class="tally">
-            {tally_html}
-          </div>
-        </div>
-      </div>
     </section>
 
     <footer class="scope-honest">
