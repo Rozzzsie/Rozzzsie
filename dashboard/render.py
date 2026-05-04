@@ -13,7 +13,7 @@ extension surface.
 
 Usage:
     python3 render.py                          # default: render
-                                                #   ../retros/2026-04-24-p3.yaml
+                                                #   ../retros/2026-05-03-p4.yaml
                                                 #   → ./index.html
     python3 render.py <sidecar.yaml>           # render named sidecar to index.html
     python3 render.py <sidecar.yaml> <out.html>
@@ -42,7 +42,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "1.2"
+DASHBOARD_VERSION = "1.3"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -293,11 +293,23 @@ def render_dashboard(sc: dict[str, Any]) -> str:
 
     luma_total = (discipline.get("luma_tally_by_category") or {}).get("total", 0) or 0
 
-    # Latency
+    # Latency — pre-format with graceful "—" suppression for null/redacted values
+    # (sidecars redact discipline_metrics + latency_observations to null when traceable
+    # to specific session windows; the renderer must not crash on `:.0f` against None).
     latency_median = latency.get("median_first_tool_latency_sec")
     latency_p95 = latency.get("p95_first_tool_latency_sec")
     latency_max = latency.get("max_first_tool_latency_sec")
     latency_violations = latency.get("threshold_violations")
+    latency_median_str = f"{latency_median:.0f}s" if isinstance(latency_median, (int, float)) else "—"
+    latency_p95_str = f"{latency_p95:.0f}s" if isinstance(latency_p95, (int, float)) else "—"
+    latency_max_str = f"{latency_max:.0f}s" if isinstance(latency_max, (int, float)) else "—"
+    latency_violations_str = str(latency_violations) if latency_violations is not None else "—"
+    latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
+
+    # Discipline counters — `.get(K, 0)` only fires on missing keys, not on null values.
+    # Coerce None → 0 with `or 0` for the count fields where 0 is the right "no data" stand-in.
+    codex_count = discipline.get("codex_invocations") or 0
+    teacher_count = discipline.get("teacher_invocations") or 0
 
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
     tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
@@ -305,7 +317,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
     body = f"""
     <header class="hero">
       <div class="hero-eyebrow">Rozzzsie Governance Dashboard</div>
-      <h1>P8 Retro #{sc.get("retro_id", "—")}</h1>
+      <h1>P10 Retro #{sc.get("retro_id", "—")}</h1>
       <p class="hero-tagline">Evaluation as continuous governing function, not terminal checkpoint.</p>
       <div class="hero-meta">
         <div><strong>Window</strong> {html.escape(str(sc.get("window_start", "—")))} → {html.escape(str(sc.get("window_end", "—")))}</div>
@@ -314,7 +326,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         <div><strong>Schema</strong> v{html.escape(str(sc.get("schema_version", "—")))}</div>
       </div>
       <p class="hero-context">
-        Governance health metrics from the most recent P8 weekly retrospective in the Rozzzsie OS.
+        Governance health metrics from the most recent P10 weekly retrospective in the Rozzzsie OS.
         Same shape as LangSmith / Langfuse / DashChat dashboards (quantitative metrics on a temporal axis);
         different semantics — governance evolution, not service telemetry.
       </p>
@@ -342,11 +354,11 @@ def render_dashboard(sc: dict[str, Any]) -> str:
           {f'<div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">{prior_miss * 100:.0f}%</span></div>' if isinstance(prior_miss, (int, float)) else ""}
           <div class="kv-row">
             <span class="kv-key">Codex invocations</span>
-            <span class="kv-val">{discipline.get("codex_invocations", 0)}</span>
+            <span class="kv-val">{codex_count}</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Teacher invocations</span>
-            <span class="kv-val">{discipline.get("teacher_invocations", 0)}</span>
+            <span class="kv-val">{teacher_count}</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Luma invocations</span>
@@ -385,23 +397,23 @@ def render_dashboard(sc: dict[str, Any]) -> str:
           </div>
           <div class="kv-row">
             <span class="kv-key">Sessions in window</span>
-            <span class="kv-val">{latency.get("window_session_count", "—")}</span>
+            <span class="kv-val">{latency_window_str}</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Median first-tool latency</span>
-            <span class="kv-val">{latency_median:.0f}s</span>
+            <span class="kv-val">{latency_median_str}</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">P95</span>
-            <span class="kv-val">{latency_p95:.0f}s</span>
+            <span class="kv-val">{latency_p95_str}</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Max</span>
-            <span class="kv-val">{latency_max:.0f}s</span>
+            <span class="kv-val">{latency_max_str}</span>
           </div>
           <div class="kv-row">
             <span class="kv-key">Violations (&gt;120s)</span>
-            <span class="kv-val">{latency_violations}</span>
+            <span class="kv-val">{latency_violations_str}</span>
           </div>
         </div>
       </div>
@@ -434,7 +446,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
       <p>
         Dashboard v{DASHBOARD_VERSION}
         <span class="sep">·</span> Schema v{html.escape(str(sc.get("schema_version", "—")))}
-        <span class="sep">·</span> Rozzzsie OS v3.5.2
+        <span class="sep">·</span> Rozzzsie OS v3.9.3
         <span class="sep">·</span> <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard">Source</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard#readme">About</a>
@@ -447,7 +459,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rozzzsie Governance Dashboard — P8 {html.escape(str(sc.get("retro_id", "")))}</title>
+  <title>Rozzzsie Governance Dashboard — P10 {html.escape(str(sc.get("retro_id", "")))}</title>
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
 <body>
@@ -463,7 +475,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
 
 def main(argv: list[str]) -> int:
     here = Path(__file__).resolve().parent
-    default_sidecar = here.parent / "retros" / "2026-04-24-p3.yaml"
+    default_sidecar = here.parent / "retros" / "2026-05-03-p4.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar
