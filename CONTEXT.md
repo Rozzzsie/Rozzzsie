@@ -10,11 +10,11 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 
 | Field | Value |
 |-------|-------|
-| Protocols version | v3.5.2 |
-| Last weekly retrospective (P8) | 2026-04-29 — automated draft generated; awaiting Rosie's interactive review (prior interactive: 2026-04-24, 15/15 triaged) |
-| Next P8 due | 2026-05-06 |
+| Protocols version | v3.9.3 |
+| Last weekly retrospective (P10) | 2026-05-03 (P4 sidecar, public-grain) — covers v3.9.x ship cycle (window 2026-04-26 → 2026-05-03), 12 findings × 11 fields. Prior interactive: 2026-04-24 (P3, 15/15 triaged); intervening 2026-04-29 automated draft (narrative-only, no public sidecar). |
+| Next P10 due | 2026-05-10 |
 | Active fam roles | 8 (Root / Luma / Teacher / Breakline / Codex / Brindle / Deputies + the controller as architect-decider) |
-| Hook layer | Project-scope governance hooks + user-scope companion hooks; Hook fire-rate audit (Protocol 8 step 6.7) ships in v3.5.2 |
+| Hook layer | Project-scope governance hooks + user-scope companion hooks; Hook fire-rate audit (Protocol 10 step 6.7) shipped v3.5.2; checkpoint-bar Tier 2 enforcement extended through v3.8.0 |
 | Synthesis-Surface Pre-Render Pattern | v1 reference implementation shipped on SessionStart briefing (2026-04-23), bidirectional contract codified v3.5.1 |
 | Teacher proposal lifecycle | 0 `pending`, 0 unresolved `approved`, all current-cycle proposals at terminal status (`executed` / `deferred` with explicit watch entries) |
 | Checkpoint-bar Tier 2 hook | Live, real-traffic firelog populating per-turn audit records |
@@ -37,17 +37,17 @@ Two private workspaces (lightweight personal-learning log + sandbox for fun buil
 ## What's stable vs what's evolving
 
 **Stable** (well past the breakage point):
-- Protocol skeleton P1–P9 with sub-protocols P1B / P2B / P3B for Codex validation
+- Protocol skeleton P1–P10 with sub-protocols P1B / P2B / P3B for Codex validation (v3.9.3 cascade complete; P5 Focus-chain discipline added v3.7.0)
 - The four-role split (Root / Luma / Teacher / controller) — each rail load-bearing against exactly one failure mode
 - Symlink-canonical pattern for versioned governance docs (governance changes don't require N-file rename sweeps)
 - Workspace state-update protocol (CONTEXT + CHANGELOG after every meaningful work increment)
 - Verify-to-artifact §14 family — six sub-families codified, propagation across all workspace LEARNINGS
 
 **Evolving** (active development surface):
-- Synthesis-Surface Pre-Render Pattern (1 of 5 surfaces shipped; #2 P8 retro and #3 P7 close are sprint candidates)
-- Teacher proposal cadence + auto-promotion gating (P9 partially formalized; full autonomy still controller-gated)
-- Hook fire-rate audit history (just shipped; first cross-cycle observation due at 2026-05-01 P8)
-- Dashboard / observability layer (sprint-1 scope: governance metrics rendered from retro sidecar — see `dashboard/`)
+- Synthesis-Surface Pre-Render Pattern (reference implementation on SessionStart shipped v3.5.0; extended to additional surfaces through v3.5.x–v3.9.x cycles)
+- Teacher proposal cadence + auto-promotion gating (P8 firmware ON as of v3.9.1 — Teacher agent + grammars + ledger + auto-promote-enabled gate; gate still controller-supervised in observation window)
+- v3.9.3 Pn-token doctrine + Reading A doctrine override (shipped 2026-05-03; cascade renumber across 6 protocols, env-var rename `AUTO_PROMOTE_ENABLED`)
+- Dashboard / observability layer (sprint-1 v1.2 live at `rozzzsie.github.io/Rozzzsie/dashboard/`; sprint-2 trend rendering unlocks at 3+ retro sidecars)
 - Sidecar schema v1.0 stability review window: 2026-05-15 (3+ retro cycles needed before mid-week emission unlocks)
 
 ---
