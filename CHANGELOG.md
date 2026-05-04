@@ -4,6 +4,8 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+[2026-05-04] | retros/2026-05-03-p4.yaml phase-3 metrics backfill — `discipline_metrics` + `latency_observations` computed from `.claude/hook-fires.jsonl` (47 sessions / 2,573 substantive turns / 592 missed bars) and `.claude/session-start-latency.log` (66 datapoints; median 89.5s / p95 546s / max 1420s / 22 violations >120s); dashboard re-renders against backfilled sidecar; Codex/Teacher/Luma invocation counts + Luma tally by category remain `null` (require human-distilled retro narrative review)
+
 [2026-05-04] | personal-learnings/_input/ weekly digest — fetch failed (second consecutive week); aiagentstore.ai returns 403 on WebFetch and is blocked by curl allowlist; recurring-failure escalation flag added to failure note
 
 [2026-04-29] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review

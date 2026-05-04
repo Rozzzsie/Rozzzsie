@@ -11,7 +11,7 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 | Field | Value |
 |-------|-------|
 | Protocols version | v3.9.3 |
-| Last weekly retrospective (P10) | 2026-05-03 (P4 sidecar, public-grain) — covers v3.9.x ship cycle (window 2026-04-26 → 2026-05-03), 12 findings × 11 fields. Prior interactive: 2026-04-24 (P3, 15/15 triaged); intervening 2026-04-29 automated draft (narrative-only, no public sidecar). |
+| Last weekly retrospective (P10) | 2026-05-03 (P4 sidecar, public-grain; metrics backfilled 2026-05-04) — covers v3.9.x ship cycle (window 2026-04-26 → 2026-05-03), 12 findings × 11 fields; `discipline_metrics` + `latency_observations` computed from hook firelogs (Codex/Teacher/Luma counts remain `null` pending narrative review). Prior interactive: 2026-04-24 (P3, 15/15 triaged); intervening 2026-04-29 automated draft (narrative-only, no public sidecar). |
 | Next P10 due | 2026-05-10 |
 | Active fam roles | 8 (Root / Luma / Teacher / Breakline / Codex / Brindle / Deputies + the controller as architect-decider) |
 | Hook layer | Project-scope governance hooks + user-scope companion hooks; Hook fire-rate audit (Protocol 10 step 6.7) shipped v3.5.2; checkpoint-bar Tier 2 enforcement extended through v3.8.0 |
