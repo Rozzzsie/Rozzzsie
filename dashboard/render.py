@@ -264,6 +264,12 @@ def render_tally(tally: dict[str, Any]) -> str:
         </div>
         """
         )
+    # total > 0 but no measured categories — scalar known, breakdown pending review
+    if not rows:
+        return (
+            f"<p class='kv-row'><span class='kv-key'>{total} invocations · "
+            f"category breakdown pending narrative review</span></p>"
+        )
     return "".join(rows)
 
 

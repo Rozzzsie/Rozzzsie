@@ -172,9 +172,19 @@ hook_health:
 # (the prior sidecar had a single-session retro narrative; this one is
 # narrative-less and reports cycle-window discipline directly — more
 # operationally meaningful at the cost of strict cross-cycle apples-to-apples).
-# Codex / Teacher / Luma invocation counts + Luma tally by category remain
-# null — those normally come from human-distilled retro narrative review.
-# Dashboard render suppresses callouts when fields are null.
+# Codex / Teacher / Luma scalar invocation counts backfilled from transcript
+# scan (`~/.claude/projects/-Users-rosie-zhao-RosieRoot/*.jsonl`): Agent tool
+# dispatches with subagent_type ∈ {codex:*, teacher, luma} + `/codex:review`
+# and `/codex:adversarial-review` slash command invocations from user turns.
+# `/codex:rescue` is excluded from the slash-command count because it dispatches
+# the codex-rescue subagent and is therefore already counted via the Agent
+# tool branch (avoids double-counting). Luma tally BY CATEGORY (axis_reframe /
+# silent_assumption_catch / polish_layer_text_diagnosis / pre_authoring /
+# tightening / meta_review) remains null — categorization requires
+# human-distilled Luma-output narrative review and isn't machine-extractable
+# from transcript metadata alone. Dashboard render suppresses callouts and
+# tally-rows when fields are null; surfaces a "categorization pending
+# narrative review" placeholder when total>0 but categories are unmeasured.
 discipline_metrics:
   checkpoint_bar_miss_rate: 0.23           # 592/2573 substantive turns; cycle window 2026-04-26 → 2026-05-03
   checkpoint_bar_prior_session_rate: 0.29  # 2026-04-24-p3 baseline; substantive reduction from v3.8.0 Tier 2 enforcement
@@ -185,9 +195,9 @@ discipline_metrics:
     pre_authoring: null
     tightening: null
     meta_review: null
-    total: null
-  codex_invocations: null
-  teacher_invocations: null
+    total: 26                              # 26 Agent dispatches with subagent_type=luma; per-category breakdown pending narrative review
+  codex_invocations: 13                    # 12 Agent dispatches with subagent_type=codex:* + 1 /codex:adversarial-review slash invocation
+  teacher_invocations: 2                   # 2 Agent dispatches with subagent_type=teacher
   luma_axis_subcategories:
     demonstrate_vs_guard: null
     completeness_vs_shape: null
