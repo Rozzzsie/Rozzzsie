@@ -4,6 +4,8 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+[2026-05-04] | personal-learnings/_input/ weekly digest — fetch failed (second consecutive week); aiagentstore.ai returns 403 on WebFetch and is blocked by curl allowlist; recurring-failure escalation flag added to failure note
+
 [2026-04-29] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
 
 ---
