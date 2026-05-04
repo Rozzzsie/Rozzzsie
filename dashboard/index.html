@@ -23,6 +23,7 @@
         Governance health metrics from the most recent P10 weekly retrospective in the Rozzzsie OS.
         Same shape as LangSmith / Langfuse / DashChat dashboards (quantitative metrics on a temporal axis);
         different semantics — governance evolution, not service telemetry.
+        Measurement surface — what fired and how often, not what each rail is for.
       </p>
     </header>
 
@@ -61,7 +62,14 @@
     </section>
 
     <section>
-      <h2 class="section-title">Discipline + dispatch <span class="section-title-suffix">governance health under load</span></h2>
+      <h2 class="section-title">Specialist agent dispatches <span class="section-title-suffix">fam-wide activity, this cycle</span></h2>
+      <div class="fam-widget">
+        <div class="fam-sub-band"><h4 class="fam-sub-band-label">Dispatch axis</h4><div class="kv-row fam-row"><span class="kv-key">deputies</span><span class="kv-val">31</span><span class="fam-row-role">general-purpose / Root parallel-fanout (not consultant)</span></div><div class="kv-row fam-row"><span class="kv-key">luma</span><span class="kv-val">26</span><span class="fam-row-role">consultant</span></div><div class="kv-row fam-row"><span class="kv-key">codex</span><span class="kv-val">13</span><span class="fam-row-role">consultant</span><span class="fam-row-detail">12 Agent codex-rescue + 1 /codex:adversarial-review slash</span></div><div class="kv-row fam-row"><span class="kv-key">silent-failure-hunter</span><span class="kv-val">4</span><span class="fam-row-role">adversarial-reviewer</span></div><div class="kv-row fam-row"><span class="kv-key">breakline</span><span class="kv-val">3</span><span class="fam-row-role">adversarial-auditor</span></div><div class="kv-row fam-row"><span class="kv-key">teacher</span><span class="kv-val">2</span><span class="fam-row-role">learning-layer</span></div><div class="kv-row fam-row-total"><span class="kv-key">total</span><span class="kv-val">79</span></div></div><div class="fam-sub-band"><h4 class="fam-sub-band-label">Reactions axis</h4><div class="kv-row fam-row"><span class="kv-key">brindle</span><span class="kv-val">299</span><span class="fam-row-role">companion (hook-driven)</span><span class="fam-row-detail">54 session_starts + 210 reactions + 35 session_ends across 54 sessions</span></div><div class="kv-row fam-row-total"><span class="kv-key">total</span><span class="kv-val">299</span></div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Discipline <span class="section-title-suffix">governance health under load</span></h2>
       <div class="bands">
         <div class="band">
           <h3>Discipline metrics</h3>
@@ -70,15 +78,6 @@
             <span class="kv-val">23%</span>
           </div>
           <div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">29%</span></div>
-          <div class="kv-row"><span class="kv-key">Codex invocations</span><span class="kv-val">13</span></div>
-          <div class="kv-row"><span class="kv-key">Teacher invocations</span><span class="kv-val">2</span></div>
-          <div class="kv-row"><span class="kv-key">Luma invocations</span><span class="kv-val">26</span></div>
-        </div>
-        <div class="band">
-          <h3>Luma tally by category</h3>
-          <div class="tally">
-            <p class='kv-row'><span class='kv-key'>26 invocations · category breakdown pending narrative review</span></p>
-          </div>
         </div>
       </div>
     </section>
@@ -227,9 +226,20 @@
       
     </section>
 
+    <section class="deep-dive">
+      <h2 class="section-title">Luma reframe-axis facet <span class="section-title-suffix">deep-dive · narrative-review-pending</span></h2>
+      <div class="bands">
+        <div class="band">
+          <div class="tally">
+            <p class='kv-row'><span class='kv-key'>26 invocations this cycle</span></p><p class='kv-row kv-row-detail'><span class='kv-key'>Per-axis bars populate when narrative review runs — categorization isn't auto-extracted from transcripts</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer class="scope-honest">
       <p>
-        Dashboard v1.3
+        Dashboard v1.4
         <span class="sep">·</span> Schema v1.0
         <span class="sep">·</span> Rozzzsie OS v3.9.3
         <span class="sep">·</span> <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a>
