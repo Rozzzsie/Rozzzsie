@@ -164,13 +164,30 @@ hook_health:
   measurement_window_session_count: null
   flagged_hooks: null
 
-# Discipline metrics redacted from public sidecar — exact rates traceable to specific
-# session windows; the v3.8.0 Tier 2 hook-side enforcement substantively reduced
-# checkpoint-bar misses relative to the 2026-04-24-p3 baseline. Dashboard render
-# suppresses callouts when fields are null.
+# Discipline metrics — checkpoint-bar miss rate is computed from
+# `.claude/hook-fires.jsonl` (Tier 2 corrective+formative hook firelog) over
+# the cycle window 2026-04-26 → 2026-05-03 (47 sessions, 2,573 substantive
+# turns, 592 missed bars). Smoke-test session_ids excluded. The window-rate
+# shape differs from 2026-04-24-p3's "this retro session, 2/7" measurement
+# (the prior sidecar had a single-session retro narrative; this one is
+# narrative-less and reports cycle-window discipline directly — more
+# operationally meaningful at the cost of strict cross-cycle apples-to-apples).
+# Codex / Teacher / Luma scalar invocation counts backfilled from transcript
+# scan (`~/.claude/projects/-Users-rosie-zhao-RosieRoot/*.jsonl`): Agent tool
+# dispatches with subagent_type ∈ {codex:*, teacher, luma} + `/codex:review`
+# and `/codex:adversarial-review` slash command invocations from user turns.
+# `/codex:rescue` is excluded from the slash-command count because it dispatches
+# the codex-rescue subagent and is therefore already counted via the Agent
+# tool branch (avoids double-counting). Luma tally BY CATEGORY (axis_reframe /
+# silent_assumption_catch / polish_layer_text_diagnosis / pre_authoring /
+# tightening / meta_review) remains null — categorization requires
+# human-distilled Luma-output narrative review and isn't machine-extractable
+# from transcript metadata alone. Dashboard render suppresses callouts and
+# tally-rows when fields are null; surfaces a "categorization pending
+# narrative review" placeholder when total>0 but categories are unmeasured.
 discipline_metrics:
-  checkpoint_bar_miss_rate: null
-  checkpoint_bar_prior_session_rate: null
+  checkpoint_bar_miss_rate: 0.23           # 592/2573 substantive turns; cycle window 2026-04-26 → 2026-05-03
+  checkpoint_bar_prior_session_rate: 0.29  # 2026-04-24-p3 baseline; substantive reduction from v3.8.0 Tier 2 enforcement
   luma_tally_by_category:
     axis_reframe: null
     silent_assumption_catch: null
@@ -178,22 +195,27 @@ discipline_metrics:
     pre_authoring: null
     tightening: null
     meta_review: null
-    total: null
-  codex_invocations: null
-  teacher_invocations: null
+    total: 26                              # 26 Agent dispatches with subagent_type=luma; per-category breakdown pending narrative review
+  codex_invocations: 13                    # 12 Agent dispatches with subagent_type=codex:* + 1 /codex:adversarial-review slash invocation
+  teacher_invocations: 2                   # 2 Agent dispatches with subagent_type=teacher
   luma_axis_subcategories:
     demonstrate_vs_guard: null
     completeness_vs_shape: null
     methodology_vs_character: null
 
-# Latency observations redacted — same rationale as discipline_metrics.
+# Latency observations — computed from `.claude/session-start-latency.log`
+# entries over the cycle window 2026-04-26 → 2026-05-03 (66 SessionStart-hook
+# datapoints). Distribution skews wide (median 89.5s vs p95 546s vs max 1420s):
+# most cold-start sessions land under the 120s threshold but the tail captures
+# the cache-cold + post-compact compound-miss cases the v3.5.1 instrumentation
+# was added to surface for retro.
 latency_observations:
   source: ".claude/session-start-latency.log"
-  window_session_count: null
-  median_first_tool_latency_sec: null
-  p95_first_tool_latency_sec: null
-  max_first_tool_latency_sec: null
-  threshold_violations: null
+  window_session_count: 66
+  median_first_tool_latency_sec: 89.5
+  p95_first_tool_latency_sec: 546
+  max_first_tool_latency_sec: 1420
+  threshold_violations: 22
 
 # meta_finding redacted from public sidecar — operator-internal observation about
 # governance-cycle cadence and Pn-token doctrine boundary discovery. Dashboard's
