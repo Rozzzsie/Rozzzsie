@@ -291,7 +291,7 @@ def render_dashboard(sc: dict[str, Any]) -> str:
         else None
     )
 
-    luma_total = (discipline.get("luma_tally_by_category") or {}).get("total", 0) or 0
+    luma_total = (discipline.get("luma_tally_by_category") or {}).get("total")
 
     # Latency — pre-format with graceful "—" suppression for null/redacted values
     # (sidecars redact discipline_metrics + latency_observations to null when traceable
@@ -306,10 +306,11 @@ def render_dashboard(sc: dict[str, Any]) -> str:
     latency_violations_str = str(latency_violations) if latency_violations is not None else "—"
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
 
-    # Discipline counters — `.get(K, 0)` only fires on missing keys, not on null values.
-    # Coerce None → 0 with `or 0` for the count fields where 0 is the right "no data" stand-in.
-    codex_count = discipline.get("codex_invocations") or 0
-    teacher_count = discipline.get("teacher_invocations") or 0
+    # Discipline counters — sidecar contract suppresses rows when fields are null
+    # (null = unmeasured this cycle, e.g., requires human-distilled retro narrative;
+    # 0 = measured-zero and still renders since `isinstance(0, int)` is True).
+    codex_count = discipline.get("codex_invocations")
+    teacher_count = discipline.get("teacher_invocations")
 
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
     tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
@@ -352,18 +353,9 @@ def render_dashboard(sc: dict[str, Any]) -> str:
             <span class="kv-val">{miss_pct}</span>
           </div>
           {f'<div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">{prior_miss * 100:.0f}%</span></div>' if isinstance(prior_miss, (int, float)) else ""}
-          <div class="kv-row">
-            <span class="kv-key">Codex invocations</span>
-            <span class="kv-val">{codex_count}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-key">Teacher invocations</span>
-            <span class="kv-val">{teacher_count}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-key">Luma invocations</span>
-            <span class="kv-val">{luma_total}</span>
-          </div>
+          {f'<div class="kv-row"><span class="kv-key">Codex invocations</span><span class="kv-val">{codex_count}</span></div>' if isinstance(codex_count, int) else ""}
+          {f'<div class="kv-row"><span class="kv-key">Teacher invocations</span><span class="kv-val">{teacher_count}</span></div>' if isinstance(teacher_count, int) else ""}
+          {f'<div class="kv-row"><span class="kv-key">Luma invocations</span><span class="kv-val">{luma_total}</span></div>' if isinstance(luma_total, int) else ""}
         </div>
         <div class="band">
           <h3>Luma tally by category</h3>
