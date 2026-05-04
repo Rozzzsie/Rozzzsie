@@ -597,3 +597,21 @@ section {
   color: var(--muted-fg, #6a6a72);
   font-size: 0.88rem;
 }
+
+/* ─── Luma facet co-line treatment (v1.4 follow-up — band-tier muted) ── */
+
+.band-muted {
+  opacity: 0.92;
+}
+
+.band-muted h3 {
+  color: var(--muted-fg, #6a6a72);
+}
+
+.band-title-suffix {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--muted-fg, #6a6a72);
+  letter-spacing: 0.02em;
+  margin-left: 0.4em;
+}
