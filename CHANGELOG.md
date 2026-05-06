@@ -4,6 +4,8 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+[2026-05-06] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
+
 [2026-05-04] | dashboard v1.4 — Frame 2 fam-dispatch widget shipped; Luma reframe-axis tally relocated to deep-dive panel; measurement-surface explicit beat added to hero; Roles-map "Deputies" definition disambiguated in private Rozzzsie tree
 
 [2026-05-04] | retros/2026-05-03-p4.yaml phase-3 metrics backfill — `discipline_metrics` + `latency_observations` computed from `.claude/hook-fires.jsonl` (47 sessions / 2,573 substantive turns / 592 missed bars) and `.claude/session-start-latency.log` (66 datapoints; median 89.5s / p95 546s / max 1420s / 22 violations >120s); dashboard re-renders against backfilled sidecar; Codex/Teacher/Luma invocation counts + Luma tally by category remain `null` (require human-distilled retro narrative review)
