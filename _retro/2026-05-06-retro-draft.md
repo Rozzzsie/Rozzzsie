@@ -57,13 +57,6 @@ This gap has reached the P2 threshold: same-axis failure on three iterations. Th
 
 ---
 
-**2. personal-learnings weekly digest — second consecutive blocked fetch**
-`aiagentstore.ai` returns 403 on WebFetch and is blocked by curl allowlist. Both the 2026-04-27 and 2026-05-04 digest cycles failed. The 2026-05-04 failure note includes "recurring-failure escalation flag added." Two consecutive failures = structural loop break, not a transient incident.
-
-**Action required:** decide whether to (a) add `aiagentstore.ai` to the allowlist, (b) replace with an alternative source, or (c) suspend the personal-learnings digest loop until the allowlist is updated. Current state: the loop is running but producing nothing.
-
----
-
 **3. Checkpoint-bar discipline — plateau at ~23% miss rate**
 The P4 sidecar (2026-05-03 metrics backfill) surfaces 592 missed bars across 2,573 substantive turns (~23%). The Tier 2 per-turn enforcement hook shipped in v3.5.2. At 47 sessions (from the firelog), the miss rate has not yet closed to the target. Whether this is improving session-over-session cannot be determined from the aggregate; per-session trend would require the full firelog read (not available in this automated scan).
 
@@ -104,7 +97,6 @@ No new learnings this cycle. All six items below are carryover from the 2026-04-
 | # | Source | Blocker | First noted | Action status |
 |---|--------|---------|-------------|---------------|
 | 1 | ai-champion LEARNINGS | Chatbot optimization blocked at architecture layer — Rosie does not own the KB the chatbot reads from. Pipeline-style intervention not available. | Undated (workspace LEARNINGS; present in 2026-04-22 retro) | ai-champion `CLAUDE.md` names the constraint ("Do not make assumptions...") but no evidence the architecture constraint has been communicated to leadership as a structural blocker per LEARNINGS framing note |
-| 2 | personal-learnings | Weekly digest fetch blocked by network allowlist (2 consecutive weeks) | 2026-04-27 | No fix applied between 2026-04-27 and 2026-05-04 failures |
 
 **Action for Rosie:**
 1. Surface any BLOCKERs from the private CONTEXT.md at interactive review — include days-since-flagged.
@@ -155,7 +147,6 @@ These are proposals only — Rosie decides. No changes have been made to any gov
 
 1. Confirm or correct "what shipped well" summary — does it accurately reflect what ran since 2026-04-29? (The 2026-05-03 interactive P10 may have captured some of this already.)
 2. **Workspace CHANGELOG.md gap (3rd flag, P2 threshold):** confirm triage from prior reviews. If still open: create now or name concrete session + owner. If deferred: name defer condition.
-3. **personal-learnings digest:** decide on fix path (allowlist / alternative source / suspend).
 4. **Unpropagated learnings #3 and #4 (3rd+ flag, P2 threshold):** accept, modify, or explicitly reject with reason — these can't stay in limbo.
 5. Confirm items #1, #2, #5, #6 (2nd flag): same decision.
 6. Surface any BLOCKERs from private CONTEXT.md with days-since-flagged.

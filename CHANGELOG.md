@@ -18,8 +18,6 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 [2026-05-04] | retros/2026-05-03-p4.yaml phase-3 metrics backfill — `discipline_metrics` + `latency_observations` computed from `.claude/hook-fires.jsonl` (47 sessions / 2,573 substantive turns / 592 missed bars) and `.claude/session-start-latency.log` (66 datapoints; median 89.5s / p95 546s / max 1420s / 22 violations >120s); dashboard re-renders against backfilled sidecar; Codex/Teacher/Luma invocation counts + Luma tally by category remain `null` (require human-distilled retro narrative review)
 
-[2026-05-04] | personal-learnings/_input/ weekly digest — fetch failed (second consecutive week); aiagentstore.ai returns 403 on WebFetch and is blocked by curl allowlist; recurring-failure escalation flag added to failure note
-
 [2026-04-29] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
 
 ---
@@ -33,12 +31,6 @@ The hero context paragraph gains an explicit measurement-surface anchor — *"Me
 0-count rows in the dispatch axis (Deputies row this cycle would surface as 0 if no plugin-bundled subagents fired) render with a `kv-row-muted` CSS class — opacity 0.55 + italic count — so absence reads as measurement signal, not as "we forgot the row." This is the same null-vs-zero contract pattern surfaced in PR #3's discipline counter fix, applied at a new surface.
 
 Render contract additions: `dashboard/render.py` gains `render_fam_dispatch_widget()` with sub-band split + role labels + 0-count muted treatment, plus an updated `render_tally()` empty-state copy for the state-#2 case (total>0 + categories null). Schema additions to `retros/2026-05-03-p4.yaml`: new `fam_dispatch_distribution` section with `dispatch_axis` and `reactions_axis` sub-keys, each carrying a `subagents` list-of-dicts and a `total`. 7-test smoke suite at `dashboard/test_render_fam_dispatch.py` covers both-bands / role-labels / brindle-detail / 0-count-muted / dispatch-only / reactions-only / empty-input states. `DASHBOARD_VERSION = "1.4"`.
-
-## personal-learnings workspace bootstrapped — fetch-failed note (2026-04-27)
-
-Weekly digest agent run attempted: fetch of `aiagentstore.ai` blocked by network allowlist; `personal-learnings/` workspace did not exist. Created `personal-learnings/_input/` directory and committed a failure note at `personal-learnings/_input/2026-04-27_digest-fetch-failed.md` documenting both blockers and the fix path. No digest or analysis produced this cycle.
-
----
 
 ## Dashboard v1.2 — observability layer, Luma layer-mismatch reframe applied (2026-04-25)
 

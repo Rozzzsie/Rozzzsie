@@ -42,13 +42,6 @@ April 23–29, 2026. This is the second full P8 cycle. The 2026-04-22 draft was 
 - Hero gains 30-word "what this is" beat for cold landings; footer becomes a thin attribution band (industry-standard); README reordered to lead with positioning prose and collapse developer content into a `<details>` block.
 - Render contract: `dashboard/render.py` reads most-recent sidecar from `retros/` → emits `dashboard/index.html` on push. Sprint-2 unlocks multi-retro trend rendering gated on sidecar schema stability review at 2026-05-15.
 
-**2026-04-27 — personal-learnings workspace bootstrapped (partial):**
-- `personal-learnings/` workspace and `_input/` folder created.
-- Weekly digest agent run blocked: `aiagentstore.ai` fetch blocked by network allowlist. Failure documented at `personal-learnings/_input/2026-04-27_digest-fetch-failed.md` with both blockers (no workspace, blocked fetch) and fix path.
-- No digest or analysis produced this cycle; failure documented rather than silently dropped.
-
----
-
 ## Recurring quality gaps
 
 **1. Missing workspace-level CHANGELOG.md files — still unresolved (now 14+ days)**
@@ -58,11 +51,6 @@ This gap was flagged in the 2026-04-22 retro draft and may have been addressed i
 
 **2. Prior retro's unpropagated learnings — propagation status unconfirmed**
 The 2026-04-24 interactive review triaged 15/15 items. This automated scan re-checks current file state for propagation (not triage outcome). Several items from the 2026-04-22 retro appear still absent from CLAUDE.md or output-checklist.md based on current file read (see Unpropagated Learnings section). These may have been triaged as "deferred" in the 2026-04-24 review — which is a valid terminal status — but the retro cannot distinguish "deferred" from "accepted but not yet executed" without Rosie's confirmation.
-
-**3. personal-learnings fetch failure — structural gap in personal learning loop**
-The network allowlist blocked `aiagentstore.ai`. If this is the primary source for the personal-learning digest, the loop is broken until the allowlist is updated. One failure documented is one signal; if it recurs next cycle with no fix, it becomes a pattern.
-
----
 
 ## Unpropagated learnings
 

@@ -1,2 +1,11 @@
 .claude/session-start
 .claude/session-start-commit
+
+# Private workspaces — never sync to public repo
+# (digest agent + retro draft generator have historically misrouted content here;
+# the .gitignore is the defensive guard until the routing fix lands per Task #7)
+personal-learnings/
+career-move-2026/
+external-track-ramp/
+.firecrawl/
+
