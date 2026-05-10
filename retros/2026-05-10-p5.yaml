@@ -286,7 +286,6 @@ fam_dispatch_distribution:
       - { name: "codex",                 count: 14, role: "consultant", detail: "6 Agent codex-rescue + 8 /codex:* slash" }
       - { name: "breakline",             count:  4, role: "adversarial-auditor" }
       - { name: "teacher",               count:  4, role: "learning-layer" }
-      - { name: "silent-failure-hunter", count:  0, role: "adversarial-reviewer" }
       - { name: "sumi",                  count:  0, role: "OS-self-discipline grader (read-only — invocation is hook-driven, not Task-tool)" }
     total: 116
   reactions_axis:
