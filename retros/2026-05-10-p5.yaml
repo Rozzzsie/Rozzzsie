@@ -4,11 +4,12 @@
 # (v3.10 → v3.10.4). Stakeholder names dropped, workspace-specific paths in
 # `target_surface` genericized to governance paths only, `detail_ref`
 # cross-pointers stripped (the narrative .md they referenced is private).
-# discipline_metrics + latency_observations + fam_dispatch_distribution are
-# left null in this first ship; the dashboard renders graceful "—" placeholders
-# for null fields per v1.3 null-handling fix. Backfill from
-# `.claude/hook-fires.jsonl` + `~/.claude/projects/-Users-rosie-zhao-RosieRoot/`
-# will land in a follow-up sidecar revision once the per-cycle tally script ships.
+# discipline_metrics + latency_observations + fam_dispatch_distribution
+# backfilled 2026-05-10 mid-day from the per-cycle tally script
+# `_config/scripts/sidecar-metrics-tally.py` (n=2 forcing function — closes
+# the "comment-describes-nonexistent-script" pattern that the first ship
+# of this sidecar demonstrated). reactions_axis still null pending Brindle
+# firelog cross-walk extension to the script.
 #
 # Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
 # Narrative: public `_retro/2026-05-10-p10-retro.md` (sanitized companion);
@@ -209,16 +210,25 @@ hook_health:
   measurement_window_session_count: null
   flagged_hooks: null
 
-# Discipline metrics — left null in this first ship.
-# Rationale: per-cycle tally script not yet shipped; backfill from .claude/hook-fires.jsonl
-# (41,513-line firelog as of 2026-05-10) + ~/.claude/projects/*.jsonl transcript scans
-# will land in a follow-up sidecar revision. The dashboard handles null fields with
-# graceful "—" suppression per v1.3 null-handling fix. Sprint-2 multi-retro trend
-# rendering is gated on this backfill being script-driven (not manual) so the
-# cross-cycle apples-to-apples shape is preserved.
+# Discipline metrics — backfilled 2026-05-10 mid-day from the per-cycle tally
+# script `_config/scripts/sidecar-metrics-tally.py` (the script itself shipped
+# this cycle as the n=2 catalyst-vs-domain forcing function — closes the
+# "comment-describes-nonexistent-script" pattern that v1.3 + v1.5 first-ship
+# both demonstrated). checkpoint_bar_miss_rate computed from
+# .claude/hook-fires.jsonl (substantive turns under the v3.10.3 substantive_v2
+# classifier; smoke-test session_ids excluded). Cycle window 2026-05-03 →
+# 2026-05-10 (UTC date semantics, inclusive). Codex invocations = 6 Agent
+# subagent_type=codex* dispatches + 8 /codex:* slash invocations from user
+# turns. Teacher = 4 Agent dispatches. Luma category breakdown intentionally
+# null — categorization requires human-distilled review and isn't machine-
+# extractable from transcript metadata alone (preserves the v1.3 sidecar's
+# narrative-review-pending convention). Miss rate climbed 0.23 → 0.32 from
+# the prior cycle: a real signal worth flagging at next P10 — likely tied to
+# the wrap-arc multi-substantive-turn pattern + post-compact resume sessions
+# (see CLAUDE.md "Budget heuristic for high-fatigue sessions").
 discipline_metrics:
-  checkpoint_bar_miss_rate: null
-  checkpoint_bar_prior_session_rate: null
+  checkpoint_bar_miss_rate: 0.32           # 944/2913 substantive turns; cycle window 2026-05-03 → 2026-05-10
+  checkpoint_bar_prior_session_rate: 0.23  # 2026-05-03-p4 baseline; UPWARD trend, P10 watch
   luma_tally_by_category:
     axis_reframe: null
     silent_assumption_catch: null
@@ -226,43 +236,62 @@ discipline_metrics:
     pre_authoring: null
     tightening: null
     meta_review: null
-    total: null
-  codex_invocations: null
-  teacher_invocations: null
+    total: 23                              # 23 Agent dispatches with subagent_type=luma; per-category breakdown pending narrative review
+  codex_invocations: 14                    # 6 Agent codex-rescue + 8 /codex:* slash invocations
+  teacher_invocations: 4                   # 4 Agent dispatches with subagent_type=teacher
   luma_axis_subcategories:
     demonstrate_vs_guard: null
     completeness_vs_shape: null
     methodology_vs_character: null
 
-# Latency observations — also null in this first ship; same backfill pattern applies.
-# session-start-latency.log is healthy and growing (recent samples 62-625s range);
-# per-cycle tally pending the script ship.
+# Latency observations — backfilled from session-start-latency.log via the same
+# tally script. 89 sessions in the window; median well under the 120s threshold
+# but the long tail (max 2695s = 45m on a single cold-start) shows the cache-
+# cold + post-compact compound-miss pattern that v3.5.1 instrumentation was
+# added to surface. 24 threshold violations across 89 sessions = ~27% violation
+# rate, comparable to the prior cycle's tail behavior.
 latency_observations:
   source: ".claude/session-start-latency.log"
-  window_session_count: null
-  median_first_tool_latency_sec: null
-  p95_first_tool_latency_sec: null
-  max_first_tool_latency_sec: null
-  threshold_violations: null
+  window_session_count: 89
+  median_first_tool_latency_sec: 73
+  p95_first_tool_latency_sec: 624
+  max_first_tool_latency_sec: 2695
+  threshold_violations: 24
 
 # meta_finding redacted from public sidecar — operator-internal observation about
 # governance-cycle cadence and the v3.10.x trilogy ship pattern. Dashboard's
 # meta-finding callout suppresses gracefully when absent.
 
-# Fam dispatch + reactions distribution — same null pattern as discipline_metrics
-# above; backfill pending the per-cycle tally script. The 9th fam member (Sumi)
-# joined this cycle and will appear as a new dispatch-axis row once tallied; her
-# invocation surface is hook-driven (PostToolUse) rather than Task-tool dispatch,
-# so the row may aggregate into a future "hook-driven specialists" sub-band
-# alongside Brindle-style entries.
+# Fam dispatch + reactions distribution — both axes backfilled via the
+# tally script (transcript scan filtered by file mtime in cycle window).
+# The 9th fam member (Sumi) joined this cycle but her invocation surface is
+# hook-driven (PostToolUse on Task / Edit / Write of rubric source files)
+# rather than Task-tool Agent dispatch, so she shows count=0 here — her
+# activity is captured in `hook_health.sumi_post_task` + `sumi_drift_scan`
+# above. Future sub-band split for "hook-driven specialists" may surface
+# Sumi alongside Brindle-style entries; deferred to sprint-2 schema review.
+# reactions_axis: SESSION_START + SESSION_END markers per-session-deduplicated
+# against context-echo amplification (the SessionStart hook re-injects the
+# card on every post-compact restore; raw counts are inflated 10x). REACTION
+# markers are PostToolUse:Write fires that don't echo across compactions —
+# raw count is honest. Sessions with at least one Brindle marker = 44 of 44
+# sessions in the cycle window (Brindle on by default).
 fam_dispatch_distribution:
   source: "~/.claude/projects/-Users-rosie-zhao-RosieRoot/*.jsonl"
   cycle_window: "2026-05-03 → 2026-05-10"
   dispatch_axis:
-    subagents: null
-    total: null
+    subagents:
+      - { name: "deputies",              count: 71, role: "general-purpose / Root parallel-fanout (not consultant)" }
+      - { name: "luma",                  count: 23, role: "consultant" }
+      - { name: "codex",                 count: 14, role: "consultant", detail: "6 Agent codex-rescue + 8 /codex:* slash" }
+      - { name: "breakline",             count:  4, role: "adversarial-auditor" }
+      - { name: "teacher",               count:  4, role: "learning-layer" }
+      - { name: "silent-failure-hunter", count:  0, role: "adversarial-reviewer" }
+      - { name: "sumi",                  count:  0, role: "OS-self-discipline grader (read-only — invocation is hook-driven, not Task-tool)" }
+    total: 116
   reactions_axis:
-    subagents: null
-    total: null
+    subagents:
+      - { name: "brindle", count: 353, role: "companion (hook-driven)", detail: "44 session_starts + 282 reactions + 27 session_ends across 44 sessions" }
+    total: 353
 
 schema_version: "1.0"
