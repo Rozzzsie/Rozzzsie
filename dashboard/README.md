@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v1.3** (2026-05-04) · Tag: `dashboard-v1.3` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v1.5** (2026-05-10) · Tag: `dashboard-v1.5` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,22 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v1.5 — 2026-05-10 (re-render against `2026-05-10-p5.yaml` + v3.10.x ship cycle + 9th fam member surface)
+
+- **Re-render against the new sidecar.** Source data updated from `retros/2026-05-03-p4.yaml` → `retros/2026-05-10-p5.yaml` (the P5 sidecar shipped with the v3.10.x ship cycle, window 2026-05-03 → 2026-05-10, 15 findings × 11 fields). Default sidecar arg in `render.py` retargeted to match.
+- **First sidecar with parallel public narrative companion.** `_retro/2026-05-10-p10-retro.md` lands alongside `retros/2026-05-10-p5.yaml` — prior public-side cycles (P3 / P4) shipped sidecar-only, with public `_retro/` containing only automated SessionStart-hook drafts. The parallel narrative pattern is the explicit publication shape for interactive P10 retros going forward.
+- **9th fam member surfaces in the OS.** Sumi joined The Crew this cycle as the 5th P3 enforcement rail (Frame E placement; specialist agent triggered for narrow scope, sibling-shape to Codex P3B). Sumi v1.0/v1.1/v1.2 trilogy in 24 hours + v1.3 drift-scan extension the next day. The dashboard's findings detail table now reflects this as 4 line items (Sumi v1.0 / v1.1 / v1.2 / v1.3 — `1.1` through `1.4`).
+- **Sidecar count crosses sprint-2 threshold.** With `2026-04-24-p3.yaml` + `2026-05-03-p4.yaml` + `2026-05-10-p5.yaml` now accumulated, the 3+ sidecar threshold for multi-retro trend rendering is met. Sprint-2 unlocks at the next sidecar ship; this v1.5 stays single-retro snapshot grain to preserve the v1.x release lineage.
+- **Null-field forward-compatibility verified end-to-end.** v1.5's sidecar leaves `discipline_metrics` + `latency_observations` + `fam_dispatch_distribution` null in this first ship (per-cycle tally script not yet shipped); the dashboard renders graceful "—" placeholders for null fields per v1.3's null-handling fix. Backfill from `.claude/hook-fires.jsonl` + `~/.claude/projects/*.jsonl` will land in a follow-up sidecar revision; the cross-cycle apples-to-apples shape is gated on this becoming script-driven (not manual) before sprint-2 ships.
+- **OS version bump in footer attribution.** Thin attribution band now reads `Dashboard v1.5 · Schema v1.0 · Rozzzsie OS v3.10.4 · EDD 2024 · Source · About`.
+
+### v1.4 — 2026-05-04 (Frame 2 fam-dispatch widget + measurement-surface anchor + Luma reframe-axis tally relocation)
+
+- **New top-band fam-dispatch widget.** Surfaces fam-wide agent activity with explicit sub-band split: dispatch axis (Agent-tool subagents: Deputies / Luma / Codex / silent-failure-hunter / Breakline / Teacher) and reactions axis (Brindle: hook-driven session_starts + reactions + session_ends). Sub-band split was Luma's verdict — conflating the two axes would let the high-cardinality reactions axis visually overpower the dispatch rails (different units).
+- **Discipline band simplified.** "Discipline + dispatch" band collapsed to "Discipline" (checkpoint-bar only); Codex/Teacher/Luma scalars removed from this band (now redundant with the fam widget).
+- **Luma reframe-axis tally relocated.** Moved from band-tier prominence to a "Luma reframe-axis facet (deep-dive)" panel with explicit empty-state copy naming the categorization constraint (human-distilled review, not auto-extracted from transcript metadata).
+- **Measurement-surface anchor.** Each rendered metric now footnotes its source path (`.claude/hook-fires.jsonl`, `~/.claude/projects/*.jsonl`, `.claude/session-start-latency.log`) so the reader can trace the artifact behind every number.
 
 ### v1.3 — 2026-05-04 (re-render against `2026-05-03-p4.yaml` + v3.9.3 cascade + null-handling fix)
 
