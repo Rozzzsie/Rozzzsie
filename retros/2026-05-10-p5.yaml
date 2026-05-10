@@ -1,0 +1,268 @@
+# P10 Retro Sidecar — 2026-05-10 (P10 retro #5, sanitized public snapshot)
+#
+# This is the public-grain version of the sidecar covering the v3.10.x ship cycle
+# (v3.10 → v3.10.4). Stakeholder names dropped, workspace-specific paths in
+# `target_surface` genericized to governance paths only, `detail_ref`
+# cross-pointers stripped (the narrative .md they referenced is private).
+# discipline_metrics + latency_observations + fam_dispatch_distribution are
+# left null in this first ship; the dashboard renders graceful "—" placeholders
+# for null fields per v1.3 null-handling fix. Backfill from
+# `.claude/hook-fires.jsonl` + `~/.claude/projects/-Users-rosie-zhao-RosieRoot/`
+# will land in a follow-up sidecar revision once the per-cycle tally script ships.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Narrative: public `_retro/2026-05-10-p10-retro.md` (sanitized companion);
+# private `_retro/2026-05-10-p10-retro.md` is the canonical narrative.
+# If this file and the narrative disagree, the narrative wins. Regenerate from narrative.
+#
+# This is the FIRST P10 retro sidecar published with a parallel public narrative
+# (`_retro/2026-05-10-p10-retro.md`) alongside the YAML. Prior cycles (P3/P4)
+# shipped sidecar-only on the public side; the narrative landed only as
+# automated SessionStart-hook drafts (`_retro/YYYY-MM-DD-retro-draft.md`). The
+# parallel narrative pattern is the explicit publication shape for interactive
+# P10 retros going forward.
+
+retro_id: "2026-05-10-p5"
+retro_date: "2026-05-10"
+window_start: "2026-05-03"
+window_end: "2026-05-10"
+prior_retro: "2026-05-03-p4"
+interactive_mode: true
+trigger_source: "weekly-cadence-rolling-retro-with-v3.10.x-ship-bracket"
+
+findings:
+  # v3.10 architectural cluster — Sumi trilogy + drift-scan
+  - id: "1.1"
+    title: "Sumi v1.0 — 5th P3 enforcement layer (Frame E placement; new read-only governance grader; Tools=[Read] descope from v1.0-min)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "design-iteration"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-09"
+    target_surface: "_config/agent-protocols.md + agents/sumi/"
+
+  - id: "1.2"
+    title: "Sumi v1.1 — design-spec output_type + cross-check resolution + Tier B Read+Grep tool grant"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "design-iteration"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-09"
+    target_surface: "_config/sumi-rubrics.yaml + agents/sumi/"
+
+  - id: "1.3"
+    title: "Sumi v1.2 — external-bound paste-text output_type + stakeholders.council activation + additive-overlay rubric composition"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "design-iteration"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-09"
+    target_surface: "_config/sumi-rubrics.yaml + agents/sumi/"
+
+  - id: "1.4"
+    title: "Sumi v1.3 — drift-scan invocation mode (walks active rubrics, verifies anchors resolve in source files; new drift_findings verdict shape with drift_class enum)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/sumi-rubrics.yaml + hooks/sumi-drift-scan.sh"
+
+  # v3.10.3 / v3.10.4 ship cluster
+  - id: "1.5"
+    title: "v3.10.3 — checkpoint-bar PostToolUse format-validator (LOOSE_BAR_PATTERN + block-corrective-format) + substantive_v2 mutation-tool-aware classification"
+    category: "rule-extension"
+    evidence_count: 5
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/scripts/checkpoint_classifier.py + hooks/checkpoint-bar-tier2.py"
+
+  - id: "1.6"
+    title: "v3.10.4 — MUTATION_TOOLS Conservative extension ({Edit, Write, Bash} → +MultiEdit, NotebookEdit); Path A unified gate combining MUTATION_TOOLS + Sumi v1.3 drift-scan in single patch"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/scripts/checkpoint_classifier.py + agent-protocols.md"
+
+  # Phase 1 doctrine ship — MD-vs-HTML + matcher discipline + long-lived branches
+  - id: "1.7"
+    title: "§18 Matcher discipline — structural over substring (cross-layer n=5 evidence: F1 validator + F9 hook + audit-test + test-harness paths + bytes-vs-chars slicing)"
+    category: "rule-extension"
+    evidence_count: 5
+    source_catchment: "family-extension"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/output-checklist.md"
+
+  - id: "1.8"
+    title: "§19 Reading-bundle rendering — MD-vs-HTML deliverable doctrine (Luma F3 edit-locus reframe; output-side mirror of v3.5 synthesis-surface pre-render pattern)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/output-checklist.md + CLAUDE.md"
+
+  - id: "1.9"
+    title: "§20 Long-lived branch merge discipline (n=1 doctrine ship; Teacher-recommended doctrine-only at n=1; n=2 trigger for hook-side enforcement)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/output-checklist.md"
+
+  # Pending / rejected — bundled-framing dispositions
+  - id: "2.1"
+    title: "Aggressive MUTATION_TOOLS Teacher proposal — mcp__*-write tool inclusion (Option 2 wildcard regex / Option 3 explicit allowlist + YAML meta-proposal composability)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "_config/scripts/checkpoint_classifier.py + _config/mutation-tools.yaml (proposed)"
+
+  - id: "2.2"
+    title: "Briefing-card passthrough miss family — REJECTED via novel doctrine tag 'axis-coherent, evidence-weight-rejected' (n=4 outside-retro re-open watch)"
+    category: "meta-observation"
+    evidence_count: 4
+    source_catchment: "Teacher-proposal"
+    recommendation: "reject"
+    status: "rejected"
+    execution_target_week: null
+    target_surface: "n/a (rejected)"
+
+  # Adversarial / cross-find layer
+  - id: "3.1"
+    title: "Codex P3B hookSpecificOutput envelope cross-find — adversarial review of NEW hooks must explicitly sweep architectural-template siblings (n=1 catalyst, rule-promotion at n=2)"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "adversarial-audit"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "_config/agent-protocols.md (P3B section, future patch)"
+
+  - id: "3.2"
+    title: "Subagent Write-permission Class-S signal — config-layer fix shipped (permissions.allow path-targeted Write rules per subagent contract)"
+    category: "rule-clarification"
+    evidence_count: 2
+    source_catchment: "adversarial-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: ".claude/settings.json + _config/output-checklist.md §6"
+
+  # Process-level patterns surfaced this cycle
+  - id: "4.1"
+    title: "Layer-classification scope-conflation pattern — README taxonomy axis vs internal CONTEXT descriptors (n=1 catalyst Sumi public card, sibling to catalyst-vs-domain)"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/output-checklist.md §15(c)"
+
+  - id: "4.2"
+    title: "Catalyst-vs-domain conflation pattern — scope a fix to the shape, not the catalyst's domain (n=2 confirmed across distinct surfaces)"
+    category: "rule-clarification"
+    evidence_count: 2
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-10"
+    target_surface: "_config/output-checklist.md §11"
+
+proposal_backlog:
+  pending_before_retro: 2     # Carried forward from prior P10 cycle
+  approved_not_executed: 2    # 2.1 (Aggressive MUTATION_TOOLS) + 3.1 (P3B sibling-sweep watch)
+  executed_this_cycle: 12     # 1.1-1.9 (9 v3.10.x rule changes) + 3.2 (Class-S config fix) + 4.1 (layer-classification) + 4.2 (catalyst-vs-domain promotion)
+  authored_this_cycle: 5      # Sumi v1.0 architecture + Aggressive MUTATION_TOOLS + briefing-card (rejected) + long-lived branches doctrine + subagent Write Class-S
+
+# Hook health — public sidecar reports stability category, exact session counts private.
+# v3.10.x cycle added 2 new hook surfaces (sumi-post-task.sh + sumi-drift-scan.sh)
+# beyond the v3.9.x baseline; both confirmed firing per LOAD-BEARING smoke gates
+# during their respective Sumi version ships (v1.0 / v1.1 / v1.2 / v1.3).
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active (case-sensitive-grep family n=4 — 1 fixed in prior cycle, 3 deferred carry-forward)"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  sumi_post_task: "active (NEW v3.10 — fires PostToolUse on Task tool; per-output grading)"
+  sumi_drift_scan: "active (NEW v3.10.4 — fires PostToolUse on Edit/Write of output-checklist.md or sumi-rubrics.yaml; rubric anchor verification)"
+  checkpoint_bar_tier2_format_validator: "active (NEW v3.10.3 — fires PostToolUse with format-corrective branch; substantive_v2 mutation-tool-aware classification)"
+  measurement_window_days: 7
+  measurement_window_session_count: null
+  flagged_hooks: null
+
+# Discipline metrics — left null in this first ship.
+# Rationale: per-cycle tally script not yet shipped; backfill from .claude/hook-fires.jsonl
+# (41,513-line firelog as of 2026-05-10) + ~/.claude/projects/*.jsonl transcript scans
+# will land in a follow-up sidecar revision. The dashboard handles null fields with
+# graceful "—" suppression per v1.3 null-handling fix. Sprint-2 multi-retro trend
+# rendering is gated on this backfill being script-driven (not manual) so the
+# cross-cycle apples-to-apples shape is preserved.
+discipline_metrics:
+  checkpoint_bar_miss_rate: null
+  checkpoint_bar_prior_session_rate: null
+  luma_tally_by_category:
+    axis_reframe: null
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: null
+  codex_invocations: null
+  teacher_invocations: null
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — also null in this first ship; same backfill pattern applies.
+# session-start-latency.log is healthy and growing (recent samples 62-625s range);
+# per-cycle tally pending the script ship.
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: null
+  median_first_tool_latency_sec: null
+  p95_first_tool_latency_sec: null
+  max_first_tool_latency_sec: null
+  threshold_violations: null
+
+# meta_finding redacted from public sidecar — operator-internal observation about
+# governance-cycle cadence and the v3.10.x trilogy ship pattern. Dashboard's
+# meta-finding callout suppresses gracefully when absent.
+
+# Fam dispatch + reactions distribution — same null pattern as discipline_metrics
+# above; backfill pending the per-cycle tally script. The 9th fam member (Sumi)
+# joined this cycle and will appear as a new dispatch-axis row once tallied; her
+# invocation surface is hook-driven (PostToolUse) rather than Task-tool dispatch,
+# so the row may aggregate into a future "hook-driven specialists" sub-band
+# alongside Brindle-style entries.
+fam_dispatch_distribution:
+  source: "~/.claude/projects/-Users-rosie-zhao-RosieRoot/*.jsonl"
+  cycle_window: "2026-05-03 → 2026-05-10"
+  dispatch_axis:
+    subagents: null
+    total: null
+  reactions_axis:
+    subagents: null
+    total: null
+
+schema_version: "1.0"
