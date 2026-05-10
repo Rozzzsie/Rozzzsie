@@ -615,3 +615,109 @@ section {
   letter-spacing: 0.02em;
   margin-left: 0.4em;
 }
+
+/* ─── Trend chart (v2.0 sprint-2 — multi-retro rendering) ─────────── */
+
+.trend-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 800px) {
+  .trend-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.trend-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.trend-card h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.trend-card-suffix {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  margin-left: 0.4em;
+}
+
+.trend-values {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.trend-arrow {
+  color: var(--text-subtle);
+  font-weight: 400;
+  font-size: 0.95rem;
+}
+
+.trend-svg {
+  display: block;
+  width: 100%;
+  height: 60px;
+  margin: 0.2rem 0 0.1rem;
+}
+
+.trend-axis-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  font-size: 0.72rem;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.trend-annotation {
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.trend-up {
+  color: var(--status-executed);
+}
+
+.trend-down {
+  color: #a13a2c;
+}
+
+.trend-flat {
+  color: var(--text-muted);
+}
+
+.trend-note {
+  font-size: 0.72rem;
+  color: var(--text-subtle);
+  line-height: 1.4;
+  margin: 0.4rem 0 0;
+}
+
+.trend-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 1.5rem;
+}

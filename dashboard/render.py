@@ -42,7 +42,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "1.5"
+DASHBOARD_VERSION = "2.0"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -340,7 +340,188 @@ def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
     return "".join(sub_bands)
 
 
-def render_dashboard(sc: dict[str, Any]) -> str:
+def load_all_sidecars(retros_dir: Path) -> list[dict[str, Any]]:
+    """Load every `*.yaml` in the retros directory, sorted by retro_date.
+
+    Used by the trend chart (sprint-2) to render cross-cycle metrics. The
+    single-retro snapshot (sprint-1) consumes one sidecar; this aggregator
+    reads all of them so trend lines have an apples-to-apples axis when the
+    measurement shape is stable.
+    """
+    sidecars: list[dict[str, Any]] = []
+    for path in sorted(retros_dir.glob("*.yaml")):
+        try:
+            sidecars.append(load_sidecar(path))
+        except (OSError, ValueError):
+            continue
+    sidecars.sort(key=lambda s: s.get("retro_date") or "")
+    return sidecars
+
+
+def _trend_sparkline_svg(values: list[float | int | None], height: int = 60, width: int = 240) -> str:
+    """Emit an inline SVG sparkline for a list of numeric trend points.
+
+    None values render as gaps (no dot, line broken). Y-axis auto-scales
+    against the min/max of present values. Always renders the full
+    (width × height) viewBox so cards align even when a series has gaps.
+    """
+    pad_x, pad_y = 16, 10
+    inner_w = width - 2 * pad_x
+    inner_h = height - 2 * pad_y
+    points = [v for v in values if isinstance(v, (int, float))]
+    if not points or len(values) < 2:
+        return f'<svg viewBox="0 0 {width} {height}" class="trend-svg" aria-hidden="true"><line x1="{pad_x}" y1="{height/2}" x2="{width-pad_x}" y2="{height/2}" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3"/></svg>'
+
+    vmin, vmax = min(points), max(points)
+    span = vmax - vmin if vmax > vmin else 1.0
+
+    coords: list[tuple[float, float] | None] = []
+    n = len(values)
+    for i, v in enumerate(values):
+        x = pad_x + (i * inner_w / (n - 1)) if n > 1 else width / 2
+        if isinstance(v, (int, float)):
+            y = pad_y + inner_h - ((v - vmin) / span * inner_h)
+            coords.append((x, y))
+        else:
+            coords.append(None)
+
+    # Build polyline segments (broken across None gaps)
+    segments: list[str] = []
+    current: list[str] = []
+    for c in coords:
+        if c is None:
+            if len(current) >= 2:
+                segments.append(" ".join(current))
+            current = []
+        else:
+            current.append(f"{c[0]:.1f},{c[1]:.1f}")
+    if len(current) >= 2:
+        segments.append(" ".join(current))
+
+    line_html = "".join(
+        f'<polyline points="{seg}" fill="none" stroke="var(--accent)" stroke-width="2"/>'
+        for seg in segments
+    )
+    dot_html = "".join(
+        f'<circle cx="{c[0]:.1f}" cy="{c[1]:.1f}" r="3.5" fill="var(--accent)" />'
+        for c in coords if c is not None
+    )
+    return f'<svg viewBox="0 0 {width} {height}" class="trend-svg" aria-hidden="true">{line_html}{dot_html}</svg>'
+
+
+def _format_trend_value(v: float | int | None, suffix: str = "") -> str:
+    """Format a single trend value (or em-dash for None)."""
+    if v is None:
+        return "—"
+    if isinstance(v, float):
+        if suffix == "%":
+            return f"{v * 100:.0f}%"
+        return f"{v:.1f}"
+    return f"{v}{suffix}"
+
+
+def _trend_annotation(values: list[float | int | None], lower_is_better: bool = False) -> str:
+    """Compare last two non-null values; emit directional + label."""
+    present = [(i, v) for i, v in enumerate(values) if isinstance(v, (int, float))]
+    if len(present) < 2:
+        return ""
+    _, prev = present[-2]
+    _, last = present[-1]
+    if last == prev:
+        return '<span class="trend-flat">→ flat</span>'
+    rising = last > prev
+    if rising:
+        return (
+            '<span class="trend-down">↑ regression</span>' if lower_is_better
+            else '<span class="trend-up">↑ accelerating</span>'
+        )
+    return (
+        '<span class="trend-up">↓ improving</span>' if lower_is_better
+        else '<span class="trend-down">↓ slowing</span>'
+    )
+
+
+def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
+    """Sprint-2 multi-retro trend rendering. Honest at n=3.
+
+    Three metric cards: checkpoint miss rate, decision velocity (executed
+    findings per cycle), Teacher invocations. Each card carries a 3-point
+    sparkline + the underlying values + a directional annotation comparing
+    the last two cycles. Apples-to-apples caveat for miss rate documented
+    inline (p3 measured this-retro-session, p4/p5 measure cycle-window).
+    """
+    if len(sidecars) < 2:
+        return (
+            '<p class="trend-empty">'
+            'Trend rendering activates at n≥2 sidecars; '
+            f"{len(sidecars)} accumulated."
+            "</p>"
+        )
+
+    labels = [str(sc.get("retro_id", "—")).split("-")[-1] for sc in sidecars]
+
+    miss_values: list[float | int | None] = [
+        (sc.get("discipline_metrics") or {}).get("checkpoint_bar_miss_rate")
+        for sc in sidecars
+    ]
+    velocity_values: list[float | int | None] = [
+        (sc.get("proposal_backlog") or {}).get("executed_this_cycle")
+        for sc in sidecars
+    ]
+    teacher_values: list[float | int | None] = [
+        (sc.get("discipline_metrics") or {}).get("teacher_invocations")
+        for sc in sidecars
+    ]
+
+    def _card(
+        title: str, suffix: str, values: list[float | int | None],
+        value_format: str = "", lower_is_better: bool = False, note: str = "",
+    ) -> str:
+        value_strs = [_format_trend_value(v, value_format) for v in values]
+        values_inline = (
+            '<span class="trend-arrow">→</span>'.join(
+                f'<span class="trend-value">{html.escape(s)}</span>' for s in value_strs
+            )
+        )
+        axis_labels = "".join(
+            f'<span class="trend-axis-label">{html.escape(l)}</span>' for l in labels
+        )
+        annotation = _trend_annotation(values, lower_is_better=lower_is_better)
+        note_html = (
+            f'<p class="trend-note">{html.escape(note)}</p>' if note else ""
+        )
+        return (
+            '<div class="trend-card">'
+            f'<h3>{html.escape(title)} <span class="trend-card-suffix">{html.escape(suffix)}</span></h3>'
+            f'<div class="trend-values">{values_inline}</div>'
+            f'{_trend_sparkline_svg(values)}'
+            f'<div class="trend-axis-labels">{axis_labels}</div>'
+            f'<div class="trend-annotation">{annotation}</div>'
+            f'{note_html}'
+            '</div>'
+        )
+
+    cards = [
+        _card(
+            "Checkpoint miss rate", "lower is better",
+            miss_values, value_format="%", lower_is_better=True,
+            note="p3 measured this-retro-session; p4/p5 measure cycle-window. "
+                 "Strict cross-cycle apples-to-apples lands at p6 (window-shape stable since p4).",
+        ),
+        _card(
+            "Decision velocity", "executed findings / cycle",
+            velocity_values, value_format="",
+        ),
+        _card(
+            "Teacher invocations", "learning-layer adoption",
+            teacher_values, value_format="",
+        ),
+    ]
+
+    return "".join(cards)
+
+
+def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | None = None) -> str:
     findings = sc.get("findings", []) or []
     backlog = sc.get("proposal_backlog", {}) or {}
     discipline = sc.get("discipline_metrics", {}) or {}
@@ -387,6 +568,18 @@ def render_dashboard(sc: dict[str, Any]) -> str:
     tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
     fam_dispatch = sc.get("fam_dispatch_distribution") or {}
     fam_dispatch_html = render_fam_dispatch_widget(fam_dispatch)
+    trend_html = render_trend_chart(all_sidecars or [sc])
+    trend_section_html = (
+        f"""
+    <section>
+      <h2 class="section-title">Governance trend <span class="section-title-suffix">sprint-2 · n={len(all_sidecars or [sc])} P10 cycles</span></h2>
+      <div class="trend-grid">
+        {trend_html}
+      </div>
+    </section>
+    """
+        if all_sidecars and len(all_sidecars) >= 2 else ""
+    )
 
     body = f"""
     <header class="hero">
@@ -511,12 +704,13 @@ def render_dashboard(sc: dict[str, Any]) -> str:
       </div>
       ''' if meta.get("headline") else ""}
     </section>
+    {trend_section_html}
 
     <footer class="scope-honest">
       <p>
         Dashboard v{DASHBOARD_VERSION}
         <span class="sep">·</span> Schema v{html.escape(str(sc.get("schema_version", "—")))}
-        <span class="sep">·</span> Rozzzsie OS v3.9.3
+        <span class="sep">·</span> Rozzzsie OS v3.10.4
         <span class="sep">·</span> <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard">Source</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard#readme">About</a>
@@ -556,9 +750,14 @@ def main(argv: list[str]) -> int:
         return 2
 
     sc = load_sidecar(sidecar)
-    html_out = render_dashboard(sc)
+    retros_dir = sidecar.parent
+    all_sidecars = load_all_sidecars(retros_dir)
+    html_out = render_dashboard(sc, all_sidecars=all_sidecars)
     out.write_text(html_out, encoding="utf-8")
-    print(f"rendered {sidecar.name} → {out.relative_to(here.parent)}")
+    print(
+        f"rendered {sidecar.name} → {out.relative_to(here.parent)} "
+        f"(trend: n={len(all_sidecars)} sidecars)"
+    )
     return 0
 
 

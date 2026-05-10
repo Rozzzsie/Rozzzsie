@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v1.5** (2026-05-10) · Tag: `dashboard-v1.5` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v2.0** (2026-05-10) · Tag: `dashboard-v2.0` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,16 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v2.0 — 2026-05-10 (sprint-2 unlocked: multi-retro trend rendering — 3 metric cards × n=3 sidecars)
+
+- **Sprint-2 trend rendering shipped.** New "Governance trend" section below the Findings detail panel renders 3 metric cards across all accumulated sidecars (`2026-04-24-p3.yaml` + `2026-05-03-p4.yaml` + `2026-05-10-p5.yaml`). Each card carries a 3-point inline SVG sparkline + the underlying values inline + a directional annotation (↑ regression / ↑ accelerating / ↑ improving / etc.) comparing the last two cycles + an optional measurement-shape caveat note when cross-cycle apples-to-apples is partial.
+- **3 metrics in v2.0 first-pass:** (a) **Checkpoint miss rate** — 29% → 23% → 32% (↑ regression annotation; the v3.10.x cycle's wrap-arc miss plateau showed up); (b) **Decision velocity** — 4 → 9 → 12 executed findings per cycle (↑ accelerating); (c) **Teacher invocations** — 1 → 2 → 4 (↑ accelerating; learning-layer adoption doubling each cycle). The miss-rate card carries an apples-to-apples caveat note inline (p3 measured this-retro-session; p4/p5 measure cycle-window — strict cross-cycle comparison lands at p6 once the window-shape has been stable for 3 cycles).
+- **Honest at n=3, scope-honest about it.** This is the "first taste" of trend rendering — 3 datapoints per metric is enough to surface direction (rising / falling / flat) but not enough to call inflection points. The `trend_grid` activates at n≥2 sidecars and degrades gracefully below threshold (placeholder copy if only 1 accumulated). The metric set will expand at n≥5 when distribution-shape (median + p95 + percentile bands) becomes meaningful.
+- **No JS, inline SVG, no external dependencies.** Sparklines rendered server-side as inline SVG with auto-scaled Y-axis based on min/max of present values; None values render as gaps (line breaks, no dot). Same no-JS / mobile-responsive / print-friendly contract as v1.x.
+- **Renderer architecture extension.** New `load_all_sidecars()` aggregator + `render_trend_chart()` + `_trend_sparkline_svg()` + `_format_trend_value()` + `_trend_annotation()` helpers in `render.py`. `render_dashboard(sc, all_sidecars=...)` signature gained a second arg; defaults to single-sidecar shape if not provided (back-compat for direct invocation patterns).
+- **Footer OS version bump.** Stale `Rozzzsie OS v3.9.3` ref in the footer corrected to `v3.10.4` (caught as parity-fix during v2.0 ship — should have landed in v1.5; the missed update is itself an instance of the layer-classification family from earlier today, where reference axes get scoped to the wrong update batch).
+- **Sidecar count: 3.** This is the first dashboard release that treats the `retros/` folder as a *collection* rather than a single-input source. Future sidecar drops auto-extend the trend lines without a renderer change.
 
 ### v1.5 — 2026-05-10 (re-render against `2026-05-10-p5.yaml` + v3.10.x ship cycle + 9th fam member surface)
 
