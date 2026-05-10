@@ -2,7 +2,7 @@
 
 A living snapshot of the agent fam and the governance OS they run on.
 
-Eight agents. Thirteen protocols (P1–P10 + sub-protocols P1B/P2B/P3B for Codex validation) and a checkpoint bar, mechanically enforced by hooks that fail session-close when any of them slips. Adversarial audits run against the governance doc itself — the fam writes the rules, Breakline tries to break them, the fam decides what to fix.
+Nine agents. Thirteen protocols (P1–P10 + sub-protocols P1B/P2B/P3B for Codex validation) and a checkpoint bar, mechanically enforced by hooks that fail session-close when any of them slips. Adversarial audits run against the governance doc itself — the fam writes the rules, Breakline tries to break them, the fam decides what to fix.
 
 **Start here:** [`agents/breakline/breakline.md`](agents/breakline/breakline.md) — the adversarial auditor. The clearest single page on how the fam operates.
 
@@ -27,6 +27,8 @@ Eight agents. Thirteen protocols (P1–P10 + sub-protocols P1B/P2B/P3B for Codex
 **Brindle** — companion. Cosmetic only; reacts to events, doesn't help with tasks.
 
 **Codex** — secondary validator. Invoked for pair programming, rescue after failure loops, and adversarial code review.
+
+**Sumi** — read-only governance grader. New in v3.10 as the 5th P3 enforcement rail (joins pre-output validation, output-checklist gates, Codex P3B review, and Breakline adversarial audit). Two job modes: per-output grading (Sumi reads a deputy's draft against the rubric matched to its output_type and emits a tier-graded verdict with structured suggested revisions) and drift-scan (Sumi walks every active rubric in `_config/sumi-rubrics.yaml` and verifies each anchor still resolves in its declared source file). Tools strictly `[Read, Grep]`. Indirect channel locked: Sumi → Root → (optionally) Teacher — never authors proposals directly, never edits source files. Separate-model judge so the grade lands as a second opinion, not a self-pat.
 
 **Deputies** — the sub-agent pool. Zero-context by design; each one gets a task brief and nothing more.
 
@@ -55,7 +57,7 @@ The 10 governance-architecture patterns this OS implements at company-scale desi
 |---|---------|---------------------|------------------|
 | 1 | **Tier 1 / 2 / 3 enforcement classification** | Three-tier scale separating mechanically-enforced rules (T1, fail loud), corrective+formative hooks (T2), and pure conventions (T3); rule severity is declared, not implicit. | `_config/agent-protocols.md` (header) + [`hooks/`](hooks/) (stop-gate, checkpoint-bar Tier 2) |
 | 2 | **Versioned governance protocols + symlink-canonical** | Canonical filename carries the version (`agent-protocols-3.10.4.md`); a stable symlink (`agent-protocols.md`) retargets on bumps so references never break. | [`_config/`](_config/) (canonical + symlink) |
-| 3 | **Multi-agent role separation (4-role split)** | Doer / consultant / proposal-author / decider — each rail load-bearing against exactly one failure mode; Root never simplifies for the controller (that's Luma's territory). | [`agents/`](agents/) (Root, Luma, Teacher, Breakline, Codex, Brindle, Deputies) |
+| 3 | **Multi-agent role separation (4-role split)** | Doer / consultant / proposal-author / decider — each rail load-bearing against exactly one failure mode; Root never simplifies for the controller (that's Luma's territory). | [`agents/`](agents/) (Root, Luma, Teacher, Breakline, Codex, Sumi, Brindle, Deputies) |
 | 4 | **Three-flavor governance file taxonomy** | Activity (CHANGELOG — what happened) / meta (LEARNINGS + retros — reflection on activity) / reference (curated stable look-ups). Re-asked questions across 2+ sessions promote into reference. | [`CHANGELOG.md`](CHANGELOG.md) + [`LEARNINGS.md`](LEARNINGS.md) + [`retros/`](retros/) |
 | 5 | **Hooks-as-enforcement** | Mechanical enforcement at runtime via `PostToolUse` / `Stop` / `SessionStart`; rules don't rely on agent self-discipline. Stop-gate blocks session-close on protocol failures. | [`hooks/`](hooks/) |
 | 6 | **Synthesis-Surface Pre-Render Pattern** | Hook-side render scripts pre-compute mechanical content for synthesis-heavy surfaces; agent fills `<JUDGMENT: ___>` slots inline. Bidirectional contract: read-render + write-budget. | [`hooks/`](hooks/) (render scripts) + `.remember/remember.md` (write-cap) |
