@@ -609,6 +609,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
         {render_tile(by_status.get("rejected", 0), "Rejected")}
       </div>
     </section>
+    {trend_section_html}
 
     <section>
       <h2 class="section-title">Specialist agent dispatches <span class="section-title-suffix">fam-wide activity, this cycle</span></h2>
@@ -704,7 +705,6 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
       </div>
       ''' if meta.get("headline") else ""}
     </section>
-    {trend_section_html}
 
     <footer class="scope-honest">
       <p>
