@@ -4,6 +4,8 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+[2026-05-13] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
+
 [2026-05-10] | v3.10.4 ship — Path A unified gate: Sumi v1.3 drift-scan invocation mode + MUTATION_TOOLS Conservative extension. Sumi gains second job (read-only drift-scan PostToolUse on output-checklist + sumi-rubrics edits, walks every active rubric and verifies anchor resolution); MUTATION_TOOLS frozenset extended `{Edit, Write, Bash}` → `{Edit, Write, MultiEdit, NotebookEdit, Bash}` (mcp__*-write deferred per stable-MCP-naming gate; Aggressive direction pre-staged as Teacher proposal). Codex P3B caught 3 ship-blockers all fixed pre-ship including hookSpecificOutput envelope cross-find parity-fix (silent failure since v3.10 ship). 94/94 tests green.
 
 [2026-05-10] | v3.10.3 ship — checkpoint-bar PostToolUse format-validator + substantive-heuristic v2: NEW LOOSE_BAR_PATTERN detects bar-attempted-but-malformed turns + format-corrective action emits typo-specific corrective; substantive_v2 mutation-tool-aware classification when `tool_names` provided. Closes Teacher proposal "checkpoint-bar Tier 2 PostToolUse extension" (Frame 3 corrective+formative + Option B PostToolUse pre-block per Luma framing). 53/53 tests green.
