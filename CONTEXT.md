@@ -6,7 +6,7 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 
 ---
 
-## Governance OS state (snapshot 2026-05-10)
+## Governance OS state (snapshot 2026-05-13)
 
 | Field | Value |
 |-------|-------|
@@ -48,7 +48,7 @@ Two private workspaces (lightweight personal-learning log + sandbox for fun buil
 - Synthesis-Surface Pre-Render Pattern (reference implementation on SessionStart shipped v3.5.0; output-side mirror via MD-canonical+HTML-render hybrid shipped 2026-05-10 as deliverable format convention)
 - Teacher proposal cadence + auto-promotion gating (P8 firmware ON as of v3.9.1 — Teacher agent + grammars + ledger + auto-promote-enabled gate; gate still controller-supervised in observation window)
 - MUTATION_TOOLS doctrine (v3.10.3 introduced + v3.10.4 Conservative extended; Aggressive direction pre-staged as Teacher proposal pending SDK MCP tool surface stabilization)
-- Dashboard / observability layer (sprint-1 v1.4 live at `rozzzsie.github.io/Rozzzsie/dashboard/` — Frame 2 fam-dispatch widget + measurement-surface anchor shipped 2026-05-04; sprint-2 trend rendering unlocks at 3+ retro sidecars; v3.10 catchment sidecar refresh in-flight)
+- Dashboard / observability layer (sprint-2 v2.0 live — multi-retro trend rendering unlocked 2026-05-10 after 3+ retro sidecars accumulated; schema v1.0 stability review window: 2026-05-15)
 - Sidecar schema v1.0 stability review window: 2026-05-15 (3+ retro cycles needed before mid-week emission unlocks)
 
 ---
