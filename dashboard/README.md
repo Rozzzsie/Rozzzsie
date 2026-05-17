@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v2.0** (2026-05-10) · Tag: `dashboard-v2.0` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v2.1** (2026-05-17) · Tag: `dashboard-v2.1` · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,15 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v2.1 — 2026-05-17 (re-render against `2026-05-17-p6.yaml` + n=4 sidecar trend extension + P10-ritual final-step codification)
+
+- **Re-render against the new sidecar.** Source data updated from `retros/2026-05-10-p5.yaml` → `retros/2026-05-17-p6.yaml` (window 2026-05-10 → 2026-05-17, 13 findings × 11 fields, 7d-on-the-nose cadence per SessionStart OVERDUE banner). Default sidecar arg in `render.py` retargeted to match.
+- **Trend lines auto-extend to n=4 sidecars.** Sprint-2's `load_all_sidecars()` aggregator picks up `2026-05-17-p6.yaml` automatically — no renderer change. Each of the 3 metric cards (checkpoint miss / decision velocity / Teacher invocations) now carries a 4-point inline SVG sparkline + the v2.0 directional annotations re-computed on the new tail. Direction calls: (a) **Checkpoint miss rate** — 29% → 23% → 32% → 35% (↑ regression continues; late-session-fatigue plateau in the retro session itself is a representative within-session instance per the public sidecar's `discipline_metrics` comment); (b) **Decision velocity** — 4 → 9 → 12 → 8 executed findings (↓ deceleration from prior cycle, but the cycle's lighter-ship-trilogy character explains the dip cleanly; carries no plateau signal at n=4); (c) **Teacher invocations** — 1 → 2 → 4 → 1 (↓ from peak; the v3.10.x cycle's 4-Teacher-touch trilogy was the local maximum, this cycle's single P10-dispatch is the steady-state baseline).
+- **Findings detail table reshape.** Sprint-1's 15-line findings cluster from the v3.10.x cycle was structured around the Sumi-trilogy ship trio (1.1-1.4) + Phase 1 doctrine ship (1.7-1.9); the v6 cycle's 13 findings are **family-grouped** (Items A-H from the underlying narrative), which surfaces as 11 promote-tier items (1.1-1.10 + 2.1 methodology) + 2 process-level rows (3.1 helper-axis-completeness post-retro fix + 4.1 hybrid-format doctrine watch). This is the first sidecar to carry an item with `recommendation: watch` AND `status: deferred` AND `execution_target_week: null` (row 4.1) — the schema accommodates the three-way "watch + defer + null-target" combination without renderer changes, but worth surfacing as a schema-shape observation for the schema-stability review (v1.0 → v1.1 gated on n≥3 such observations).
+- **Final-step codification in P10 ritual.** Today's update is the first ship under the new Protocol 10 § "How to execute" Step 9 ("update the public dashboard") — codified in `_config/agent-protocols.md` v3.10.5 (this cycle's patch ship). The doctrine extension was the second half of today's controller directive; the first half was this re-render. Forward state: every P10 retro from this cycle on emits a sidecar + companion narrative + dashboard re-render as part of the canonical close.
+- **Renderer + README OS version bump in footer.** Thin attribution band now reads `Dashboard v2.1 · Schema v1.0 · Rozzzsie OS v3.10.5 · EDD 2024 · Source · About`. No renderer architecture changes this release — v2.0's aggregator + trend chart machinery handle n=4 mechanically.
+- **Sidecar count: 4.** The dashboard now treats `retros/` as a 4-cycle collection. Sprint-2's trend grid is meaningful at n=4 (direction calls hold up over 3 tail comparisons); distribution-shape metrics (median + p95 + percentile bands) still require n≥5 per the original Sprint-2 gating note.
 
 ### v2.0 — 2026-05-10 (sprint-2 unlocked: multi-retro trend rendering — 3 metric cards × n=3 sidecars)
 

@@ -4,6 +4,10 @@ Architectural shifts, not individual fixes. The most valuable five.
 
 ---
 
+[2026-05-17] | governance v3.10.5 — Protocol 10 final-step extension. New Step 9 "Update the public dashboard" in `_config/agent-protocols.md` § Protocol 10 — codifies the dashboard re-render (sanitized sidecar authoring + narrative companion + render.py invocation + state-files cadence) as the canonical final act of every weekly retro. Closes the canonical-and-mirror drift family this cycle's P10 named at n=3 family-class: prior cycles' re-renders happened as ad-hoc same-day follow-ups (v1.3 / v1.5 / v2.0 all required the controller to remember and ask). Pure rule-extension patch ship (no hook changes, no protocol-number changes). Symlink-canonical pattern: canonical filename bumped to `agent-protocols-3.10.5.md` via `git mv` + symlink retarget; references untouched.
+
+[2026-05-17] | dashboard v2.1 — Re-render against new sidecar `retros/2026-05-17-p6.yaml` (cycle #6; 13 findings × 11 fields; window 2026-05-10 → 2026-05-17). Trend lines auto-extend to n=4 sidecars via sprint-2 `load_all_sidecars()` aggregator. 3 metric cards' direction calls re-computed on the new tail. First ship under the new v3.10.5 Step 9 codified ritual.
+
 [2026-05-13] | _retro/ retrospective — weekly Supervise retro draft generated (automated); awaiting interactive review
 
 [2026-05-10] | v3.10.4 ship — Path A unified gate: Sumi v1.3 drift-scan invocation mode + MUTATION_TOOLS Conservative extension. Sumi gains second job (read-only drift-scan PostToolUse on output-checklist + sumi-rubrics edits, walks every active rubric and verifies anchor resolution); MUTATION_TOOLS frozenset extended `{Edit, Write, Bash}` → `{Edit, Write, MultiEdit, NotebookEdit, Bash}` (mcp__*-write deferred per stable-MCP-naming gate; Aggressive direction pre-staged as Teacher proposal). Codex P3B caught 3 ship-blockers all fixed pre-ship including hookSpecificOutput envelope cross-find parity-fix (silent failure since v3.10 ship). 94/94 tests green.

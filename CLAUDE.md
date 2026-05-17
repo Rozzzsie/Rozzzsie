@@ -54,7 +54,7 @@ Do not improvise the format. P10 cross-references the self-reported counts again
 | P7 | Cross-pollination | PostToolUse | Learning entry seeded to relevant workspaces |
 | P8 | Autonomous iteration loop | — | Firmware ON as of v3.9.1 (Teacher agent + grammars + ledger + auto-promote gate) |
 | P9 | Session close | Stop | State files current, committed, pushed |
-| P10 | Weekly retrospective | SessionStart | 7+ days since last retro; audits insights buffer; invokes Teacher at step 6.5 |
+| P10 | Weekly retrospective | SessionStart | 7+ days since last retro; audits insights buffer; invokes Teacher at step 6.5; refreshes public dashboard at step 9 (v3.10.5) |
 
 **Insights buffer (new 2026-04-11):** `★ Insight ─...` cards emitted during sessions are now captured mechanically at session close by the `insights-capture.py` Stop hook and appended to `.claude/insights-buffer.md`. P10 retro audits the buffer weekly, promotes recurring patterns to LEARNINGS/CLAUDE/protocols, and archives the rest to `.claude/insights-archive/YYYY-MM.md`. Insight cards are therefore **not ephemeral** — don't hold back on emitting them, the capture layer is now doing the work the agent used to have to decide about.
 
@@ -83,8 +83,8 @@ Every workspace has an `_input/` folder for raw materials (Slack exports, meetin
 
 ## Versioned-file naming convention (shipped 2026-04-15, Option C)
 Governance docs that carry a semver version (currently: `agent-protocols`) use the **symlink-canonical pattern** — same shape as the pre-commit hook (`.git/hooks/pre-commit → ../../_config/hooks/pre-commit`):
-- **Canonical file** carries the full version in its filename: `_config/agent-protocols-3.10.4.md` (current). When version bumps to 3.10.5 or 4.0.0, the canonical is renamed to match.
-- **Stable symlink** sits alongside: `_config/agent-protocols.md → agent-protocols-3.10.4.md`. All live references — workspace CLAUDE.md files, hooks, output-checklist, roles-map, design docs — point at the symlink path (`_config/agent-protocols.md`). The symlink retargets on version bump; references never need updating.
+- **Canonical file** carries the full version in its filename: `_config/agent-protocols-3.10.5.md` (current). When version bumps to 3.10.5 or 4.0.0, the canonical is renamed to match.
+- **Stable symlink** sits alongside: `_config/agent-protocols.md → agent-protocols-3.10.5.md`. All live references — workspace CLAUDE.md files, hooks, output-checklist, roles-map, design docs — point at the symlink path (`_config/agent-protocols.md`). The symlink retargets on version bump; references never need updating.
 - **Rule**: on every version bump (patch OR minor OR major), do two things: (1) `git mv` the canonical to the new full-version filename; (2) `ln -sfn <new-canonical> _config/agent-protocols.md` to retarget the symlink. References are untouched forever. Historical CHANGELOG/CONTEXT entries keep their original path strings — past facts stay past-accurate.
 - **Why this shape**: semver visibility (Finder / `ls` shows current version instantly via the canonical) plus reference stability (the ~14-file rename cost at 3.2 → 3.3 is now a one-line `ln -sfn` command). Same engineering win as the pre-commit VC meta-gap close — canonical tracked + stable reference path.
 - **When to apply to a new doc**: any governance doc that will carry a semver version in its header. One-off reference docs without a version don't need this.

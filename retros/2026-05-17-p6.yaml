@@ -1,0 +1,261 @@
+# P10 Retro Sidecar — 2026-05-17 (P10 retro #6, sanitized public snapshot)
+#
+# Window 2026-05-10 → 2026-05-17 (7 days on the nose; SessionStart supervise
+# layer flagged OVERDUE → this retro was the gating event). Stakeholder names
+# genericized to role-class; workspace-specific paths in `target_surface`
+# generalized to governance paths only; `detail_ref` cross-pointers stripped
+# (narrative .md they reference is sanitized companion).
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Narrative: public `_retro/2026-05-17-p10-retro.md` (sanitized companion);
+# private `_retro/2026-05-17-p10-retro.md` is the canonical narrative.
+# If this file and the narrative disagree, the narrative wins. Regenerate from narrative.
+#
+# This is the 2nd P10 retro sidecar published with a parallel public narrative
+# companion (the 2026-05-10-p5 cycle established the pattern).
+
+retro_id: "2026-05-17-p6"
+retro_date: "2026-05-17"
+window_start: "2026-05-10"
+window_end: "2026-05-17"
+prior_retro: "2026-05-10-p5"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+findings:
+  # Item A — axis-reframe-collapses-option-set (n=9 lifetime)
+  - id: "1.1"
+    title: "axis-reframe-collapses-option-set — n=3 in 24h catalyst; n=9 lifetime; long past rule-promotion threshold; 3 named sub-shapes + 1 watch-tier"
+    category: "rule-extension"
+    evidence_count: 9
+    source_catchment: "consultant-pattern-tally"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: "LEARNINGS.md + CLAUDE.md (Luma-territory n-options-as-axis-reframe-trigger sub-rule)"
+
+  # Item B — send-event-vs-send-state (new structural sub-axis)
+  - id: "1.2"
+    title: "send-event-vs-send-state structural sub-axis under verify-to-artifact — external-event state-writes don't fire on internal Edit/Write hook surface; 4-drift cluster around describer-files-lag-artifact-state-changes"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: "LEARNINGS.md verify-to-artifact §14 family extension"
+
+  # Item C — briefing-render-stale-table (load-bearing surface)
+  - id: "1.3"
+    title: "briefing-render-stale-table — render-pipeline reads stale surrogate table while live data sits elsewhere in same file; load-bearing surface (every SessionStart); manual refresh tonight + structural fix deferred to consultant"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: "CONTEXT.md workspace-status table refresh + LEARNINGS.md sub-axis entry"
+
+  # Item D — verify-enumeration-examples-to-source-CSV (Mel-as-Feature catalyst)
+  - id: "1.4"
+    title: "verify-enumeration-examples-to-source-CSV-not-to-mental-model — stale-enumeration-carry-over + grounding-to-mental-surrogate-instead-of-source-artifact; 9th sub-axis of verify-to-artifact family"
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: "LEARNINGS.md + memory verify-to-artifact Instance 9"
+
+  # Item E — verify-premise-before-multi-step-synthesis
+  - id: "1.5"
+    title: "verify-premise-before-multi-step-synthesis — explicit prerequisite-Q blocks at Step 1 are gating not informational; halt + clarifying-Q shape; sister checkpoint-bar phrasing-discipline at watch-tier"
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: "memory verify-to-artifact 'How to apply' bullet extension"
+
+  # Item F — cost-axis-as-load-bearing-architectural-axis (doctrine-tier)
+  - id: "1.6"
+    title: "cost-axis-as-load-bearing-architectural-axis — SDK credit-pool bifurcation along interactive-vs-non-interactive axis incentivizes OS-primitive direction; informs consultant Track 2 budget-tailwind reframe"
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-15"
+    target_surface: "LEARNINGS.md (already documented; surfaced here for P10 visibility)"
+
+  # Item G — canonical-and-mirror governance-doc family (n=3)
+  - id: "1.7"
+    title: "canonical-and-mirror governance-doc family — server-side/human-maintained mirrors that don't participate in version-bump or fold-ship audit cycles; n=3 family-class (roles-map + scheduled-routine prompt-body + workspace-status table)"
+    category: "rule-extension"
+    evidence_count: 3
+    source_catchment: "family-extension"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: "LEARNINGS.md family entry + Teacher proposal candidate for registry pattern"
+
+  # Item H.1 — Sumi v2.x enumeration-example-membership gap
+  - id: "1.8"
+    title: "Sumi v2.x rubric — enumeration-example-membership sub-axis (separate from cardinality validation); Teacher proposal authored (3-way degrade — see §6.5 status)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "2026-05-24"
+    target_surface: "_config/sumi-rubrics.yaml (proposed)"
+
+  # Item H.2 — Sumi v2.x stakeholder rubrics (role-class direction)
+  - id: "1.9"
+    title: "Sumi v2.x stakeholder rubrics — role-class direction (CTO / L6-Eng-leader / L5-IC-Architect / PSE-peer / Sales / Eng), not per-individual; matches register-shape doctrine; Teacher proposal authored (degrade)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "2026-05-24"
+    target_surface: "_config/sumi-rubrics.yaml (proposed)"
+
+  # Item H.3 — routines.yaml registry + pre-commit validation
+  - id: "1.10"
+    title: "_config/routines.yaml registry + pre-commit validation — canonical-and-mirror Item G lean (c); version-controlled + grep-target-able mirror of server-side routine prompt bodies; Teacher proposal authored (degrade)"
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "2026-05-24"
+    target_surface: "_config/routines.yaml (proposed) + pre-commit hook"
+
+  # Methodology positive-example
+  - id: "2.1"
+    title: "drift-audit-when-flagged methodology positive-example — backward-from-flag-to-artifact-of-truth + forward-through-describer-surfaces; sister to existing verify-to-artifact at investigation-pattern level"
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: "LEARNINGS.md positive-example entry + output-checklist §-extension candidate (consultant agenda)"
+
+  # Helper-axis-completeness family — post-retro permission-fix surface
+  - id: "3.1"
+    title: "helper-axis-completeness family — subagent Edit-axis permission gap surfaced when Teacher invocation degraded with Edit denial on teacher-proposals.md; n=2 family-class with prior wrapper-blind fix; 4-surface sweep landed post-retro"
+    category: "rule-clarification"
+    evidence_count: 2
+    source_catchment: "adversarial-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-17"
+    target_surface: ".claude/settings.json permissions.allow (Edit rules for 4 subagent surfaces)"
+
+  # HTML pivot — hybrid-format doctrine watch
+  - id: "4.1"
+    title: "hybrid-format doctrine for retro-class deliverables — n=1 each direction now (5/10 retro WAS HTML-rendered per controller's compile-to-read directive; 5/17 retro controller verbatim 'we don't need this HTML file'); deferred until n=2 to decide doctrine shift OR sub-shape distinction"
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: null
+    target_surface: "CLAUDE.md hybrid-format doctrine (potential review at n=2)"
+
+proposal_backlog:
+  pending_before_retro: 2
+  approved_not_executed: 5      # 2.1 (Aggressive MUTATION_TOOLS carryover) + 3.1 (P3B sibling-sweep watch) + 1.8/1.9/1.10 (3 Teacher proposals authored but Edit-axis permission degrade)
+  executed_this_cycle: 8        # 1.1 axis-reframe + 1.2 send-event + 1.3 briefing-render + 1.4 verify-enum + 1.5 verify-premise + 1.7 canonical-and-mirror + 2.1 methodology + 3.1 helper-axis-completeness
+  authored_this_cycle: 3        # 3 Teacher proposals authored mid-retro (Sumi v2.x enum + Sumi v2.x stakeholder + routines.yaml registry); persistence degraded → bodies preserved in artifact for next-session re-fire
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# v3.10.x cycle hooks all confirmed firing this window; one notable surface this
+# cycle was the subagent Edit-permission gap (helper-axis-completeness family at
+# n=2; fixed post-retro via 4-surface settings.json sweep).
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active (case-sensitive-grep family carry-forward, no new instances this window)"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  sumi_post_task: "active"
+  sumi_drift_scan: "active"
+  checkpoint_bar_tier2_format_validator: "active"
+  measurement_window_days: 7
+  measurement_window_session_count: null
+  flagged_hooks: null
+
+# Discipline metrics — backfilled 2026-05-17 evening from per-cycle tally script.
+# checkpoint_bar_miss_rate climbed from prior cycle's 0.32 — wrap-arc multi-
+# substantive-turn pattern + post-compact resume sessions continue to dominate
+# the miss distribution. Late-session discipline-plateau (~16 substantive turns
+# / 4 bars present / 12 missed) on tonight's retro session itself is a
+# representative instance. Cycle window 2026-05-10 → 2026-05-17 (UTC date
+# semantics, inclusive). Codex invocations down vs prior cycle (lighter ship-
+# cycle this week than v3.10.x trilogy). Teacher invocations: 1 P10 dispatch
+# this cycle (vs 4 in v3.10.x cycle which spanned multiple Teacher-touched
+# governance ships). Luma invocations dropped meaningfully — the consultant
+# was bundled into a single Saturday-sprint agenda (now rescheduled to next
+# Saturday) rather than dispatched ad-hoc this cycle.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.35
+  checkpoint_bar_prior_session_rate: 0.32
+  luma_tally_by_category:
+    axis_reframe: 3                          # Item A n=3-in-24h catalyst
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 8
+  codex_invocations: 3
+  teacher_invocations: 1
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — backfilled from session-start-latency.log. Window
+# session count down meaningfully vs the v3.10.x cycle (no governance ship
+# trilogy this week; primary work was stakeholder-facing artifact arcs in the
+# council workspace + product docs Cowork pack v1.0→v1.3 iteration).
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 51
+  median_first_tool_latency_sec: 68
+  p95_first_tool_latency_sec: 412
+  max_first_tool_latency_sec: 1840
+  threshold_violations: 11
+
+# meta_finding redacted from public sidecar — operator-internal observation
+# about retro-input density (17 distinct retro-candidates in 4 days vs typical
+# 3-5/week) and the implication for signal-density-vs-quality framing. Dashboard's
+# meta-finding callout suppresses gracefully when absent.
+
+# Fam dispatch + reactions distribution — backfilled via tally script. The
+# 9th fam member (Sumi) remains hook-driven (count=0 on Task-tool dispatch
+# axis; her activity captured in hook_health rows above). Deputies count
+# reflects parallel-fanout pattern usage this cycle (lighter than prior
+# cycle's governance-ship parallel sweeps). Brindle on by default; 51 sessions
+# in window each opened with SessionStart card.
+fam_dispatch_distribution:
+  source: "session-archive jsonl"
+  cycle_window: "2026-05-10 → 2026-05-17"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",              count: 28, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "luma",                  count:  8, role: "consultant" }
+      - { name: "codex",                 count:  3, role: "consultant" }
+      - { name: "breakline",             count:  2, role: "adversarial-auditor" }
+      - { name: "teacher",               count:  1, role: "learning-layer" }
+      - { name: "sumi",                  count:  0, role: "OS-self-discipline grader (hook-driven, not Task-tool)" }
+    total: 42
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 247, role: "companion (hook-driven)", detail: "51 session_starts + 168 reactions + 28 session_ends across 51 sessions" }
+    total: 247
+
+schema_version: "1.0"
