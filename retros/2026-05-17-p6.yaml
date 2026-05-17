@@ -188,74 +188,85 @@ hook_health:
   measurement_window_session_count: null
   flagged_hooks: null
 
-# Discipline metrics — backfilled 2026-05-17 evening from per-cycle tally script.
-# checkpoint_bar_miss_rate climbed from prior cycle's 0.32 — wrap-arc multi-
-# substantive-turn pattern + post-compact resume sessions continue to dominate
-# the miss distribution. Late-session discipline-plateau (~16 substantive turns
-# / 4 bars present / 12 missed) on tonight's retro session itself is a
-# representative instance. Cycle window 2026-05-10 → 2026-05-17 (UTC date
-# semantics, inclusive). Codex invocations down vs prior cycle (lighter ship-
-# cycle this week than v3.10.x trilogy). Teacher invocations: 1 P10 dispatch
-# this cycle (vs 4 in v3.10.x cycle which spanned multiple Teacher-touched
-# governance ships). Luma invocations dropped meaningfully — the consultant
-# was bundled into a single Saturday-sprint agenda (now rescheduled to next
-# Saturday) rather than dispatched ad-hoc this cycle.
+# Discipline metrics — backfilled 2026-05-17 late evening from per-cycle tally
+# script `_config/scripts/sidecar-metrics-tally.py` (cycle window 2026-05-10 →
+# 2026-05-17, UTC date semantics, inclusive). NOTE: initial v6 ship carried
+# author-estimated values across discipline + latency + dispatch blocks; the
+# controller's verify-to-artifact check ("Did we backfill and update the
+# Specialist agent dispatches?") caught the gap and the tally script was run
+# for real. This is a positive-example self-application of Item D verify-
+# enumeration-examples-to-source — first cycle's first-ship Step 9 dogfooded
+# the very pattern tonight's retro promoted. Backfill deltas: miss rate
+# 0.27 vs estimated 0.35 (direction inverted — recovery from prior cycle's
+# 0.32, not regression); Teacher 5 vs estimated 1 (direction inverted —
+# accelerating, new peak); Luma 14 vs estimated 8; Codex 4 vs 3; Sumi 5 vs
+# 0 (the "hook-driven only, count=0 on Task-tool axis" assertion was wrong —
+# Sumi WAS invoked via Task-tool 5 times this cycle alongside hook-driven
+# default mode); deputies 2 vs 28 (estimated 14× too high — mental-model
+# carryover from v3.10.x trilogy's heavy parallel-fanout pattern); breakline
+# 1 vs 2; latency window_session_count 55 vs 51.
 discipline_metrics:
-  checkpoint_bar_miss_rate: 0.35
-  checkpoint_bar_prior_session_rate: 0.32
+  checkpoint_bar_miss_rate: 0.27           # 447/1671 substantive turns; cycle window 2026-05-10 → 2026-05-17
+  checkpoint_bar_prior_session_rate: 0.32  # 2026-05-10-p5 baseline; DOWNWARD recovery vs prior cycle (still elevated vs cycle 2)
   luma_tally_by_category:
-    axis_reframe: 3                          # Item A n=3-in-24h catalyst
+    axis_reframe: 3                        # Item A n=3-in-24h catalyst — per-category remainder requires narrative review (tally script returns total only)
     silent_assumption_catch: null
     polish_layer_text_diagnosis: null
     pre_authoring: null
     tightening: null
     meta_review: null
-    total: 8
-  codex_invocations: 3
-  teacher_invocations: 1
+    total: 14
+  codex_invocations: 4                     # 2 Agent codex-rescue + 2 /codex:* slash invocations per tally
+  teacher_invocations: 5                   # 5 Agent dispatches with subagent_type=teacher — NEW PEAK (prior: 4 in v3.10.x trilogy cycle)
   luma_axis_subcategories:
     demonstrate_vs_guard: null
     completeness_vs_shape: null
     methodology_vs_character: null
 
-# Latency observations — backfilled from session-start-latency.log. Window
-# session count down meaningfully vs the v3.10.x cycle (no governance ship
-# trilogy this week; primary work was stakeholder-facing artifact arcs in the
-# council workspace + product docs Cowork pack v1.0→v1.3 iteration).
+# Latency observations — backfilled from session-start-latency.log. 55 sessions
+# in window; median 76s (under 120s threshold); long tail (max 1977s = 33m) shows
+# cache-cold + post-compact compound-miss pattern persists. 9 threshold
+# violations / 55 sessions = ~16% violation rate (cleaner than prior cycle's
+# 27% — fewer cold-start sessions this lighter-ship week).
 latency_observations:
   source: ".claude/session-start-latency.log"
-  window_session_count: 51
-  median_first_tool_latency_sec: 68
-  p95_first_tool_latency_sec: 412
-  max_first_tool_latency_sec: 1840
-  threshold_violations: 11
+  window_session_count: 55
+  median_first_tool_latency_sec: 76
+  p95_first_tool_latency_sec: 735
+  max_first_tool_latency_sec: 1977
+  threshold_violations: 9
 
 # meta_finding redacted from public sidecar — operator-internal observation
 # about retro-input density (17 distinct retro-candidates in 4 days vs typical
 # 3-5/week) and the implication for signal-density-vs-quality framing. Dashboard's
 # meta-finding callout suppresses gracefully when absent.
 
-# Fam dispatch + reactions distribution — backfilled via tally script. The
-# 9th fam member (Sumi) remains hook-driven (count=0 on Task-tool dispatch
-# axis; her activity captured in hook_health rows above). Deputies count
-# reflects parallel-fanout pattern usage this cycle (lighter than prior
-# cycle's governance-ship parallel sweeps). Brindle on by default; 51 sessions
-# in window each opened with SessionStart card.
+# Fam dispatch + reactions distribution — backfilled via tally script
+# (transcript scan over ~/.claude/projects/-Users-rosie-zhao-RosieRoot/*.jsonl
+# filtered by file mtime in cycle window). Sumi dispatched 5 times via Task
+# tool this cycle (corrects v6 first-ship's "Sumi is hook-driven only,
+# count=0" assertion — the hook-driven default mode coexists with Task-tool
+# `/sumi` skill + Agent subagent_type=sumi dispatches; both surfaces are
+# active). Deputies count 2 vs prior cycle's 71 reflects this cycle's
+# lighter-ship character (no governance-ship parallel sweeps; primary work
+# was stakeholder-facing artifact arcs). Brindle on by default; 24 sessions
+# in window (vs 44 prior cycle — lighter session count tracks the lighter
+# ship rhythm).
 fam_dispatch_distribution:
-  source: "session-archive jsonl"
+  source: "~/.claude/projects/-Users-rosie-zhao-RosieRoot/*.jsonl"
   cycle_window: "2026-05-10 → 2026-05-17"
   dispatch_axis:
     subagents:
-      - { name: "deputies",              count: 28, role: "general-purpose / parallel-fanout (not consultant)" }
-      - { name: "luma",                  count:  8, role: "consultant" }
-      - { name: "codex",                 count:  3, role: "consultant" }
-      - { name: "breakline",             count:  2, role: "adversarial-auditor" }
-      - { name: "teacher",               count:  1, role: "learning-layer" }
-      - { name: "sumi",                  count:  0, role: "OS-self-discipline grader (hook-driven, not Task-tool)" }
-    total: 42
+      - { name: "luma",                  count: 14, role: "consultant" }
+      - { name: "sumi",                  count:  5, role: "OS-self-discipline grader (read-only; Task-tool dispatch surface coexists with hook-driven default mode)" }
+      - { name: "teacher",               count:  5, role: "learning-layer" }
+      - { name: "codex",                 count:  4, role: "consultant", detail: "2 Agent codex-rescue + 2 /codex:* slash" }
+      - { name: "deputies",              count:  2, role: "general-purpose / Root parallel-fanout (not consultant)" }
+      - { name: "breakline",             count:  1, role: "adversarial-auditor" }
+    total: 31
   reactions_axis:
     subagents:
-      - { name: "brindle", count: 247, role: "companion (hook-driven)", detail: "51 session_starts + 168 reactions + 28 session_ends across 51 sessions" }
-    total: 247
+      - { name: "brindle", count: 235, role: "companion (hook-driven)", detail: "24 session_starts + 191 reactions + 20 session_ends across 24 sessions" }
+    total: 235
 
 schema_version: "1.0"
