@@ -6,14 +6,14 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 
 ---
 
-## Governance OS state (snapshot 2026-05-17)
+## Governance OS state (snapshot 2026-05-24)
 
 | Field | Value |
 |-------|-------|
 | Protocols version | v3.10.5 (cumulative through Sumi v1.0/v1.1/v1.2/v1.3 trilogy + checkpoint-bar PostToolUse format-validator + Path A unified gate + Protocol 10 final-step extension codifying public dashboard refresh) |
-| Last weekly retrospective (P10) | 2026-05-17 (full 9-step ritual including new v3.10.5 Step 9; 8 family-grouped findings A-H from 17 distinct retro-candidates; 5 LEARNINGS sub-axes promoted + 3 Teacher proposals authored (Edit-axis permission gap surfaced + post-retro 4-surface fix landed) + 1 canonical-and-mirror n=3 family-class named). Prior P10: 2026-05-10 (P5 sidecar). |
-| Next P10 due | 2026-05-24 |
-| Dashboard release | v2.1 (re-rendered against `retros/2026-05-17-p6.yaml`; trend grid extends to n=4 sidecars). |
+| Last weekly retrospective (P10) | 2026-05-24 (full 9-step ritual under v3.10.5; 14 findings family-grouped across A-J + 5.1-5.4 Teacher proposals; 4 rule-tier landings this cycle [§14 sub-family #11 + NEW §21 Helper-axis-completeness + producer-side capability-gap promotion workspace→root + NEW `_templates/p3-trace-template.md` from 103:3 firelog evidence]; Teacher direct-write capability CONFIRMED — Class-S structural-signal clock resets to 0; 4 new Teacher proposals authored pending operator decide-gate). Prior P10: 2026-05-17 (P6 sidecar). |
+| Next P10 due | 2026-05-31 |
+| Dashboard release | v2.2 (re-rendered against `retros/2026-05-24-p7.yaml`; trend grid extends to n=5 sidecars — n≥5 distribution-shape threshold now met). |
 | Active fam roles | 8 (Root / Luma / Teacher / Breakline / Codex / Brindle / Deputies + the controller as architect-decider) — plus Sumi as 5th P3 enforcement layer (NEW v3.10, governance-grader for subagent output / paste-text / design specs) |
 | Hook layer | Project-scope governance hooks + user-scope companion hooks; Hook fire-rate audit (Protocol 10 step 6.7) shipped v3.5.2; checkpoint-bar Tier 2 enforcement extended through v3.10.4 with PostToolUse format-validator + substantive_v2 mutation-tool-aware classification; Sumi drift-scan PostToolUse hook on output-checklist + sumi-rubrics edits (v3.10.4) |
 | Synthesis-Surface Pre-Render Pattern | v1 reference implementation shipped on SessionStart briefing (2026-04-23); bidirectional contract codified v3.5.1; output-side mirror (MD-canonical + HTML-render hybrid) shipped as deliverable format convention 2026-05-10 |
