@@ -1,0 +1,192 @@
+# P10 Retro Sidecar — 2026-05-31 (P10 retro #8, sanitized public snapshot)
+#
+# Window 2026-05-24 → 2026-05-31 (7 days; SessionStart supervise layer flagged
+# OVERDUE → this retro was the gating event, same shape as the p6/p7 cycles).
+# Stakeholder names genericized to role-class; workspace names genericized per
+# public CLAUDE.md table (team-leadership / ai-champion / docs-sync /
+# kb-architecture); private personal-track + career-track references dropped
+# entirely (not in public workspace table); evidence citations to private files,
+# commit hashes, chat/docs-platform thread IDs, and product internals stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle. The cycle's substantive work (a
+# multi-workspace retrieval-evaluation-methodology track) is too tightly scoped
+# to private product/stakeholder context to sanitize without gutting; the sidecar
+# carries the load-bearing GOVERNANCE data (the eval-track is workspace work, not
+# a governance finding, and is intentionally absent from the findings below).
+# Private narrative remains at `Rozzzsie/_retro/2026-05-31-p10-retro.md`.
+#
+# This is the 6th P10 retro sidecar in the multi-retro rendering era (n=6 after this ship).
+
+retro_id: "2026-05-31-p8"
+retro_date: "2026-05-31"
+window_start: "2026-05-24"
+window_end: "2026-05-31"
+prior_retro: "2026-05-24-p7"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+findings:
+  # Item A — scheduled-job terminal-presence dependency family promotion (n=2)
+  - id: "1.1"
+    title: "scheduled-maintenance-job terminal-presence dependency family — n=2 promotion (a periodic state-rotation job bound to machine-availability at a fixed wall-clock time silently no-op'd for ~6 weeks because the host was asleep at fire time; same shape as the prior cron-cadence silent-skip). Fix: machine-guaranteed SessionStart detector as the real safety net (a human-present session always surfaces the stale state), plus interval-based rather than calendar-based scheduling."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "session-meta + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-31"
+    target_surface: "SessionStart hook staleness-banner + scheduler interval change + root LEARNINGS terminal-presence-family doctrine"
+
+  # Item B — §21 helper-axis-completeness instance (suppression-list incompleteness)
+  - id: "1.2"
+    title: "§21 helper-axis-completeness instance — an audit-script by-design-no-op suppression set was named with incomplete membership (2 of 6 same-shape entries enumerated), so the unlisted members flagged false-positive every audit. Rule reinforced: when naming a family-set in code, enumerate ALL same-shape members in the same ship. Carries forward last cycle's p7 Item 3.1 watch (the 3 silent-candidate false-positives) to executed."
+    category: "rule-clarification"
+    evidence_count: 4
+    source_catchment: "hook-fire-rate-audit + family-extension"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-31"
+    target_surface: "hook-fire-rate audit-script suppression list (2→6 members) + a path-filtered hook no-op firelog emission"
+
+  # Item C — §14 fired three times INSIDE the retro itself (self-referential catalyst)
+  - id: "2.1"
+    title: "meta — §14 verify-to-artifact (verify to the artifact, not a surrogate) fired three times within this retro session: (a) a trace-recovery command in the retro protocol used a stale path prefix and returned empty; (b) the CHANGELOG-sweep regex was anchored to one date-line format and blind to the workspace format, under-counting the cycle until the operator flagged the brief as thin; (c) the standing capability-disclaimer sub-arena (n=3 cross-cycle). The retro auditing itself with a blind sweep is the sharpest §14 catalyst to date."
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-05-31"
+    target_surface: "LEARNINGS.md §14 self-referential instance + sweep-tooling fix queued (see 3.2)"
+
+  # Item D — checkpoint-bar miss rate regression (discipline watch)
+  - id: "3.1"
+    title: "checkpoint-bar miss rate 0.20 cycle-wide (215/1085 substantive turns) — UPWARD regression from prior cycle 0.15; clustering persists in dense-edit-batch + hygiene-arc + synthesis combinations. The Item-2(g) late-session budget heuristic exists but is not fully closing the gap; heuristic-tightening queued for the next governance bump."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-bump"
+    target_surface: "CLAUDE.md + agent-protocols checkpoint-bar budget-heuristic tightening"
+
+  # Item E — CHANGELOG-sweep tooling format-blindness (NEW, surfaced by this retro's own miss)
+  - id: "3.2"
+    title: "NEW — the weekly CHANGELOG-sweep step uses a date-line regex anchored to the root format and silently misses the workspace date-line format, under-counting cross-workspace activity. Surfaced when this retro's first brief read thin to the operator. Fix: format-agnostic date match so the sweep catches every workspace's line shape."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "session-meta"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "next-bump"
+    target_surface: "retro Step 1 CHANGELOG-sweep tooling (format-agnostic date match)"
+
+  # Item F — Teacher proposal authored this cycle (1; deferred operator-decide-gate)
+  - id: "4.1"
+    title: "Teacher proposal — SessionStart staleness-banner for an unscheduled weekly ritual that silently lapsed twice on busy governance-ship weeks (no scheduler at all). Rides this cycle's just-promoted scheduled-job terminal-presence family (n=2); lands as a third sibling staleness banner alongside the retro-overdue + state-rotation banners. Operator decide-gate; queued with the next bump or independent ship."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "next-bump"
+    target_surface: "SessionStart hook third staleness-banner (proposed)"
+
+  # Item G — carry-forward governance items explicitly deferred to next version bump
+  - id: "5.1"
+    title: "carry-forward to next version bump (operator deferred both, declining a consultant reframe in favor of bundling into the deliberate bump arc which triggers the mandatory adversarial-audit ceremony): output-checklist helper-axis surface-row scope-extension + §14 sub-family-count refactor (umbrella + named sister sections). Joined by this cycle's new queue items (3.1 / 3.2 / 4.1 + a trace-recovery doc-fix)."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "carry-forward"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "next-bump"
+    target_surface: "output-checklist.md §14 refactor + helper-axis surface-row + agent-protocols retro-step doc-fix"
+
+proposal_backlog:
+  pending_before_retro: 3       # carry-forward governance items held for the next version bump
+  approved_not_executed: 1      # Teacher digest-staleness-banner proposal, awaiting operator decide-gate
+  executed_this_cycle: 3        # 1.1 terminal-presence family + 1.2 §21 completeness + 2.1 §14 self-referential capture
+  authored_this_cycle: 1        # 1 Teacher proposal (4.1)
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# Standard hooks all confirmed firing this window. This cycle's headline finding WAS a
+# hook-adjacent silent failure: a periodic state-rotation job (not a session hook) silently
+# no-op'd for ~6 weeks (host-asleep-at-fire-time). Fixed via SessionStart staleness banner +
+# interval scheduling. Hook fire-rate audit (Step 6.7) cleared last cycle's 3 silent-candidate
+# false-positives by extending the by-design-no-op suppression list (finding 1.2).
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  sumi_post_task: "active"
+  sumi_drift_scan: "active"
+  checkpoint_bar_tier2_format_validator: "active"
+  measurement_window_days: 7
+  measurement_window_session_count: null
+  flagged_hooks: null    # last cycle's 3 silent-candidate false-positives resolved via suppression-list extension (finding 1.2)
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-05-24 → 2026-05-31, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.2            # 215/1085 substantive turns; cycle window 2026-05-24 → 2026-05-31
+  checkpoint_bar_prior_session_rate: 0.15  # 2026-05-24-p7 baseline; UPWARD regression (0.27 → 0.15 → 0.20) — flagged finding 3.1
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 8
+  codex_invocations: 26                    # 1 Agent codex-rescue + 25 /codex:* slash invocations
+  teacher_invocations: 3                   # Agent dispatches with subagent_type=teacher (1 P10-primary + mid-week)
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 36
+# sessions in window). Median 50.5s (well under 120s threshold) — lower than prior
+# cycle's 57.5s. Long tail (max 724s = ~12m) shows the cache-cold + post-compact
+# compound-miss pattern persists but is shorter than prior cycle (1772s); threshold
+# violations 6/36 = ~17% (stable vs prior ~16%).
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 36
+  median_first_tool_latency_sec: 50.5
+  p95_first_tool_latency_sec: 192
+  max_first_tool_latency_sec: 724
+  threshold_violations: 6
+
+# meta_finding redacted from public sidecar per §§e commentary axis —
+# operator-internal observation about audit-self-referential §14 pace.
+# Dashboard's meta-finding callout suppresses gracefully when absent.
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). Consultant
+# rail heavier this cycle (codex 26 reflects the embedded two-increment code-fix arc
+# with TDD + review; luma 8 reflects multiple structural-decision reframes). Breakline
+# 0 — expected, no version bump shipped this cycle (the deferred bump will trigger it).
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-05-24 → 2026-05-31"
+  dispatch_axis:
+    subagents:
+      - { name: "codex",     count: 26, role: "consultant", detail: "1 Agent codex-rescue + 25 /codex:* slash" }
+      - { name: "luma",      count: 8, role: "consultant" }
+      - { name: "deputies",  count: 5, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "teacher",   count: 3, role: "learning-layer" }
+      - { name: "sumi",      count: 1, role: "OS-self-discipline grader (read-only)" }
+      - { name: "breakline", count: 0, role: "adversarial-auditor (fires on version bumps; none shipped this cycle)" }
+    total: 43
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 135, role: "companion (hook-driven)", detail: "19 session_starts + 102 reactions + 14 session_ends across 19 sessions" }
+    total: 135
+
+schema_version: "1.0"
