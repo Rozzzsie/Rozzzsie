@@ -1,0 +1,221 @@
+# P10 Retro Sidecar — 2026-06-07 (P10 retro #9, sanitized public snapshot)
+#
+# Window 2026-05-31 → 2026-06-07 (7 days; SessionStart supervise layer flagged
+# OVERDUE → this retro was the gating event, same shape as the p6/p7/p8 cycles).
+# Stakeholder names genericized to role-class; workspace names genericized per
+# public CLAUDE.md table (team-leadership / ai-champion / docs-sync /
+# kb-architecture); private personal-track + career-track references dropped
+# entirely; evidence citations to private files, commit hashes, chat/docs-platform
+# thread IDs, product internals, and the specific external failover-model vendor
+# stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, BUT for the opposite reason from p8.
+# Last cycle the substantive work was product/stakeholder-scoped and the GOVERNANCE
+# load lived in the sidecar. This cycle the center of gravity IS governance —
+# the OS turned its audit lens on itself (a degraded self-discipline grader, a
+# new memory-tier drift class, two doctrine promotions, an acknowledgement-gate
+# design) — so the findings below ARE the cycle's substance, richly. The product
+# execution arc (heavy this week) is genericized-out as workspace work, not a
+# governance finding. Private narrative: `Rozzzsie/_retro/2026-06-07-p10-retro.md`.
+#
+# Mode this cycle: a DECISION-LOCK retro — audit + decide + lock every build plan
+# + cheap-doctrine-promote ONLY, zero code by design; the OS pilots the locked
+# plans solo next cycle while the operator is on day-job load.
+#
+# This is the 7th P10 retro sidecar in the multi-retro rendering era (n=7 after this ship).
+
+retro_id: "2026-06-07-p9"
+retro_date: "2026-06-07"
+window_start: "2026-05-31"
+window_end: "2026-06-07"
+prior_retro: "2026-05-31-p8"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+findings:
+  # Item A — self-discipline grader silently fail-open ~2wks (env-dependency family, n=2)
+  - id: "1.1"
+    title: "separate-model self-discipline grader (Sumi) silently fail-open ~2 weeks — BOTH its post-task grading hook and its drift-scan hook short-circuit to fail-open when a required runtime binary (a timeout wrapper) is absent from PATH; last real verdict was 14 days prior. Same shape as the prior cycle's scheduled-job terminal-presence silent-no-op → the env-dependency silent-no-op family is now n=2. Instance fixed by installing the runtime dependency; structural antidote (accepted, locked for build) = a SessionStart staleness detector ('grader degraded N days') sibling to the retro-overdue + state-rotation staleness banners."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "hook-fire-rate-audit + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "next-cycle"
+    target_surface: "SessionStart grader-degraded staleness-banner + audit-script classification-set extension + root LEARNINGS env-dependency-family doctrine"
+
+  # Item B — nested §21: the silent-hook audit was itself blind to this silent hook
+  - id: "1.2"
+    title: "§21 helper-axis-completeness instance (NESTED) — the very audit script that detects silent hooks could not detect THIS one: its fire-action classification set never learned the grader's action vocabulary (real-verdict actions vs degradation-state actions), so it could not distinguish 'grader healthy' from 'grader dead.' Shipped two minor-versions ago; the classification set was never extended in lockstep when the grader's actions were added. Folded into the same antidote build (1.1)."
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "hook-fire-rate audit-script fire-action classification set extension"
+
+  # Item C — NEW operational rule: a mid-session env fix does not reach long-lived hooks
+  - id: "1.3"
+    title: "NEW operational rule — a mid-session environment fix (PATH / installed binary / env var) does NOT reach long-lived hook subprocesses; they inherit the parent-process env frozen at session start, while tool-shell calls resolve fresh. Verified to artifact: after the runtime-dependency install, a tool-shell saw the binary but the grading hook still did not fire in-session. Rule: never claim a hook-dependent capability is restored on the strength of a tool-shell check alone — a session restart is required."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-07"
+    target_surface: "root LEARNINGS operational rule (mid-session env fix / hook env freeze)"
+
+  # Item D — doctrine promotion: over-broad-negative-sweep surrogate
+  - id: "2.1"
+    title: "PROMOTED to doctrine — 'over-broad-negative-sweep surrogate': a 'net-new / not tracked anywhere / zero refs' claim is only as broad as the set you actually searched. Catalyst: a parked design arc was filed 'net-new, zero refs anywhere' after a sweep over a SUBSET of persistence tiers, when it sat complete in an un-grepped durable tier. Fix shipped: a canonical durable-backlog sweep-set (the named files a 'not-tracked-anywhere' claim must check) added as a verify-to-artifact sub-family."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-07"
+    target_surface: "output-checklist verify-to-artifact family — new sub-family + canonical sweep-set"
+
+  # Item E — doctrine promotion: ground a design's consistency claims one layer below
+  - id: "2.2"
+    title: "PROMOTED to doctrine — 'ground a design's own consistency claims one layer below where stated': verify a spec's 'reuses existing primitives / invents nothing new' claim at the MODALITY level, not the named-component level (catalyst: a proposed enforcement gate claimed primitive-reuse, but its enforcement MODALITY was net-new); and an escape hatch must never sit behind the gate it opens (catalyst: a time-limited bypass token was itself written by the action the gate blocks → deadlock). Added as a design-spec-review discipline + applicability-table row."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "design-review + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-07"
+    target_surface: "output-checklist — new design-consistency-grounding section + applicability-table row"
+
+  # Item F — new drift class named: persisted-but-unsurfaced memory tier
+  - id: "3.1"
+    title: "NEW drift class named — 'a decision/plan persisted only to a non-surfaced or lossy memory tier drifts off the durable backlog.' Distinct from the standing cycle signal ('rule under-applied from memory'): here the plan WAS persisted correctly, just to a tier nothing promotes onto the startup radar (a durable-but-weekly-read capture file, or a surfaced-but-lossy short-rotation buffer). The one tier that is both durable AND surfaced-at-startup (the cross-workspace open-items dashboard) has no promotion bridge into it. Consultant-framed fix (accepted, locked for build): parked arcs become first-class open-items at park-time (promote-at-write, zero machinery)."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "insights-buffer + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "CLAUDE.md state-update convention + agent-protocols Protocol 4 sub-bullet (version-bump → adversarial-audit ceremony)"
+
+  # Item G — checkpoint-bar miss-rate regression + the acknowledgement-gate response
+  - id: "4.1"
+    title: "checkpoint-bar miss-rate 0.26 cycle-wide (836/3278 substantive turns) — UPWARD regression from prior cycle's 0.20 (trend 0.27 → 0.15 → 0.20 → 0.26). Clustering persists in dense-edit + conversational-arc combinations; this very retro session ran a long barless cluster inside a tool-install conversational arc, dogfooding the open problem in real time. Structural response (designed this era, build locked): a PreToolUse acknowledgement-gate that withholds the next mutation until a bar is emitted — friction in the action path, since the failure is attentional and louder in-band reminders provably do not cross that axis. Activation threshold calibrated on ≥2wk of substrate, not guessed."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "PreToolUse checkpoint-bar acknowledgement-gate (designed; dry-run build next cycle, activation parked ~2wk out)"
+
+  # Item H — meta: verify-to-artifact fired inside the retro again (n+1 cross-cycle)
+  - id: "4.2"
+    title: "meta — verify-to-artifact fired INSIDE the retro again (n+1 cross-cycle): the grader-restore was asserted ('it will now grade the next output') and then disproved by reading the firelog. The retro auditing its own enforcement layer and catching its own unverified claim is the sharpest instance of the discipline this era; reinforces finding 1.3 and is itself an instance of the standing cycle signal."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-07"
+    target_surface: "LEARNINGS verify-to-artifact self-referential instance"
+
+  # Item I — Teacher proposals authored this cycle + the deferred degrade ladder
+  - id: "5.1"
+    title: "Teacher authored 4 proposals (P10 step 6.5): the parked-arc promotion bridge (3.1, accepted/build), the grader-staleness detector + audit-set extension (1.1/1.2, accepted/build), and the two doctrine promotions (2.1/2.2, executed). Separately, a Codex-outage review-degrade ladder is DEFERRED — held as ONE arc with a cross-model failover-reviewer rail that needs its own design pass; accepting the ladder now would pre-lock the external rail's role before it exists. Operator decided both the degrade-ladder deferral and a hygiene-fold filename in this retro."
+    category: "rule-extension"
+    evidence_count: 4
+    source_catchment: "Teacher-proposal"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "teacher-proposals lifecycle + locked next-cycle build plans"
+
+proposal_backlog:
+  pending_before_retro: 1       # Codex-outage degrade rule (authored mid-cycle 2026-06-02)
+  approved_not_executed: 2      # parked-arc promotion bridge + grader-staleness detector — accepted, locked for next-cycle solo build
+  executed_this_cycle: 2        # 2.1 over-broad-negative-sweep + 2.2 design-consistency-grounding (both doctrine, ceremony-free)
+  authored_this_cycle: 4        # Teacher P10 pass: parked-arc bridge + sweep-set + consistency-grounding + grader-staleness detector
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# THIS CYCLE'S HEADLINE FINDING IS A HOOK SILENT-FAILURE: the separate-model
+# self-discipline grader's two hooks (post-task + drift-scan) were fail-open for
+# ~2 weeks because a required runtime binary was absent from PATH (finding 1.1).
+# Instance fixed (dependency installed) but the hook env needs a session-restart to
+# pick it up; structural antidote (SessionStart grader-degraded staleness detector)
+# locked for next-cycle build. Reported here as degraded, transparently.
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  sumi_post_task: "degraded"
+  sumi_drift_scan: "degraded"
+  checkpoint_bar_tier2_format_validator: "active"
+  measurement_window_days: 7
+  measurement_window_session_count: null
+  flagged_hooks: ["sumi_post_task", "sumi_drift_scan"]   # fail-open ~2wks (runtime timeout-binary absent from PATH); instance fixed, hook env needs session-restart; SessionStart staleness-detector locked for build (finding 1.1)
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-05-31 → 2026-06-07, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.26           # 836/3278 substantive turns; cycle window 2026-05-31 → 2026-06-07
+  checkpoint_bar_prior_session_rate: 0.20  # 2026-05-31-p8 baseline; UPWARD regression (0.15 → 0.20 → 0.26) — flagged finding 4.1
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 20
+  codex_invocations: 19                     # 4 Agent codex-rescue + 15 /codex:* slash invocations
+  teacher_invocations: 3                    # Agent dispatches with subagent_type=teacher (1 P10-primary + mid-week)
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 68
+# sessions in window). Median 27.0s (well under the 120s threshold) — markedly
+# lower than prior cycle's 50.5s. Long tail (max 896s = ~15m) shows the
+# cache-cold + post-compact compound-miss pattern persists; threshold
+# violations 8/68 = ~12% (improved from prior ~17%).
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 68
+  median_first_tool_latency_sec: 27.0
+  p95_first_tool_latency_sec: 225
+  max_first_tool_latency_sec: 896
+  threshold_violations: 8
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). Breakline
+# 15 this cycle (vs 0 last cycle) reflects the version-bump-era adversarial-audit
+# ceremonies that shipped this window; deputies 52 reflects heavy parallel-fanout
+# in the product execution arc; luma 20 reflects multiple structural-decision
+# reframes (the acknowledgement-gate axis + the memory-tier drift-class framing).
+# Sumi = 2 is itself corroborating evidence of finding 1.1 — the grader barely
+# fired all cycle because it was fail-open.
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-05-31 → 2026-06-07"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",  count: 52, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "luma",      count: 20, role: "consultant" }
+      - { name: "codex",     count: 19, role: "consultant", detail: "4 Agent codex-rescue + 15 /codex:* slash" }
+      - { name: "breakline", count: 15, role: "adversarial-auditor (fires on version bumps / ceremonies; several shipped this cycle)" }
+      - { name: "teacher",   count: 3, role: "learning-layer" }
+      - { name: "sumi",      count: 2, role: "OS-self-discipline grader (read-only) — low count corroborates finding 1.1 (fail-open this cycle)" }
+    total: 111
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 112, role: "companion (hook-driven)", detail: "19 session_starts + 77 reactions + 16 session_ends across 19 sessions" }
+    total: 112
+
+schema_version: "1.0"
