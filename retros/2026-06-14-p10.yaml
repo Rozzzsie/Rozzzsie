@@ -1,0 +1,214 @@
+# P10 Retro Sidecar — 2026-06-14 (P10 retro #10, sanitized public snapshot)
+#
+# Window 2026-06-07 → 2026-06-14 (7 days; SessionStart supervise layer flagged
+# OVERDUE → this retro was the gating event, same shape as the p6/p7/p8/p9 cycles).
+# Stakeholder names genericized to role-class; workspace names genericized per
+# public CLAUDE.md table (team-leadership / ai-champion / docs-sync /
+# kb-architecture); private personal-track + career-track references dropped
+# entirely; evidence citations to private files, commit hashes, hook filenames,
+# chat/docs-platform thread IDs, and product internals stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, same reason as p9 — the center of
+# gravity IS governance (the OS turned its audit lens on itself and caught the
+# auditor trusting a surrogate twice), so the findings below ARE the cycle's
+# substance, richly. The product execution arc is genericized-out as workspace
+# work, not a governance finding. Private narrative: `Rozzzsie/_retro/2026-06-14-p10-retro.md`.
+#
+# Mode this cycle: an AUDIT-CATCHES-ITS-OWN-AUDITOR retro — the weekly hook
+# fire-rate audit hard-broke mid-run (a liveness marker added LAST cycle to make
+# a silent hook visible was itself schema-malformed and blinded the auditor), and
+# the learning layer caught the orchestrator asserting a second finding from a
+# log-surrogate instead of the source. Both fixed live + propagated to rules.
+#
+# This is the 8th P10 retro sidecar in the multi-retro rendering era (n=8 after this ship).
+
+retro_id: "2026-06-14-p10"
+retro_date: "2026-06-14"
+window_start: "2026-06-07"
+window_end: "2026-06-14"
+prior_retro: "2026-06-07-p9"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+# Meta-finding — debuts the renderer's hero callout (supported since the
+# multi-retro era; first cycle a sidecar populates it). The cycle's one-line lesson.
+meta_finding:
+  headline: "A governance audit caught its own auditor trusting a surrogate — twice. The hook fire-rate audit hard-broke because a liveness marker added last cycle to expose a silent hook was schema-malformed and blinded the auditor to the whole corpus; and the orchestrator asserted a second 'mechanism-absent' finding from a producer-log's silence without reading the source — the learning layer read the source, found the mechanism present, and refused to encode the false gap. Verify-to-artifact, turned on the verification layer itself."
+
+findings:
+  # Item A — the audit-break: the audit-visibility instrument blinded the auditor
+  - id: "1.1"
+    title: "the weekly hook fire-rate audit hard-FAILED mid-retro — a once-per-session liveness marker emitted by the new memory-tier enforcement primitive's observer (added LAST cycle expressly to make a deliberately-silent hook VISIBLE to the auditor) was written WITHOUT the mandatory schema-version field, and the audit script hard-fails on any in-window record carrying a non-conforming schema version. The instrument built to expose a silent hook to the auditor instead blinded the auditor to the entire fire-rate corpus. Fixed live: the missing field added inline at the marker write-site (NOT routed through the shared firelog helper, which hardcodes a path that would break the observer's test-override) + the affected in-window records backfilled; audit restored and re-run against the REAL corpus. The standing verify-to-artifact signal, turned on the audit layer itself."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit + session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-14"
+    target_surface: "output-checklist firelog-producer schema-conformance bullet (learning-layer P1) + root LEARNINGS"
+
+  # Item B — meta: verify-to-artifact fired on the auditor's OWN claim (sharpest yet)
+  - id: "1.2"
+    title: "verify-to-artifact fired INSIDE the retro on the auditor's OWN claim (n+1 cross-cycle, sharpest instance to date) — the orchestrator asserted a gap ('a send-classified gate hook never received its liveness marker') from the producer-LOG alone (a surrogate showing zero records), without reading the gate's source. The learning-layer agent read the source, found the marker present and correctly wired — it only fires when a send-classified tool is actually invoked, so zero records = expected-UNEXERCISED, not absent — and REFUSED to encode the false gap into a rule. The claim was corrected to the source before anything shipped, and became this cycle's headline learning entry. Doctrine: a 'mechanism-absent' claim must be verified at the source artifact, never inferred from a producer-log's silence — log-absence and mechanism-absence are different propositions."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "session-meta + learning-layer-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-14"
+    target_surface: "output-checklist verify-to-artifact 'mechanism-exists' sub-axis + LEARNINGS headline entry"
+
+  # Item C — doctrine promotion: write the liveness marker on the clean path, at authoring
+  - id: "2.1"
+    title: "PROMOTED to doctrine (learning-layer P2) — 'write the liveness/audit marker on the CLEAN path at authoring time, not as a bolt-on.' The audit-break (1.1) and the false-gap (1.2) share a root: a marker that PROVES a hook ran was treated as an afterthought, so it was both schema-malformed AND mis-read. Rule: any hook whose silence is legitimate must emit its liveness marker on the success path at the point of authoring, schema-conformant, so the auditor can distinguish 'ran, no-op by design' from 'never ran.' Verify-to-artifact corollary: the PRESENCE of such a marker is read from the hook SOURCE; its FIRING from the conformant log — never conflate the two."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-14"
+    target_surface: "output-checklist clean-path liveness-marker-at-authoring bullet + verify-to-artifact corollary"
+
+  # Item D — propagated (adversarial-auditor finding): subprocess env inheritance
+  - id: "3.1"
+    title: "propagated (adversarial-auditor mid-cycle finding, decision B) — subprocess-environment-inheritance sub-bullet: a long-lived hook subprocess inherits the parent-process environment frozen at session start; a mid-session environment change (PATH / installed binary / env var) does NOT reach it, while a fresh tool-shell call resolves the new state. Generalizes last cycle's 1.3 (a mid-session env fix needs a session restart to reach hooks) from the single grader case into a standing output-checklist sub-bullet. Never claim a hook-dependent capability is restored on the strength of a tool-shell check alone."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "adversarial-audit + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-14"
+    target_surface: "output-checklist subprocess-env-inheritance sub-bullet"
+
+  # Item E — propagated: nested-repo state-file append discipline
+  - id: "3.2"
+    title: "propagated (decision C) — nested multi-repo state-file append discipline: in a nested repo tree, a state-file Bash append must use the ABSOLUTE target path — a relative append resolves against the wrong repo root and silently writes to the wrong tree. Folded with 1.1's schema-conformance bullet as decision C. Sister to the standing 'never stage the whole tree in a nested multi-repo' rule — same root cause (path/scope ambiguity across nested repos)."
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-14"
+    target_surface: "output-checklist nested-repo absolute-path Bash-append bullet"
+
+  # Item F — checkpoint-bar miss-rate: first improvement in 3 cycles, but still clustering
+  - id: "4.1"
+    title: "checkpoint-bar miss-rate 0.22 cycle-wide (358/1635 substantive turns) — DOWNWARD from the prior cycle's 0.26 (trend 0.27 → 0.15 → 0.20 → 0.26 → 0.22), the first improvement in three cycles. BUT this very retro session ran a long barless cluster (13 of 19 substantive turns) — and diagnostically it was a FRESH, non-post-compact session, confirming the miss-cluster is a tool-cascade phenomenon, NOT exclusively a post-compact one. No new rule (decision D): the structural fix — a PreToolUse acknowledgement-gate that withholds the next mutation until a bar is emitted (friction in the action path, since the failure is attentional and louder in-band reminders provably do not cross that axis) — is already designed and in flight to a dry-run enforce-flip (~mid next cycle). Activation calibrated on real substrate, not guessed."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally + session-meta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "PreToolUse checkpoint-bar acknowledgement-gate (designed; dry-run; enforce-flip next cycle)"
+
+  # Item G — queued build: send-gate liveness probe + calibration-density watch
+  - id: "5.1"
+    title: "queued (decision A) — a send-gate liveness-probe + calibration-density watch. Now that 1.2 established the send-classified gate's marker fires only on an actual send-tool invocation (zero records this window = no classified send since the primitive shipped; sends are operator-manual, drafting is orchestrator-side), a lightweight liveness probe is queued so the gate's silence stays legibly 'unexercised' rather than ambiguously 'dead' for the next auditor. Filed as a dated pre-flip open-item, not built this cycle."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "session-meta"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "send-gate liveness-probe + pre-flip open-item (cross-workspace backlog)"
+
+  # Item H — learning-layer proposals authored + a re-opened Write-authority gap
+  - id: "6.1"
+    title: "the learning-layer agent authored 2 proposals this cycle (P10 step 6.5) — the firelog-producer schema-conformance bullet (P1 → 1.1) and the clean-path liveness-marker-at-authoring doctrine (P2 → 2.1), BOTH accepted + executed. Separately surfaced and tracked: the agent's direct-write to its own proposals file was permission-denied by the harness this cycle, so its raw output was persisted by the orchestrator per the durability rule — a learning-layer Write-authority gap re-opened (same shape as the prior cross-cycle Edit-axis gap). Filed as a pre-flip open-item, not yet a structural fix. Also closed this cycle: a stale 'pending' status on the prior cycle's SessionStart-detector proposal (it had already shipped)."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-14"
+    target_surface: "learning-layer proposals lifecycle + Write-authority-gap open-item"
+
+proposal_backlog:
+  pending_before_retro: 0       # prior-cycle proposals all at terminal status entering this retro
+  approved_not_executed: 2      # send-gate liveness probe (5.1) + checkpoint ack-gate dry-run (4.1) — locked for next-cycle build
+  executed_this_cycle: 4        # 1.1 schema-conformance + 1.2 mechanism-exists + 2.1 clean-path marker + 3.1/3.2 propagations (doctrine, ceremony-free)
+  authored_this_cycle: 2        # learning-layer P10 pass: firelog schema-conformance (P1) + clean-path liveness marker (P2)
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# THIS CYCLE'S HEADLINE IS AN AUDITOR-BREAK, NOT A HOOK FAILURE: the governed hooks
+# were healthy; the weekly fire-rate AUDIT was hard-broken by a schema-malformed
+# liveness marker the new memory-tier primitive's observer emits (finding 1.1) —
+# fixed live + backfilled, audit restored. The separate-model self-discipline grader
+# RECOVERED from last cycle's fail-open (its runtime dependency installed + session
+# restarted) but now fires at a partial rate → watch-tier, folded into the standing
+# grader track. Reported transparently.
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  checkpoint_bar_tier2_format_validator: "active"
+  memory_primitive_observer: "active"   # liveness-marker schema-conformance fixed this cycle (finding 1.1); audit restored
+  memory_primitive_send_gate: "active"  # unexercised this window (zero classified sends) — expected, not dead (finding 1.2)
+  sumi_post_task: "active"              # recovered from last cycle's fail-open; now fires at partial rate — watch
+  sumi_drift_scan: "active"
+  measurement_window_days: 7
+  measurement_window_session_count: null
+  flagged_hooks: ["sumi_post_task"]     # ~66.7% silent-candidate rate — watch-tier, folded into the standing grader track (recovered from fail-open, not yet clean)
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-06-07 → 2026-06-14, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.22           # 358/1635 substantive turns; cycle window 2026-06-07 → 2026-06-14
+  checkpoint_bar_prior_session_rate: 0.26  # 2026-06-07-p9 baseline; DOWNWARD improvement (0.20 → 0.26 → 0.22) — first in 3 cycles, finding 4.1
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 3
+  codex_invocations: 1
+  teacher_invocations: 1                    # 1 P10-primary dispatch (step 6.5)
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 64
+# sessions in window). Median 29.5s (well under the 120s threshold). Long tail
+# (max 1276s = ~21m) shows the cache-cold + post-compact compound-miss pattern
+# persists; threshold violations 7/64 = ~11%.
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 64
+  median_first_tool_latency_sec: 29.5
+  p95_first_tool_latency_sec: 334
+  max_first_tool_latency_sec: 1276
+  threshold_violations: 7
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). Breakline
+# 8 reflects the version-bump-era adversarial-audit ceremony that shipped this
+# window (the memory-tier primitive's post-bump audit); the grader fired 3 times
+# (recovered from last cycle's fail-open of 2); the learning layer + the sole
+# Codex call reflect the lighter governance-ship load this cycle (the audit-and-
+# propagate retro itself was the centre of gravity, not a big code build).
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-06-07 → 2026-06-14"
+  dispatch_axis:
+    subagents:
+      - { name: "breakline", count: 8, role: "adversarial-auditor (fires on version bumps / ceremonies; the memory-tier primitive's post-bump audit shipped this cycle)" }
+      - { name: "deputies",  count: 5, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "luma",      count: 3, role: "consultant" }
+      - { name: "sumi",      count: 3, role: "OS-self-discipline grader (read-only) — recovered from last cycle's fail-open (was 2)" }
+      - { name: "codex",     count: 1, role: "consultant" }
+      - { name: "teacher",   count: 1, role: "learning-layer (P10 step 6.5)" }
+    total: 21
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 168, role: "companion (hook-driven)", detail: "session_starts + reactions + session_ends across 24 sessions" }
+    total: 168
+
+schema_version: "1.0"
