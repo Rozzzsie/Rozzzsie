@@ -1,0 +1,225 @@
+# P10 Retro Sidecar — 2026-06-21 (P10 retro #11, sanitized public snapshot)
+#
+# Window 2026-06-14 → 2026-06-21 (7 days; SessionStart supervise layer flagged
+# OVERDUE → this retro was the gating event, same shape as the p6–p10 cycles).
+# Stakeholder names genericized to role-class; workspace names genericized per
+# public CLAUDE.md table (team-leadership / ai-champion / docs-sync /
+# kb-architecture); private personal-track + career-track references dropped
+# entirely; evidence citations to private files, commit hashes, hook filenames,
+# chat/docs-platform thread IDs, and product internals stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, same reason as p9/p10 — the center of
+# gravity IS governance (the operator caught the audit layer about to run a
+# now-WRONG maintenance mechanism), so the findings below ARE the cycle's
+# substance. The product/build execution arc is genericized-out as workspace work.
+# Private narrative: `Rozzzsie/_retro/2026-06-21-p10-retro.md`.
+#
+# Mode this cycle: a STALE-MECHANISM retro — a substrate change shipped last cycle
+# (a promotion-gate that derives promotion-eligibility from the live signal buffer)
+# silently turned an OLD maintenance mechanism (date-based buffer rotation) from
+# harmless housekeeping into an active corruptor of the new gate's inputs. The
+# orchestrator walked into the stale SessionStart instruction to rotate; the
+# operator caught it. Verify-to-artifact, applied to the maintenance layer itself.
+#
+# This is the 9th P10 retro sidecar in the multi-retro rendering era (n=9 after this ship).
+
+retro_id: "2026-06-21-p11"
+retro_date: "2026-06-21"
+window_start: "2026-06-14"
+window_end: "2026-06-21"
+prior_retro: "2026-06-14-p10"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+# Meta-finding — the renderer's hero callout. The cycle's one-line lesson.
+meta_finding:
+  headline: "A substrate change repurposed an artifact from disposable to load-bearing — and silently turned an old maintenance mechanism into a corruptor. Last cycle a promotion-gate began deriving promotion-eligibility (evidence-mass, recurrence) as a pure function of the live signal buffer, making that buffer the live evidence corpus rather than a disposable firehose. The legacy date-based rotation (and the SessionStart banner that still suggests it) predate the change; running it would shrink the gate's inputs and silently blind it. The orchestrator walked into the stale banner instruction; the OPERATOR caught it and refused the rotation. Named the STALE-MECHANISM class: a substrate change that flips an artifact disposable→load-bearing turns every old maintenance mechanism over it into a silent corruptor until each is re-derived against the new contract."
+
+findings:
+  # Item A — meta headline: the stale-mechanism catch
+  - id: "1.1"
+    title: "the legacy date-based buffer rotation is now INCOMPATIBLE with the promotion-gate substrate shipped last cycle — the gate computes evidence-mass + post-promotion recurrence as a PURE FUNCTION of (seed + live buffer), so the buffer is the live evidence corpus, not a disposable firehose. Date-rotation (and the SessionStart staleness banner that still instructs it) would archive real evidence and shrink the gate's inputs, silently blinding it. The orchestrator, following the stale banner, proposed archiving a large date-bounded slice; the operator caught it ('we agreed insights are not rotated by date — why archive these?') and the rotation was SUSPENDED (no archive run). Named the STALE-MECHANISM class. Rotation redesign (families-aware: persist counts before archiving / archive only mechanically-decided families / retire date-rotation entirely) parked to a consultant framing; the staleness banner is queued for re-wording so it stops instructing the wrong remediation."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "session-meta + operator-correction"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-21"
+    target_surface: "root LEARNINGS stale-mechanism-class entry + parked families-aware-rotation redesign + staleness-banner re-word (queued)"
+
+  # Item B — the new gate's shadow predicate over-flags domain-scoped families
+  - id: "1.2"
+    title: "the promotion-gate's promotion-due shadow predicate OVER-FLAGS domain-scoped (non-governance) families — the predicate thresholds on evidence-mass but does NOT filter by family scope, so 2 of 4 flagged families this cycle were domain-scoped, non-promotable-to-governance items. Surfaced as an input to the upcoming enforce-flip review: apply a governance-only-teeth scope filter so the gate's decision queue contains only families eligible for governance promotion. Caught while the gate is still DRY-RUN-dark (emits shadow rows, enforces nothing) — exactly the window the dark phase exists to surface."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "insights-gate-shadow + session-meta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "promotion-gate governance-only-teeth scope filter (enforce-flip-prep open-item)"
+
+  # Item C — doctrine promotion: event-log outranks same-document rollup
+  - id: "2.1"
+    title: "PROMOTED to doctrine (learning-layer P1) — 'an event-log / commit-trail outranks a same-document rollup or status-table for any DERIVED or queryable done/not-done answer.' Catalyst: a backlog item was mis-marked done from a closeout plan's status-table while the chronological event log showed its enforcement step was still future — the rollup table led the event log. Rule: when a status-table and an append-only event log disagree on a derived state, the event log wins; verify done-state to the chronological trail, never to a hand-maintained summary that can drift. Sub-family of the standing verify-to-artifact cluster (now 14 sub-families)."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-21"
+    target_surface: "output-checklist verify-to-artifact cluster — event-log-outranks-rollup sub-family"
+
+  # Item D — doctrine promotion: rebuild the env before domain-debugging after a runtime bump
+  - id: "2.2"
+    title: "PROMOTED to doctrine (learning-layer P2) — 'after a system runtime (interpreter) upgrade, rebuild the project virtual-env BEFORE domain debugging.' Catalyst: a system package-manager interpreter bump orphaned a project's virtual-env (its installed libraries vanished from the new interpreter), and the resulting import failure masqueraded as a domain/credentials problem — costing a misdirected debug pass. Rule: a runtime version bump is a first-class suspect for any sudden 'library/module not found' across multiple projects; rebuild the env first, then debug the domain."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-21"
+    target_surface: "output-checklist post-runtime-bump venv-first sub-bullet"
+
+  # Item E — doctrine promotion: question-ending turns are bar-mandatory
+  - id: "2.3"
+    title: "PROMOTED to doctrine (learning-layer P3) — 'a user-question-ending turn is checkpoint-bar-mandatory regardless of prior tool-call count.' The work that produced a clarifying question is substantive, but such turns fell into the brief-ACK exemption gap when they carried fewer than the tool-call threshold — one of three checkpoint-bar miss-clusters with ZERO prior coverage (the post-compact and tool-batch clusters were already covered by existing heuristics; this one was not). Rule landed in the response-gate doc + the enforced protocol. Frame (a) doctrine shipped; frame (b) hook-level enforcement deferred to a focused pass."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + discipline-metric-tally"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-21"
+    target_surface: "response-gate bar-mandatory-turns + protocol checkpoint-bar section"
+
+  # Item F — checkpoint-bar miss-rate regressed; ack-gate flip re-dated on corrupt-data grounds
+  - id: "4.1"
+    title: "checkpoint-bar miss-rate 0.28 cycle-wide (718/2609 substantive turns) — UPWARD/regressing from the prior cycle's 0.22 (trend 0.20 → 0.26 → 0.22 → 0.28). Clusters on post-compact arcs, question-ending turns (the 2.3 fix), and long mutation-heavy build cascades. The structural fix — a PreToolUse acknowledgement-gate that withholds the next mutation until a bar is emitted — exists, but its enforce-flip was RE-DATED later this cycle on a verify-to-artifact basis: the pre-fix shadow-deny calibration data is corrupt (the gate was structurally dead before its mid-month fix, pinning the counter), so only a handful of clean days have accrued, and the high deny volume merely mirrors the live miss-rate. Land the question-ending fix + let the miss-rate fall on clean data first, THEN calibrate the enforce threshold. No new rule (the 2.3 promotion covers the one uncovered cluster)."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally + session-meta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "PreToolUse checkpoint-bar acknowledgement-gate (enforce-flip re-dated on corrupt-pre-fix-data grounds)"
+
+  # Item G — self-discipline grader: false silent-candidate from an audit vocab gap
+  - id: "5.1"
+    title: "the weekly hook fire-rate audit flagged the separate-model self-discipline grader's per-output hook as a SILENT-CANDIDATE at ~70% — verified FALSE. The audit's fire-rate numerator counts a generic verdict vocabulary (pass / block-corrective / educate-only) and is blind to the grader's OWN domain verdict vocabulary, so legitimate grader fires read as silence. Audit-consumer vocabulary gap, not a dead hook — filed as a small-fix candidate (extend the audit numerator to recognize the grader's verdict tokens), watch-tier. Same shape as last cycle's audit-break: the audit instrument mis-reading a healthy hook."
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit + session-meta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "hook-fire-rate audit numerator — recognize grader-domain verdict vocabulary"
+
+  # Item H — grader timeouts: capability-outgrew-budget recurring after the budget raise
+  - id: "5.2"
+    title: "the self-discipline grader logged ~24 timeout errors clustered mid-window ('timed out at 100s'), recurring AFTER last month's budget raise from 30s to 100s — a capability-outgrew-budget signal: the grader's workload now exceeds even the raised ceiling on some outputs. Not net-new doctrine; reinforces the parked grader grading+latency backlog item (the grader needs a structural latency fix, not another budget bump). Reported transparently; the timeouts fail-open (a timed-out grade does not block a relay)."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "parked grader grading+latency backlog item (reinforced, not net-new)"
+
+  # Item I — learning-layer: 3 authored + a prior Write-authority gap RESOLVED
+  - id: "6.1"
+    title: "the learning-layer agent authored 3 proposals this cycle (P10 step 6.5) — event-log-outranks-rollup (P1 → 2.1), post-runtime-bump venv-first (P2 → 2.2), and question-ending-turn bar-mandatory (P3 → 2.3), ALL accepted + executed; plus 2 deferred (the two governance-gate families dispositioned in seed). Separately RESOLVED: the learning-layer Write-authority gap re-opened last cycle was verified to source as NOT a real gap — the harness grant for both Write and Edit on the proposals file has been live for over a month; the agent's edit succeeded this cycle, and the prior denial was an incidental transient. Verify-to-artifact closed a phantom gap. The orchestrator-persist fallback stays as belt-and-suspenders."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "learning-layer-proposal + session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-21"
+    target_surface: "learning-layer proposals lifecycle + Write-authority-gap RESOLVED (verify-to-artifact)"
+
+proposal_backlog:
+  pending_before_retro: 0       # prior-cycle proposals all at terminal status entering this retro
+  approved_not_executed: 0      # this cycle's deferrals are watch-items, not locked builds
+  executed_this_cycle: 5        # 2.1 event-log + 2.2 venv-first + 2.3 question-ending bar + 1.1 rotation-suspend/LEARNINGS + 6.1 Write-gap-resolved
+  authored_this_cycle: 3        # learning-layer P10 pass: event-log-outranks-rollup + venv-first + question-ending bar (all executed)
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# Governed hooks healthy this cycle. The flagged grader hook is a FALSE silent-candidate
+# (finding 5.1 — the AUDIT's numerator is blind to the grader's verdict vocabulary, not a
+# dead hook) PLUS a real capability-outgrew-budget timeout cluster (5.2, fail-open). The
+# two promotion-gate shadow emitters shipped last cycle remain DRY-RUN-dark (emit no-op
+# shadow rows, enforce nothing). Reported transparently.
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  checkpoint_bar_tier2_format_validator: "active"
+  promotion_gate_a: "active"            # DRY-RUN-dark; over-flags domain-scoped families (finding 1.2) — scope filter queued for enforce-flip
+  recurrence_gate_b: "active"           # DRY-RUN-dark; Stop-wired, no-op shadow rows
+  memory_primitive_send_gate: "active"  # unexercised this window (zero classified sends) — expected, not dead
+  sumi_post_task: "active"              # FALSE silent-candidate (audit vocab gap, finding 5.1) + ~24 timeouts@100s (finding 5.2, fail-open) — watch
+  sumi_drift_scan: "active"
+  measurement_window_days: 7
+  measurement_window_session_count: 37
+  flagged_hooks: ["sumi_post_task"]     # false silent-candidate (audit numerator gap) + budget-timeout cluster — watch-tier, both diagnosed to source
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-06-14 → 2026-06-21, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.28           # 718/2609 substantive turns; cycle window 2026-06-14 → 2026-06-21
+  checkpoint_bar_prior_session_rate: 0.22  # 2026-06-14-p10 baseline; UPWARD/regressing (0.22 → 0.28) — finding 4.1
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 11
+  codex_invocations: 20                     # cross-model reviewer at monthly usage cap; adversarial auditor served as backup reviewer this cycle
+  teacher_invocations: 2                    # P10-primary dispatch (step 6.5, authored 3) + 1 mid-week
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 71
+# sessions in window). Median 29s (well under the 120s threshold). Long tail
+# (max 1726s = ~29m) shows the cache-cold + post-compact compound-miss pattern
+# persists; threshold violations 8/71 = ~11% (flat vs last cycle's ~11%).
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 71
+  median_first_tool_latency_sec: 29
+  p95_first_tool_latency_sec: 178
+  max_first_tool_latency_sec: 1726
+  threshold_violations: 8
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). A heavy
+# OS-infrastructure build cycle: deputies (parallel-fanout) lead, the adversarial
+# auditor fired 22× (cross-model review load shifted onto it while the cross-model
+# reviewer was usage-capped — note codex 20 = rescue + slash invocations, capped
+# mid-cycle), the consultant framed 11 decisions. The self-discipline grader shows
+# 0 AGENT dispatches because it is hook-driven (per-output), not Agent-spawned —
+# its activity (and its timeout cluster, finding 5.2) lives in the hook layer.
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-06-14 → 2026-06-21"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",  count: 48, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "breakline", count: 22, role: "adversarial-auditor (carried cross-model review while the consultant reviewer was usage-capped)" }
+      - { name: "codex",     count: 20, role: "consultant", detail: "rescue + slash invocations; hit monthly usage cap mid-cycle" }
+      - { name: "luma",      count: 11, role: "consultant" }
+      - { name: "teacher",   count: 2, role: "learning-layer (P10 step 6.5 + mid-week)" }
+      - { name: "sumi",      count: 0, role: "OS-self-discipline grader (read-only) — hook-driven, not Agent-dispatched" }
+    total: 103
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 184, role: "companion (hook-driven)", detail: "37 session_starts + 117 reactions + 30 session_ends across 37 sessions" }
+    total: 184
+
+schema_version: "1.0"
