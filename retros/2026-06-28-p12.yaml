@@ -1,0 +1,206 @@
+# P10 Retro Sidecar — 2026-06-28 (P10 retro #12, sanitized public snapshot)
+#
+# Window 2026-06-21 → 2026-06-28 (7 days; SessionStart supervise layer flagged
+# OVERDUE → this retro was the gating event, same shape as the p6–p11 cycles).
+# Stakeholder names genericized to role-class; workspace names genericized per
+# public CLAUDE.md table (team-leadership / ai-champion / docs-sync /
+# kb-architecture); private personal-track + career-track + capital-track
+# references dropped entirely; evidence citations to private files, commit
+# hashes, hook filenames, chat/docs-platform thread IDs, and product internals
+# stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, same reason as p9/p10/p11 — the
+# center of gravity IS governance (two scheduled enforce-flip reviews came due
+# the same day and both HELD on data-integrity grounds), so the findings below
+# ARE the cycle's substance. The product/build execution arc is genericized-out
+# as workspace work. Private narrative: `Rozzzsie/_retro/2026-06-28-p10-retro.md`.
+#
+# Mode this cycle: a CALIBRATION-GATE retro — two dated "flip the enforcement
+# teeth on" reviews landed on the same day. Both HELD, each for a distinct
+# data-integrity reason: one gate had an EMPTY shadow-deny series (nothing to
+# calibrate a false-positive rate against), the other's clean-data window was a
+# day short AND flipping would have mirrored a live discipline-miss rate straight
+# into heavy friction. The lesson: a dated teeth-on review is itself gated on the
+# calibration data being real and sufficient — a finality date does not override
+# an empty or insufficient series. Verify-to-artifact, applied to the act of
+# turning enforcement on.
+#
+# This is the 10th P10 retro sidecar in the multi-retro rendering era (n=10 after this ship).
+
+retro_id: "2026-06-28-p12"
+retro_date: "2026-06-28"
+window_start: "2026-06-21"
+window_end: "2026-06-28"
+prior_retro: "2026-06-21-p11"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+# Meta-finding — the renderer's hero callout. The cycle's one-line lesson.
+meta_finding:
+  headline: "Two scheduled 'turn the enforcement teeth on' reviews came due the same day; both HELD — not on caution, on data integrity. One enforcement gate had accrued ZERO real deny events in its shadow (dry-run) phase: it kept classifying the sends it saw as un-evaluable rather than tripping, so there was no false-positive rate to measure and nothing to calibrate against — flipping it on would have calibrated a threshold off an empty series. The other gate had plenty of clean shadow data but its required clean-observation window was one day short, AND its deny volume merely mirrored a live discipline-miss rate, so flipping now would convert a known-high miss rate directly into heavy friction. Named the lesson: a dated teeth-on review is itself gated on the calibration data being real and sufficient — a finality date raises the bar for verification, it does not satisfy it. Same cycle also promoted two test/authoring-discipline rules (fixture-shape fidelity; no ambiguous-shape token in a machine-parsed field) and caught the weekly retro's OWN archival step gone stale against a substrate change."
+
+findings:
+  # Item A — enforce-flip #1 HELD on an empty shadow series
+  - id: "1.1"
+    title: "the memory-primitive external-send gate's scheduled teeth-on review HELD (stays dry-run). The gate ships dry-run-dark (logs + approves, blocks nothing) until a review confirms a low false-positive rate — but it accrued ZERO real deny events in the window: every send it inspected was classified un-evaluable rather than tripping a deny, so the deny series is EMPTY. A false-positive rate cannot be assessed off nothing — flipping on here would calibrate the enforcement threshold against an empty series (the exact trap the dark phase exists to prevent). Action: keep dry-run; investigate whether the classifier is too narrow OR there were genuinely no qualifying sends this window, before the next review. The pre-flip structural closure (observer audit-visibility) remains done from earlier this month."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "enforcement-gate-shadow + session-meta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "memory-primitive send-gate — classifier investigation before next teeth-on review (un-dated; re-arm when deny data accrues)"
+
+  # Item B — enforce-flip #2 HELD on window-short + friction grounds
+  - id: "1.2"
+    title: "the checkpoint-discipline acknowledgement-gate's scheduled teeth-on review HELD (stays dry-run). Unlike gate #1 this one has ample clean shadow data, but two reasons to wait: (a) its required clean-observation window (post the mid-month structural fix that un-pinned a dead counter) lands one day after this retro; (b) the deny volume mirrors the live ~26% checkpoint-discipline miss rate, so flipping now converts a known-high miss rate straight into heavy session friction. Action: land the friction-relief work + let the miss rate fall on clean data first, THEN calibrate the enforce threshold off the post-fix distribution. No second adversarial pass needed (the deny path shipped + audited behind the dry-run)."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "enforcement-gate-shadow + discipline-metric-tally"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "checkpoint acknowledgement-gate — revisit after the clean-window completes + miss-rate falls; calibrate enforce threshold off post-fix distribution"
+
+  # Item C — doctrine promotion: fixture data shape must match the real producer
+  - id: "2.1"
+    title: "PROMOTED to doctrine (learning-layer P1) — 'a test fixture for a renderer / parser / serializer must match the PRODUCTION producer's data shape, or it gives false green.' Catalyst: an observability-layer render test passed on a hand-typed fixture while every REAL record rendered corrupt, because production values carry a delimiter character (a pipe) that collides with the output format's own table delimiter — the clean fixture omitted it, so the test was blind and an adversarial review caught 100%-of-rows corruption the green suite missed. Three parts: derive at least one fixture from the real producer (or assert its format); for any delimiter-joined output, include a fixture whose VALUES contain the delimiter (the highest-yield adversarial input a clean fixture systematically omits); and adversarial review on pipeline/renderer code is non-optional even at green. Sub-rule of the standing green-by-accident / synthetic-fixture-misses-real-format family."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + retro-candidate + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-28"
+    target_surface: "output-checklist test-quality-discipline neighborhood — renderer/parser/serializer fixture-shape + delimiter-collision sub-rule"
+
+  # Item D — doctrine promotion: no ambiguous-shape token in a machine-parsed field
+  - id: "2.2"
+    title: "PROMOTED to doctrine (learning-layer P2) — 'no date/fraction/ambiguous-shaped token in a machine-parsed field; default-deny on shape-ambiguity.' Catalyst: a backlog scheduler reads a free-text field by token SHAPE; an unanchored date written there as PROVENANCE was mis-read as a RIPENESS date, producing false-overdue items. Two parts: route provenance/as-of dates to a prose tier and encode real dependencies STRUCTURALLY (a typed blocked-by field), never as date text the parser re-derives; and when a token's shape is inherently ambiguous, default-DENY the dangerous reading and gate it on an EXPLICIT cue from an enumerable allowlist — do not chase an open-ended blocklist of the safe class (the safe vocabulary is unbounded; the dangerous-cue set is enumerable). Largely self-fixed in-cycle; promoted as the standing cross-field authoring rule."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-28"
+    target_surface: "output-checklist machine-parser-expectation neighborhood — shape-ambiguity default-deny sub-rule"
+
+  # Item E — the weekly retro's OWN archival step is stale against last month's substrate change
+  - id: "3.1"
+    title: "the weekly retro's own buffer-archival step is now STALE against a substrate change — and was NOT run (deliberate). Last month a promotion-gate began deriving promotion-eligibility as a pure function of the live signal buffer, making that buffer the live evidence corpus; a lock followed ('the buffer is not rotated by date'). But the weekly-retro procedure still instructs 'archive the audited window to a monthly file' at its insights-audit step — running it would shrink the gate's evidence base, exactly the corruption the lock forbids. The orchestrator recognized the conflict and refused the archival; queued a protocols reconciliation (a governance-doc edit, consultant/learning-layer territory). A direct continuation of last cycle's STALE-MECHANISM class — a substrate change silently invalidates an old maintenance step until each is re-derived against the new contract."
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "session-meta + procedure-vs-lock-conflict"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "next-cycle"
+    target_surface: "protocols reconciliation — weekly-retro insights-archival step vs the families-evidence-base lock (queued, not unilateral)"
+
+  # Item F — checkpoint-discipline miss-rate slight improvement
+  - id: "4.1"
+    title: "checkpoint-discipline miss-rate 0.26 cycle-wide (515/2002 substantive turns) — a slight improvement from the prior cycle's 0.28 (trend 0.20 → 0.26 → 0.22 → 0.28 → 0.26). Clusters on long mutation-heavy build cascades where nearly every turn ends in a tool call rather than prose, so the discipline line has no natural landing spot and the hooks correct it turn-by-turn — a structural gap, not willpower, and the binding constraint on the gate #1.2 teeth-on flip. No new rule (last cycle's question-ending-turn promotion covers the one previously-uncovered cluster); the structural friction-relief is the standing backlog item."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally + session-meta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "checkpoint-discipline structural friction-relief (standing backlog item; gates the #1.2 teeth-on flip)"
+
+  # Item G — learning-layer: 2 authored + executed, 1 standing pending approved-to-build
+  - id: "6.1"
+    title: "the learning-layer agent authored 2 proposals this cycle (the two doctrine promotions 2.1 + 2.2), BOTH accepted + executed, plus 1 deferred (an enumeration-incompleteness watch, sub-threshold). The one standing pending proposal from last month — a commit-boundary tripwire to catch the now-retired date-rotation mechanism — was APPROVED this cycle and moved to the build queue (a code change needing two design locks before a fresh build session). Both proposals executed two cycles ago hit their two-week post-execution re-scan today: both verified still-holding (the patterns they targeted stopped recurring). The promotion-gate's promotion-due shadow surfaced zero governance-scope candidates this window (the two it flagged are domain-scoped, non-promotable) — no mechanical promotion manufactured."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "learning-layer-proposal + promotion-gate-shadow + session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-06-28"
+    target_surface: "learning-layer proposals lifecycle — 2 executed + 1 approved-to-build-queue; 2 prior proposals re-scanned still-holding"
+
+proposal_backlog:
+  pending_before_retro: 1       # the commit-boundary tripwire carried pending from last month
+  approved_not_executed: 1      # tripwire APPROVED this cycle → build-queued (code, 2 design locks open)
+  executed_this_cycle: 2        # 2.1 fixture-shape + 2.2 shape-ambiguity default-deny
+  authored_this_cycle: 2        # learning-layer P10 pass: fixture-shape + shape-ambiguity (both executed)
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# Governed hooks healthy this cycle. Two dry-run-dark enforcement gates reviewed for
+# teeth-on this cycle; both HELD (findings 1.1, 1.2). The self-discipline grader's
+# drift-scan flagged on a small sample (n<min for a hard flag) — watch-tier, no
+# structural signal. Reported transparently.
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  checkpoint_bar_tier2_format_validator: "active"        # 67.9% fire-rate = the known checkpoint-discipline miss-cluster (finding 4.1), not a dead hook
+  promotion_gate_a: "active"            # DRY-RUN-dark; shadow surfaced 0 governance-scope families this window
+  recurrence_gate_b: "active"           # DRY-RUN-dark; Stop-wired, no-op shadow rows
+  memory_primitive_send_gate: "active"  # DRY-RUN-dark; teeth-on review HELD — empty deny series (finding 1.1)
+  checkpoint_ack_gate: "active"         # DRY-RUN-dark; teeth-on review HELD — window-short + friction (finding 1.2)
+  sumi_post_task: "active"
+  sumi_drift_scan: "active"             # small-sample flag (n=8) — watch-tier, no structural signal
+  measurement_window_days: 7
+  measurement_window_session_count: 44
+  flagged_hooks: ["checkpoint_bar_tier2_format_validator", "sumi_drift_scan"]  # known miss-cluster + small-sample — both diagnosed, neither a dead hook
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-06-21 → 2026-06-28, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.26           # 515/2002 substantive turns; cycle window 2026-06-21 → 2026-06-28
+  checkpoint_bar_prior_session_rate: 0.28  # 2026-06-21-p11 baseline; slight improvement (0.28 → 0.26) — finding 4.1
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 9
+  codex_invocations: 3                      # cross-model reviewer at monthly usage cap; adversarial auditor served as backup reviewer this cycle
+  teacher_invocations: 3                    # P10-primary dispatch (step 6.5, authored 2) + mid-week
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 71
+# sessions in window). Median 41s (under the 120s threshold). Long tail
+# (max 1327s = ~22m) shows the cache-cold + post-compact compound-miss pattern
+# persists; threshold violations 16/71 = ~23% (up from last cycle's ~11%).
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 71
+  median_first_tool_latency_sec: 41
+  p95_first_tool_latency_sec: 756
+  max_first_tool_latency_sec: 1327
+  threshold_violations: 16
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). A heavy
+# OS-infrastructure build cycle: deputies (parallel-fanout) lead, the consultant
+# framed 9 decisions, the adversarial auditor fired 8× (carried cross-model review
+# while the cross-model reviewer was usage-capped — codex 3). The self-discipline
+# grader shows 2 AGENT dispatches (read-only grader); its higher-frequency activity
+# lives in the hook layer, not the Agent layer.
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-06-21 → 2026-06-28"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",  count: 110, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "luma",      count: 9, role: "consultant" }
+      - { name: "breakline", count: 8, role: "adversarial-auditor (carried cross-model review while the consultant reviewer was usage-capped)" }
+      - { name: "codex",     count: 3, role: "consultant", detail: "usage-capped this cycle" }
+      - { name: "teacher",   count: 3, role: "learning-layer (P10 step 6.5 + mid-week)" }
+      - { name: "sumi",      count: 2, role: "OS-self-discipline grader (read-only)" }
+    total: 135
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 180, role: "companion (hook-driven)", detail: "44 session_starts + 98 reactions + 38 session_ends across 44 sessions" }
+    total: 180
+
+schema_version: "1.0"
