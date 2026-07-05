@@ -1,0 +1,235 @@
+# P10 Retro Sidecar — 2026-07-05 (P10 retro #13, sanitized public snapshot)
+#
+# Window 2026-06-28 → 2026-07-05 (7 days; SessionStart supervise layer flagged
+# OVERDUE → this retro was the gating event, same shape as the p6–p12 cycles).
+# Stakeholder names genericized to role-class; workspace names genericized per
+# public CLAUDE.md table (team-leadership / ai-champion / docs-sync /
+# kb-architecture); private personal-track + career-track + capital-track
+# references dropped entirely; evidence citations to private files, commit
+# hashes, hook filenames, chat/docs-platform thread IDs, internal item numbers,
+# exact protocol version strings, and product internals stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, same reason as p9–p12 — the center
+# of gravity IS governance (the retro itself shipped a patch protocol bump + 7
+# rule promotions), so the findings below ARE the cycle's substance. The
+# product/build execution arc is genericized-out as workspace work. Private
+# narrative: `Rozzzsie/_retro/2026-07-05-p10-retro.md`.
+#
+# Mode this cycle: a PROMOTION-HEAVY retro — all 7 of the learning-layer's
+# proposals were gated-to-accept and executed, and a queued procedure-
+# reconciliation was folded into the same ship. The cycle's architect-gold catch
+# came from the post-bump adversarial
+# audit: reconciling a stale procedure step killed the stale INSTRUCTION but left
+# a live autonomous GRANT authorizing the exact operation the step now forbids.
+# Named the lesson: grants outlive directives — retiring a mechanism means
+# grepping for its standing AUTHORIZATION, not just its imperative command.
+#
+# Honest headline on the trend line: checkpoint-discipline miss rate REGRESSED to
+# 0.34 (highest of the visible window). The corroborating self-referential finding
+# (below): two of this cycle's own promoted rules recurred live INSIDE the
+# promoting session — the sharpest evidence yet that the highest-miss clusters are
+# structural (load/fatigue-triggered), not knowledge-triggered, and need the
+# acknowledgement-gate enforce-flip, not more rules.
+#
+# This is the 11th P10 retro sidecar in the multi-retro rendering era (n=11 after this ship).
+
+retro_id: "2026-07-05-p13"
+retro_date: "2026-07-05"
+window_start: "2026-06-28"
+window_end: "2026-07-05"
+prior_retro: "2026-06-28-p12"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+# Meta-finding — the renderer's hero callout. The cycle's one-line lesson.
+meta_finding:
+  headline: "The retro reconciled a stale procedure step against a substrate lock from two cycles back (the weekly insights-audit still instructed 'archive the audited window,' but a promotion-gate had since made that buffer the live evidence corpus — archiving would blind the gate). The fix edited the stale INSTRUCTION. The post-bump adversarial audit then caught the real gap: a separate, still-live autonomous GRANT authorized the learning-layer agent to perform the exact buffer-flush the step now forbids — the imperative was retired but the standing authorization for the same operation was not. Named the lesson: GRANTS OUTLIVE DIRECTIVES. Retiring a mechanism means grepping the governance surface for every standing GRANT/authorization of the retired operation, not just its imperative command — a dead instruction with a live grant behind it is a re-arm waiting to fire. Same cycle promoted 7 operator-gated rules (briefing partial-passthrough discipline; async/post-compact checkpoint-bar-mandatory; classifier audit-both-directions + revert-to-prove; concurrent-session commit-clobber verify; summarizer-mirrors-the-query verify; terminal-scrollback credential hygiene; living-status-table placement) and regressed on checkpoint discipline to 0.34 — with two of those very rules recurring live inside the promoting session, the clearest signal to date that the fix is the structural acknowledgement-gate, not further rules."
+
+findings:
+  # Item A — the procedure-reconciliation the prior cycle QUEUED, now shipped
+  - id: "1.1"
+    title: "SHIPPED the procedure-reconciliation queued last cycle (p12 Item E): the weekly retro's own insights-audit step still instructed 'archive the audited window to a monthly file,' but a promotion-gate two cycles back began deriving promotion-eligibility as a pure function of the live signal buffer — making that buffer the evidence corpus, not a disposable firehose, with a lock following ('the buffer is not rotated by date'). Running the archival would shrink the gate's evidence base. The reconciliation edited the procedure step to defer to the lock (no date-rule buffer rotation), shipped as a patch governance bump with the full version-bump ceremony (canonical rename + stable-symlink retarget + full-repo reference sweep verified by grep, not by a documented file list). A direct third-cycle continuation of the STALE-MECHANISM class (a substrate change silently invalidates old maintenance steps until each is re-derived against the new contract)."
+    category: "rule-clarification"
+    evidence_count: 1
+    source_catchment: "session-meta + prior-cycle-queued-reconciliation"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "protocols weekly-retro insights-audit step — reconciled to the families-evidence-base lock (patch bump, full ceremony)"
+
+  # Item B — the meta_finding companion: grants outlive directives
+  - id: "1.2"
+    title: "PROMOTED to doctrine (adversarial-audit MUST catch) — 'grants outlive directives.' Retiring the stale procedure step (1.1) killed the stale INSTRUCTION, but the adversarial post-bump audit found a separate, still-live autonomous GRANT authorizing the learning-layer agent to perform the exact buffer-flush operation the step now forbids. The imperative was retired; the standing authorization for the same operation was not — a dead command with a live grant behind it is a silent re-arm. Fixed: retired the grant on all three surfaces that carried it (role table + pre-approved-op list + the agent card). Rule: when retiring any mechanism, grep the governance surface for every standing GRANT/authorization of the retired operation, not merely its imperative command. Sibling of the standing verify-to-artifact cluster and the stale-mechanism class (1.1); queued as a next-cycle rider to the pattern-killing-fix checklist item."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "adversarial-audit + session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "pattern-killing-fix discipline — 'grep for standing grants, not just commands' rider (queued) + grant retired on 3 surfaces this cycle"
+
+  # Item C — briefing partial-passthrough discipline
+  - id: "2.1"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — the pre-rendered startup-briefing block is a copy-paste PAYLOAD, relay it verbatim, never retype/re-summarize a subsection from memory (partial retype is how a subsection silently drops while the relay reads as 'delivered'); plus a four-subsection presence self-check after pasting (workspace-status / blockers / backlog-radar / carry-forward). Catalyst: one briefing subsection (the scheduling/backlog radar) had been dropping on relay across several sessions, operator-flagged as rule-tier — and it recurred live at THIS session's startup. Same literal-passthrough family as the companion-card passthrough rule; a payload-to-relay treated as a summary-to-distill under load."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + operator-flag + live-recurrence"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "response-gate doc — startup-briefing partial-passthrough discipline + 4-subsection self-check"
+
+  # Item D — async/post-compact checkpoint-bar-mandatory
+  - id: "2.2"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — an async subagent/deputy-completion turn is checkpoint-bar-mandatory regardless of its own tool-call count (the interim status it emits reports + routes completed work = substantive), AND the operative placement half: when the completion turn itself ends in tool calls, put the bar at the END of the prose BEFORE the trailing tool calls, or a tool-ending turn has no bar slot. Closes the async-fanout miss-cluster (n≥10 consecutive in one prior arc); sibling of the question-ending-turn and post-compact-continuation clauses — all structurally-substantive turns that fell in the brief-ACK exemption gap. Mirrored into the protocols doc's checkpoint-bar section in the same patch bump."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + prior-arc-miss-cluster"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "response-gate doc + protocols checkpoint-bar section — async-completion bar-mandatory clause + placement mechanic"
+
+  # Item E — classifier audit-both-directions + revert-to-prove
+  - id: "2.3"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — two riders on the checklist's classifier/gate-fix neighborhood: (a) audit BOTH mis-classification directions when fixing a classifier (a false-positive fix that ignores the mirror false-negative just trades one silent error for another); (b) prove a gate fix is load-bearing by reverting it and watching the gate fail — a fix that passes whether or not it's present isn't the fix. Both distilled from prior-cycle classifier/gate work; promoted as standing checklist riders."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "output-checklist gate/classifier-fix neighborhood — two riders (both-directions + revert-to-prove)"
+
+  # Item F — two verify-to-artifact sub-families
+  - id: "2.4"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — two new verify-to-artifact sub-families (cluster now 16, A×6/B×4 + others): (a) CONCURRENT-SESSION COMMIT-CLOBBER — verify your own state edit actually landed IN THE COMMIT, not just that the Edit returned success; a concurrent session writing root state can clobber an edit between Edit and `git add`, so confirm the intended files in the staged diff before claiming landed. (b) SUMMARIZER-MIRRORS-THE-QUERY — when verifying a suspicious claim, prefer a no-LLM-summarizer tool (direct fetch/grep over the raw source) to a search/summarizer surface that can echo the query's framing back as if confirmed. Both applied in-session (the commit-clobber rule was applied to this retro's own commits)."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta + in-session-application"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "output-checklist verify-to-artifact cluster — concurrent-clobber (A) + summarizer-mirrors-query (B) sub-families"
+
+  # Item G — credential hygiene + living-status-table placement
+  - id: "2.5"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — two hygiene/placement rules: (a) a long-lived terminal session's SCROLLBACK is a credential-exposure vector — pasting 'what's on screen' into a chat transcript leaks any secret that scrolled past; rotate-on-exposure, and the rule lives in the credential-hygiene section (its fire-condition is any exposure, not the narrower public-commit trigger where the adversarial audit relocated it from). (b) a continuously-re-edited living status/tracking table is a source-of-truth artifact but its PLACEMENT is a distinct axis: put it in a dedicated tracker file with a one-line pointer in the every-session-read status dashboard, never inline (an inline churning table bloats the startup read-cost + adds per-session version-control noise)."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "learning-layer-proposal + adversarial-audit-relocation + LEARNINGS-delta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "output-checklist credential-hygiene section (relocated) + response-gate doc deliverable-format convention (living-table placement)"
+
+  # Item H — checkpoint discipline REGRESSED + self-referential recurrence
+  - id: "4.1"
+    title: "checkpoint-discipline miss-rate 0.34 cycle-wide (644/1915 substantive turns) — a REGRESSION from the prior cycle's 0.26 and the highest of the visible window (trend 0.20 → 0.26 → 0.22 → 0.28 → 0.26 → 0.34). The sharpest corroborating evidence is self-referential: TWO of this cycle's own promoted rules (briefing partial-passthrough 2.1 + async/post-compact bar 2.2) recurred live INSIDE the promoting session — a rule authored this session did not protect this session, because both failure modes are load/fatigue-triggered (post-compact context loss; long tool-cascade turns that end in tool calls with no bar slot), not knowledge-triggered. This is the clearest signal yet that the highest-miss clusters are structural, and that the fix is the designed acknowledgement-gate enforce-flip (withhold the next mutation until a bar is emitted), NOT more rules. That flip stays HELD (build-queue) pending the friction-relief work + a clean post-fix distribution to calibrate the threshold against — the same discipline the prior two cycles' enforce-flip reviews held on."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally + session-meta + live-recurrence"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "checkpoint acknowledgement-gate enforce-flip (build-queue; this cycle is fresh n+1 evidence it is the real fix) + structural friction-relief (gates the flip)"
+
+  # Item I — learning-layer: 7 authored, all 7 operator-gated + executed
+  - id: "6.1"
+    title: "the learning-layer agent authored 7 proposals this cycle (the P10 slate); all 7 cleared the operator-gate and executed — the highest executed-proposal count of the visible window (decision velocity 2 → 7). Zero strict-validated direct-writes (all 7 landed on governance surfaces = propose-only territory, the correct authority path). The post-bump adversarial audit returned SHIP-WITH-CHANGES: one MUST (the grants-outlive-directives catch, 1.2) + three HIGH + six NIT, all folded before close. The two standing build-queue items (a commit-boundary tripwire needing two design locks; the acknowledgement-gate enforce-flip, finding 4.1) both remain HELD — carried, not dropped."
+    category: "rule-extension"
+    evidence_count: 7
+    source_catchment: "learning-layer-proposal + adversarial-audit + session-meta"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-05"
+    target_surface: "learning-layer proposals lifecycle — 7 authored / 7 executed + SHIP-WITH-CHANGES audit folded; 2 build-queue items carried"
+
+proposal_backlog:
+  pending_before_retro: 2       # commit-boundary tripwire (2 design locks) + acknowledgement-gate enforce-flip, both carried
+  approved_not_executed: 2      # both remain build-queue / HELD this cycle
+  executed_this_cycle: 7        # all 7 P10-slate proposals accepted + executed
+  authored_this_cycle: 7        # learning-layer P10 pass: 7 proposals
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# Governed hooks healthy this cycle. The checkpoint-bar Tier-2 validator's high
+# fire-rate is the known miss-cluster (finding 4.1, regressed this cycle), not a
+# dead hook. Two dry-run-dark enforcement gates remain dark (no teeth-on review
+# came due this window). Reported transparently.
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  checkpoint_bar_tier2_format_validator: "active"        # elevated fire-rate = the miss-cluster (finding 4.1), regressed to 0.34 this cycle
+  promotion_gate_a: "active"            # DRY-RUN-dark; no teeth-on review due this window
+  recurrence_gate_b: "active"           # DRY-RUN-dark; Stop-wired, no-op shadow rows
+  memory_primitive_send_gate: "active"  # DRY-RUN-dark; classifier investigation still carried (un-dated)
+  checkpoint_ack_gate: "active"         # DRY-RUN-dark; enforce-flip remains HELD (build-queue) — finding 4.1
+  sumi_post_task: "active"
+  sumi_drift_scan: "active"
+  measurement_window_days: 7
+  measurement_window_session_count: 38
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-06-28 → 2026-07-05, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol (the canonical 0.34 miss-rate + latency + dispatch
+# blocks are the tally's, not author-estimated).
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.34           # 644/1915 substantive turns; cycle window 2026-06-28 → 2026-07-05
+  checkpoint_bar_prior_session_rate: 0.26  # 2026-06-28-p12 baseline; REGRESSION (0.26 → 0.34) — finding 4.1
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 4
+  codex_invocations: 1                      # cross-model reviewer near/at monthly usage cap; adversarial auditor carried review
+  teacher_invocations: 2                    # P10-primary dispatch (step 6.5, authored 7) + one mid-week
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 60
+# sessions in window). Median 47.5s (under the 120s threshold). Long tail
+# (max 1371s = ~23m) shows the cache-cold + post-compact compound-miss pattern
+# persists; threshold violations 11/60 = ~18% (down from last cycle's ~23%).
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 60
+  median_first_tool_latency_sec: 47.5
+  p95_first_tool_latency_sec: 480
+  max_first_tool_latency_sec: 1371
+  threshold_violations: 11
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). A
+# build-and-retro cycle: deputies (parallel-fanout) lead, the adversarial auditor
+# fired 15× (carried cross-model review while the cross-model reviewer was
+# usage-capped — codex 1), the consultant framed 4 decisions, the learning-layer
+# agent fired 2 (P10 step 6.5 + mid-week). The self-discipline grader shows 1
+# AGENT dispatch (read-only grader); its higher-frequency activity lives in the
+# hook layer, not the Agent layer.
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-06-28 → 2026-07-05"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",  count: 135, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "breakline", count: 15, role: "adversarial-auditor (carried cross-model review while the cross-model reviewer was usage-capped)" }
+      - { name: "luma",      count: 4, role: "consultant" }
+      - { name: "teacher",   count: 2, role: "learning-layer (P10 step 6.5 + mid-week)" }
+      - { name: "codex",     count: 1, role: "consultant", detail: "usage-capped this cycle" }
+      - { name: "sumi",      count: 1, role: "OS-self-discipline grader (read-only)" }
+    total: 158
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 153, role: "companion (hook-driven)", detail: "38 session_starts + 79 reactions + 36 session_ends across 38 sessions" }
+    total: 153
+
+schema_version: "1.0"

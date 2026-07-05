@@ -42,7 +42,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "2.6"
+DASHBOARD_VERSION = "2.7"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -266,7 +266,7 @@ def render_tally(tally: dict[str, Any]) -> str:
         )
     # total > 0 but no measured categories — scalar known, breakdown is human-distilled
     # review work, not auto-extracted telemetry. Empty-state copy makes the structural
-    # reality legible (per Rosie's pick 2026-05-04 from the four-candidate set).
+    # reality legible (per the operator's pick 2026-05-04 from the four-candidate set).
     if not rows:
         return (
             f"<p class='kv-row'><span class='kv-key'>{total} invocations this cycle</span></p>"
@@ -739,7 +739,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
 
 def main(argv: list[str]) -> int:
     here = Path(__file__).resolve().parent
-    default_sidecar = here.parent / "retros" / "2026-06-28-p12.yaml"
+    default_sidecar = here.parent / "retros" / "2026-07-05-p13.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar
@@ -754,8 +754,16 @@ def main(argv: list[str]) -> int:
     all_sidecars = load_all_sidecars(retros_dir)
     html_out = render_dashboard(sc, all_sidecars=all_sidecars)
     out.write_text(html_out, encoding="utf-8")
+    # Display path robustly: a relative `out` arg (e.g. the README's documented
+    # `render.py <sidecar> index.html`) isn't a subpath of `here.parent`, so
+    # `relative_to` would raise AFTER the write already succeeded — a false
+    # exit-1 on a good render. Resolve first; fall back to the raw path.
+    try:
+        out_display: Any = out.resolve().relative_to(here.parent)
+    except ValueError:
+        out_display = out
     print(
-        f"rendered {sidecar.name} → {out.relative_to(here.parent)} "
+        f"rendered {sidecar.name} → {out_display} "
         f"(trend: n={len(all_sidecars)} sidecars)"
     )
     return 0
