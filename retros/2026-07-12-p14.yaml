@@ -1,0 +1,216 @@
+# P10 Retro Sidecar — 2026-07-12 (P10 retro #14, sanitized public snapshot)
+#
+# Window 2026-07-05 → 2026-07-12 (7 days; weekly cadence, run fresh after the
+# SessionStart supervise layer flagged OVERDUE). NOT the month-first retro — the
+# monthly-housecleaning sub-ritual fired last cycle, so this is a regular weekly.
+# Stakeholder names genericized to role-class; workspace names genericized per
+# public CLAUDE.md table (team-leadership / ai-champion / docs-sync /
+# kb-architecture); private personal-track + career-track + capital-track
+# references dropped entirely; evidence citations to private files, commit
+# hashes, hook filenames, chat/docs-platform thread IDs, internal item numbers,
+# exact protocol version strings, and product internals stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, same reason as p9–p13 — the center
+# of gravity IS governance (the retro moved a long-HELD enforcement gate to BUILD
+# and promoted rules), so the findings below ARE the cycle's substance. The
+# product/build execution arc is genericized-out as workspace work. Private
+# narrative: `Rozzzsie/_retro/2026-07-12-p10-retro.md`.
+#
+# Mode this cycle: a DECISION retro. After six-plus cycles of HELD, the
+# checkpoint acknowledgement-gate enforce-flip moved to BUILD — because the
+# consultant rail reframed the blocking prerequisite. The gate had been held on a
+# separate "friction-relief" ship; the reframe showed that ARMING THE GATE NARROWLY
+# (teeth only on the clusters doctrine already declares self-discipline-dead:
+# post-compaction, long wrap-arcs, async-completion turns) IS the friction relief —
+# a legitimate long work-arc is a non-cluster arc, so a cluster-scoped gate
+# structurally cannot fire during it. That collapsed the prerequisite into the
+# scoping choice and unblocked the build.
+#
+# Honest headline on the trend line: checkpoint-discipline miss rate IMPROVED to
+# 0.22 (from 0.34 last cycle) — but the worst single-session barless run HELD at 78
+# (one build-heavy session logged 127 corrective fires). The average got better;
+# the PEAK CLUSTERS did not. That split is exactly why the gate is being armed
+# narrow (at the clusters) rather than uniform — and it recurred live in THIS
+# retro session, fresh n+1 that the peaks are structural, not knowledge-triggered.
+#
+# This is the 12th P10 retro sidecar in the multi-retro rendering era (n=12 after this ship).
+
+retro_id: "2026-07-12-p14"
+retro_date: "2026-07-12"
+window_start: "2026-07-05"
+window_end: "2026-07-12"
+prior_retro: "2026-07-05-p13"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+# Meta-finding — the renderer's hero callout. The cycle's one-line lesson.
+meta_finding:
+  headline: "A long-HELD enforcement gate moved to BUILD because the consultant rail reframed its blocker. The checkpoint acknowledgement-gate (withhold the next mutation until the agent acknowledges its discipline bar) had been held for cycles on a separate friction-relief prerequisite. The reframe: NARROW-ARMING AND FRICTION-RELIEF ARE THE SAME DECISION SEEN FROM TWO SIDES. Arm the gate only on the three turn-clusters doctrine already declares self-discipline cannot carry (post-compaction, long wrap-arcs, async-completion) and a legitimate long work-arc — being a non-cluster arc — structurally cannot trip it; the scoping choice IS the relief, so the prerequisite collapses into it. Decision: BUILD, narrow-armed, in a dedicated session with an adversarial deny-envelope pass. The evidence that forced it: miss rate improved cycle-over-cycle (0.34 → 0.22) yet the worst barless run HELD at 78 under maximal rule-awareness — the average improved while the peak clusters persisted, and two promoted rules from prior cycles recurred live again. Named the lesson: when the blocker on a gate is 'friction,' scoping the gate to only where discipline is already known-dead can BE the friction-relief, not a thing you ship first."
+
+findings:
+  # Item A — the HELD→BUILD decision, the cycle's center of gravity
+  - id: "1.1"
+    title: "DECIDED (operator-gated, consultant-framed) — the checkpoint acknowledgement-gate enforce-flip moved from HELD (build-queue, carried across 6+ cycles) to BUILD, NARROW-ARMED. The consultant rail framed three options (arm-narrow-at-the-clusters / arm-uniform-at-a-tail-threshold / hold-and-ship-friction-relief-first) and recommended narrow: teeth only on the clusters doctrine already flags as self-discipline-dead (post-compaction continuation, long wrap-arcs, async/deputy-completion), silent everywhere else. This collapses the long-standing friction-relief prerequisite by construction (a legitimate long work-arc is a non-cluster arc → a cluster-scoped gate can't fire during it) and keeps the blast radius small (a bar emitted in prose self-unlocks, so even non-interactive runs release themselves). Build is a dedicated session + adversarial deny-envelope pass; bundled with the orchestration-cost rule (1.4) into one governance version bump. Basis-honesty rider recorded: calibrate the arming threshold against the tally-derived (hook-truth) miss rate, never the self-reported one, or the flip repeats the falsely-clean-corpus anti-pattern on its own basis."
+    category: "decision"
+    evidence_count: 1
+    source_catchment: "consultant-frame + discipline-metric-tally + multi-cycle-build-queue"
+    recommendation: "accept"
+    status: "approved-queued"
+    execution_target_week: "next-dedicated-build-session"
+    target_surface: "checkpoint acknowledgement-gate enforce-flip — BUILD narrow-armed (3 doctrine-flagged clusters), Breakline deny-envelope pass, bundled version bump"
+
+  # Item B — checkpoint discipline improved but peaks held (the forcing evidence)
+  - id: "4.1"
+    title: "checkpoint-discipline miss-rate 0.22 cycle-wide (506/2312 substantive turns) — an IMPROVEMENT from last cycle's 0.34 (trend now 0.28 → 0.26 → 0.34 → 0.22). But the worst single-session barless run HELD at 78 consecutive (one build-heavy session: 127 corrective fires), and the miss recurred live inside THIS retro session under maximal rule-awareness. The average improved; the peak clusters did not — which is the precise argument for arming the enforce-gate NARROW (at the clusters) rather than uniform. Self-reported per-session miss counts run honest but understate the peaks ~10–25% vs the hook-truth tally, so the tally is the calibration basis. Fresh n+1 that the highest-miss clusters are load/fatigue-triggered (structural), not knowledge-triggered."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally + session-meta + live-recurrence"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "feeds the enforce-gate arming-threshold calibration (finding 1.1)"
+
+  # Item C — filtered-grep-false-clean rule promotion
+  - id: "2.1"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — a filtered/narrow grep is a surrogate for the direct grep; a false-clean is only as clean as the filter you applied. When a grep result feeds a 'clean / zero-hits / all-references-found' claim, a filtered view (path/glob filter, piped narrowing, files-with-matches-only, or a line co-citing another path that masks the target) silently drops matches and the false-clean reads as done. Run the direct per-file / full-repo grep of the literal signature, and for highest-stakes claims (outbound confidentiality scrub, governance reference sweep) confirm the specific expected-hit files appear in the RAW output. Dual-surface evidence (a scrub false-clean, n=3 in one session + a governance reference sweep where the first filtered grep silently dropped a live reference) placed it at the generalized verify-to-artifact cluster, not the scrub-only surface. Highest-confidence unlanded promotion this cycle."
+    category: "rule-extension"
+    evidence_count: 5
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta + insights-buffer"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-12"
+    target_surface: "output-checklist verify-to-artifact cluster — filtered-grep-false-clean sub-family (authoring-frame cluster)"
+
+  # Item D — search-index/contentSnippet freshness rule promotion
+  - id: "2.2"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — a search-index hit / content-snippet / retrieval excerpt is a stale, partial surrogate for the live authoritative document. For any claim about system shape / architecture / current-state derived from a snippet, reconcile to the freshest authoritative source before asserting. Two facets folded in: (1) FRESHNESS — the indexed copy can predate the live doc, open the doc; (2) CONCEPT-NOT-LITERAL-TERM — grep the concept and its synonyms, not one literal term; the authoritative doc may not carry your search term in its title/headers (a literal-term grep missed a concept because the doc didn't title it with that word, and a system-shape claim drifted). Recurred across several sessions and self-flagged as a checklist candidate twice."
+    category: "rule-extension"
+    evidence_count: 3
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta + insights-buffer-self-flags"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-12"
+    target_surface: "output-checklist verify-to-artifact cluster — search-index-freshness sub-family (cross-context-claim cluster)"
+
+  # Item E — fan-out cost governance gap (approved, queued to the bundled bump)
+  - id: "1.4"
+    title: "APPROVED, QUEUED (operator-gated) — a genuinely-uncovered orchestration gap: a parallel-deputy fan-out ballooned into overlapping deputies across a compaction boundary and hit a hard cost ceiling, forcing an operator halt. No existing rule caps fan-out breadth or re-scopes fan-out after a compaction fires (the focus-chain discipline protects TASK-state across compaction, not FAN-OUT-scope-state). Proposed rule (framing accepted): state the scope partition explicitly (each deputy owns a named, non-overlapping slice), and make post-compaction re-scope mandatory (reconstruct the already-dispatched set before dispatching any further deputies) — NO hard numeric cap, because the failure was overlap-across-compaction, not raw breadth. Queued to land in the orchestration governance doc on the next version bump (bundled with the enforce-gate build) rather than split across two homes."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "root-mechanical-audit + operator-halt"
+    recommendation: "accept"
+    status: "approved-queued"
+    execution_target_week: "next-version-bump"
+    target_surface: "orchestration governance doc — parallel-deputy fan-out cost governance + post-compaction re-scope"
+
+  # Item F — discipline audit clean
+  - id: "5.1"
+    title: "discipline audit CLEAN where it counts — all 3 sampled quality-gate traces PASS (real productive filenames, non-generic verify-to-artifact evidence, checkpoint-bar section present; zero trace-quality escalation); intent-confirmation discipline had zero skips across the window; and the ~4 verify-to-artifact aggregate self-corrections this cycle (including a headline quantitative finding retracted for a population-mixing bug) were ALL caught internally before reaching a stakeholder — the surrogate-vs-artifact gate working as designed. The cross-model reviewer was usage-capped on both governance bumps this window; the adversarial auditor carried review solo and the degrade-ladder held."
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "session-log-audit + trace-sample-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-12"
+    target_surface: "no action — health signal"
+
+  # Item G — hook-health follow-ups (surfaced, not blind-fixed)
+  - id: "6.1"
+    title: "TWO hook-health follow-ups surfaced by the fire-rate audit, deliberately NOT blind-fixed in-retro: (a) the self-discipline drift-scanner has produced no verdict in the window though its environment checks out — a possible silent fail-open, which is a genuine risk for a quality gate and warrants a real diagnosis session (matcher-rename vs auth), not a guessed patch; (b) a dry-run-dark promotion gate is listed in the expected-hooks inventory but is not wired in settings, so it never fires — inventory drift, left in the inventory (not de-listed) precisely so the audit keeps flagging it until resolved, since de-listing would silence the signal if it is a real wiring regression. Both carried as investigation items."
+    category: "meta-observation"
+    evidence_count: 2
+    source_catchment: "hook-fire-rate-audit"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "hook-health — drift-scanner fail-open diagnosis + promotion-gate inventory-drift resolution"
+
+proposal_backlog:
+  pending_before_retro: 2       # commit-boundary tripwire (2 design locks) + acknowledgement-gate enforce-flip, both carried in
+  approved_not_executed: 2      # enforce-gate BUILD (narrow) + fan-out cost governance — both queued to the bundled bump
+  executed_this_cycle: 2        # the two verify-to-artifact checklist promotions landed this session
+  authored_this_cycle: 3        # learning-layer P10 pass: 3 proposals (1 deferred: checkpoint doctrine, contract-barred from re-propose)
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# Governed hooks healthy this cycle. The checkpoint-bar Tier-2 validator's elevated
+# fire-rate is the known miss-cluster (finding 4.1), not a dead hook. Two flags are
+# real follow-ups (finding 6.1): a drift-scanner with no verdict in-window (possible
+# fail-open) and a promotion gate absent from the live hook wiring (inventory drift).
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  checkpoint_bar_tier2_format_validator: "active"        # elevated fire-rate = the miss-cluster (finding 4.1); rate improved 0.34 → 0.22
+  promotion_gate_a: "investigate"       # absent from live wiring though inventory-listed — finding 6.1(b)
+  recurrence_gate_b: "active"           # DRY-RUN-dark; Stop-wired, no-op shadow rows
+  memory_primitive_send_gate: "active"  # ENFORCING since a prior cycle (fail-closed)
+  checkpoint_ack_gate: "build-queued"   # moved HELD → BUILD (narrow-armed) this cycle — finding 1.1
+  sumi_post_task: "active"
+  sumi_drift_scan: "investigate"        # no verdict in-window, environment OK — possible fail-open, finding 6.1(a)
+  measurement_window_days: 7
+  measurement_window_session_count: 41
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-07-05 → 2026-07-12, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol (the 0.22 miss-rate + latency + dispatch blocks
+# are the tally's, not author-estimated). The tally CORRECTED an in-session
+# memory-surrogate that carried last cycle's 0.34 forward — the artifact won.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.22           # 506/2312 substantive turns; cycle window 2026-07-05 → 2026-07-12
+  checkpoint_bar_prior_session_rate: 0.34  # 2026-07-05-p13 baseline; IMPROVEMENT (0.34 → 0.22) — but peaks held (finding 4.1)
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 6
+  codex_invocations: 0                      # cross-model reviewer usage-capped this window; adversarial auditor carried review
+  teacher_invocations: 2                    # P10-primary dispatch (step 6.5, authored 3) + one prior in window
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 76
+# sessions in window). Median 29.0s (well under the 120s threshold — improved from
+# last cycle's 47.5s). Long tail (max 3030s) shows the cache-cold + post-compact
+# compound-miss pattern persists in the extreme; threshold violations 6/76 = ~8%
+# (down from last cycle's ~18%).
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 76
+  median_first_tool_latency_sec: 29.0
+  p95_first_tool_latency_sec: 212
+  max_first_tool_latency_sec: 3030
+  threshold_violations: 6
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). A
+# build-and-retro cycle: deputies (parallel-fanout) dominate (the fan-out-cost
+# finding 1.4 is the flip side of that volume), the consultant framed 6 decisions
+# (incl. the enforce-gate reframe), the self-discipline grader ran 10, the
+# adversarial auditor 4, the learning-layer agent 2. The cross-model reviewer was
+# usage-capped (0). The high deputy count is the cycle's parallel-fanout signature.
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-07-05 → 2026-07-12"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",  count: 241, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "sumi",      count: 10, role: "OS-self-discipline grader (read-only)" }
+      - { name: "luma",      count: 6, role: "consultant (framed the enforce-gate decision)" }
+      - { name: "breakline", count: 4, role: "adversarial-auditor (carried review while the cross-model reviewer was usage-capped)" }
+      - { name: "teacher",   count: 2, role: "learning-layer (P10 step 6.5 + one prior)" }
+      - { name: "codex",     count: 0, role: "consultant", detail: "usage-capped this cycle" }
+    total: 263
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 190, role: "companion (hook-driven)", detail: "41 session_starts + 110 reactions + 39 session_ends across 41 sessions" }
+    total: 190
+
+schema_version: "1.0"
