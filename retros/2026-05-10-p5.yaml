@@ -1,3 +1,8 @@
+# [CORRECTED 2026-07-15] CORRECTION NOTICE — this cycle's subagent-permission item is FALSE.
+# The permission fix this cites never worked. Every rule in the settings allowlist used a single-leading-slash absolute path, which Claude Code anchors at the settings source rather than the filesystem root, so the rules resolved to paths that cannot exist. Both the 2026-05-10 Write rules and the 2026-05-17 Edit rules were inert; subagent grants were dead from 2026-05-10 to 2026-07-15 (66 days). The failure was invisible because a dead allow-rule does not error, it degrades to a permission prompt approved by hand. Corrected and verified 2026-07-15 by a three-arm probe (granted path allowed / ungranted control denied / counterfactual single-slash denied).
+# The observation was real (subagent writes WERE denied); the resolution claim is what is false.
+# Full account: the 2026-07-15 entry in the private repo's root LEARNINGS.md.
+
 # P10 Retro Sidecar — 2026-05-10 (P10 retro #5, sanitized public snapshot)
 #
 # This is the public-grain version of the sidecar covering the v3.10.x ship cycle
@@ -158,7 +163,7 @@ findings:
     target_surface: "_config/agent-protocols.md (P3B section, future patch)"
 
   - id: "3.2"
-    title: "Subagent Write-permission Class-S signal — config-layer fix shipped (permissions.allow path-targeted Write rules per subagent contract)"
+    title: "[CORRECTED 2026-07-15] THE FIX DESCRIBED HERE NEVER WORKED — see the correction header at the top of this file. Original text follows. Subagent Write-permission Class-S signal — config-layer fix shipped (permissions.allow path-targeted Write rules per subagent contract)"
     category: "rule-clarification"
     evidence_count: 2
     source_catchment: "adversarial-audit"

@@ -1,3 +1,9 @@
+# [CORRECTED 2026-07-15] CORRECTION NOTICE — this cycle's subagent Edit-permission item is FALSE.
+# The permission fix this cites never worked. Every rule in the settings allowlist used a single-leading-slash absolute path, which Claude Code anchors at the settings source rather than the filesystem root, so the rules resolved to paths that cannot exist. Both the 2026-05-10 Write rules and the 2026-05-17 Edit rules were inert; subagent grants were dead from 2026-05-10 to 2026-07-15 (66 days). The failure was invisible because a dead allow-rule does not error, it degrades to a permission prompt approved by hand. Corrected and verified 2026-07-15 by a three-arm probe (granted path allowed / ungranted control denied / counterfactual single-slash denied).
+# The 'Write axis closed / Edit axis missed' model does not exist: the tool name was a red herring and the path syntax was the whole bug.
+# This item is also reclassified OUT of the helper-axis-completeness family, which it fails on that family's own predicate
+# (the member-set was complete; it simply could not match). Full account: the 2026-07-15 entry in the private repo's root LEARNINGS.md.
+
 # P10 Retro Sidecar — 2026-05-17 (P10 retro #6, sanitized public snapshot)
 #
 # Window 2026-05-10 → 2026-05-17 (7 days on the nose; SessionStart supervise
@@ -146,7 +152,7 @@ findings:
 
   # Helper-axis-completeness family — post-retro permission-fix surface
   - id: "3.1"
-    title: "helper-axis-completeness family — subagent Edit-axis permission gap surfaced when Teacher invocation degraded with Edit denial on teacher-proposals.md; n=2 family-class with prior wrapper-blind fix; 4-surface sweep landed post-retro"
+    title: "[CORRECTED 2026-07-15] FALSE — there was no Write-vs-Edit axis; both rule sets were inert single-slash paths, and this 'fix' granted nothing. See the correction header at the top of this file. Original text follows. helper-axis-completeness family — subagent Edit-axis permission gap surfaced when Teacher invocation degraded with Edit denial on teacher-proposals.md; n=2 family-class with prior wrapper-blind fix; 4-surface sweep landed post-retro"
     category: "rule-clarification"
     evidence_count: 2
     source_catchment: "adversarial-audit"

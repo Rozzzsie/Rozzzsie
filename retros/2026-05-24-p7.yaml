@@ -1,3 +1,12 @@
+# [CORRECTED 2026-07-15] CORRECTION NOTICE — two items in this cycle are FALSE (Item B id 1.2, Item J id 4.1).
+# The permission fix this cites never worked. Every rule in the settings allowlist used a single-leading-slash absolute path, which Claude Code anchors at the settings source rather than the filesystem root, so the rules resolved to paths that cannot exist. Both the 2026-05-10 Write rules and the 2026-05-17 Edit rules were inert; subagent grants were dead from 2026-05-10 to 2026-07-15 (66 days). The failure was invisible because a dead allow-rule does not error, it degrades to a permission prompt approved by hand. Corrected and verified 2026-07-15 by a three-arm probe (granted path allowed / ungranted control denied / counterfactual single-slash denied).
+# Item B: the §21 promotion is recorded at n=3, but one of its three legs (the permission-allowlist leg) never happened -> true n=2.
+#         The rule STANDS (the threshold is n=2, and the family has since grown on genuine catalysts). This is a recount, not a retraction.
+# Item J: claims a capability was CONFIRMED and a gap 'confirmed fixed'. Neither is true. Nothing was verified; the absence of a
+#         failure was mistaken for evidence of success. The grant did not work until 2026-07-15.
+# evidence_count fields are left at their originally-claimed values: they record what the cycle asserted, which is the point of the record.
+# Full account: the 2026-07-15 entry in the private repo's root LEARNINGS.md.
+
 # P10 Retro Sidecar — 2026-05-24 (P10 retro #7, sanitized public snapshot)
 #
 # Window 2026-05-17 → 2026-05-24 (7 days on the nose; SessionStart supervise
@@ -40,7 +49,7 @@ findings:
 
   # Item B — NEW §21 Helper-axis-completeness discipline (n=3 family promotion)
   - id: "1.2"
-    title: "NEW §21 Helper-axis-completeness discipline — n=3 family-class across distinct surfaces (helper-script path-axis + permission-allowlist Edit-axis + dependency-manifest hook-script-axis); sister-but-distinct from §11 post-architectural-fix scope audit; §11 fires AFTER fix kills pattern, §21 fires AT fix-author time; paired discipline on shared-infrastructure fixes"
+    title: "[CORRECTED 2026-07-15] THE COUNT IS WRONG — true n=2, not n=3: the permission-allowlist leg below is fiction (see correction header). The rule itself STANDS; this is a recount, not a retraction. Original text follows. NEW §21 Helper-axis-completeness discipline — n=3 family-class across distinct surfaces (helper-script path-axis + permission-allowlist Edit-axis [FALSE LEG] + dependency-manifest hook-script-axis); sister-but-distinct from §11 post-architectural-fix scope audit; §11 fires AFTER fix kills pattern, §21 fires AT fix-author time; paired discipline on shared-infrastructure fixes"
     category: "rule-extension"
     evidence_count: 3
     source_catchment: "family-extension"
@@ -128,7 +137,7 @@ findings:
 
   # Item J — Teacher direct-write capability confirmed (post 5/17 Edit-axis gap fix)
   - id: "4.1"
-    title: "Teacher direct-write capability CONFIRMED on teacher-proposals.md — Edit-axis permission gap from prior cycle p6 sidecar Item 3.1 confirmed fixed; no degrade fired this cycle; Class-S structural-signal clock resets to 0 (was n=2 in rolling quarter)"
+    title: "[CORRECTED 2026-07-15] THIS CONFIRMATION IS FALSE — the capability was NOT confirmed and the gap was NOT fixed; no degrade fired because Root persisted on the subagent's behalf, not because the grant worked. 'No failure observed' was read as 'verified'. See correction header. Original text follows. Teacher direct-write capability CONFIRMED on teacher-proposals.md — Edit-axis permission gap from prior cycle p6 sidecar Item 3.1 confirmed fixed; no degrade fired this cycle; Class-S structural-signal clock resets to 0 (was n=2 in rolling quarter)"
     category: "rule-clarification"
     evidence_count: 1
     source_catchment: "Teacher-invocation"

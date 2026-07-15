@@ -52,7 +52,7 @@ Sumi v1.3 drift-scan invocation mode + MUTATION_TOOLS Conservative extension.
 - 3 LEARNINGS shipped: §18 "Matcher discipline — structural over substring" + §19 "Reading-bundle rendering" + §20 "Long-lived branch merge discipline" all added to `_config/output-checklist.md`.
 - §15(c) classification-check extension (layer-classification scope-conflation catch).
 - 5 Teacher proposals authored (1 pending; rest at terminal status — executed or deferred with explicit watch entries).
-- Class-S subagent Write-permission gap RESOLVED at config layer: `permissions.allow` block added to root `.claude/settings.json` with path-targeted Write rules per subagent contract (Teacher → proposals + insights-archive + input-archive; Luma → designs/).
+- ❌ **[CORRECTED 2026-07-15] FALSE — NOT RESOLVED.** The permission fix this cites never worked. Every rule in the settings allowlist used a single-leading-slash absolute path, which Claude Code anchors at the settings source rather than the filesystem root, so the rules resolved to paths that cannot exist. Both the 2026-05-10 Write rules and the 2026-05-17 Edit rules were inert; subagent grants were dead from 2026-05-10 to 2026-07-15 (66 days). The failure was invisible because a dead allow-rule does not error, it degrades to a permission prompt approved by hand. Corrected and verified 2026-07-15 by a three-arm probe (granted path allowed / ungranted control denied / counterfactual single-slash denied). Original text follows. ~~Class-S subagent Write-permission gap RESOLVED at config layer:~~ `permissions.allow` block added to root `.claude/settings.json` with path-targeted Write rules per subagent contract (Teacher → proposals + insights-archive + input-archive; Luma → designs/).
 
 **2026-05-10 — Dashboard v1.5 + v2.0 ship:**
 - v1.5: re-render against 2026-05-10-p5 sidecar + v1.4 backfill; minor sidecar metric corrections (silent-failure-hunter row removed from v1.5 dispatch_axis).
@@ -105,7 +105,7 @@ Dashboard v1.4 was logged in the root CHANGELOG. Dashboard v2.0 (sprint-2 multi-
 | "Matcher discipline — structural over substring" | §18 added to output-checklist at P10 | ✅ CLOSED |
 | "Reading-bundle rendering" | §19 added to output-checklist at P10 | ✅ CLOSED |
 | "Long-lived branch merge discipline" | §20 added to output-checklist at P10 | ✅ CLOSED |
-| Subagent Write-permission gap | Config-layer fix shipped at P10 | ✅ CLOSED |
+| Subagent Write-permission gap | ❌ **[CORRECTED 2026-07-15] ** Config-layer fix shipped at P10 — but the fix was inert (single-slash paths); gap stayed open 66 days | ❌ **NOT CLOSED** (closed 2026-07-15) |
 
 ### Carry-forward from 2026-05-06 retro
 
