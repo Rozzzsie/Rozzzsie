@@ -42,7 +42,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "2.8"
+DASHBOARD_VERSION = "2.9"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -739,7 +739,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
 
 def main(argv: list[str]) -> int:
     here = Path(__file__).resolve().parent
-    default_sidecar = here.parent / "retros" / "2026-07-12-p14.yaml"
+    default_sidecar = here.parent / "retros" / "2026-07-19-p15.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar

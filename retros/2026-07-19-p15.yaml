@@ -1,0 +1,224 @@
+# P10 Retro Sidecar — 2026-07-19 (P10 retro #15, sanitized public snapshot)
+#
+# Window 2026-07-12 → 2026-07-19 (7 days; weekly cadence, run fresh after the
+# SessionStart supervise layer flagged OVERDUE). A regular weekly — the monthly
+# housecleaning sub-ritual fired two cycles back (first-of-month), so no
+# housecleaning pass this cycle. Stakeholder names genericized to role-class;
+# workspace names genericized per public CLAUDE.md table (team-leadership /
+# ai-champion / docs-sync / kb-architecture); private personal-track +
+# career-track + capital-track references dropped entirely; evidence citations to
+# private files, commit hashes, hook filenames, chat/docs thread IDs, internal
+# item numbers, exact protocol version strings, and product internals stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, same reason as p9–p14 — the center
+# of gravity IS governance (three rule promotions + a governance-bookkeeping
+# reconciliation), so the findings below ARE the cycle's substance. The
+# product/build execution arc is genericized-out as workspace work. Private
+# narrative: `Rozzzsie/_retro/2026-07-19-p10-retro.md`.
+#
+# Mode this cycle: a PROMOTION + SELF-AUDIT retro. The cycle's theme — "selectors
+# everywhere, validators nowhere" (a claim / status / green test / 'done'
+# dispatch / empty grep trusted without a check against the artifact) — was found
+# in the OS's OWN governance bookkeeping: seven executed rule-proposals from a
+# prior cycle still read "pending" because the per-proposal status header was a
+# selector nobody had reconciled against the execution ledger. Reconciled this
+# cycle. The three rules promoted each install a validator where a selector had
+# been trusted.
+#
+# Honest headline on the trend line: checkpoint-discipline miss rate ticked UP to
+# 0.26 (from 0.22 last cycle) on a build-heavy cycle (a synthetic-harness build
+# arc + heavy async deputy fan-out). The enforce-gate that would close this stays
+# BUILD-QUEUED — downstream of a reset-path build + a consultant reframe, not
+# re-decided this cycle. The average moved with the ship-load; the structural fix
+# is still in flight.
+#
+# This is the 13th P10 retro sidecar in the multi-retro rendering era (n=13 after this ship).
+
+retro_id: "2026-07-19-p15"
+retro_date: "2026-07-19"
+window_start: "2026-07-12"
+window_end: "2026-07-19"
+prior_retro: "2026-07-12-p14"
+interactive_mode: true
+trigger_source: "weekly-cadence-fresh-session-interactive-after-OVERDUE-banner"
+
+# Meta-finding — the renderer's hero callout. The cycle's one-line lesson.
+meta_finding:
+  headline: "The cycle's theme — SELECTORS EVERYWHERE, VALIDATORS NOWHERE (a claim, a status, a green test, a 'done' dispatch, an empty grep — each trusted as a conclusion without a check against the artifact) — was found in the OS's OWN governance bookkeeping: seven executed rule-proposals from a prior cycle still read 'pending' because the per-proposal status header was a selector nobody had reconciled against the execution ledger that recorded them shipped. The retro caught its own surface exhibiting the class it was auditing, and reconciled it. The three rules promoted this cycle each INSTALL A VALIDATOR where a selector had been trusted: (1) prove a test harness's fail-arm can actually fire — and exercise the degradation SEQUENCE end-to-end — before trusting a green suite; (2) run a positive control that proves your query CAN find a known instance before reading an empty grep as absence, and query structured logs by field, never bare substring; (3) a dispatched subagent's completion is not delivery until its return ARTIFACT is verified to exist. Named the lesson: a selector says how to fix; only a validator tells you it broke — and the highest-leverage governance work of a mature OS is giving every trusted selector a trigger that checks it against the artifact."
+
+findings:
+  # Item A — the recurring class, this cycle's center of gravity
+  - id: "2.1"
+    title: "THE CYCLE'S HEADLINE CLASS (n=6, cross-cycle) — 'selectors everywhere, validators nowhere': a status / claim / comment / green test trusted as a conclusion without a validator that checks it against the artifact. In-window instances: a backlog item's gate left reading 'design pass in progress' after its own close cascade; a stale title-claim on a resolved item; outbound-doc tense / origin / deployed-vs-testing corrections (all operator-caught); a born-false prerequisite claim; a wrong-path write that returned 'success'. Same class the prior week's full-sweep adversarial audit named at scale. The three rule promotions below each target a facet of it; the reconciliation (item 5.2) found the OS's own proposal bookkeeping exhibiting it."
+    category: "meta-observation"
+    evidence_count: 6
+    source_catchment: "changelog-sweep + adversarial-audit-continuity + operator-catches"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-19"
+    target_surface: "addressed via the three rule promotions (2.2 / 2.3 / 1.1) + the bookkeeping reconciliation (5.2)"
+
+  # Item B — T2 green-suite-not-tested-contract
+  - id: "2.2"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — GREEN SUITE ≠ TESTED CONTRACT: test the degradation SEQUENCE, not each branch; and prove the fail-arm can fire. (1) When a system has a fallback / degradation ladder (provider fallback, retry sequence, tiered gate), passing tests must exercise the SEQUENCE end-to-end — each rung green in isolation does not prove the ladder degrades correctly, and mocks that stub the integration hide the exact seam the ladder depends on. (2) A test harness whose fail-arm cannot fire proves nothing: before trusting a green result, feed a known-bad input and watch the assertion fail. Self-consistent fixtures + a non-firing fail-arm is how a dead extractor passes green. Reviewer rider: point the reviewer at the untested critical parameter the ladder actually turns on, not the branches already green. The test-harness sibling of the executed clean-path governance-gate-fireability rule."
+    category: "rule-extension"
+    evidence_count: 3
+    source_catchment: "learning-layer-proposal + insights-buffer"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-19"
+    target_surface: "output-checklist ready-to-use cluster — degradation-sequence + prove-the-fail-arm-can-fire"
+
+  # Item C — T3 grep-mechanics extension
+  - id: "2.3"
+    title: "PROMOTED to doctrine (learning-layer, operator-gated) — GREP MECHANICS for structured artifacts + absence-claims (extends the grep-discipline section). Two rules: (a) query JSONL / structured logs by their STRUCTURAL FIELD (a field-scoped selector), never a bare substring that can match across field boundaries or miss field-scoped values; a filter-exclusion on structured data can silently drop a real row, so verify the row count against a structural query. (b) POSITIVE CONTROL before an absence-claim: before asserting 'X is absent' from an empty grep, run a control that proves the query CAN find a known-present instance — an empty result from an unproven query is INDETERMINATE, not absence; grep the concept AND its synonyms, not one literal term. The mechanics half of the standing verify-to-artifact cluster; cross-referenced so grep-methodology lives here and surrogate-reasoning stays in the cluster."
+    category: "rule-extension"
+    evidence_count: 3
+    source_catchment: "learning-layer-proposal + insights-buffer + retro-candidate-pre-queue"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-19"
+    target_surface: "output-checklist grep-discipline section — JSONL structural-field query + positive-control-before-absence"
+
+  # Item D — T1 completion-not-delivery (queued to the bundled bump)
+  - id: "1.1"
+    title: "APPROVED, QUEUED (operator-gated) — COMPLETION ≠ DELIVERY for subagent returns: file-handoff is the primary return channel, the chat message is a pointer, not the payload. A dispatched subagent's return must land in a durable file the orchestrator reads; before treating a dispatch as complete, verify the return artifact EXISTS (the arrival check) — a dispatch with no readable return artifact is INDETERMINATE, not done. Sub-rule for async / teams-mode: when a synchronous-return flag is not honored (the deputy idles instead of returning), the missing arrival signal is the tell — poll the expected return-file rather than waiting on a message that may never route. Closes the one genuinely UNPROPAGATED learning this cycle (n=3 across distinct sessions, zero prior governance landing). Honest scope: the idle itself is a harness behavior the rule MITIGATES (mandate file-handoff + arrival poll), not a doctrine-closable bug. Bundled with the carried orchestration fan-out-cost rule onto ONE governance version bump + adversarial pass — same section, different axis (reliability vs cost)."
+    category: "rule-extension"
+    evidence_count: 3
+    source_catchment: "learning-layer-proposal + LEARNINGS-delta (the unpropagated cluster) + insights-buffer"
+    recommendation: "accept"
+    status: "approved-queued"
+    execution_target_week: "next-version-bump"
+    target_surface: "orchestration governance doc — subagent dispatch/relay-reliability (arrival check), bundled with the fan-out-cost rule"
+
+  # Item E — checkpoint discipline ticked up on a build-heavy cycle
+  - id: "4.1"
+    title: "checkpoint-discipline miss-rate 0.26 cycle-wide (881/3359 substantive turns) — a mild UPTICK from last cycle's 0.22 (trend 0.28 → 0.26 → 0.34 → 0.22 → 0.26), driven by a build-heavy cycle: a synthetic-harness build arc plus heavy async deputy fan-out (both known high-miss modes — long tool-cascades and async/deputy-completion turns). The average moves with the ship-load; the enforce-gate that would close it stays BUILD-QUEUED, downstream of a reset-path build + a consultant reframe, and was NOT re-decided this cycle. Self-reported per-session counts ran honest and, this cycle, IMPROVED to firelog-exact on the sampled traces (the prior ~10–25% peak-understatement resolved wherever the firelog was used as ground truth) — the tally remains the calibration basis. Feeds the enforce-gate arming-threshold calibration."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally + session-meta"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "feeds the build-queued enforce-gate arming calibration"
+
+  # Item F — discipline audit clean; checkpoint-honesty improved
+  - id: "5.1"
+    title: "discipline audit CLEAN where it counts — all 3 sampled quality-gate traces PASS (real productive filenames, non-generic verify-to-artifact evidence, checkpoint-bar section present; zero trace-quality escalation); intent-confirmation discipline had zero skips across the window; loop-detection + learning-propagation tagging clean; and propagation hygiene was strong (10/10 spot-checked in-window learnings verified landed at their target artifact, not trusted from the entry's own prose). Checkpoint-bar honesty IMPROVED this cycle — two of three sampled traces moved to firelog-exact miss counts. The cross-model reviewer was usage-capped this window; the adversarial auditor carried review solo and the degrade-ladder held."
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "session-log-audit + trace-sample-audit + propagation-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-19"
+    target_surface: "no action — health signal"
+
+  # Item G — the OS's own bookkeeping exhibited the headline class (reconciled)
+  - id: "5.2"
+    title: "RECONCILED (operator-gated) — the OS's own rule-proposal bookkeeping exhibited the cycle's headline class. Seven proposals from a prior cycle were accepted + executed (verified: landings confirmed at their target doctrine surfaces + a separate execution-ledger record), yet their per-proposal STATUS headers still read 'pending' — the status field was a selector nobody had reconciled against the execution ledger that recorded them shipped. Effect: the pending-count over-reported and the learning-layer agent's duplicate-suppression grep could misread executed rules as open. Verified each to its landing artifact, then reconciled all seven status headers to 'executed'. A cheap, honest fix — and the sharpest in-house instance of item 2.1 this cycle."
+    category: "meta-observation"
+    evidence_count: 7
+    source_catchment: "proposal-lifecycle-audit + verify-to-artifact"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-19"
+    target_surface: "rule-proposal file — per-proposal status headers reconciled to the execution ledger"
+
+  # Item H — hook-health follow-up (surfaced, not blind-fixed)
+  - id: "6.1"
+    title: "hook-health follow-up surfaced by the fire-rate audit, deliberately NOT blind-fixed in-retro: the self-discipline drift-scanner's firelog rows carry no recognized OUTCOME field (its records are un-categorizable by the fire-rate audit), so the audit cannot read its health — the second consecutive cycle this scanner has flagged, now ROOT-CAUSED from 'no verdict in-window' to 'the producer omits the outcome field the audit keys on'. A firelog-producer schema-conformance repair (the same class as a prior cycle's liveness-marker fix), deferred to a follow-up rather than patched at retro-tail. Carried as an investigation item so the audit keeps flagging it until the producer is fixed."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "hook-health — drift-scanner firelog outcome-field conformance"
+
+proposal_backlog:
+  pending_before_retro: 2       # carried: the commit-boundary tripwire (design locks) + the orchestration fan-out-cost rule (approved-queued)
+  approved_not_executed: 2      # completion≠delivery (queued to the bundled bump) + the carried fan-out-cost rule — both ride one version bump
+  executed_this_cycle: 3        # two doctrine promotions landed + the seven-proposal status reconciliation
+  authored_this_cycle: 3        # learning-layer P10 pass: 3 proposals (1 deferred: clock-USE-gap, mechanism-blocked, contract-barred from authoring a mechanism)
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# Governed hooks healthy this cycle. The checkpoint-bar Tier-2 validator's elevated
+# fire-rate is the known miss-cluster (finding 4.1), not a dead hook. One flag is a
+# real follow-up (finding 6.1): the self-discipline drift-scanner's producer omits the
+# outcome field the fire-rate audit keys on, so its health is un-auditable.
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"
+  checkpoint_bar_tier2_format_validator: "active"        # elevated fire-rate = the miss-cluster (finding 4.1); rate 0.22 → 0.26
+  promotion_gate_a: "active"            # DRY-RUN-dark; P10-close shadow, no promotion-due families surfaced this window
+  recurrence_gate_b: "active"           # DRY-RUN-dark; Stop-wired, no-op shadow rows
+  memory_primitive_send_gate: "active"  # ENFORCING (fail-closed) — confirmed on the enforce-flip go-live walk
+  checkpoint_ack_gate: "build-queued"   # remains build-queued — downstream of a reset-path build + consultant reframe (finding 4.1)
+  sumi_post_task: "active"
+  sumi_drift_scan: "investigate"        # firelog rows omit the outcome field the audit keys on — un-auditable, finding 6.1
+  measurement_window_days: 7
+  measurement_window_session_count: 49
+
+# Discipline metrics — tally-script-derived (sidecar-metrics-tally.py window
+# 2026-07-12 → 2026-07-19, UTC date semantics, inclusive). Tally run BEFORE
+# authoring per Step 9 protocol (the 0.26 miss-rate + latency + dispatch blocks
+# are the tally's, not author-estimated).
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.26           # 881/3359 substantive turns; cycle window 2026-07-12 → 2026-07-19
+  checkpoint_bar_prior_session_rate: 0.22  # 2026-07-12-p14 baseline; mild uptick (0.22 → 0.26) on a build-heavy cycle (finding 4.1)
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 17
+  codex_invocations: 2                      # cross-model reviewer usage-capped on the governance bump; adversarial auditor carried
+  teacher_invocations: 2                    # P10-primary dispatch (step 6.5, authored 3) + one prior in window
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start-latency.log; 97
+# sessions in window). Median 25s (well under the 120s threshold). Long tail
+# (max 477s) shows the cache-cold + post-compact compound-miss pattern in the
+# extreme; threshold violations 6/97 = ~6%.
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 97
+  median_first_tool_latency_sec: 25
+  p95_first_tool_latency_sec: 203
+  max_first_tool_latency_sec: 477
+  threshold_violations: 6
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage *.jsonl filtered by file mtime in cycle window). A
+# build-and-retro cycle: deputies (parallel-fanout) dominate (the fan-out-cost
+# finding is the flip side of that volume), the self-discipline grader ran 30,
+# the adversarial auditor 21 (carried review while the cross-model reviewer was
+# usage-capped), the consultant 17, the learning-layer agent 2. The high deputy
+# count is the cycle's parallel-fanout signature.
+fam_dispatch_distribution:
+  source: "project-storage transcript *.jsonl"
+  cycle_window: "2026-07-12 → 2026-07-19"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",  count: 133, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "sumi",      count: 30, role: "OS-self-discipline grader (read-only)" }
+      - { name: "breakline", count: 21, role: "adversarial-auditor (carried review while the cross-model reviewer was usage-capped)" }
+      - { name: "luma",      count: 17, role: "consultant" }
+      - { name: "codex",     count: 2, role: "consultant", detail: "usage-capped most of the window" }
+      - { name: "teacher",   count: 2, role: "learning-layer (P10 step 6.5 + one prior)" }
+    total: 205
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 221, role: "companion (hook-driven)", detail: "49 session_starts + 133 reactions + 39 session_ends across 49 sessions" }
+    total: 221
+
+schema_version: "1.0"
