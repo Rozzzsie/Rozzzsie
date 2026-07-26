@@ -1,0 +1,291 @@
+# P10 Retro Sidecar — 2026-07-26 (P10 retro #16, sanitized public snapshot)
+#
+# Window 2026-07-19 → 2026-07-26 (7 days; weekly cadence, opened interactively by
+# the operator). A regular weekly — the monthly housecleaning sub-ritual is not due
+# (it fires on the first retro of a calendar month; that was three cycles back).
+# Stakeholder names genericized to role-class; workspace names genericized per the
+# public workspace table; private personal-track + career-track + capital-track
+# references dropped entirely; evidence citations to private files, commit hashes,
+# hook filenames, chat/docs thread IDs, internal item numbers, exact protocol
+# version strings, and product internals stripped.
+#
+# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+#
+# Narrative companion: SKIP-PASS this cycle, same reason as p9–p15 — the center of
+# gravity IS governance (one rule promotion, three enforcement builds, and a
+# ritual-completion self-catch), so the findings below ARE the cycle's substance.
+# Private narrative: the cycle's retro file in the private workspace.
+#
+# Mode this cycle: an ADVERSARIAL-CATCH + SELF-CATCH retro. The theme is a
+# DIRECTIONAL asymmetry in self-review, and the retro found it twice — once in the
+# week's engineering (below, meta_finding), and once in the retro ritual ITSELF:
+# the cycle was declared closed with six of the ten ritual steps unrun, because the
+# completion stamp fires when the retro ARTIFACT is written rather than when the
+# RITUAL completes, so the next session's status banner read NOT DUE over an
+# unfinished cycle. The operator caught it, not the OS. Both new findings in this
+# sidecar (6.2 and 5.3) exist only because the ritual was resumed and finished.
+#
+# Honest headline on the trend line: checkpoint-discipline miss rate improved to
+# 0.19 (from 0.26), the best reading in the measured series — but the improvement
+# is an AVERAGE, and the mechanism built this cycle to close the worst cluster
+# (post-compaction continuation turns) shipped with its teeth OFF on a verified
+# adversarial finding. The miss then recurred live, twice, inside this very
+# session, minutes after a compaction, while the gate that exists to catch it sat
+# in shadow. The average moved; the peak cluster did not.
+#
+# This is the 14th P10 retro sidecar in the multi-retro rendering era (n=14 after this ship).
+
+retro_id: "2026-07-26-p16"
+retro_date: "2026-07-26"
+window_start: "2026-07-19"
+window_end: "2026-07-26"
+prior_retro: "2026-07-19-p15"
+interactive_mode: true
+trigger_source: "weekly-cadence-operator-opened-interactive"
+
+# Meta-finding — the renderer's hero callout. The cycle's one-line lesson.
+meta_finding:
+  headline: "SELF-REVIEW IS DIRECTIONALLY UNRELIABLE — it catches defects that make the work look WORSE and misses the ones that make it look FINISHED. The two findings that most flattered this cycle's engineering were both false, and neither was caught by self-review: (1) 'deadlock-free by construction' — a safety argument used to justify shipping a new enforcement gate with LIVE TEETH, which held only at the single-agent boundary and failed at the multi-agent one the system actually runs; (2) 'zero external files needed editing' after a governance renumber — a classification the author graded himself and reported as a sweep, which missed three live citations, one of them a self-reference INSIDE the very section renumbered, in the very file swept. Both were caught by an adversarial reviewer. Both became rules. The generalization: a safety claim is scoped to a BOUNDARY, and 'by construction' names the boundary you happened to be looking at — so state the boundary in the claim, and before shipping teeth on it, name the configuration in which it does NOT hold. The cycle then demonstrated the same asymmetry at the ritual layer: the retro declared itself complete with six of ten steps unrun, because 'complete' was stamped on writing the artifact rather than on finishing the work — a finished-looking failure, caught by the operator rather than by the OS."
+
+findings:
+  # Item A — the promoted rule, and the ship it stopped
+  - id: "2.1"
+    title: "PROMOTED to doctrine + the ship it stopped — A SAFETY CLAIM IS SCOPED TO A BOUNDARY. A new enforcement gate (withholding the next mutation until the agent emits its discipline bar after a context compaction) was built, mutation-tested, and shipped with LIVE TEETH on a 'deadlock-free by construction' argument. The adversarial reviewer refuted it: sub-agents write their prose into their OWN transcript files while their gate evaluations are graded against the ORCHESTRATOR's transcript, so a dispatched sub-agent can never clear the gate — every one of its actions denied for its whole run, while the orchestrator sits blocked on the dispatch and cannot emit the clearing turn. Verified independently three ways before acting. Sharpest detail: this reproduces the SAME reviewer's rejection of a different gate two weeks earlier, one file over, by the author who had read it, quoted it, and built the exact fix it named — the earlier rejection was genuinely discharged for the single-agent case, which is the one shape this system does not run. Teeth parked; mechanism complete and green; shadow recording continues so the would-have-fired distribution accrues. Rule promoted: state the boundary in the claim, and name the configuration where it fails before shipping teeth."
+    category: "rule-extension"
+    evidence_count: 3
+    source_catchment: "adversarial-audit + independent-reverification"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-26"
+    target_surface: "output-checklist — new boundary-scoped-safety-claim section; gate parked in shadow pending the multi-agent transcript path"
+
+  # Item B — self-graded classification reported as a sweep
+  - id: "2.2"
+    title: "A CLASSIFICATION THE AUTHOR GRADED HIMSELF, REPORTED AS A SWEEP. A governance renumber touched three section numbers; 306 citation hits across 51 files were classified by the author, concluding 'zero external files needed editing.' The adversarial reviewer found three live citations that needed the edit — including one inside the renumbered section itself, in the file being swept, and two inside a workspace's pipeline code (a root-side governance renumber can rot citations inside downstream code, which the sweep's scope never considered). All three fixed; the renumber note's own false 'every pre-existing citation stays true' claim rewritten. The transferable half: when the instrument is your own judgment, the sweep has no independent verdict to check against — say 'I classified these' rather than 'the sweep found', and treat a self-graded pass as a candidate."
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "adversarial-audit + verify-to-artifact"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-26"
+    target_surface: "citations corrected at all three surfaces; renumber note rewritten; folded into the boundary-scoping rule"
+
+  # Item C — the duplicate-section guard
+  - id: "3.1"
+    title: "SHIPPED — a duplicate-section-number validator wired into the commit gate, closing the defect that let three sections share numbers with three incumbents for four days. Grades the STAGED blob rather than the working tree (so a fixed working copy cannot mask a broken commit), is fence-aware (section-shaped lines inside code blocks are not sections), and FAILS CLOSED — an unreadable target or a missing interpreter blocks the commit rather than waving it through. Paired unit + integration tests, including the staged-blob-not-working-tree case and the inert-when-unstaged case. The root cause of the original collision was a MISSING ROUTING ROW, not a numbering slip: the new sections were never registered in the routing table, so nothing pointed at them and nothing noticed they collided. Routing rows added for every unregistered section as part of the same fix."
+    category: "tooling"
+    evidence_count: 1
+    source_catchment: "owed-fix-queue + learning-layer-proposal"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-26"
+    target_surface: "commit-gate — staged-blob section-number validator + routing-table completion"
+
+  # Item D — cadence-aware absence
+  - id: "3.2"
+    title: "SHIPPED — CADENCE-AWARE ABSENCE: a health audit's ABSENT flag was a STRUCTURAL false positive, not a dead hook. The audit flags any expected hook with zero records in a 7-day window; one of the gates it watches only emits at the weekly retro close — so on a 7-day window over a 7-day cadence, that gate reads ABSENT precisely when the retro it guards has not yet run, i.e. every single time the audit is run at retro-open. Fixed by SPLITTING the verdict (genuinely-absent vs cadence-pending) rather than suppressing the flag, so a real death still shows. The generalizable form: an absence detector whose window equals its subject's period cannot distinguish 'dead' from 'not due yet' — check the emitter's cadence against the detector's window before trusting either verdict."
+    category: "tooling"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit + owed-fix-queue"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-26"
+    target_surface: "hook-health audit — absence verdict split into absent vs cadence-pending"
+
+  # Item E — instrument silence, n=3 in 15 hours
+  - id: "2.3"
+    title: "n=3 IN 15 HOURS — INSTRUMENT OUTPUT READ WITHOUT ITS CONTRACT. (1) A healthy log-only emitter was called 'broken' because it printed nothing to the terminal — a successful run and a dead script were byte-identical at stdout, so a liveness marker was added on the clean path. (2) The prior night's finding that a discipline detector 'fails open' was RETRACTED — the detector was graded against an assumed contract rather than its actual one, and no code had needed changing. (3) A raw record count was reported as a turn count: the discipline log writes one record PER TOOL CALL, each re-describing the same prior turn, so 25 records collapsed to ONE distinct miss — an inflation of 25x, reported before it was derived. All three share a shape: an instrument's output was interpreted against what the reader assumed it measured. Corrective: read the emitter's contract before grading its output, and state the UNIT with every count."
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "self-catch + retraction-lineage + discipline-metric-derivation"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-26"
+    target_surface: "cross-workspace learnings — unit-with-every-count + read-the-contract-first"
+
+  # Item F — the shell working directory persists on the read side too
+  - id: "2.4"
+    title: "PROMOTED to doctrine — THE SHELL WORKING DIRECTORY PERSISTS ON THE READ SIDE TOO, AND THERE IT FAILS SILENTLY. An existing rule already required absolute-path targeting for every MUTATING version-control call, after a close cascade committed to the wrong repository while reporting green. This cycle exposed the read-side half: a directory change issued earlier in a session to sweep one repository silently retargeted later relative probes, which returned EMPTY — and an empty result is indistinguishable from a genuine absence, so it nearly shipped as 'no references found.' The write-side failure is loud eventually; the read-side failure is a false NEGATIVE that flatters the sweep. Same family as the positive-control-before-absence rule: an empty result from an unverified query is INDETERMINATE, not absence."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "self-catch + cross-workspace-learnings"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-26"
+    target_surface: "root governance doc — read-side half appended to the absolute-path targeting rule"
+
+  # Item G — the build ledger's single fixed slot
+  - id: "2.5"
+    title: "PROMOTED to doctrine — A BUILD LEDGER WRITTEN TO A SINGLE FIXED, UNTRACKED SLOT IS OVERWRITTEN AT THE START OF THE NEXT BUILD, and no closing discipline can prevent it. Structured builds record progress to a conventional filename; because that name is fixed and the path is untracked, a new build claims the slot on its FIRST task — so 'clear it at close' does not help and there is no history to recover from. This bites harder than an ordinary overwrite because the build methodology's own recovery doctrine says to trust the ledger over recollection after a compaction — so a ledger belonging to a DIFFERENT project reads as authoritative, and re-dispatching an already-completed task sequence is the most expensive failure that methodology names. A prior build survived only because an earlier session had happened to relocate its state into a tracked file; that was luck. Rule: suffix every ledger with its project, and preserve any bare ledger under its own suffixed name BEFORE starting. Found live — the bare slot was still holding a completed build's ledger; preserved verbatim."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "owed-fix-queue + inherited-claim-verification"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-07-26"
+    target_surface: "root governance doc — build-ledger naming section + the bare slot preserved under a project suffix"
+
+  # Item H — NEW, found only by resuming the ritual
+  - id: "6.2"
+    title: "NEW (self-caught on resume) — THE RETRO-COMPLETION STAMP FIRES ON ARTIFACT-WRITE, NOT ON RITUAL-COMPLETION. This cycle was declared closed, committed, and pushed with SIX of the ritual's TEN steps unrun (the cross-file learnings enumeration, the session-log audit, the trace sample-audit, the hook fire-rate audit's output, the enforce-flip binding walk, and the public-dashboard close). The next session's status banner then read NOT DUE — because the freshness check keys on the retro artifact's date, and the artifact HAD been written. The failure is precisely the meta-finding's class one layer up: it looked finished, so nothing checked. Two contributing factors, both worth naming: (a) the closing step is the LAST one, so a cycle that runs out of session dies exactly where its own completeness check lives; (b) the author reconstructed the step list from memory rather than reading the specification — the same substitution of recollection for artifact that this cycle promoted two rules against. Corrective direction (unchosen, filed): key the completion stamp on the terminal step's output rather than on the narrative artifact, so an unfinished ritual keeps reading DUE."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "operator-catch + ritual-resume"
+    recommendation: "accept"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "retro freshness check — stamp on terminal-step output, not on artifact date"
+
+  # Item I — NEW, cross-pollination near-absent
+  - id: "5.3"
+    title: "NEW (session-log audit) — CROSS-POLLINATION LOGGED ONCE ALL WINDOW, against a standing operator directive to propagate useful learnings to adjacent workspaces BY DEFAULT without asking. Tag census over the window: intent-confirmation 103, learning-capture 154, state-update 68, close 39 — and cross-pollination 1. The capture and propagation halves of the learning protocol are both healthy; the SEEDING half to sibling workspaces is effectively dark. Honest reading of the number: the tag census measures LOGGING, not behavior, so this is evidence that the step is unlogged, which under the OS's own verify-to-artifact rule means it is INDETERMINATE rather than proven-absent — but a directive that is standing, default-on, and logged once in eight days is the shape of a step being skipped, not a step being under-recorded. Filed as an investigation with a positive-control check (verify a known in-window learning actually reached a sibling workspace) before any rule change."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "session-log-audit"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "cross-pollination protocol — logging vs behavior discrimination, positive control first"
+
+  # Item J — the enforcement portfolio is three-deep in shadow
+  - id: "6.3"
+    title: "PORTFOLIO OBSERVATION from the enforce-flip binding walk — THREE ENFORCEMENT MECHANISMS NOW HOLD TEETH OFF SIMULTANEOUSLY, each individually well-reasoned: the discipline acknowledgement-gate (build-queued across multiple cycles), the insights promotion + recurrence gates (calibrated dark, awaiting a gated decision), and this cycle's new post-compaction arm (parked on a verified adversarial finding). One binding is genuinely CLOSED and should stop being re-walked (the memory-retraction gate flipped to enforcing two cycles back and has held). The observation is not that any single park is wrong — each was the right call on its own evidence — but that the portfolio has accumulated in one direction over five cycles with no counter-pressure, and 'shadow' has become the default resting state rather than a staging state. Filed as a standing question for the next cycle: what is the exit criterion for each, and is any of them waiting on something that will never arrive?"
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "enforce-flip-binding-walk"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "enforcement portfolio — per-gate exit criteria"
+
+  # Item K — checkpoint discipline: best average, unmoved peak
+  - id: "4.1"
+    title: "checkpoint-discipline miss-rate 0.19 cycle-wide (957/5082 measured records) — the BEST reading in the measured series (trend 0.26 → 0.34 → 0.22 → 0.26 → 0.19). Unit note, load-bearing this cycle: the denominator counts discipline-log RECORDS, which are written per tool call and re-describe the same prior turn, so the rate is directly comparable across the whole series (all prior points share the unit) but is NOT a per-turn rate. The honest split is unchanged from last cycle and now has live evidence: the AVERAGE improved while the worst CLUSTER did not. The specific cluster — the turn immediately following a context compaction — recurred TWICE inside this very session, the first time nine seconds after the boundary, in the session that BUILT the gate designed to catch it, under maximal rule-awareness, while that gate sat in shadow. That is the strongest single argument yet for the arming decision, and it was produced by the failure rather than by the analysis."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "discipline-metric-tally + live-session-recurrence"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "feeds the post-compaction arm's re-arm decision"
+
+  # Item L — discipline audit, honest split
+  - id: "5.1"
+    title: "discipline audit MIXED, reported split. CLEAN: both git-recovered quality-gate traces scored 7/7 with zero thin evidence and a discipline-bar section present; the current trace scores 9 sections and deliberately records a FAIL on the boundary-scoping section rather than self-absolving — a trace that scored that PASS would be the verify-to-artifact failure in its purest form. Intent-confirmation discipline strong (103 in-window). NOT CLEAN: cross-pollination logged once (finding 5.3), and the read-contract PAGINATION compliance the audit is supposed to verify has ZERO in-window log evidence either way — which is instrument silence, not a pass, and is reported as INDETERMINATE rather than clean. Also standing: the cross-model reviewer has been usage-capped for the ENTIRE window (eight days), so the adversarial auditor has carried review solo — the degrade-ladder is working as designed, but a primary reviewer down for a full cycle is a single-point-of-failure worth naming."
+    category: "meta-observation"
+    evidence_count: 3
+    source_catchment: "session-log-audit + trace-sample-audit"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "pagination-compliance needs an instrument before it can be audited"
+
+  # Item M — hook health: the largest unaddressed item
+  - id: "6.1"
+    title: "hook-health, now the largest unaddressed item on that surface: the discipline log is UNBOUNDED — 71.5 MB across 276,866 records — and parsing it costs roughly 460 ms on EVERY mutation, paid TWICE (once by the pre-action gate, once by the post-action validator), so about one second of pure overhead per file edit or shell call. Measured against a sandboxed copy by the adversarial reviewer, and explicitly NOT introduced by this cycle's new gate, whose own transcript scan measures 8 ms because it prefilters by substring before parsing. Growth is monotonic and nothing rotates it. Options filed unchosen: rotation with an archive tier, a bounded tail-read (the scan only needs the session's own recent records), or an index by session. Explicit constraint carried with the item: do NOT 'fix' this by narrowing what gets logged — the log is the live evidence corpus for the pattern-detection substrate and its date-rotation is already deliberately suspended. Separately, the self-discipline drift-scanner flags SILENT for the THIRD consecutive cycle (68.6% fire-rate) and its dispatch count collapsed from 30 last cycle to 1 — the root cause identified two cycles ago (its records omit the outcome field the audit keys on) remains unrepaired, and the collapse in dispatch volume suggests the scanner is not merely un-auditable but under-firing."
+    category: "meta-observation"
+    evidence_count: 2
+    source_catchment: "hook-fire-rate-audit + adversarial-measurement"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "hook-health — discipline-log growth + drift-scanner outcome-field conformance"
+
+  # Item N — NEW, and it qualifies this sidecar's own headline metric
+  - id: "6.4"
+    title: "NEW (observed live while authoring this sidecar) — THE DISCIPLINE COUNTER APPEARS STUCK ON ONE TURN, WHICH QUALIFIES THE MISS-RATE PUBLISHED ABOVE. Across eleven consecutive corrective fires in the authoring session, every record carried an IDENTICAL prior-turn signature (same character count, same tool count) while the actual turns varied by an order of magnitude in length and tool volume — and two older records in the same log show the detector correctly reading two DIFFERENT signatures and passing them. So the detector can advance and does not. WHAT IS CONFIRMED: the signature is constant across eleven fires over varying turns; the counter incremented each time. WHAT IS HYPOTHESIS, explicitly not asserted: the mechanism. The leading candidate is that the detector anchors on the last turn ENDING in prose, and turns that end in tool calls never advance it — which would matter because the governance doc MANDATES bar-before-trailing-tool-calls placement for exactly those turns, making the inflation structural rather than behavioral. Consequence for this sidecar, stated rather than buried: the 0.19 rate remains series-comparable (every prior point shares the instrument and any bias is constant), but its absolute level may over-report, and it is NOT safe to use as the calibration basis for arming a gate until the mechanism is read in code. Deliberately filed as an OBSERVATION with the mechanism unresolved — the same instrument produced a confidently-wrong finding one day earlier that had to be retracted, and this cycle's own doctrine says an instrument's output is indeterminate until read against its contract."
+    category: "meta-observation"
+    evidence_count: 1
+    source_catchment: "live-session-observation + discipline-log-derivation"
+    recommendation: "watch"
+    status: "deferred"
+    execution_target_week: "backlog"
+    target_surface: "discipline detector — read the turn-anchor in code before trusting the rate as a calibration basis"
+
+proposal_backlog:
+  pending_before_retro: 3      # carried: the commit-boundary tripwire + the orchestration fan-out-cost rule + a prior-cycle grader proposal
+  approved_not_executed: 2      # the carried fan-out-cost rule + the grader proposal (operator directed attachment to the existing pending item, not a new rule)
+  executed_this_cycle: 3        # all three learning-layer proposals authored this cycle were executed in-cycle
+  authored_this_cycle: 3        # learning-layer pass at step 6.5: discipline-gate liveness, post-compaction bar gate, duplicate-section validator
+
+# Hook health — public sidecar reports stability category; exact session counts private.
+# Governed hooks healthy this cycle. The discipline Tier-2 validator's elevated
+# fire-rate is the known miss-cluster (finding 4.1), not a dead hook. Two flags are
+# real follow-ups: the unbounded discipline log and the drift-scanner's third
+# consecutive silent flag (both finding 6.1).
+hook_health:
+  sessionstart_protocol_digest: "active"
+  stop_gate: "active"                                    # 100% fire-rate, 114 corrective blocks in window
+  poststop_insights_capture: "active"
+  postedit_p4_reminder: "active"                         # 100% fire-rate
+  checkpoint_bar_tier2_format_validator: "active"        # elevated fire-rate = the miss-cluster (finding 4.1); rate 0.26 → 0.19
+  checkpoint_bar_pretool_gate: "active"                  # 95.7%; new post-compaction arm records shadow-denials only (finding 2.1)
+  promotion_gate_a: "cadence-pending"                    # DRY-RUN-dark; emits at retro close only — the absence split shipped this cycle (finding 3.2)
+  recurrence_gate_b: "active"                            # DRY-RUN-dark; no-op shadow rows
+  memory_primitive_send_gate: "active"                   # ENFORCING (fail-closed) — binding walked, confirmed CLOSED, stop re-walking (finding 6.3)
+  checkpoint_ack_gate: "build-queued"                    # still build-queued; one of three simultaneous parks (finding 6.3)
+  post_compaction_bar_arm: "shadow"                      # NEW this cycle — complete, tested, teeth OFF on a verified adversarial finding (finding 2.1)
+  sumi_post_task: "active"
+  sumi_drift_scan: "investigate"                         # third consecutive silent flag; 68.6% fire-rate, dispatch collapsed 30 → 1 (finding 6.1)
+  measurement_window_days: 7
+  measurement_window_session_count: 48
+
+# Discipline metrics — tally-script-derived (tally script, window 2026-07-19 →
+# 2026-07-26, UTC date semantics, inclusive). Tally run BEFORE authoring per the
+# Step 9 protocol (the 0.19 miss-rate + latency + dispatch blocks are the tally's,
+# not author-estimated). UNIT: the denominator counts discipline-log records
+# (per-tool-call), consistent with every prior point in the series — see finding 4.1.
+discipline_metrics:
+  checkpoint_bar_miss_rate: 0.19           # 957/5082 measured records; cycle window 2026-07-19 → 2026-07-26
+  checkpoint_bar_prior_session_rate: 0.26  # prior-cycle baseline; best reading in the series, peak cluster unmoved (finding 4.1)
+  luma_tally_by_category:
+    axis_reframe: null                     # per-category requires narrative review (tally script returns total only)
+    silent_assumption_catch: null
+    polish_layer_text_diagnosis: null
+    pre_authoring: null
+    tightening: null
+    meta_review: null
+    total: 8
+  codex_invocations: 39                     # slash-invocations counted; the cross-model reviewer itself was usage-capped all window (finding 5.1)
+  teacher_invocations: 2                    # P10-primary dispatch (step 6.5, authored 3, all executed) + one prior in window
+  luma_axis_subcategories:
+    demonstrate_vs_guard: null
+    completeness_vs_shape: null
+    methodology_vs_character: null
+
+# Latency observations — tally-script-derived (session-start latency log; 112
+# sessions in window). Median 22s (well under the 120s threshold) and the best
+# median in recent cycles. Long tail (max 717s) is the cache-cold + post-compaction
+# compound-miss pattern in the extreme; threshold violations 9/112 = ~8%.
+latency_observations:
+  source: "session-start latency log"
+  window_session_count: 112
+  median_first_tool_latency_sec: 22
+  p95_first_tool_latency_sec: 201
+  max_first_tool_latency_sec: 717
+  threshold_violations: 9
+
+# Fam dispatch + reactions distribution — tally-script-derived (transcript scan
+# over project-storage files filtered by mtime in cycle window). A build-and-audit
+# cycle: parallel-fanout deputies dominate at 246, the cross-model reviewer's slash
+# path ran 39 times despite the reviewer itself being usage-capped, the adversarial
+# auditor 9, the consultant 8, the learning-layer agent 2, and the self-discipline
+# grader collapsed to 1 (from 30 last cycle — see finding 6.1).
+fam_dispatch_distribution:
+  source: "project-storage transcripts"
+  cycle_window: "2026-07-19 → 2026-07-26"
+  dispatch_axis:
+    subagents:
+      - { name: "deputies",  count: 246, role: "general-purpose / parallel-fanout (not consultant)" }
+      - { name: "codex",     count: 39, role: "consultant", detail: "slash-path invocations; the reviewer itself usage-capped all window" }
+      - { name: "breakline", count: 9, role: "adversarial-auditor (carried review solo; caught both headline findings)" }
+      - { name: "luma",      count: 8, role: "consultant" }
+      - { name: "teacher",   count: 2, role: "learning-layer (step 6.5 + one prior); 3 proposals, all executed" }
+      - { name: "sumi",      count: 1, role: "OS-self-discipline grader (read-only); collapsed from 30 — finding 6.1" }
+    total: 305
+  reactions_axis:
+    subagents:
+      - { name: "brindle", count: 162, role: "companion (hook-driven)", detail: "47 session_starts + 72 reactions + 43 session_ends across 47 sessions" }
+    total: 162
+
+schema_version: "1.0"
