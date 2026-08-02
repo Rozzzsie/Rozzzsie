@@ -40,9 +40,9 @@ except ImportError:
 #
 # Dashboard release version. Bumped on every change that lands a visible-grain
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
-# extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
+# extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.0"
+DASHBOARD_VERSION = "3.1"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -385,7 +385,7 @@ def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
 def load_all_sidecars(retros_dir: Path) -> list[dict[str, Any]]:
     """Load every `*.yaml` in the retros directory, sorted by retro_date.
 
-    Used by the trend chart (sprint-2) to render cross-cycle metrics. The
+    Used by the trend chart to render cross-cycle metrics. The
     single-retro snapshot (sprint-1) consumes one sidecar; this aggregator
     reads all of them so trend lines have an apples-to-apples axis when the
     measurement shape is stable.
@@ -548,14 +548,14 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
             "Checkpoint miss rate", "lower is better",
             miss_values, value_format="%", lower_is_better=True,
             note="p3 measured this-retro-session; p4/p5 measure cycle-window. "
-                 "Strict cross-cycle apples-to-apples lands at p6 (window-shape stable since p4).",
+                 "Windows differ by metric; treat cross-cycle deltas as indicative, not strict.",
         ),
         _card(
-            "Decision velocity", "executed findings / cycle",
+            "Decision velocity", "proposals executed / cycle",
             velocity_values, value_format="",
         ),
         _card(
-            "Teacher invocations", "learning-layer adoption",
+            "Learning-layer invocations", "learning-layer adoption",
             teacher_values, value_format="",
         ),
     ]
@@ -607,13 +607,55 @@ def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
     armed = ec.get("arms_armed")
     exits = ec.get("arms_with_written_exit_criteria")
     if isinstance(built, int) and built > 0 and isinstance(armed, int):
-        armed_ratio = armed / built
-        exit_ratio = (exits or 0) / built
+        components = [armed / built]
+        detail = f"{armed}/{built} arms armed"
+
+        # The predicate is "states the condition under which its teeth come
+        # OFF" — satisfied EITHER by a falsifiable exit criterion OR by a
+        # documented declaration of permanence. Those are two different
+        # properties and the published string names both, because "6/6 with a
+        # written exit criterion" asserts of the permanent arm something that
+        # is not true of it. Scoring them together is deliberate: marking a
+        # documented permanence as a MISS would make inventing a fictional
+        # exit criterion the score-maximising move, which is the exact defect
+        # the arms file was written to prevent. The defect being repaired is
+        # SILENCE, not the absence of an exit.
+        if isinstance(exits, int):
+            components.append(exits / built)
+            falsifiable = ec.get("arms_with_falsifiable_exit")
+            permanent = ec.get("arms_declared_permanent")
+            detail += f" · {exits}/{built} state an exit condition"
+            if isinstance(falsifiable, int) and isinstance(permanent, int):
+                detail += f" ({falsifiable} falsifiable · {permanent} documented permanence)"
+
+        # Third component, added the same day the first two hit ceiling. An arm
+        # is a hook; a CHECK is one invariant inside it. Arm-level coverage
+        # reaching 6/6 while 22 individual checks state nothing is not "fully
+        # governed" — it is a dial that stopped discriminating at the resolution
+        # it happened to be defined at. Granularity is a property of the metric,
+        # not of the system.
+        checks = ec.get("checks_enumerated")
+        checks_exits = ec.get("checks_with_written_exit_criteria")
+        if isinstance(checks, int) and checks > 0 and isinstance(checks_exits, int):
+            components.append(checks_exits / checks)
+            unit = ec.get("checks_unit", "blocking exit paths")
+            detail += f" · {checks_exits}/{checks} individual checks with one"
+
+        note = (
+            "Coverage is measured per ARM and again per CHECK. Arm-level "
+            "coverage is complete; check-level coverage is zero — the "
+            "commit-time arm holds many individually-retirable checks and not "
+            "one states its own exit condition. That is the honest reading of "
+            "this dial."
+        )
+        if isinstance(checks, int):
+            note += f" Check unit: {unit}."
+        basis = ec.get("measured_from")
+        if basis:
+            note += f" Basis: {basis}."
         dials.append(_dial(
             "enforcement", "Enforcement coverage",
-            (armed_ratio + exit_ratio) / 2,
-            f"{armed}/{built} arms armed · {exits or 0}/{built} with a written exit criterion",
-            "Scored on two components. Armed-but-unconditioned is half credit.",
+            sum(components) / len(components), detail, note,
         ))
     else:
         dials.append(_dial("enforcement", "Enforcement coverage", None, "no data"))
@@ -633,7 +675,9 @@ def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
             if not sub_done:
                 val = min(val, 0.5)
         dials.append(_dial("ritual", "Ritual integrity", val, detail,
-                           "Includes session-close discipline; P9 is a ritual step."))
+                           "Self-attested by the session that ran the ritual. "
+                           "Includes session-close discipline, which is one of "
+                           "the ritual steps rather than a separate score."))
     else:
         dials.append(_dial("ritual", "Ritual integrity", None, "no data"))
 
@@ -649,8 +693,12 @@ def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
             "instrument", "Instrument liveness", val,
             f"{caught}/{observed} silent failures caught by a control · "
             f"{il.get('caught_by_review', 0)} by review",
-            "Full dial with a high failure count is the correct reading: "
-            "the loop held. The count is shown unnormalised.",
+            "Self-attested. Full dial with a high failure count is the correct "
+            "reading: the loop held. The count is shown unnormalised. The "
+            "dial's failing arm is a failure caught by REVIEW rather than by "
+            "an instrument, which scores zero. Its blind spot is stated "
+            "rather than scored: a silent failure that nothing caught at all "
+            "is never observed, so it enters neither term.",
         ))
     else:
         dials.append(_dial("instrument", "Instrument liveness", None, "no data"))
@@ -672,7 +720,8 @@ def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
     by_control = dp.get("caught_by_control")
     by_operator = dp.get("caught_by_operator")
     if isinstance(by_control, int) and isinstance(by_operator, int) and (by_control + by_operator) > 0:
-        total = by_control + by_operator + (dp.get("caught_by_accident") or 0)
+        by_accident = dp.get("caught_by_accident")
+        total = by_control + by_operator + (by_accident if isinstance(by_accident, int) else 0)
         dials.append(_dial("provenance", "Detection provenance", by_control / total,
                            f"{by_control} caught by a control · {by_operator} by the operator"))
     else:
@@ -721,7 +770,21 @@ def render_health_widget(health: dict[str, Any]) -> str:
         </div>""")
     coverage = (
         f'Composite derived from {health["scored_count"]} of {health["intended_count"]} '
-        f'intended dials. It is an average of what could be measured, not of what matters.'
+        f'intended dials — an unweighted mean over ratios with different '
+        f'denominators and different evidentiary grades. It is an average of '
+        f'what could be measured, not of what matters.'
+    )
+    # This paragraph used to live in a Python comment, where it was the
+    # strongest sentence in the design and reached no reader. A caveat in the
+    # stripped layer is a caveat the author and the approver both read and the
+    # audience never does.
+    gameable = (
+        "All four scored dials are LEADING indicators and each is individually "
+        "gameable — a gate can be armed over nothing, a ritual can complete "
+        "while checking nothing. The one OUTCOME dial, which is not gameable "
+        "that way, is the one with no data. A high score here means four "
+        "leading indicators are saturated; it is not a claim that the system "
+        "is working."
     )
     return f"""
       <div class="hs-headline">
@@ -731,6 +794,7 @@ def render_health_widget(health: dict[str, Any]) -> str:
           {html.escape(coverage)}
         </div>
       </div>
+      <p class="hs-caveat">{html.escape(gameable)}</p>
       <div class="hs-rows">{"".join(rows)}</div>
       <p class="hs-foot">
         The open-defect count is deliberately absent from this score. A governance system
@@ -795,31 +859,39 @@ def render_defect_inventory(dl: dict[str, Any]) -> str:
     if not dl:
         return '<p class="empty-note">No defect ledger in this sidecar.</p>'
     total = dl.get("open_total")
+    # NEVER `or 0` here. A bucket the sidecar did not record is UNKNOWN, and
+    # rendering it as 0 publishes a measurement nobody made. A recorded zero
+    # still renders "0" — absence and zero are different claims.
     buckets = [
-        ("< 7 days", dl.get("age_under_7d") or 0),
-        ("7–29 days", dl.get("age_7_to_29d") or 0),
-        ("30+ days", dl.get("age_30d_plus") or 0),
-        ("undated", dl.get("age_undated") or 0),
+        ("< 7 days", dl.get("age_under_7d")),
+        ("7–29 days", dl.get("age_7_to_29d")),
+        ("30+ days", dl.get("age_30d_plus")),
+        ("undated", dl.get("age_undated")),
     ]
-    peak = max([n for _, n in buckets] + [1])
+    known = [n for _, n in buckets if isinstance(n, int)]
+    peak = max(known + [1])
     bar_rows = "".join(
         f'<div class="inv-row"><span class="inv-key">{html.escape(label)}</span>'
-        f'<span class="inv-bar">{"█" * max(0, round(n / peak * 18))}</span>'
-        f'<span class="inv-n">{n}</span></div>'
+        f'<span class="inv-bar">'
+        f'{"█" * max(0, round(n / peak * 18)) if isinstance(n, int) else ""}</span>'
+        f'<span class="inv-n">{_present(n)}</span></div>'
         for label, n in buckets
     )
     return f"""
       <div class="inv-head">
-        <span class="inv-total">{total if total is not None else "—"}</span>
-        <span class="inv-total-label">open · <strong>not scored</strong></span>
-        <span class="inv-split">{dl.get("live", "—")} live · {dl.get("parked", "—")} parked</span>
+        <span class="inv-total">{_present(total)}</span>
+        <span class="inv-total-label">open as measured · <strong>not scored</strong></span>
+        <span class="inv-split">{_present(dl.get("live"))} live · {_present(dl.get("parked"))} parked</span>
       </div>
       <div class="inv-bars">{bar_rows}</div>
       <div class="inv-foot">
-        median age <strong>{dl.get("median_age_days", "—")}d</strong> ·
-        oldest <strong>{dl.get("max_age_days", "—")}d</strong> —
+        median age <strong>{_present(dl.get("median_age_days"))}d</strong> ·
+        oldest <strong>{_present(dl.get("max_age_days"))}d</strong> —
         the age distribution is the diagnostic here, not the total.
-        Measured {html.escape(str(dl.get("measured_at", "—")))}.
+        Measured {html.escape(str(dl.get("measured_at", "—")))} — a stamped
+        record of that state, not a current count. The board moved during the
+        session that measured it.
+        {f'Basis: {html.escape(str(dl.get("measured_from")))}.' if dl.get("measured_from") else ""}
       </div>"""
 
 
@@ -827,18 +899,25 @@ def render_backlog_widget(bl: dict[str, Any]) -> str:
     if not bl:
         return '<p class="empty-note">No improvement backlog in this sidecar.</p>'
     axes = [
-        ("ready", bl.get("open_ready") or 0),
-        ("decision-gated", bl.get("open_decision_gated") or 0),
-        ("upstream-blocked", bl.get("open_upstream_blocked") or 0),
+        ("ready", bl.get("open_ready")),
+        ("decision-gated", bl.get("open_decision_gated")),
+        ("upstream-blocked", bl.get("open_upstream_blocked")),
     ]
-    axis_sum = sum(n for _, n in axes)
     open_n = bl.get("open")
-    reconcile = (
-        f"axes sum to {axis_sum}, open total {open_n}"
-        + ("" if axis_sum == open_n else " — MISMATCH: an item carries an unrecognised status")
-    )
+    # A missing axis must NEVER be summed as zero. A sum over an incomplete
+    # set can coincidentally equal the open total and publish a reconciliation
+    # that passed only because a value was absent — the reconciliation would
+    # then be evidence for exactly the thing it failed to check.
+    if any(not isinstance(n, int) for _, n in axes):
+        reconcile = "axes incomplete — one or more scheduling values were not recorded"
+    else:
+        axis_sum = sum(n for _, n in axes)
+        reconcile = (
+            f"axes sum to {axis_sum}, open total {_present(open_n)}"
+            + ("" if axis_sum == open_n else " — MISMATCH: an item carries an unrecognised status")
+        )
     chips = "".join(
-        f'<span class="bk-chip"><span class="bk-chip-n">{n}</span>{html.escape(label)}</span>'
+        f'<span class="bk-chip"><span class="bk-chip-n">{_present(n)}</span>{html.escape(label)}</span>'
         for label, n in axes
     )
     return f"""
@@ -910,6 +989,15 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     latency_p95_str = f"{latency_p95:.0f}s" if isinstance(latency_p95, (int, float)) else "—"
     latency_max_str = f"{latency_max:.0f}s" if isinstance(latency_max, (int, float)) else "—"
     latency_violations_str = str(latency_violations) if latency_violations is not None else "—"
+    # Publish the band only when the sidecar actually carries latency keys.
+    # Six em-dashes under a "Violations (>120s)" heading reads as a measured
+    # clean sheet; it is an absent instrument.
+    latency_has_data = any(
+        latency.get(k) is not None
+        for k in ("source", "sessions_in_window", "median_first_tool_latency_sec",
+                  "p95_first_tool_latency_sec", "max_first_tool_latency_sec",
+                  "threshold_violations")
+    )
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
 
     discipline_rows_html = render_discipline_rows(discipline)
@@ -926,7 +1014,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     trend_section_html = (
         f"""
     <section>
-      <h2 class="section-title">Governance trend <span class="section-title-suffix">sprint-2 · n={len(all_sidecars or [sc])} P10 cycles</span></h2>
+      <h2 class="section-title">Governance trend <span class="section-title-suffix">n={len(all_sidecars or [sc])} P10 cycles</span></h2>
       <div class="trend-grid">
         {trend_html}
       </div>
@@ -938,7 +1026,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     body = f"""
     <header class="hero">
       <div class="hero-eyebrow">Rozzzsie Governance Dashboard</div>
-      <h1>P10 Retro #{sc.get("retro_id", "—")}</h1>
+      <h1>Retrospective #{sc.get("retro_id", "—")}</h1>
       <p class="hero-tagline">Evaluation as continuous governing function, not terminal checkpoint.</p>
       <div class="hero-meta">
         <div><strong>Window</strong> {html.escape(str(sc.get("window_start", "—")))} → {html.escape(str(sc.get("window_end", "—")))}</div>
@@ -987,7 +1075,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     {trend_section_html}
 
     <section>
-      <h2 class="section-title">Specialist agent dispatches <span class="section-title-suffix">fam-wide activity, this cycle</span></h2>
+      <h2 class="section-title">Specialist agent dispatches <span class="section-title-suffix">across specialist agents, this cycle</span></h2>
       <div class="fam-widget">
         {fam_dispatch_html}
       </div>
@@ -1001,7 +1089,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
           {discipline_rows_html}
         </div>
         <div class="band band-muted">
-          <h3>Luma reframe-axis facet <span class="band-title-suffix">deep-dive · narrative-review-pending</span></h3>
+          <h3>Reframe-axis facet <span class="band-title-suffix">deep-dive · narrative-review-pending</span></h3>
           <div class="tally">
             {tally_html}
           </div>
@@ -1028,7 +1116,8 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
         </div>
         <div class="band">
           <h3>Latency observations</h3>
-          <div class="kv-row">
+          {'' if latency_has_data else '<p class="empty-note">Not recorded this cycle — the band is suppressed rather than published as a row of dashes, which reads as measured-and-empty.</p>'}
+          {f'''<div class="kv-row">
             <span class="kv-key">Source</span>
             <span class="kv-val kv-val-mono">{html.escape(str(latency.get("source", "—")))}</span>
           </div>
@@ -1051,7 +1140,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
           <div class="kv-row">
             <span class="kv-key">Violations (&gt;120s)</span>
             <span class="kv-val">{latency_violations_str}</span>
-          </div>
+          </div>''' if latency_has_data else ''}
         </div>
       </div>
     </section>
@@ -1083,7 +1172,6 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
       <p>
         Dashboard v{DASHBOARD_VERSION}
         <span class="sep">·</span> Schema v{html.escape(str(sc.get("schema_version", "—")))}
-        <span class="sep">·</span> Rozzzsie OS v3.10.4
         <span class="sep">·</span> <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard">Source</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard#readme">About</a>

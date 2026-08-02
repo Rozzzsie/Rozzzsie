@@ -109,7 +109,7 @@ findings:
     target_surface: "retro procedure — census reported with its uncertainty, no derived work"
 
   - id: "3.1"
-    title: "THE STATUS FILE BREACHED ITS MUST-FULL-LOAD READ CONTRACT BY 1.8x, AND NOT ONE OF ITS 70 OPEN ITEMS WAS CLOSEABLE. Nine rows carried resolved-shaped words, and all nine were genuinely OPEN — the words described closed HALVES inside rows whose boxes remain open, which the box-state doctrine already rules on. So the breach is not stale content and no retention sweep could fix it: the file is oversized because the open work is genuinely open and each row carries a full record. Resolved structurally instead, along the grain of the existing renderer: a row is two audiences, a one-line index entry and a full record, and only the first is rendered. Nine full records relocated to the retrieval history; every row remains open, remains on the board, and now carries headline plus pointer. File returned inside contract with all 33 escalator rows verified through the live extractor."
+    title: "THE STATUS FILE BREACHED ITS MUST-FULL-LOAD READ CONTRACT BY 1.8x, AND NOT ONE OF ITS 70 OPEN ITEMS — THE COUNT AT BREACH TIME — WAS CLOSEABLE. Nine rows carried resolved-shaped words, and all nine were genuinely OPEN — the words described closed HALVES inside rows whose boxes remain open, which the box-state doctrine already rules on. So the breach is not stale content and no retention sweep could fix it: the file is oversized because the open work is genuinely open and each row carries a full record. Resolved structurally instead, along the grain of the existing renderer: a row is two audiences, a one-line index entry and a full record, and only the first is rendered. Nine full records relocated to the retrieval history; every row remains open, remains on the board, and now carries headline plus pointer. File returned inside contract with all 33 escalator rows then on the board verified through the live extractor. ⚠️ THE THREE COUNTS ON THIS PAGE ARE THREE DIFFERENT PREDICATES AT THREE DIFFERENT INSTANTS AND NONE SUPERSEDES ANOTHER: 70 = open items at breach time, before the structural fix; 33 = rows the escalator extractor classified at that same moment; 38 = the defect ledger's open rows classified by tag, measured later the same day at 15:3x. Read together without their predicates they look like a contradiction; they are not one."
     category: "structural"
     evidence_count: 70
     source_catchment: "monthly-housecleaning-execution"
@@ -245,6 +245,22 @@ enforcement_coverage:
   arms_built: 6
   arms_armed: 6
   arms_with_written_exit_criteria: 6
+  arms_with_falsifiable_exit: 5
+  arms_declared_permanent: 1
+  checks_enumerated: 28
+  checks_with_written_exit_criteria: 0
+  checks_unit: "blocking exit paths in the commit-time arm"
+  checks_unit_note: >
+    A CHECK is one invariant inside an arm. THE UNIT IS INSTRUMENT-DEPENDENT and
+    that is disclosed rather than hidden: the same file yields 28 by exit-site,
+    22 by distinct block banner, 17 by numbered test case. ⛔ THE UNIT IS NOW
+    PINNED AT 28 (exit-site), because that is the figure the enforcement-arms
+    manifest and this file's own notes already publish — two units for one
+    population across three surfaces is the defect, not the arithmetic. The
+    reading does not turn on the choice: the numerator is 0 for every plausible
+    denominator, so this component is 0.0 under all three. The denominator also
+    covers ONLY the commit-time arm; the other five arms' sub-checks are not yet
+    enumerated, so 28 is a floor and this component is, if anything, generous.
   notes: >
     ⛔ SUPERSEDES `hook_health.enforcement_gates_with_teeth_off: 3` ABOVE, which
     is retained unedited as the record it is. That 3 was carried from a prose

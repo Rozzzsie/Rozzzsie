@@ -263,5 +263,192 @@ class TestBothSidecarVocabularies(unittest.TestCase):
                 self.assertIn(marker, out)
 
 
+
+class TestEnforcementThirdComponent(unittest.TestCase):
+    """Added 2026-08-02 after the first two components both hit ceiling.
+
+    Arm-level coverage at 6/6 while 22 individual checks state nothing is not
+    "fully governed" — it is a dial that stopped discriminating at the
+    resolution it happened to be defined at.
+    """
+
+    def test_check_level_gap_pulls_the_dial_off_ceiling(self):
+        sc = _sidecar()
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
+        self.assertLess(dial["value"], 1.0, "dial is at ceiling despite 0/22 checks")
+        self.assertAlmostEqual(dial["value"], 2 / 3, places=3)
+
+    def test_the_component_is_zero_for_every_plausible_denominator(self):
+        """The unit is instrument-dependent; the READING must not be."""
+        sc = _sidecar()
+        for denom in (17, 22, 28):
+            with self.subTest(denominator=denom):
+                sc["enforcement_coverage"]["checks_enumerated"] = denom
+                dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
+                self.assertAlmostEqual(dial["value"], 2 / 3, places=3)
+
+    def test_absent_check_fields_fall_back_to_two_components(self):
+        """A sidecar predating this component must still score, not crash."""
+        sc = _sidecar()
+        del sc["enforcement_coverage"]["checks_enumerated"]
+        del sc["enforcement_coverage"]["checks_with_written_exit_criteria"]
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
+        self.assertAlmostEqual(dial["value"], 1.0)
+
+    def test_closing_the_check_gap_would_restore_full_credit(self):
+        """The dial must be able to reach 100 — a dial that cannot is a scold."""
+        sc = _sidecar()
+        # Derive the closing value from the sidecar's OWN denominator. A
+        # hardcoded 22 here broke the moment the check unit was pinned at 28 —
+        # a literal transcribed from a measurement it does not own.
+        ec = sc["enforcement_coverage"]
+        ec["checks_with_written_exit_criteria"] = ec["checks_enumerated"]
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
+        self.assertAlmostEqual(dial["value"], 1.0)
+
+
+
+class TestInstrumentLivenessCanActuallyFail(unittest.TestCase):
+    """The §68 control: a guard's PASS is uninterpretable until its FAIL arm
+    has been observed firing on a known-bad input.
+
+    A pre-publish grade read `caught / observed` and concluded the dial could
+    only ever return 1.0 — that numerator and denominator named the same set.
+    They do not: `observed` is control-catches PLUS review-catches, so a
+    failure caught by a human reading rather than by an instrument scores
+    zero. But the objection was still worth its weight, because being able to
+    NAME the failing input is not the same as having FED it one. These tests
+    feed it.
+    """
+
+    def test_a_review_catch_drives_the_dial_below_full(self):
+        sc = _sidecar()
+        sc["instrument_liveness"] = {
+            "silent_failures_observed": 10,
+            "caught_by_control": 9,
+            "caught_by_review": 1,
+        }
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "instrument")
+        self.assertAlmostEqual(dial["value"], 0.9)
+        self.assertLess(dial["value"], 1.0, "the fail arm must actually fire")
+
+    def test_an_all_review_cycle_bottoms_the_dial_out(self):
+        sc = _sidecar()
+        sc["instrument_liveness"] = {
+            "silent_failures_observed": 4,
+            "caught_by_control": 0,
+            "caught_by_review": 4,
+        }
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "instrument")
+        self.assertEqual(dial["value"], 0.0)
+
+    def test_the_blind_spot_is_stated_on_the_page_not_scored(self):
+        """A silent failure nothing caught enters neither term. That is not
+        fixable by arithmetic, so it must be published as a limit."""
+        sc = _sidecar()
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "instrument")
+        self.assertIn("never observed", dial["note"])
+
+
+class TestEnforcementPredicateIsNamedExactly(unittest.TestCase):
+    """The published string must not assert of six arms a property one of
+    them does not have. Merging 'has a falsifiable exit' with 'documents its
+    permanence' into one denominator is fine; calling the merged thing 'a
+    written exit criterion' is not."""
+
+    def test_both_predicates_are_named_in_the_detail(self):
+        sc = _sidecar()
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
+        self.assertIn("state an exit condition", dial["detail"])
+        self.assertIn("falsifiable", dial["detail"])
+        self.assertIn("documented permanence", dial["detail"])
+        self.assertNotIn("with a written exit criterion", dial["detail"])
+
+    def test_a_missing_exit_count_is_not_scored_as_zero(self):
+        """Absence is not a measured zero — here it must drop the component
+        entirely rather than score the arms as having no exits."""
+        sc = _sidecar()
+        ec = dict(sc["enforcement_coverage"])
+        ec.pop("arms_with_written_exit_criteria", None)
+        ec.pop("checks_enumerated", None)
+        sc["enforcement_coverage"] = ec
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
+        self.assertAlmostEqual(dial["value"], 1.0)
+        self.assertNotIn("/6 state an exit condition", dial["detail"])
+
+
+class TestBacklogRefusesToSumAnIncompleteAxisSet(unittest.TestCase):
+    def test_a_missing_axis_blocks_the_reconciliation_entirely(self):
+        """A sum over an incomplete set can coincidentally match the total and
+        publish a reconciliation that passed only because a value was absent."""
+        bl = {"total": 79, "open": 28, "open_ready": 14, "open_decision_gated": 12}
+        out = R.render_backlog_widget(bl)
+        self.assertIn("axes incomplete", out)
+        self.assertNotIn("axes sum to", out)
+
+    def test_a_complete_axis_set_still_reconciles(self):
+        bl = {"total": 79, "open": 28, "open_ready": 14,
+              "open_decision_gated": 12, "open_upstream_blocked": 2}
+        out = R.render_backlog_widget(bl)
+        self.assertIn("axes sum to 28", out)
+        self.assertNotIn("MISMATCH", out)
+
+
+class TestNoFabricatedZerosSurvive(unittest.TestCase):
+    def test_absent_age_buckets_render_as_dashes_not_zeros(self):
+        out = R.render_defect_inventory({"open_total": 38, "live": 34})
+        self.assertNotIn(">0<", out)
+        self.assertIn("—", out)
+
+    def test_a_recorded_zero_still_renders_zero(self):
+        out = R.render_defect_inventory({"open_total": 38, "age_30d_plus": 0})
+        self.assertIn(">0<", out)
+
+    def test_the_shape_is_swept_not_patched(self):
+        """§67: grep the shape, never patch the instance. `or 0` on a measured
+        field is the shape; it must not reappear in either widget."""
+        src = (HERE / "render.py").read_text()
+        body = src[src.index("def render_defect_inventory"):src.index("def render_discipline_rows")]
+        self.assertNotIn("or 0", body)
+
+
+class TestPublishedLayerCarriesItsCaveats(unittest.TestCase):
+    """§45: a caveat in the stripped layer is one the audience never reads."""
+
+    def test_the_gameability_caveat_reaches_the_page(self):
+        html_out = R.render_health_widget(R.compute_health(_sidecar()))
+        self.assertIn("individually", html_out)
+        self.assertIn("gameable", html_out)
+        self.assertIn("not a claim that the system", html_out)
+
+    def test_the_inventory_states_its_basis_and_its_stamped_nature(self):
+        out = R.render_defect_inventory({
+            "open_total": 38, "measured_at": "2026-08-02 15:3x",
+            "measured_from": "governance status file",
+        })
+        self.assertIn("stamped", out)
+        self.assertIn("Basis:", out)
+        self.assertIn("open as measured", out)
+
+
+class TestNoInsiderVocabularyInThePublishedLayer(unittest.TestCase):
+    """The sanitization sweep ran against the SIDECAR; every leak found by the
+    pre-publish grade was injected by this renderer's own hardcoded literals.
+    The published layer is the one that has to be audited."""
+
+    FORBIDDEN = ["Teacher invocation", "Luma", "fam-wide", "sprint-2",
+                 "P9 is a ritual", "P10 Retro"]
+
+    def test_the_rendered_page_is_clean(self):
+        """Audit the OUTPUT, not the source. A comment in render.py explaining
+        the sanitization is not published; a string literal is. Grepping the
+        source would both miss the distinction and false-positive on this very
+        test's own explanation of it."""
+        page = R.render_dashboard(_sidecar(), [_sidecar()])
+        for term in self.FORBIDDEN:
+            with self.subTest(term=term):
+                self.assertNotIn(term, page)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

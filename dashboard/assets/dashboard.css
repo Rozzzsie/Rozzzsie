@@ -881,3 +881,15 @@ section {
   .hs-detail { grid-column: 1 / -1; }
   .hs-score { font-size: 2.4rem; }
 }
+
+/* Composite caveat — the gameability statement, moved out of a source comment
+   onto the page. Styled to read as a limitation, not as a footnote. */
+.hs-caveat {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--warn, #b8860b);
+  background: var(--surface-2, rgba(255, 255, 255, 0.03));
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-2, #9aa4b2);
+}
