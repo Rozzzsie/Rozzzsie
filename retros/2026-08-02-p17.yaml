@@ -244,7 +244,7 @@ enforcement_coverage:
   measured_from: "code — enforcement flags and deny-paths enumerated from the tree"
   arms_built: 6
   arms_armed: 6
-  arms_with_written_exit_criteria: 0
+  arms_with_written_exit_criteria: 6
   notes: >
     ⛔ SUPERSEDES `hook_health.enforcement_gates_with_teeth_off: 3` ABOVE, which
     is retained unedited as the record it is. That 3 was carried from a prose
@@ -254,9 +254,22 @@ enforcement_coverage:
     the effect of reporting a WORSE number than the truth while hiding an
     unbuilt-gate backlog inside it. Re-derived from code rather than from prose:
     6 arms can deny, 6 are armed. Two of those six were armed on the day of this
-    retro, taking the figure from 4/6 to 6/6. The zero written exit criteria is
-    the honest bad number here and it is unchanged: nothing states the condition
-    under which any of these teeth would come back off.
+    retro, taking the figure from 4/6 to 6/6. ✅ THE ZERO-EXIT-CRITERIA HALF WAS
+    ALSO CLOSED THIS DAY, and the figure DERIVES from a manifest rather than
+    being asserted here: 5 arms carry a falsifiable exit criterion, 1 declares
+    itself permanent with a rationale, and both forms count because the defect
+    being repaired was SILENCE, not the absence of an off-switch.
+    Two rules shaped it. First, A GATE THAT IS ON SUPPRESSES THE EVIDENCE THAT
+    WOULD JUSTIFY TURNING IT OFF — "no violations observed while armed" is the
+    gate working, not proof the problem is solved — so every behavioural arm's
+    criterion REQUIRES a deliberate shadow cycle as part of its test. Second,
+    forcing an exit condition onto permanent infrastructure would be a fiction
+    written to make this dial read 100.
+    ⛔ AND THE MANIFEST IMMEDIATELY SURFACED A NEW GAP ONE LEVEL DOWN, recorded
+    rather than hidden behind the permanent declaration: the commit-time arm
+    holds 28 individually-retirable checks and NOT ONE states its own exit
+    condition. Arm-level coverage is complete; check-level coverage is zero.
+    That is next cycle's work, and it is the more honest reading of this dial.
 
 instrument_liveness:
   silent_failures_observed: 9
