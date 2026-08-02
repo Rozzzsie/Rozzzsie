@@ -264,10 +264,22 @@ class TestBothSidecarVocabularies(unittest.TestCase):
         self.assertIn("10/10 steps", out)
         self.assertIn("3/3 traces passing", out)
 
-    def test_the_p16_vocabulary_still_reaches_the_page_via_the_trend_card(self):
+    def test_the_p16_rate_is_retired_from_the_PAGE_but_not_from_the_RECORD(self):
+        """Rewritten 2026-08-02. This asserted `19%` was "still plotted", which
+        the operator decision reverses — the retracted rate is no longer drawn.
+
+        The invariant it was written for survives and is what is asserted now:
+        retiring a RENDERING must not retire the DATA. So the card is still
+        present, the percentage is gone from the page, and the value is still
+        in the sidecar where anyone auditing the retraction can find it."""
         out = R.render_dashboard(_sidecar(), _all_sidecars())
         self.assertIn("Checkpoint discipline", out)
-        self.assertIn("19%", out, "the p16 rate is still plotted")
+        self.assertNotIn("19%", out, "the retracted rate is no longer plotted")
+        p16 = R.load_sidecar(RETROS / "2026-07-26-p16.yaml")
+        self.assertIsNotNone(
+            p16["discipline_metrics"].get("checkpoint_bar_miss_rate"),
+            "the rate must survive in the record even though the page drops it",
+        )
 
     def test_fires_never_appear_without_turns(self):
         """Reporting fires as a turn count overstates it ~33x. The widget that
@@ -755,37 +767,14 @@ class TestReKeyIsTestedAgainstTheSemanticPredecessor(unittest.TestCase):
         self.assertIn("missed turns", page)
 
 
-class TestDispatchTotalIsNotPresentedAsComparable(unittest.TestCase):
-    """p17 flattened the block to four role buckets, dropping the three
-    highest-volume rails. The widget rendered it correctly and the resulting
-    total — 1, against a prior cycle's 305 — read as a collapse in activity
-    rather than a change in what is counted."""
-
-    def test_dropped_rails_are_named_when_the_shape_flattens(self):
-        prior = R.load_sidecar(RETROS / "2026-07-26-p16.yaml")
-        out = R.render_fam_dispatch_widget(
-            _sidecar().get("fam_dispatch_distribution") or {},
-            prior.get("fam_dispatch_distribution") or {},
-        )
-        self.assertIn("no longer reported", out)
-        # Rail names, published directly — operator decision 2026-08-02. The
-        # first version of this asserted these same names while the policy said
-        # they were confidential, and passed, because the renderer was emitting
-        # them: a test written against a leak ratifies it. The assertion text is
-        # unchanged and its STATUS is inverted, which is the whole lesson — a
-        # green test tells you the code and the test agree, never that either
-        # agrees with policy.
-        for rail in ("deputies", "sumi", "brindle"):
-            with self.subTest(rail=rail):
-                self.assertIn(rail, out)
-        self.assertIn("not comparable", out)
-
-    def test_rails_that_ARE_still_reported_are_not_listed_as_dropped(self):
-        """Four of the seven prior rails survive under a role bucket. A raw set
-        difference over two different vocabularies calls all seven dropped."""
-        prior = R.load_sidecar(RETROS / "2026-07-26-p16.yaml")
-        dropped = R._dropped_rails(prior.get("fam_dispatch_distribution") or {})
-        self.assertEqual(len(dropped), 3, f"expected 3 genuinely dropped, got {dropped}")
+# RETIRED 2026-08-02 — `TestDispatchTotalIsNotPresentedAsComparable`.
+# It asserted the "no longer reported / not comparable" disclaimer, which the
+# operator removed from the published page ("we only show the latest metrics
+# externally"). Its replacement is `TestDroppedRailsNoteIsGone` below, which
+# asserts the inverse. Recorded rather than silently deleted: the underlying
+# hazard it was written for — a role-bucket total read as a per-agent total —
+# is now closed at the source instead, because p17's buckets are re-authored
+# from measurement rather than shipped as four zeros needing a disclaimer.
 
 
 class TestTrendScopeLabelSaysWhatItCountsOutOf(unittest.TestCase):
@@ -836,6 +825,126 @@ class TestTheRetiredSchemaFileIsNotCitedAnywhere(unittest.TestCase):
             and "retro-sidecar-schema" in _safe_read(p)
         }
         self.assertEqual(hits, {"dashboard/render.py"})
+
+
+class TestDecisionVelocityLosesNoFinding(unittest.TestCase):
+    """The headline counts EVERY finding; the buckets counted a hardcoded four
+    statuses. The vocabulary grew to eight over 15 cycles and the bucket list
+    never did, so `approved-queued`, `partial-executed` and `carried-open`
+    matched nothing and left the page — 6 findings across 4 cycles, on a section
+    whose sibling header says "every one statused".
+
+    Measured 2026-08-02 before the fix: p4 12→10, p14 7→5, p15 8→7, p17 8→7.
+    """
+
+    def test_every_status_in_every_sidecar_lands_in_a_bucket(self):
+        """Name says every — so the body iterates every sidecar and every
+        status, not the one that prompted the question (§67)."""
+        for sc in _all_sidecars():
+            for f in sc.get("findings") or []:
+                status = f.get("status")
+                with self.subTest(retro=sc.get("retro_id"), status=status):
+                    _, unbucketed = R.velocity_buckets(sc.get("findings") or [])
+                    self.assertNotIn(
+                        status, unbucketed,
+                        f"{status} renders in no bucket and leaves the page",
+                    )
+
+    def test_the_buckets_sum_to_the_headline_for_every_cycle(self):
+        for sc in _all_sidecars():
+            findings = sc.get("findings") or []
+            rows, unbucketed = R.velocity_buckets(findings)
+            with self.subTest(retro=sc.get("retro_id")):
+                self.assertEqual(
+                    sum(n for _, n, _ in rows) + sum(unbucketed.values()),
+                    len(findings),
+                )
+
+    def test_a_status_nobody_has_invented_yet_is_REPORTED_not_dropped(self):
+        """The guard, not the fix. Extending the bucket list closes today's
+        three; only a residual arm closes the ninth status, and that one will
+        be added by someone who has never read this file."""
+        findings = [{"status": "executed"}, {"status": "invented-status-2027"}]
+        rows, unbucketed = R.velocity_buckets(findings)
+        self.assertEqual(unbucketed, {"invented-status-2027": 1})
+        self.assertEqual(sum(n for _, n, _ in rows) + sum(unbucketed.values()), 2)
+
+    def test_the_published_page_states_the_reconciliation(self):
+        """§87 — the defect was on the rendered layer, so the assertion is too.
+        A reader must be able to check the arithmetic without opening the yaml."""
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertIn("Carried open", page)
+        self.assertIn("buckets sum to 8", page)
+
+    def test_an_unbucketed_status_reaches_the_VELOCITY_SECTION_not_just_the_helper(self):
+        """Scoped to the section, deliberately. The first version of this test
+        asserted the name appeared anywhere on the page and PASSED against the
+        broken renderer — the findings-detail table prints every status pill,
+        so the assertion was satisfied by a table that was never the subject.
+        A test whose input can reach the assertion by a second path is not a
+        control on the first one."""
+        sc = _sidecar()
+        sc["findings"] = list(sc["findings"]) + [
+            {"id": "X", "title": "t", "category": "c", "evidence_count": 1,
+             "source_catchment": "s", "recommendation": "r",
+             "status": "invented-status-2027", "execution_target_week": "w",
+             "target_surface": "s"}
+        ]
+        page = R.render_dashboard(sc, _all_sidecars())
+        velocity = page[page.index("Decision velocity"):page.index("Governance trend")]
+        self.assertIn("invented-status-2027", velocity)
+
+
+class TestTheRetractedRateIsGoneNotRedrawn(unittest.TestCase):
+    """Operator decision 2026-08-02: retire the 16 rate points entirely and show
+    only the new axis. A retracted series redrawn alongside its replacement
+    invites the eye to read one slope across two units."""
+
+    def test_no_rate_value_from_the_retracted_series_renders(self):
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        # Sliced to the next card by NAME. A slice on a closing-tag pattern
+        # would move with any markup change and start asserting about a
+        # different region while still passing.
+        checkpoint = page[
+            page.index("Checkpoint discipline"):page.index("Proposal authoring")
+        ]
+        self.assertNotIn("%", checkpoint, "a percentage from the retracted rate survived")
+
+    def test_the_reason_the_series_is_absent_survives_its_deletion(self):
+        """Deleting the points without the reason turns a retraction into a
+        silent gap — the exact reading the closed-series machinery was built to
+        prevent. The data goes; the sentence stays."""
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertIn("RETRACTED", page)
+
+    def test_a_single_point_is_labelled_a_value_not_a_trend(self):
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertIn("n=1", page)
+        self.assertIn("missed turns", page)
+
+
+class TestDroppedRailsNoteIsGone(unittest.TestCase):
+    """Operator decision 2026-08-02 (Rosie, verbatim): "we only show the latest
+    metrics externally, no need to show the notes for prior reporting periods."
+
+    Recorded as a decision rather than a silent deletion — the note it removes
+    was itself built to prevent a misreading, so the reason it is now
+    unnecessary matters: p17's four buckets are re-authored from measurement,
+    so the total is no longer a coverage artefact needing a disclaimer.
+    """
+
+    def test_the_note_and_its_helper_are_removed(self):
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertNotIn("no longer reported:", page)
+        self.assertNotIn("not comparable", page)
+        self.assertFalse(hasattr(R, "_dropped_rails"))
+
+    def test_the_widget_no_longer_reaches_for_a_POSITIONAL_prior_sidecar(self):
+        """`all_sidecars[-2]` meant "the previous cycle" only while p17 was
+        last. Deleting the consumer closes it outright, which is the fix a
+        compensating index check could not be (§68)."""
+        import inspect
+        self.assertNotIn("all_sidecars[-2]", inspect.getsource(R.render_dashboard))
 
 
 if __name__ == "__main__":

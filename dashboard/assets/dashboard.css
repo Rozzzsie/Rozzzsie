@@ -909,32 +909,36 @@ section {
   color: var(--text-3, #6b7280);
 }
 
-/* A restarted series sits UNDER the closed one it replaces, visually separated
-   so the eye cannot read a single slope across a unit change. */
-.trend-restart {
-  margin-top: 0.9rem;
-  padding-top: 0.75rem;
-  border-top: 1px dashed var(--border);
+/* A series with ONE observation. Rendered as a value, not a line: a sparkline
+   through a single point draws a slope that was never measured. Upgrades to
+   the normal trend markup on its own at n>=2 — no rule here needs changing.
+   (Replaces .trend-restart*, deleted 2026-08-02 with the sub-line that drew a
+   restarted series beneath its retired predecessor.) */
+.trend-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0.35rem 0 0.6rem;
 }
 
-.trend-restart-label {
-  display: block;
-  font-size: 0.78rem;
+.trend-stat-value {
+  font-size: 1.9rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  margin-bottom: 0.4rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
-.trend-restart-n {
-  font-weight: 400;
-  color: var(--status-deferred);
+.trend-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-3, #6b7280);
 }
 
-/* Rails the current sidecar shape stopped carrying. Muted, but present —
-   absence of a row is exactly what this note exists to make visible. */
-.fam-closed {
-  margin-top: 0.55rem;
+/* The arithmetic, printed. The buckets agree with the headline by construction;
+   showing the sum is what makes the next disagreement visible on the surface
+   where it would happen, instead of only to someone summing four tiles by eye.
+   (Replaces .fam-closed, whose disclaimer was removed by operator decision.) */
+.velocity-reconcile {
+  margin-top: 0.6rem;
   font-size: 0.76rem;
-  line-height: 1.45;
-  color: var(--status-deferred);
+  color: var(--text-3, #6b7280);
 }

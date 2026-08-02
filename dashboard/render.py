@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.5"
+DASHBOARD_VERSION = "3.6"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -531,39 +531,62 @@ def render_finding_row(f: dict[str, Any]) -> str:
     """
 
 
-# The pre-p17 shape names individual rails; the flat shape names ROLE BUCKETS, so
-# a plain set difference between them reports every rail as dropped. Four are not
-# dropped — they are folded into a bucket and still counted.
+# ─── Decision-velocity buckets ────────────────────────────────────────────────
 #
-# ⛔ This set exists for CORRECTNESS ONLY. It used to do a second job — mapping
-# rail names to public role names so the internal names never reached the page —
-# and that job was retired by operator decision 2026-08-02: rail names are public
-# vocabulary. They already appear 298 times across the 15 published sidecars, so
-# the mapping was hiding on one surface what the data beside it published, which
-# is worse than not hiding at all. Names are now printed directly.
+# ⛔ THE HEADLINE COUNTS EVERY FINDING; THE BUCKETS COUNTED A HARDCODED FOUR
+# STATUSES. The status vocabulary grew from four to eight over 15 cycles and this
+# list did not, so `approved-queued`, `partial-executed` and `carried-open`
+# matched nothing and left the page: 6 findings across p4, p14, p15 and p17,
+# measured 2026-08-02 — on a page whose findings-detail header reads "every one
+# statused".
 #
-# Deleting the mapping also deleted its unknown-rail branch, which existed only
-# to avoid publishing a name it had not seen — an untested branch that no longer
-# has anything to do (§68: prefer a deletion to a compensating check).
-_RAILS_FOLDED_INTO_A_ROLE_BUCKET = {"teacher", "breakline", "luma", "codex"}
+# ⭐ NOTHING WAS MIS-SHAPED, WHICH IS WHY IT RAN FOR THREE MONTHS. Each tile was
+# individually correct, the headline was correct, and only the SUM disagreed —
+# and no per-tile check ever looks at a sum. Absence of a bucket is invisible;
+# there is no gap-shaped mark where a status should have been.
+#
+# The `unbucketed` return is the half that survives the NEXT status. Extending
+# this map closes today's three; only reporting what fell through closes the
+# ninth, which will be added by someone who has never read this file.
+VELOCITY_BUCKETS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("Accepted / shipped",
+     ("executed", "approved", "approved-queued", "pre-ship", "partial-executed")),
+    ("Deferred", ("deferred",)),
+    ("Carried open", ("carried-open",)),
+    ("Rejected", ("rejected",)),
+)
 
 
-def _dropped_rails(prior_fam: dict[str, Any]) -> list[str]:
-    """Rails the earlier shape reported that the flat shape no longer counts."""
-    dropped = set()
-    for axis in ("dispatch_axis", "reactions_axis"):
-        for r in (prior_fam.get(axis) or {}).get("subagents") or []:
-            if not isinstance(r, dict) or not r.get("name"):
-                continue
-            name = str(r["name"]).lower()
-            if name not in _RAILS_FOLDED_INTO_A_ROLE_BUCKET:
-                dropped.add(name)
-    return sorted(dropped)
+def velocity_buckets(
+    findings: list[dict[str, Any]],
+) -> tuple[list[tuple[str, int, str]], dict[str, int]]:
+    """Bucket findings by terminal status.
+
+    Returns `(rows, unbucketed)` where rows is `[(label, count, detail)]` and
+    `unbucketed` maps any status matching no bucket to its count. The second
+    value is the contract: a status this map has never seen is RETURNED, never
+    dropped, so the caller can publish it and the sum can be asserted.
+    """
+    by_status: dict[str, int] = {}
+    for f in findings:
+        s = f.get("status") or "unknown"
+        by_status[s] = by_status.get(s, 0) + 1
+
+    rows: list[tuple[str, int, str]] = []
+    claimed: set[str] = set()
+    for label, members in VELOCITY_BUCKETS:
+        claimed.update(members)
+        present = [(m, by_status[m]) for m in members if by_status.get(m)]
+        # A multi-member bucket names its composition rather than absorbing it:
+        # a cycle that is all `executed` and one that is all `pre-ship` are not
+        # the same cycle, and the tile value alone cannot say which you have.
+        detail = " · ".join(f"{n} {m}" for m, n in present) if len(members) > 1 else ""
+        rows.append((label, sum(n for _, n in present), detail))
+
+    return rows, {s: n for s, n in by_status.items() if s not in claimed}
 
 
-def render_fam_dispatch_widget(
-    fam: dict[str, Any], prior_fam: dict[str, Any] | None = None
-) -> str:
+def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
     """Render the fam-wide dispatch + reactions widget with sub-band split.
 
     The two sub-axes carry different units (dispatches vs reactions) and are
@@ -641,24 +664,21 @@ def render_fam_dispatch_widget(
                 for k, n in rows
             )
             total = sum(n for _, n in rows)
-            # ⛔ THE TOTAL IS THE DANGEROUS FIGURE HERE, NOT THE MISSING ROWS.
-            # The flat shape carries four ROLE buckets; the nested shape carried
-            # per-agent rails including the three highest-volume ones. Rendering
-            # both as "total" invites a 305 -> 1 reading that is a coverage
-            # change, not a collapse in activity. Naming the dropped rails is
-            # what makes the two totals visibly non-comparable.
-            dropped = _dropped_rails(prior_fam or {})
-            dropped_html = (
-                f'<p class="fam-closed">no longer reported: '
-                f'{html.escape(", ".join(dropped))} — this total counts role '
-                f'buckets, not agents, and is not comparable to earlier cycles</p>'
-                if dropped else ""
-            )
+            # The cross-cycle comparability disclaimer that used to sit here is
+            # REMOVED — operator decision 2026-08-02: "we only show the latest
+            # metrics externally, no need to show the notes for prior reporting
+            # periods." Its hazard is closed at the source instead: p17's four
+            # buckets are lifted from `sidecar-metrics-tally.py`'s `role_buckets`
+            # block, so the total is a measured figure rather than four zeros
+            # needing a paragraph to explain them. Deleting it also deleted the
+            # widget's only reason to hold a PRIOR sidecar — which it selected
+            # positionally as `all_sidecars[-2]`, correct only while p17 was
+            # last (§68: a deletion beats an index check that has to stay right).
             sub_bands.append(
                 f'<div class="fam-sub-band">'
                 f'<h4 class="fam-sub-band-label">Dispatch axis</h4>{rows_html}'
                 f'<div class="kv-row fam-row-total"><span class="kv-key">total</span>'
-                f'<span class="kv-val">{total}</span></div>{dropped_html}</div>'
+                f'<span class="kv-val">{total}</span></div></div>'
             )
 
     if not sub_bands:
@@ -849,10 +869,14 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
 
     labels = [str(sc.get("retro_id", "—")).split("-")[-1] for sc in sidecars]
 
-    miss_values: list[float | int | None] = [
-        (sc.get("discipline_metrics") or {}).get("checkpoint_bar_miss_rate")
-        for sc in sidecars
-    ]
+    # `checkpoint_bar_miss_rate` is deliberately NOT read. The 16-cycle rate
+    # series was retired from the page on 2026-08-02 by operator decision: the
+    # rate was retracted as miscomputed, and a retracted series redrawn beside
+    # its replacement invites the eye to read one slope across two units. The
+    # values remain in the sidecars — this is a rendering decision, not a
+    # deletion of record — and the REASON still renders, because points removed
+    # without their reason are just a gap, which is the reading the closed-series
+    # machinery exists to prevent.
     # Re-keyed 2026-08-02: `executed_this_cycle` covers 14/15 and dies at p17;
     # `authored_this_cycle` covers 15/15. This is a genuine re-key — the whole
     # series exists under the new field — so the label changes with it, because
@@ -877,11 +901,64 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
         for sc in sidecars
     ]
 
+    def _new_axis_card(
+        title: str, unit_label: str, values: list[float | int | None],
+        retired: str, note: str = "",
+    ) -> str:
+        """A card for a series that REPLACED a retired one, drawn alone.
+
+        The predecessor's points are not redrawn beneath it. Two consequences
+        are deliberate: a single point renders as a VALUE, not a trend — one
+        observation has no slope and a sparkline drawn through it invents one —
+        and the retraction sentence survives the removal of the data, because
+        points deleted without their reason read as a gap rather than a
+        decision. At n≥2 this upgrades to a line automatically, so the next
+        cycle owes no code edit to get its trend back.
+        """
+        live = [(lab, v) for lab, v in zip(labels, values) if v is not None]
+        n = len(live)
+        if n == 1:
+            lab, v = live[0]
+            body = (
+                '<div class="trend-stat">'
+                f'<span class="trend-stat-value">{html.escape(_format_trend_value(v))}</span>'
+                f'<span class="trend-stat-label">{html.escape(unit_label)} · {html.escape(lab)}</span>'
+                '</div>'
+            )
+        elif n > 1:
+            live_values = [v for _, v in live]
+            body = (
+                '<div class="trend-values">'
+                + '<span class="trend-arrow">→</span>'.join(
+                    f'<span class="trend-value">{html.escape(_format_trend_value(v))}</span>'
+                    for v in live_values
+                )
+                + '</div>'
+                + _trend_sparkline_svg(live_values)
+                + '<div class="trend-axis-labels">'
+                + "".join(
+                    f'<span class="trend-axis-label">{html.escape(lab)}</span>'
+                    for lab, _ in live
+                )
+                + '</div>'
+            )
+        else:
+            body = '<p class="trend-empty">not yet measured on this axis</p>'
+        return (
+            '<div class="trend-card">'
+            f'<h3>{html.escape(title)} '
+            f'<span class="trend-card-suffix">{html.escape(unit_label)} · '
+            f'new series · n={n}</span></h3>'
+            f'{body}'
+            f'<p class="trend-closed">{html.escape(retired)}</p>'
+            + (f'<p class="trend-note">{html.escape(note)}</p>' if note else "")
+            + '</div>'
+        )
+
     def _card(
         title: str, suffix: str, values: list[float | int | None],
         value_format: str = "", lower_is_better: bool = False, note: str = "",
         closed_reason: str = "",
-        restart: tuple[str, list[float | int | None], str] | None = None,
     ) -> str:
         value_strs = [_format_trend_value(v, value_format) for v in values]
         values_inline = (
@@ -911,26 +988,11 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
         note_html = (
             f'<p class="trend-note">{html.escape(note)}</p>' if note else ""
         )
-        # A restarted series is drawn UNDER the closed one, never continuing it.
-        # Same card because it is the same subject; separate line because it is
-        # a different unit and the eye must not read one slope across both.
-        restart_html = ""
-        if restart:
-            r_label, r_values, r_note = restart
-            r_live = [v for v in r_values if v is not None]
-            r_inline = '<span class="trend-arrow">→</span>'.join(
-                f'<span class="trend-value">{html.escape(_format_trend_value(v))}</span>'
-                for v in r_values
-            )
-            restart_html = (
-                '<div class="trend-restart">'
-                f'<span class="trend-restart-label">{html.escape(r_label)} '
-                f'<span class="trend-restart-n">new series · n={len(r_live)}</span></span>'
-                f'<div class="trend-values">{r_inline}</div>'
-                + (_trend_sparkline_svg(r_values) if len(r_live) >= 2 else "")
-                + (f'<p class="trend-note">{html.escape(r_note)}</p>' if r_note else "")
-                + '</div>'
-            )
+        # The sub-line that drew a restarted series UNDER its closed predecessor
+        # was removed 2026-08-02 with its only caller. The successor now gets its
+        # own card (`_new_axis_card`) with no predecessor drawn at all — the
+        # operator's call, and the stronger one: sharing a card kept two units
+        # inside one frame, and a frame is exactly what a reader compares within.
         return (
             '<div class="trend-card">'
             f'<h3>{html.escape(title)} <span class="trend-card-suffix">{html.escape(suffix)}</span></h3>'
@@ -939,25 +1001,20 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
             f'<div class="trend-axis-labels">{axis_labels}</div>'
             f'<div class="trend-annotation">{annotation}</div>'
             f'{note_html}'
-            f'{restart_html}'
             '</div>'
         )
 
     cards = [
-        _card(
-            "Checkpoint discipline", "lower is better",
-            miss_values, value_format="%", lower_is_better=True,
-            closed_reason="rate RETRACTED — it counted hook fires, not turns;"
-                          " no turn denominator is derivable",
-            note="Earlier windows are not strictly comparable: the first cycle "
-                 "measured a single session, later ones a whole cycle.",
-            restart=(
-                "missed turns",
-                missed_turn_values,
-                "Replaces the retracted rate with what was actually measured: a "
-                "count, not a ratio. Starts at n=1 and is not comparable to the "
-                "percentages above.",
-            ),
+        _new_axis_card(
+            "Checkpoint discipline", "missed turns", missed_turn_values,
+            retired="The 16-cycle rate that preceded this axis was RETRACTED — "
+                    "it counted hook fires, not turns, and no turn denominator "
+                    "is derivable from the record. Its points are retired from "
+                    "this page rather than redrawn beside a different unit; the "
+                    "values remain in the sidecars.",
+            note="A count of turns that shipped without the response marker — "
+                 "what was actually measurable, in place of a ratio that was "
+                 "not. One observation is a value, not a trend.",
         ),
         _card(
             "Proposal authoring", "proposals authored / cycle",
@@ -1331,28 +1388,31 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     else:
         meta_text = ""
 
-    # Counts
-    by_status: dict[str, int] = {}
-    for f in findings:
-        s = f.get("status") or "unknown"
-        by_status[s] = by_status.get(s, 0) + 1
-
+    # Counts. Bucketing lives in `velocity_buckets` so the residual — statuses
+    # matching no bucket — is a returned value the page can publish, rather than
+    # the silent subtraction that ran here for three months.
     total_findings = len(findings)
-    accepted = (
-        by_status.get("approved", 0)
-        + by_status.get("executed", 0)
-        + by_status.get("pre-ship", 0)
+    velocity_rows, velocity_unbucketed = velocity_buckets(findings)
+    velocity_tiles = "".join(
+        render_tile(n, label, detail or None) for label, n, detail in velocity_rows
     )
-    deferred = by_status.get("deferred", 0)
+    if velocity_unbucketed:
+        velocity_tiles += render_tile(
+            sum(velocity_unbucketed.values()),
+            "Unbucketed status",
+            " · ".join(f"{n} {s}" for s, n in sorted(velocity_unbucketed.items())),
+        )
+    # Printed so a reader can check the arithmetic without opening the yaml.
+    # The two figures agree by construction now; publishing them is what makes
+    # the next disagreement visible on the surface where it would occur.
+    velocity_sum = (
+        sum(n for _, n, _ in velocity_rows) + sum(velocity_unbucketed.values())
+    )
 
-    miss_rate = discipline.get("checkpoint_bar_miss_rate")
-    prior_miss = discipline.get("checkpoint_bar_prior_session_rate")
-    miss_pct = f"{miss_rate * 100:.0f}%" if isinstance(miss_rate, (int, float)) else "—"
-    miss_detail = (
-        f"Prior session: {prior_miss * 100:.0f}%"
-        if isinstance(prior_miss, (int, float))
-        else None
-    )
+    # `checkpoint_bar_miss_rate` and its prior-session sibling were read into
+    # four locals here and interpolated nowhere — dead since the discipline
+    # widget was retired. Deleted 2026-08-02 rather than left for a reader to
+    # mistake for a live metric.
 
     # Latency — pre-format with graceful "—" suppression for null/redacted values
     # (sidecars redact discipline_metrics + latency_observations to null when traceable
@@ -1383,11 +1443,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
 
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
     fam_dispatch = sc.get("fam_dispatch_distribution") or {}
-    prior_fam = (
-        (all_sidecars[-2].get('fam_dispatch_distribution') or {})
-        if all_sidecars and len(all_sidecars) >= 2 else {}
-    )
-    fam_dispatch_html = render_fam_dispatch_widget(fam_dispatch, prior_fam)
+    fam_dispatch_html = render_fam_dispatch_widget(fam_dispatch)
     trend_html = render_trend_chart(all_sidecars or [sc])
     trend_section_html = (
         f"""
@@ -1445,10 +1501,9 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
       <h2 class="section-title">Decision velocity <span class="section-title-suffix">findings triaged + terminal status assigned</span></h2>
       <div class="tiles">
         {render_tile(total_findings, "Findings triaged")}
-        {render_tile(accepted, "Accepted / shipped", f"{by_status.get('executed', 0)} executed · {by_status.get('approved', 0)} approved · {by_status.get('pre-ship', 0)} pre-ship")}
-        {render_tile(deferred, "Deferred", "Each with explicit watch entry or carry-forward")}
-        {render_tile(by_status.get("rejected", 0), "Rejected")}
+        {velocity_tiles}
       </div>
+      <p class="velocity-reconcile">buckets sum to {velocity_sum} · {total_findings} findings triaged</p>
     </section>
     {trend_section_html}
 

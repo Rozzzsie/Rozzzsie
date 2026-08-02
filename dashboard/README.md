@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.5** (2026-08-02) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.6** (2026-08-02) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,15 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.6 — 2026-08-02 (an operator read the numbers and three of them were wrong)
+
+Every item here started as a question about the *rendered page*, not the code. That is the finding: four of these had been shipping for weeks or months, each behind a surface that looked internally consistent.
+
+- **Decision velocity was losing findings, and had been since 2026-05-03.** The headline counted every finding; the buckets counted a hardcoded four statuses. The status vocabulary grew from four to eight across 15 cycles and the bucket list never did, so `approved-queued`, `partial-executed` and `carried-open` matched nothing and left the page — **6 findings across p4, p14, p15 and p17**, on a page whose findings-detail header reads *"every one statused"*. **Nothing was mis-shaped, which is why it ran for three months:** every tile was individually correct, the headline was correct, and only the *sum* disagreed — and no per-tile check looks at a sum. Buckets now cover the full vocabulary, an **unbucketed residual is published rather than dropped**, and the page prints `buckets sum to N · N findings triaged` so a reader can check the arithmetic without opening the yaml. The residual arm, not the extended list, is the part that survives the ninth status.
+- **Three of the four dispatch counts were wrong, and the zero grew a paragraph defending itself.** p17 published `learning_agent: 1 / adversarial_reviewer: 0 / consultant: 0 / external_validator: 0` against a measured **2 / 15 / 3 / 2**. Cause: the tally instrument emits counts keyed by **agent name**; the sidecar consumes them keyed by **role** — and nothing mapped between the two vocabularies, so a step whose written rule is *never author-estimate a measured figure* still terminated in a human reading one vocabulary and typing the other. **A measured number retyped by hand is an author-estimate wearing a measurement's clothes.** The tally now emits the four role-bucket lines in the sidecar's own field names, to be lifted verbatim, and reports any agent belonging to no bucket instead of letting it vanish.
+- **A retracted metric is no longer redrawn beside its replacement.** The 16-cycle checkpoint rate was retracted last cycle as miscomputed (it counted hook fires, not turns). It had been left on the page under its successor. Now the rate's points are gone and the successor stands alone — **but the retraction sentence stays**, because points removed without their reason read as a gap rather than a decision, and the values remain in the sidecars for anyone auditing the retraction. One observation renders as a **value, not a trend**: a sparkline through a single point draws a slope nobody measured. It upgrades to a line on its own at n≥2.
+- **The cross-cycle comparability disclaimer is removed** — operator's call: *"we only show the latest metrics externally."* Its hazard is closed at the source instead, since the buckets it disclaimed are now measured rather than four zeros needing a paragraph. Deleting it also deleted the widget's only reason to hold a *prior* sidecar, which it was selecting positionally as `all_sidecars[-2]` — correct only for as long as p17 was the last one. A deletion beats an index check that has to keep being right.
 
 ### v3.5 — 2026-08-02 (two operator decisions resolved, both by deleting something)
 

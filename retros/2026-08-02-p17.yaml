@@ -180,15 +180,27 @@ latency_observations:
     received from an orchestrator.
 
 fam_dispatch_distribution:
-  learning_agent: 1
-  adversarial_reviewer: 0
-  consultant: 0
-  external_validator: 0
+  # CORRECTED 2026-08-02 22:5x. Every figure below is now lifted verbatim from
+  # `sidecar-metrics-tally.py`'s `role_buckets` block, which emits these four
+  # field names directly. The values this block shipped with — 1 / 0 / 0 / 0 —
+  # were hand-transcribed from an agent-name-keyed tally into a role-keyed
+  # sidecar with nothing mapping between the two vocabularies, and were wrong
+  # in all four positions. A measured number retyped by hand is an
+  # author-estimate wearing a measurement's clothes.
+  learning_agent: 2
+  adversarial_reviewer: 15
+  consultant: 3
+  external_validator: 2
   notes: >
-    The external code validator remains quota-exhausted for the rest of the month,
-    so its degrade-ladder middle rung does not exist on this machine. Adversarial
-    review is consequently owed on enforcement-path code that currently carries
-    none — carried as an open item, not silently absorbed.
+    Measured 2026-08-02 22:45 CST over the 2026-07-26 → 2026-08-02 window;
+    the window includes the measuring session, so these are a floor.
+    `consultant` counts the framing rail only — the external code validator has
+    its own bucket, because folding the two together would make "did external
+    validation run at all?" unanswerable from this file. The two
+    external-validator dispatches are DISPATCHES, not completed reviews: that
+    tool is quota-exhausted for the rest of the month, so whether either
+    returned usable output is unverified here. Adversarial review is still owed
+    on enforcement-path code that carries none — carried as an open item.
 
 # ─── Schema 1.1 blocks ────────────────────────────────────────────────────────
 #
