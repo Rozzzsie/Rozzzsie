@@ -9,7 +9,7 @@
 # thread IDs, product internals, and the specific external failover-model vendor
 # stripped.
 #
-# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 #
 # Narrative companion: SKIP-PASS this cycle, BUT for the opposite reason from p8.
 # Last cycle the substantive work was product/stakeholder-scoped and the GOVERNANCE

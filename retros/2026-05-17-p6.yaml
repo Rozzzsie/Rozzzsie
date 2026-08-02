@@ -12,7 +12,7 @@
 # generalized to governance paths only; `detail_ref` cross-pointers stripped
 # (narrative .md they reference is sanitized companion).
 #
-# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 # Narrative: public `_retro/2026-05-17-p10-retro.md` (sanitized companion);
 # private `_retro/2026-05-17-p10-retro.md` is the canonical narrative.
 # If this file and the narrative disagree, the narrative wins. Regenerate from narrative.

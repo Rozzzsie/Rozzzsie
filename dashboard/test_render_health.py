@@ -35,6 +35,21 @@ def _sidecar() -> dict:
     return R.load_sidecar(RETROS / "2026-08-02-p17.yaml")
 
 
+def _all_sidecars() -> list[dict]:
+    return R.load_all_sidecars(RETROS)
+
+
+def _first_present(*vals):
+    return next((v for v in vals if v is not None), None)
+
+
+def _safe_read(p: Path) -> str:
+    try:
+        return p.read_text(encoding="utf-8")
+    except (UnicodeDecodeError, OSError):
+        return ""
+
+
 class TestCompositeIsDerivedNeverStored(unittest.TestCase):
     def test_no_sidecar_stores_a_health_score(self):
         """A stored composite goes stale the instant an input moves.
@@ -238,31 +253,38 @@ class TestBothSidecarVocabularies(unittest.TestCase):
     def test_genuinely_empty_dispatch_says_so(self):
         self.assertIn("no fam activity", R.render_fam_dispatch_widget({}))
 
-    def test_discipline_renders_the_p17_vocabulary(self):
-        out = R.render_discipline_rows(_sidecar()["discipline_metrics"])
-        self.assertIn("Ritual steps completed", out)
-        self.assertIn("Quality-gate traces passing", out)
-        self.assertIn("Response-marker missed turns", out)
-        self.assertNotIn("no discipline metrics", out)
+    # ── Repointed 2026-08-02 when the Discipline widget was retired ──────────
+    # These guarded real invariants, so they follow the data to whichever
+    # surface now carries it rather than being deleted with the widget.
 
-    def test_discipline_renders_the_p16_vocabulary(self):
-        out = R.render_discipline_rows({"checkpoint_bar_miss_rate": 0.19})
-        self.assertIn("Checkpoint miss rate", out)
-        self.assertIn("19%", out)
+    def test_the_p17_vocabulary_still_reaches_the_page_via_the_health_dials(self):
+        """Ritual-step and quality-gate counts moved from the retired widget
+        into the health score. Retiring a WIDGET must not retire its DATA."""
+        out = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertIn("10/10 steps", out)
+        self.assertIn("3/3 traces passing", out)
 
-    def test_response_marker_shows_BOTH_units_never_fires_alone(self):
-        """Reporting fires as a turn count overstates it ~13x. Both or neither."""
-        out = R.render_discipline_rows(
-            {"response_marker_missed_turns": 1, "response_marker_blocking_fires": 33}
-        )
-        self.assertIn("1", out)
-        self.assertIn("33 blocking fires", out)
-        self.assertIn("different units", out)
+    def test_the_p16_vocabulary_still_reaches_the_page_via_the_trend_card(self):
+        out = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertIn("Checkpoint discipline", out)
+        self.assertIn("19%", out, "the p16 rate is still plotted")
+
+    def test_fires_never_appear_without_turns(self):
+        """Reporting fires as a turn count overstates it ~33x. The widget that
+        paired them is gone; the INVARIANT is not. Stated as an implication so
+        it survives the surface change: if the page shows the fire count, it
+        must show the turn count too."""
+        out = R.render_dashboard(_sidecar(), _all_sidecars())
+        dm = _sidecar()["discipline_metrics"]
+        fires, turns = dm["response_marker_blocking_fires"], dm["response_marker_missed_turns"]
+        self.assertEqual((fires, turns), (33, 1), "positive control: the fixture is the real one")
+        if f">{fires}<" in out:
+            self.assertIn(f">{turns}<", out, "fires shown without turns")
 
     def test_no_legacy_widget_is_silently_empty_on_p17(self):
         """The ship defect: sections rendered with titles and no content."""
-        out = R.render_dashboard(_sidecar())
-        for marker in ("Dispatch axis", "Ritual steps completed", "authored"):
+        out = R.render_dashboard(_sidecar(), _all_sidecars())
+        for marker in ("Dispatch axis", "10/10 steps", "authored"):
             with self.subTest(marker=marker):
                 self.assertIn(marker, out)
 
@@ -410,10 +432,25 @@ class TestNoFabricatedZerosSurvive(unittest.TestCase):
 
     def test_the_shape_is_swept_not_patched(self):
         """§67: grep the shape, never patch the instance. `or 0` on a measured
-        field is the shape; it must not reappear in either widget."""
+        field is the shape; it must not reappear in either widget.
+
+        Two defects this test had to survive, both found 2026-08-02:
+        (1) its end anchor named a function defined EARLIER in the file, so the
+            slice was start > end — Python returns "" rather than raising, and
+            `assertNotIn` on an empty string passes. It had checked zero bytes
+            since it was written. Hence the non-empty assertion below.
+        (2) the function's own comment says "NEVER `or 0` here", so a raw scan
+            false-positives on the explanation of the rule. Code only.
+        """
         src = (HERE / "render.py").read_text()
-        body = src[src.index("def render_defect_inventory"):src.index("def render_discipline_rows")]
-        self.assertNotIn("or 0", body)
+        start, end = src.index("def render_defect_inventory"), src.index("def render_backlog_widget")
+        self.assertLess(start, end, "slice anchors inverted — the body would be empty")
+        body = src[start:end]
+        self.assertGreater(len(body), 500, "positive control: a real body was sliced")
+        code = "\n".join(
+            ln for ln in body.splitlines() if not ln.lstrip().startswith("#")
+        )
+        self.assertNotIn("or 0", code)
 
 
 class TestPublishedLayerCarriesItsCaveats(unittest.TestCase):
@@ -442,6 +479,33 @@ class TestNoInsiderVocabularyInThePublishedLayer(unittest.TestCase):
 
     FORBIDDEN = ["Teacher invocation", "Luma", "fam-wide", "sprint-2",
                  "P9 is a ritual", "P10 Retro"]
+
+    def test_no_protocol_identifier_reaches_the_page(self):
+        """The list above was fitted to the instances found, not to the
+        vocabulary. It bans the phrase "P10 Retro" — so "n=15 P10 cycles"
+        walked straight through it and shipped. A phrase list only ever
+        catches the phrasings you already saw; the thing that is actually
+        confidential is the TOKEN.
+        """
+        import re as _re
+        page = R.render_dashboard(_sidecar(), [_sidecar()])
+        leaked = sorted(set(_re.findall(r"\bP\d+\b", page)))
+        self.assertEqual(leaked, [], f"protocol identifiers on the page: {leaked}")
+
+    # ⛔ RETIRED 2026-08-02 by operator decision: rail names are PUBLIC
+    # vocabulary. `test_agent_names_do_not_reach_the_page_in_ANY_case` used to
+    # live here and banned six of them, case-folded.
+    #
+    # It is deleted rather than narrowed, and the reason is worth keeping: the
+    # 15 sidecars published in this same repo carry those names 298 times in
+    # plaintext. The test was enforcing on ONE surface a policy the data beside
+    # it had never followed — so it read as confidentiality coverage while
+    # providing none, which is worse than no test at all. The list was also
+    # incomplete (`deputies`, `silent-failure-hunter`), and completing it would
+    # have deepened exactly that false signal.
+    #
+    # Protocol identifiers are a SEPARATE question and are still banned above:
+    # a decision that rail names are public says nothing about P-numbers.
 
     def test_the_rendered_page_is_clean(self):
         """Audit the OUTPUT, not the source. A comment in render.py explaining
@@ -523,8 +587,15 @@ class TestClosedSeriesIsDeclaredNotGapped(unittest.TestCase):
                 for i, v in enumerate(values, start=1)]
 
     def test_a_field_that_stops_being_reported_is_declared_closed(self):
-        out = R.render_trend_chart(self._series([0.3, 0.2, 0.25, None]))
-        self.assertIn("no longer reported after", out)
+        """Exercises the DEFAULT closure text. The checkpoint card now carries an
+        explicit retraction reason, so testing this through that card would pass
+        on the override and never touch the default branch."""
+        series = self._series([0.3, 0.2, 0.25, None])
+        for i, v in enumerate([1, 2, None, None]):
+            series[i]["discipline_metrics"]["teacher_invocations"] = v
+        out = R.render_trend_chart(series)
+        card = out[out.index("Learning-layer invocations"):]
+        self.assertIn("no longer reported after", card)
 
     def test_a_live_series_is_not_declared_closed(self):
         out = R.render_trend_chart(self._series([0.3, 0.2, 0.25, 0.1]))
@@ -549,6 +620,222 @@ class TestRetiredWidgetsAreGone(unittest.TestCase):
         out = R.render_backlog_widget(sc["improvement_backlog"], sc["proposal_backlog"])
         self.assertIn("authored", out)
         self.assertIn("deferred", out)
+
+
+class TestFindingsItemsAreUnderContract(unittest.TestCase):
+    """Absorbed from the retired `retro-sidecar-schema.yaml` at the merge.
+
+    The top-level manifest only asserts that `findings` exists. Without a
+    per-item arm every field inside it could be renamed at once and the render
+    would succeed with N blank rows — the same em-dash failure one level down.
+    """
+
+    def test_a_missing_per_finding_required_key_fails_and_names_the_finding(self):
+        sc = _sidecar()
+        del sc["findings"][0]["target_surface"]
+        with self.assertRaises(R.SidecarSchemaError) as ctx:
+            R.validate_sidecar(sc)
+        msg = str(ctx.exception)
+        self.assertIn("target_surface", msg)
+        self.assertIn(str(sc["findings"][0]["id"]), msg, "names WHICH finding")
+
+    def test_an_undeclared_per_finding_key_warns(self):
+        sc = _sidecar()
+        sc["findings"][0]["severity_tier"] = "high"
+        self.assertTrue(any("severity_tier" in w for w in R.validate_sidecar(sc)))
+
+    def test_a_status_with_no_stylesheet_rule_warns(self):
+        sc = _sidecar()
+        sc["findings"][0]["status"] = "quantum-superposed"
+        warns = R.validate_sidecar(sc)
+        self.assertTrue(any("quantum-superposed" in w and "unstyled" in w for w in warns))
+
+    def test_every_declared_styled_status_really_has_a_css_rule(self):
+        """The arm above claims the stylesheet covers the declared set. This is
+        what keeps that claim honest — the manifest and the CSS are separate
+        artifacts and either can move. Iterates the whole set, not one member.
+        """
+        css = (HERE / "assets" / "dashboard.css").read_text()
+        declared = R.SIDECAR_SCHEMA["1.1"]["findings_status_styled"]
+        self.assertTrue(declared, "positive control: the set is non-empty")
+        missing = sorted(s for s in declared if f".pill-{s}" not in css)
+        self.assertEqual(missing, [], f"declared styled but absent from CSS: {missing}")
+
+    def test_every_status_used_by_any_real_sidecar_is_declared_styled(self):
+        """The other direction. The first test proves the manifest does not
+        over-claim; this proves it does not under-cover the live corpus."""
+        declared = R.SIDECAR_SCHEMA["1.1"]["findings_status_styled"]
+        used = {
+            f.get("status")
+            for p in sorted(RETROS.glob("*.yaml"))
+            for f in (R.load_sidecar(p).get("findings") or [])
+            if isinstance(f, dict) and f.get("status")
+        }
+        self.assertGreaterEqual(len(used), 5, "positive control: the corpus was read")
+        self.assertEqual(sorted(used - declared), [])
+
+    def test_every_published_finding_carries_the_required_keys(self):
+        """Corpus-wide positive control over all 154 findings.
+
+        The first version of this ran `validate_sidecar` in a loop and skipped
+        any sidecar whose `schema_version` has no manifest — which is 14 of 15.
+        It was named for the corpus and exercised ONE file, and its positive
+        control counted files FOUND rather than findings CHECKED, so the count
+        could not reveal the gap. The required set was derived by measuring all
+        154; the assertion has to be made where the derivation was.
+        """
+        required = R.SIDECAR_SCHEMA["1.1"]["findings_item"]["required"]
+        checked = 0
+        for p in sorted(RETROS.glob("*.yaml")):
+            for f in R.load_sidecar(p).get("findings") or []:
+                if not isinstance(f, dict):
+                    continue
+                checked += 1
+                with self.subTest(sidecar=p.stem, finding=f.get("id")):
+                    self.assertEqual(sorted(required - set(f)), [])
+        self.assertGreaterEqual(checked, 154, f"only {checked} findings checked")
+
+    def test_the_version_gated_validator_runs_on_every_sidecar_it_can(self):
+        """The arm above is version-blind on purpose. This one records how much
+        of the corpus the full validator actually covers, so 'the validator
+        passes' is never mistaken for 'the corpus was validated'."""
+        paths = sorted(RETROS.glob("*.yaml"))
+        covered = [p for p in paths
+                   if str(R.load_sidecar(p).get("schema_version")) in R.SIDECAR_SCHEMA]
+        for p in covered:
+            with self.subTest(sidecar=p.stem):
+                R.validate_sidecar(R.load_sidecar(p))
+        self.assertGreaterEqual(len(paths), 15, "positive control: sidecars found")
+        self.assertGreaterEqual(len(covered), 1, "at least the current cycle")
+
+
+class TestReKeyIsTestedAgainstTheSemanticPredecessor(unittest.TestCase):
+    """The learning-layer series was CLOSED on 2026-08-02 and should not have
+    been. The close/re-key test was run against the new key's own coverage
+    (1/15) — which is what every rename scores on the cycle it appears, so that
+    test can only ever answer "new series". The discriminating test is agreement
+    in the overlap.
+    """
+
+    def test_the_two_learning_layer_fields_agree_wherever_both_exist(self):
+        """This is the measurement that licenses the coalesce. If it ever goes
+        red, the two fields are NOT the same series and the card is lying."""
+        agree = disagree = 0
+        for p in sorted(RETROS.glob("*.yaml")):
+            sc = R.load_sidecar(p)
+            old = (sc.get("discipline_metrics") or {}).get("teacher_invocations")
+            fam = sc.get("fam_dispatch_distribution") or {}
+            nested = {
+                r.get("name"): r.get("count")
+                for r in (fam.get("dispatch_axis") or {}).get("subagents") or []
+                if isinstance(r, dict)
+            }
+            new = _first_present(fam.get("learning_agent"), nested.get("teacher"))
+            if old is None or new is None:
+                continue
+            (agree := agree + 1) if old == new else (disagree := disagree + 1)
+        self.assertGreaterEqual(agree, 13, "positive control: overlap was found")
+        self.assertEqual(disagree, 0)
+
+    def test_the_learning_layer_series_is_not_closed(self):
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        card = page[page.index("Learning-layer invocations"):]
+        card = card[: card.index("</div></div>") if "</div></div>" in card else 2000]
+        self.assertNotIn("series closed", card)
+
+    def test_a_closed_series_states_WHY_not_merely_that_it_stopped(self):
+        """A retraction and a rename are indistinguishable from the gap alone,
+        and they warrant opposite remedies."""
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertIn("RETRACTED", page)
+
+    def test_the_restarted_series_is_labelled_new_and_not_grafted(self):
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertIn("new series", page)
+        self.assertIn("missed turns", page)
+
+
+class TestDispatchTotalIsNotPresentedAsComparable(unittest.TestCase):
+    """p17 flattened the block to four role buckets, dropping the three
+    highest-volume rails. The widget rendered it correctly and the resulting
+    total — 1, against a prior cycle's 305 — read as a collapse in activity
+    rather than a change in what is counted."""
+
+    def test_dropped_rails_are_named_when_the_shape_flattens(self):
+        prior = R.load_sidecar(RETROS / "2026-07-26-p16.yaml")
+        out = R.render_fam_dispatch_widget(
+            _sidecar().get("fam_dispatch_distribution") or {},
+            prior.get("fam_dispatch_distribution") or {},
+        )
+        self.assertIn("no longer reported", out)
+        # Rail names, published directly — operator decision 2026-08-02. The
+        # first version of this asserted these same names while the policy said
+        # they were confidential, and passed, because the renderer was emitting
+        # them: a test written against a leak ratifies it. The assertion text is
+        # unchanged and its STATUS is inverted, which is the whole lesson — a
+        # green test tells you the code and the test agree, never that either
+        # agrees with policy.
+        for rail in ("deputies", "sumi", "brindle"):
+            with self.subTest(rail=rail):
+                self.assertIn(rail, out)
+        self.assertIn("not comparable", out)
+
+    def test_rails_that_ARE_still_reported_are_not_listed_as_dropped(self):
+        """Four of the seven prior rails survive under a role bucket. A raw set
+        difference over two different vocabularies calls all seven dropped."""
+        prior = R.load_sidecar(RETROS / "2026-07-26-p16.yaml")
+        dropped = R._dropped_rails(prior.get("fam_dispatch_distribution") or {})
+        self.assertEqual(len(dropped), 3, f"expected 3 genuinely dropped, got {dropped}")
+
+
+class TestTrendScopeLabelSaysWhatItCountsOutOf(unittest.TestCase):
+    def test_the_label_names_the_range_and_the_cycles_it_excludes(self):
+        label = R._trend_scope_label(_all_sidecars())
+        self.assertIn("n=15", label)
+        self.assertIn("#3", label)
+        self.assertIn("#17", label)
+        self.assertIn("predate", label, "says what the count is out of")
+
+
+class TestRetiredDisciplineWidgetIsGone(unittest.TestCase):
+    def test_the_discipline_section_and_its_renderer_are_removed(self):
+        self.assertFalse(hasattr(R, "render_discipline_rows"))
+        page = R.render_dashboard(_sidecar(), _all_sidecars())
+        self.assertNotIn("Discipline metrics", page)
+
+    def test_the_dead_tally_renderer_is_removed(self):
+        """Computed into a variable that was never interpolated. Deleted rather
+        than wired up — nothing had rendered it since the widget retirement."""
+        self.assertFalse(hasattr(R, "render_tally"))
+
+
+class TestTheRetiredSchemaFileIsNotCitedAnywhere(unittest.TestCase):
+    """The merge is only complete if no pointer survives it. A citation to a
+    deleted file is worse than one to a stale file: it resolves to nothing, and
+    every one of these lived in the PUBLIC repo pointing at a PRIVATE path, so
+    they never resolved for the audience that reads them.
+    """
+
+    def test_the_only_surviving_mention_is_the_tombstone_in_render_py(self):
+        """Exactly one mention is sanctioned: the comment in render.py that
+        explains what was deleted and why. That one is a RECORD, and it is what
+        a reader who greps an old citation needs to land on.
+
+        Asserted as a set EQUALITY, not an exemption list — an allowlist rots
+        by accretion, whereas this fails the moment the sanctioned set widens
+        OR the tombstone itself disappears.
+        """
+        root = HERE.parent
+        hits = {
+            str(p.relative_to(root))
+            for p in root.rglob("*")
+            if p.is_file()
+            and ".git/" not in str(p)
+            and p.suffix in {".md", ".yaml", ".yml", ".py", ".html", ".css"}
+            and p.name != Path(__file__).name
+            and "retro-sidecar-schema" in _safe_read(p)
+        }
+        self.assertEqual(hits, {"dashboard/render.py"})
 
 
 if __name__ == "__main__":

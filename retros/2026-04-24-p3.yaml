@@ -9,7 +9,7 @@
 # renders from this file; absent meta_finding gracefully suppresses the
 # callout via `if meta.get("headline") else ""` in render.py.
 #
-# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 # Narrative: private `_retro/2026-04-24-retro.md`. Public CONTEXT.md describes the
 # governance state at the same window grain.
 # If this file and the narrative disagree, the narrative wins. Regenerate from narrative.

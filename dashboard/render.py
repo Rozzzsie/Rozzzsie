@@ -25,6 +25,7 @@ subset parser sufficient for the v1 schema if PyYAML isn't installed.
 from __future__ import annotations
 
 import html
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -42,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.2"
+DASHBOARD_VERSION = "3.5"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -59,7 +60,7 @@ def _parse_minimal_yaml(text: str) -> dict[str, Any]:
     """Minimal YAML subset parser for the v1 sidecar schema.
 
     Handles: top-level scalars, dicts, list of dicts (one per finding),
-    nested dicts (luma_tally_by_category etc.), strings (quoted/unquoted),
+    nested dicts, strings (quoted/unquoted),
     null, true/false, ints, floats. Comments stripped. No anchors/aliases.
     """
     lines = [_strip_comment(line) for line in text.splitlines()]
@@ -224,6 +225,49 @@ def _parse_scalar(val: str) -> Any:
 # The KNOWN set is the load-bearing half. A required-only check cannot see a
 # rename — it reports the old key missing and says nothing about the new key
 # sitting beside it.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# THIS IS THE ONLY SCHEMA SURFACE. (merged 2026-08-02)
+#
+# There used to be a second one: `_config/schemas/retro-sidecar-schema.yaml`, an
+# annotated prose template written 2026-06-10, cited in every published sidecar
+# header and in this directory's README — and parsed by nothing. It was deleted,
+# not deprecated, because a documentation surface that no consumer reads drifts
+# in the one direction nobody checks. When it was finally measured against the
+# 15 sidecars it claimed to describe, it was not merely stale, it was WRONG:
+#
+#   category           doc: 6 values     real: 11  (6 never documented)
+#   status             doc: 8 values     real: 8   (3 undocumented, 3 unused)
+#   recommendation     doc: 5 values     real: 6   ('watch' used 31x, undocumented)
+#   source_catchment   doc: 4-value enum real: 70 distinct free-text composites
+#
+# Being unenforced is the ONLY reason that cost nothing. Had anything parsed it,
+# it would have rejected valid sidecars since roughly May.
+#
+# ─── Field intent (absorbed from the retired 1.0 template) ───────────────────
+#
+# retro_id      stable id for cross-retro joins, `YYYY-MM-DD-pN`. N is the
+#               sequential retro ordinal, NOT the protocol number.
+# window_start/_end   inclusive period the metrics cover.
+# prior_retro   the id this cycle's trends join against; null for the first.
+# findings[]    one entry per retro section-9 row. See `findings_item` below.
+# meta_finding  headline + detail_ref ONLY. Design principle, still live: the
+#               narrative .md is canonical, and qualitative reasoning stays
+#               there. If a meta-finding warrants quantification, split it —
+#               the number becomes a field, the prose stays in the .md.
+#
+# Vocabularies are DESCRIPTIVE, not validated, and that is deliberate. `category`
+# gained 6 members in 15 cycles by authors naming what they actually found; a
+# hard enum would have converted honest reporting into schema violations, and a
+# warn on every new value is noise that teaches you to ignore the warn channel.
+# `source_catchment` is free text and was never really an enum — 70 distinct
+# composite values, which is a truthful record of how findings arrive.
+#
+# The ONE vocabulary that is checked is `status`, because it is the only one the
+# renderer consumes structurally: `status_pill()` builds a CSS class from it, so
+# an unstyled status renders as a bare pill. Measured 2026-08-02: 4 of 8 live
+# statuses had no rule, including `rejected` — a rejected finding was visually
+# indistinguishable from a styled one on the public page.
 
 SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
     "1.1": {
@@ -234,11 +278,20 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
             "enforcement_coverage.arms_built", "enforcement_coverage.arms_armed",
             "instrument_liveness.silent_failures_observed",
             "instrument_liveness.caught_by_control",
-            "discipline_metrics.ritual_steps_defined",
-            "discipline_metrics.ritual_steps_completed",
-            "discipline_metrics.quality_gate_traces_sampled",
-            "discipline_metrics.quality_gate_traces_passing",
         ],
+        # ⛔ NOT required, by operator decision 2026-08-02. Sidecars redact the
+        # whole `discipline_metrics` block to null when the underlying counts are
+        # traceable to a person, and that redaction is SANCTIONED — so requiring
+        # its sub-keys would make a correctly-redacted sidecar fail rc=3 and put
+        # the author under pressure to invent numbers to get a render.
+        #
+        # The two contracts were in genuine conflict and only one could hold:
+        # a required-field list says "absent means drift", redaction-to-null says
+        # "absent is a legitimate state". Redaction wins on this block. The cost
+        # is real and is accepted: drift in these four keys is now invisible to
+        # the schema, so the ritual and quality-gate dials degrade to an em-dash
+        # rather than raising. They render as UNKNOWN, never as zero.
+        "nullable_blocks": {"discipline_metrics"},
         # Scalars the renderer reads directly. Declared so the unknown-block arm
         # can stay strict: anything NOT declared here or in `known` warns.
         "known_scalars": {
@@ -250,6 +303,29 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
         # do not warn, and so the fact that nothing reads them is explicit
         # rather than discovered by someone wondering where the widget went.
         "record_only": {"hook_health", "latency_observations"},
+        # Per-finding contract. `required` is not aspirational — every one of
+        # these is present in 154/154 findings across all 15 sidecars, so a
+        # missing one is drift rather than a legitimate variation.
+        "findings_item": {
+            "required": {
+                "id", "title", "category", "evidence_count", "source_catchment",
+                "recommendation", "status", "execution_target_week",
+                "target_surface",
+            },
+            "optional": {
+                "enforcement_log_ref", "blocked_by", "alternative_framings",
+                "detail_ref",
+            },
+        },
+        # Statuses `assets/dashboard.css` has a `.pill-<status>` rule for.
+        # ANTICIPATORY, not corrective: all four missing rules were added in the
+        # same edit, so this arm has nothing to fire on today. It exists because
+        # the status vocabulary grew 3 members in 15 cycles and the next one
+        # would otherwise ship as an unstyled pill nobody notices.
+        "findings_status_styled": {
+            "executed", "deferred", "approved", "approved-queued", "pre-ship",
+            "partial-executed", "rejected", "carried-open",
+        },
         "known": {
             "defect_ledger": {
                 "open_total", "live", "parked", "age_under_7d", "age_7_to_29d",
@@ -329,6 +405,20 @@ def validate_sidecar(sc: dict[str, Any]) -> list[str]:
             f"{block} is a top-level block with no manifest entry — it is "
             "either record-only (no renderer reads it) or newly renamed"
         )
+    # ⛔ THE COALESCE LICENSE BELONGS ON THE PATH THAT RUNS. The overlap test
+    # that licenses merging these two fields into one trend series lives in the
+    # suite — which the bare `python3 render.py` of a retro close never invokes.
+    # A future sidecar carrying both keys with different values would make the
+    # suite red for anyone who ran it, while the render published quietly.
+    dm_t = (sc.get("discipline_metrics") or {}).get("teacher_invocations")
+    flat_t = (sc.get("fam_dispatch_distribution") or {}).get("learning_agent")
+    if dm_t is not None and flat_t is not None and dm_t != flat_t:
+        warnings.append(
+            f"teacher_invocations ({dm_t}) and learning_agent ({flat_t}) disagree — "
+            "the trend card coalesces them as ONE series on the strength of a "
+            "13/13 agreement measurement; that license no longer holds"
+        )
+
     for block, known in spec["known"].items():
         val = sc.get(block)
         if not isinstance(val, dict):
@@ -339,13 +429,50 @@ def validate_sidecar(sc: dict[str, Any]) -> list[str]:
                 "if this replaces an existing field, the renderer needs re-keying"
             )
 
+    # Per-finding arm. The top-level check only asserts that `findings` exists;
+    # without this, every field inside it could be renamed at once and the
+    # render would still succeed with 15 blank rows.
+    item_spec = spec.get("findings_item") or {}
+    styled = spec.get("findings_status_styled") or set()
+    finding_missing: list[str] = []
+    findings = sc.get("findings")
+    # ⛔ A TYPE GUARD THAT SKIPS IS A GUARD THAT PASSES. `findings` present but
+    # not a list satisfied the required check (non-None) and then silently
+    # skipped this whole arm — zero warnings, followed by a raw AttributeError
+    # from the renderer instead of the rc=3 contract this function promises.
+    # The failure mode of an `isinstance` guard is to say nothing.
+    if findings is not None and not isinstance(findings, list):
+        finding_missing.append(
+            f"findings (is {type(findings).__name__}, must be a list)"
+        )
+    if item_spec and isinstance(findings, list):
+        declared_item = item_spec["required"] | item_spec["optional"]
+        for i, item in enumerate(findings):
+            if not isinstance(item, dict):
+                warnings.append(f"findings[{i}] is not a mapping — skipped")
+                continue
+            fid = str(item.get("id", i))
+            for absent in sorted(item_spec["required"] - set(item)):
+                finding_missing.append(f"findings[{fid}].{absent}")
+            for unknown in sorted(set(item) - declared_item):
+                warnings.append(
+                    f"findings[{fid}].{unknown} is not in the schema {version} "
+                    "manifest — if this replaces an existing field, re-key the renderer"
+                )
+            status = item.get("status")
+            if status and styled and status not in styled:
+                warnings.append(
+                    f"findings[{fid}].status {status!r} has no .pill-{status} rule "
+                    "in assets/dashboard.css — it will render as an unstyled pill"
+                )
+
     # Missing-required is computed LAST and carries the warnings with it. A
     # rename is one event with two halves — the old key gone, the new key
     # present — and raising before the unknown scan reports only the half that
     # says "broken", withholding the half that says "and here is what replaced
     # it". The docstring above claims this check can see a rename; this is what
     # makes that true.
-    missing = [k for k in spec["required"] if _resolve(k) is None]
+    missing = [k for k in spec["required"] if _resolve(k) is None] + finding_missing
     if missing:
         msg = (
             "sidecar is missing required field(s) the renderer depends on: "
@@ -404,48 +531,39 @@ def render_finding_row(f: dict[str, Any]) -> str:
     """
 
 
-def render_tally(tally: dict[str, Any]) -> str:
-    if not tally:
-        return "<p class='kv-row'><span class='kv-key'>(no data)</span></p>"
-    # Null-vs-measured-zero contract: distinguish "unmeasured this cycle" (total
-    # null AND no concrete int categories — categorization requires human-distilled
-    # Luma-output narrative review) from "measured zero" (concrete int values
-    # totaling 0). Same shape as the discipline-counter null suppression.
-    total_raw = tally.get("total")
-    int_values = [v for k, v in tally.items() if isinstance(v, int) and k != "total"]
-    if total_raw is None and not int_values:
-        return "<p class='kv-row'><span class='kv-key'>(unmeasured this cycle)</span></p>"
-    total = total_raw if isinstance(total_raw, int) else sum(int_values)
-    if total == 0:
-        return "<p class='kv-row'><span class='kv-key'>(no invocations this window)</span></p>"
-    rows = []
-    for key, count in tally.items():
-        if key == "total" or not isinstance(count, int) or count == 0:
-            continue
-        pct = (count / total) * 100 if total else 0
-        rows.append(
-            f"""
-        <div class="tally-row">
-          <div class="tally-label">{html.escape(key.replace("_", "-"))}</div>
-          <div class="tally-bar"><div class="tally-fill" style="width: {pct:.1f}%"></div></div>
-          <div class="tally-count">{count}</div>
-        </div>
-        """
-        )
-    # total > 0 but no measured categories — scalar known, breakdown is human-distilled
-    # review work, not auto-extracted telemetry. Empty-state copy makes the structural
-    # reality legible (per the operator's pick 2026-05-04 from the four-candidate set).
-    if not rows:
-        return (
-            f"<p class='kv-row'><span class='kv-key'>{total} invocations this cycle</span></p>"
-            f"<p class='kv-row kv-row-detail'><span class='kv-key'>"
-            f"Per-axis bars populate when narrative review runs — categorization isn't "
-            f"auto-extracted from transcripts</span></p>"
-        )
-    return "".join(rows)
+# The pre-p17 shape names individual rails; the flat shape names ROLE BUCKETS, so
+# a plain set difference between them reports every rail as dropped. Four are not
+# dropped — they are folded into a bucket and still counted.
+#
+# ⛔ This set exists for CORRECTNESS ONLY. It used to do a second job — mapping
+# rail names to public role names so the internal names never reached the page —
+# and that job was retired by operator decision 2026-08-02: rail names are public
+# vocabulary. They already appear 298 times across the 15 published sidecars, so
+# the mapping was hiding on one surface what the data beside it published, which
+# is worse than not hiding at all. Names are now printed directly.
+#
+# Deleting the mapping also deleted its unknown-rail branch, which existed only
+# to avoid publishing a name it had not seen — an untested branch that no longer
+# has anything to do (§68: prefer a deletion to a compensating check).
+_RAILS_FOLDED_INTO_A_ROLE_BUCKET = {"teacher", "breakline", "luma", "codex"}
 
 
-def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
+def _dropped_rails(prior_fam: dict[str, Any]) -> list[str]:
+    """Rails the earlier shape reported that the flat shape no longer counts."""
+    dropped = set()
+    for axis in ("dispatch_axis", "reactions_axis"):
+        for r in (prior_fam.get(axis) or {}).get("subagents") or []:
+            if not isinstance(r, dict) or not r.get("name"):
+                continue
+            name = str(r["name"]).lower()
+            if name not in _RAILS_FOLDED_INTO_A_ROLE_BUCKET:
+                dropped.add(name)
+    return sorted(dropped)
+
+
+def render_fam_dispatch_widget(
+    fam: dict[str, Any], prior_fam: dict[str, Any] | None = None
+) -> str:
     """Render the fam-wide dispatch + reactions widget with sub-band split.
 
     The two sub-axes carry different units (dispatches vs reactions) and are
@@ -523,11 +641,24 @@ def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
                 for k, n in rows
             )
             total = sum(n for _, n in rows)
+            # ⛔ THE TOTAL IS THE DANGEROUS FIGURE HERE, NOT THE MISSING ROWS.
+            # The flat shape carries four ROLE buckets; the nested shape carried
+            # per-agent rails including the three highest-volume ones. Rendering
+            # both as "total" invites a 305 -> 1 reading that is a coverage
+            # change, not a collapse in activity. Naming the dropped rails is
+            # what makes the two totals visibly non-comparable.
+            dropped = _dropped_rails(prior_fam or {})
+            dropped_html = (
+                f'<p class="fam-closed">no longer reported: '
+                f'{html.escape(", ".join(dropped))} — this total counts role '
+                f'buckets, not agents, and is not comparable to earlier cycles</p>'
+                if dropped else ""
+            )
             sub_bands.append(
                 f'<div class="fam-sub-band">'
                 f'<h4 class="fam-sub-band-label">Dispatch axis</h4>{rows_html}'
                 f'<div class="kv-row fam-row-total"><span class="kv-key">total</span>'
-                f'<span class="kv-val">{total}</span></div></div>'
+                f'<span class="kv-val">{total}</span></div>{dropped_html}</div>'
             )
 
     if not sub_bands:
@@ -556,7 +687,9 @@ def load_all_sidecars(retros_dir: Path) -> list[dict[str, Any]]:
     return sidecars
 
 
-def _trend_sparkline_svg(values: list[float | int | None], height: int = 60, width: int = 240) -> str:
+def _trend_sparkline_svg(
+    values: list[float | int | None], height: int = 80, width: int = 960
+) -> str:
     """Emit an inline SVG sparkline for a list of numeric trend points.
 
     None values render as gaps (no dot, line broken). Y-axis auto-scales
@@ -618,6 +751,44 @@ def _format_trend_value(v: float | int | None, suffix: str = "") -> str:
     return f"{v}{suffix}"
 
 
+def _trend_scope_label(sidecars: list[dict[str, Any]]) -> str:
+    """Say what the trend actually spans.
+
+    The label used to read "n=15 P10 cycles", which was wrong twice. It leaked a
+    protocol identifier into the published layer, and it implied the trend covers
+    every cycle — it covers every cycle that emitted a sidecar, which starts at
+    the third. A count is only a scope if you also say what it counts out of.
+    """
+    # Deduped: two sidecars sharing an ordinal made the contiguity check fire
+    # with an EMPTY gap set, so the label ended in a dangling "· missing ".
+    ordinals = sorted({
+        int(m.group(1))
+        for sc in sidecars
+        if (m := re.search(r"p(\d+)$", str(sc.get("retro_id", ""))))
+    })
+    if not ordinals:
+        return f"n={len(sidecars)}"
+    lo, hi = ordinals[0], ordinals[-1]
+    label = f"n={len(ordinals)} · retrospectives #{lo}–#{hi}"
+    if lo > 1:
+        earlier = f"#{lo - 1}" if lo == 2 else f"#1–#{lo - 1}"
+        label += f" · {earlier} predate the sidecar"
+    gaps = sorted(set(range(lo, hi + 1)) - set(ordinals))
+    if gaps:
+        label += f" · missing {', '.join(f'#{g}' for g in gaps)}"
+    return label
+
+
+def _coalesce(*values: Any) -> Any:
+    """First non-None value. Used only where an overlap test has established
+    that the fields are the same measurement under different names — never as a
+    convenience for "whichever key happens to be there"."""
+    for v in values:
+        if v is not None:
+            return v
+    return None
+
+
 def _trend_annotation(values: list[float | int | None], lower_is_better: bool = False) -> str:
     """Compare last two non-null values; emit directional + label."""
     present = [(i, v) for i, v in enumerate(values) if isinstance(v, (int, float))]
@@ -646,13 +817,27 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
     annotation comparing the last two cycles.
 
     ⛔ A CARD WHOSE FIELD STOPPED BEING REPORTED IS DECLARED CLOSED, NEVER
-    SILENTLY GAPPED. Measured 2026-08-02: of 15 sidecars, `checkpoint_bar_miss_rate`
-    and `teacher_invocations` cover 14 and die at p17, while their p17 successors
-    (`response_marker_missed_turns`, `fam_dispatch_distribution.learning_agent`)
-    cover 1/15. Grafting a successor onto its predecessor's line would publish a
-    trend across a UNIT CHANGE — the old miss figure is a RATE, the new one is a
-    COUNT OF TURNS. The history is real and is kept; what is refused is the
-    implication that the line continues.
+    SILENTLY GAPPED. Absence is not zero, and on a time series it is not a dip.
+
+    ⛔ BUT THE CLOSE/RE-KEY TEST RUNS AGAINST THE SEMANTIC PREDECESSOR, NOT
+    AGAINST THE NEW KEY'S OWN COVERAGE. Corrected 2026-08-02 after getting it
+    wrong in the other direction. The first pass measured
+    `fam_dispatch_distribution.learning_agent` at 1/15 and closed the
+    learning-layer series — but 1/15 is what EVERY rename scores on the cycle it
+    is introduced, so that test cannot distinguish a rename from a new metric. It
+    always says "new".
+
+    The test that discriminates is agreement in the overlap: for every cycle
+    where both fields exist, do they carry the same number? Measured across p4-p16,
+    `discipline_metrics.teacher_invocations` and the nested dispatch block's
+    teacher count agree 13 times out of 13. Same measurement, renamed by the
+    public-vocabulary scrub. So the series CONTINUES and is coalesced below.
+
+    `checkpoint_bar_miss_rate` fails that same test and is genuinely closed —
+    but not for drift. The metric was RETRACTED this cycle as miscomputed: it
+    counted hook fires rather than turns. A retraction and a rename look
+    identical from the field's absence alone, and they warrant opposite
+    treatments, which is why each card states which one it is.
     """
     if len(sidecars) < 2:
         return (
@@ -676,14 +861,27 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
         (sc.get("proposal_backlog") or {}).get("authored_this_cycle")
         for sc in sidecars
     ]
+    # Coalesced, not grafted. See the docstring: these two keys agree in 13 of
+    # 13 overlapping cycles, which is what licenses treating them as one series.
     teacher_values: list[float | int | None] = [
-        (sc.get("discipline_metrics") or {}).get("teacher_invocations")
+        _coalesce(
+            (sc.get("discipline_metrics") or {}).get("teacher_invocations"),
+            (sc.get("fam_dispatch_distribution") or {}).get("learning_agent"),
+        )
+        for sc in sidecars
+    ]
+    # The honest successor to the retracted rate: a COUNT of missed turns. New
+    # series, n=1, and labelled as such rather than continuing the rate's line.
+    missed_turn_values: list[float | int | None] = [
+        (sc.get("discipline_metrics") or {}).get("response_marker_missed_turns")
         for sc in sidecars
     ]
 
     def _card(
         title: str, suffix: str, values: list[float | int | None],
         value_format: str = "", lower_is_better: bool = False, note: str = "",
+        closed_reason: str = "",
+        restart: tuple[str, list[float | int | None], str] | None = None,
     ) -> str:
         value_strs = [_format_trend_value(v, value_format) for v in values]
         values_inline = (
@@ -701,13 +899,38 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
         last_live = max((i for i, v in enumerate(values) if v is not None), default=-1)
         if 0 <= last_live < len(values) - 1:
             suffix = f"series closed at {labels[last_live]}"
+            # A closed series says WHY. "No longer reported" is the default
+            # because drift is the common case, but a retraction is a different
+            # event with a different remedy, and the reader cannot tell them
+            # apart from the gap.
             annotation = (
-                f'<span class="trend-closed">no longer reported after '
-                f'{html.escape(labels[last_live])}</span>'
+                f'<span class="trend-closed">'
+                f'{html.escape(closed_reason) if closed_reason else "no longer reported"} '
+                f'after {html.escape(labels[last_live])}</span>'
             )
         note_html = (
             f'<p class="trend-note">{html.escape(note)}</p>' if note else ""
         )
+        # A restarted series is drawn UNDER the closed one, never continuing it.
+        # Same card because it is the same subject; separate line because it is
+        # a different unit and the eye must not read one slope across both.
+        restart_html = ""
+        if restart:
+            r_label, r_values, r_note = restart
+            r_live = [v for v in r_values if v is not None]
+            r_inline = '<span class="trend-arrow">→</span>'.join(
+                f'<span class="trend-value">{html.escape(_format_trend_value(v))}</span>'
+                for v in r_values
+            )
+            restart_html = (
+                '<div class="trend-restart">'
+                f'<span class="trend-restart-label">{html.escape(r_label)} '
+                f'<span class="trend-restart-n">new series · n={len(r_live)}</span></span>'
+                f'<div class="trend-values">{r_inline}</div>'
+                + (_trend_sparkline_svg(r_values) if len(r_live) >= 2 else "")
+                + (f'<p class="trend-note">{html.escape(r_note)}</p>' if r_note else "")
+                + '</div>'
+            )
         return (
             '<div class="trend-card">'
             f'<h3>{html.escape(title)} <span class="trend-card-suffix">{html.escape(suffix)}</span></h3>'
@@ -716,15 +939,25 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
             f'<div class="trend-axis-labels">{axis_labels}</div>'
             f'<div class="trend-annotation">{annotation}</div>'
             f'{note_html}'
+            f'{restart_html}'
             '</div>'
         )
 
     cards = [
         _card(
-            "Checkpoint miss rate", "lower is better",
+            "Checkpoint discipline", "lower is better",
             miss_values, value_format="%", lower_is_better=True,
-            note="p3 measured this-retro-session; p4/p5 measure cycle-window. "
-                 "Windows differ by metric; treat cross-cycle deltas as indicative, not strict.",
+            closed_reason="rate RETRACTED — it counted hook fires, not turns;"
+                          " no turn denominator is derivable",
+            note="Earlier windows are not strictly comparable: the first cycle "
+                 "measured a single session, later ones a whole cycle.",
+            restart=(
+                "missed turns",
+                missed_turn_values,
+                "Replaces the retracted rate with what was actually measured: a "
+                "count, not a ratio. Starts at n=1 and is not comparable to the "
+                "percentages above.",
+            ),
         ),
         _card(
             "Proposal authoring", "proposals authored / cycle",
@@ -979,58 +1212,6 @@ def render_health_widget(health: dict[str, Any]) -> str:
       </p>"""
 
 
-def render_discipline_rows(dm: dict[str, Any]) -> str:
-    """Render whichever discipline vocabulary this sidecar speaks.
-
-    p3-p16 record a checkpoint miss RATE; p17 onward record ritual-step and
-    quality-gate counts plus a response-marker figure split into turns and
-    fires. The renderer knew only the first vocabulary, so a sidecar full of
-    discipline data rendered a single em-dash. Rows are emitted only for keys
-    that are PRESENT — an absent metric produces no row at all rather than a
-    row reading zero.
-    """
-    rows: list[str] = []
-
-    def add(key: str, val: str, note: str = "") -> None:
-        note_html = f'<span class="kv-note">{html.escape(note)}</span>' if note else ""
-        rows.append(
-            f'<div class="kv-row"><span class="kv-key">{html.escape(key)}</span>'
-            f'<span class="kv-val">{val}</span>{note_html}</div>'
-        )
-
-    rate = dm.get("checkpoint_bar_miss_rate")
-    if isinstance(rate, (int, float)):
-        add("Checkpoint miss rate", f"{rate * 100:.0f}%")
-    prior = dm.get("checkpoint_bar_prior_session_rate")
-    if isinstance(prior, (int, float)):
-        add("Prior session", f"{prior * 100:.0f}%")
-
-    defined, completed = dm.get("ritual_steps_defined"), dm.get("ritual_steps_completed")
-    if defined is not None and completed is not None:
-        add("Ritual steps completed", f"{completed}/{defined}")
-    if dm.get("monthly_subritual_due") is not None:
-        add("Monthly sub-ritual",
-            "completed" if dm.get("monthly_subritual_completed") else "DUE, not run")
-
-    sampled, passing = dm.get("quality_gate_traces_sampled"), dm.get("quality_gate_traces_passing")
-    if sampled is not None and passing is not None:
-        add("Quality-gate traces passing", f"{passing}/{sampled}")
-
-    missed = dm.get("response_marker_missed_turns")
-    fires = dm.get("response_marker_blocking_fires")
-    if missed is not None:
-        # Both figures are shown because they are DIFFERENT UNITS and the larger
-        # one is the wrong one — reporting fires alone overstates the miss count
-        # by an order of magnitude, which this OS has done to itself twice.
-        detail = f" · {fires} blocking fires" if fires is not None else ""
-        add("Response-marker missed turns", f"{missed}{detail}",
-            "turns and fires are different units; the fire count is not a turn count")
-
-    if not rows:
-        return '<div class="kv-row"><span class="kv-key">(no discipline metrics recorded this cycle)</span></div>'
-    return "".join(rows)
-
-
 def render_defect_inventory(dl: dict[str, Any]) -> str:
     if not dl:
         return '<p class="empty-note">No defect ledger in this sidecar.</p>'
@@ -1195,21 +1376,23 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     )
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
 
-    discipline_rows_html = render_discipline_rows(discipline)
     health = compute_health(sc)
     health_html = render_health_widget(health)
     inventory_html = render_defect_inventory(sc.get("defect_ledger") or {})
     backlog_html = render_backlog_widget(sc.get("improvement_backlog") or {}, sc.get("proposal_backlog") or {})
 
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
-    tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
     fam_dispatch = sc.get("fam_dispatch_distribution") or {}
-    fam_dispatch_html = render_fam_dispatch_widget(fam_dispatch)
+    prior_fam = (
+        (all_sidecars[-2].get('fam_dispatch_distribution') or {})
+        if all_sidecars and len(all_sidecars) >= 2 else {}
+    )
+    fam_dispatch_html = render_fam_dispatch_widget(fam_dispatch, prior_fam)
     trend_html = render_trend_chart(all_sidecars or [sc])
     trend_section_html = (
         f"""
     <section>
-      <h2 class="section-title">Governance trend <span class="section-title-suffix">n={len(all_sidecars or [sc])} P10 cycles</span></h2>
+      <h2 class="section-title">Governance trend <span class="section-title-suffix">{_trend_scope_label(all_sidecars or [sc])}</span></h2>
       <div class="trend-grid">
         {trend_html}
       </div>
@@ -1230,7 +1413,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
         <div><strong>Schema</strong> v{html.escape(str(sc.get("schema_version", "—")))}</div>
       </div>
       <p class="hero-context">
-        Governance health metrics from the most recent P10 weekly retrospective in the Rozzzsie OS.
+        Governance health metrics from the most recent weekly retrospective in the Rozzzsie OS.
         Same shape as LangSmith / Langfuse / DashChat dashboards (quantitative metrics on a temporal axis);
         different semantics — governance evolution, not service telemetry.
         Measurement surface — what fired and how often, not what each rail is for.
@@ -1276,15 +1459,6 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
       </div>
     </section>
 
-    <section>
-      <h2 class="section-title">Discipline <span class="section-title-suffix">governance health under load</span></h2>
-      <div class="bands">
-        <div class="band">
-          <h3>Discipline metrics</h3>
-          {discipline_rows_html}
-        </div>
-      </div>
-    </section>
 
     <section>
       <h2 class="section-title">Findings detail <span class="section-title-suffix">{len(findings)} items, every one statused</span></h2>
@@ -1325,7 +1499,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rozzzsie Governance Dashboard — P10 {html.escape(str(sc.get("retro_id", "")))}</title>
+  <title>Rozzzsie Governance Dashboard — Retrospective {html.escape(str(sc.get("retro_id", "")))}</title>
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
 <body>

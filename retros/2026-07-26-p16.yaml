@@ -9,7 +9,7 @@
 # hook filenames, chat/docs thread IDs, internal item numbers, exact protocol
 # version strings, and product internals stripped.
 #
-# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 #
 # Narrative companion: SKIP-PASS this cycle, same reason as p9–p15 — the center of
 # gravity IS governance (one rule promotion, three enforcement builds, and a

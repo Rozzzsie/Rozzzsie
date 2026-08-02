@@ -8,7 +8,7 @@
 # hook filenames, chat/docs thread IDs, internal item numbers, exact protocol
 # version strings, and product internals stripped.
 #
-# Schema: retro-sidecar-schema-1.0 (canonical, private).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 #
 # Narrative companion: SKIP-PASS, same reason as p9–p16 — the centre of gravity IS
 # governance, so the findings below ARE the cycle's substance.

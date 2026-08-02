@@ -177,7 +177,7 @@ section {
   line-height: 1.4;
 }
 
-/* — Two-column band (discipline + cohort) — */
+/* — Two-column band — */
 
 .bands {
   display: grid;
@@ -351,53 +351,33 @@ section {
   color: var(--status-deferred);
 }
 
-/* — Luma tally bar chart — */
-
-.tally {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+/* Four statuses in live use since the pill set was written. Until 2026-08-02
+   these matched no rule and rendered as bare text — `rejected` in particular
+   was visually indistinguishable from an accepted finding. Mapped onto the
+   existing four families rather than given new colours: the distinctions that
+   matter to a reader are shipped / in-flight / waiting / declined. */
+.pill-approved-queued {
+  background: var(--status-approved-bg);
+  color: var(--status-approved);
 }
 
-.tally-row {
-  display: grid;
-  grid-template-columns: 28ch 1fr 3ch;
-  gap: 0.75rem;
-  align-items: center;
-  font-size: 0.88rem;
+.pill-partial-executed {
+  background: var(--status-pre-ship-bg);
+  color: var(--status-pre-ship);
 }
 
-.tally-label {
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  text-transform: lowercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
+.pill-carried-open {
+  background: var(--status-deferred-bg);
+  color: var(--status-deferred);
 }
 
-.tally-bar {
-  height: 8px;
-  background: var(--accent-soft);
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
+.pill-rejected {
+  background: var(--status-deferred-bg);
+  color: var(--status-deferred);
+  text-decoration: line-through;
+  opacity: 0.75;
 }
 
-.tally-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 4px;
-}
-
-.tally-count {
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--text);
-  text-align: right;
-}
 
 /* — Meta-finding callout — louder visual hierarchy so reviewers' eyes land here */
 
@@ -624,9 +604,12 @@ section {
   gap: 1.25rem;
 }
 
+/* One card per row (operator request 2026-08-02). The 3-up grid squeezed a
+   15-point value strip into a third of the width; stacked, each series gets the
+   full measure and the closed/restarted sub-bands have room to be legible. */
 @media (min-width: 800px) {
   .trend-grid {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -673,10 +656,16 @@ section {
   font-size: 0.95rem;
 }
 
+/* The viewBox aspect ratio must track the card width. With a FIXED height and
+   `preserveAspectRatio` at its default, the scale factor is
+   min(containerW/viewBoxW, containerH/viewBoxH) — so a 240-wide viewBox in a
+   fixed 60px-tall box renders at natural size, centred, with dead space either
+   side. Invisible in the old 3-up grid because the column was ~320px; the
+   stacked layout exposed it. `height: auto` lets width drive the scale. */
 .trend-svg {
   display: block;
   width: 100%;
-  height: 60px;
+  height: auto;
   margin: 0.2rem 0 0.1rem;
 }
 
@@ -918,4 +907,34 @@ section {
   font-size: 0.8rem;
   font-style: italic;
   color: var(--text-3, #6b7280);
+}
+
+/* A restarted series sits UNDER the closed one it replaces, visually separated
+   so the eye cannot read a single slope across a unit change. */
+.trend-restart {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border);
+}
+
+.trend-restart-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.4rem;
+}
+
+.trend-restart-n {
+  font-weight: 400;
+  color: var(--status-deferred);
+}
+
+/* Rails the current sidecar shape stopped carrying. Muted, but present —
+   absence of a row is exactly what this note exists to make visible. */
+.fam-closed {
+  margin-top: 0.55rem;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--status-deferred);
 }

@@ -18,7 +18,7 @@
 # they reference is sanitized companion — skip-pass this cycle, see Step 9
 # sub-step (b) note in CHANGELOG).
 #
-# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 # Narrative: skip-pass this cycle — narrative is too tightly scoped to private
 # context (workspace-specific catalyst details on personal-track + product-docs-sync
 # architecture investigations); the sidecar carries the load-bearing data.

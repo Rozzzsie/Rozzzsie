@@ -16,7 +16,7 @@
 # of this sidecar demonstrated). reactions_axis still null pending Brindle
 # firelog cross-walk extension to the script.
 #
-# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 # Narrative: public `_retro/2026-05-10-p10-retro.md` (sanitized companion);
 # private `_retro/2026-05-10-p10-retro.md` is the canonical narrative.
 # If this file and the narrative disagree, the narrative wins. Regenerate from narrative.

@@ -8,7 +8,7 @@
 # entirely (not in public workspace table); evidence citations to private files,
 # commit hashes, chat/docs-platform thread IDs, and product internals stripped.
 #
-# Schema: `_config/schemas/retro-sidecar-schema-1.0.yaml` (canonical, private; symlink).
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
 #
 # Narrative companion: SKIP-PASS this cycle. The cycle's substantive work (a
 # multi-workspace retrieval-evaluation-methodology track) is too tightly scoped
