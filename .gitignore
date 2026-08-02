@@ -11,3 +11,4 @@ external-track-ramp/
 
 .claude/focus-chain-counter
 .claude/pre-compact-snapshots/
+__pycache__/

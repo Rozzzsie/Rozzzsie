@@ -42,7 +42,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for sprint-2 (multi-retro trend rendering)
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "2.10"
+DASHBOARD_VERSION = "3.0"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -521,12 +521,266 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
     return "".join(cards)
 
 
+# ─── Health score (schema 1.1) ────────────────────────────────────────────────
+#
+# ⛔ DERIVED AT RENDER TIME, NEVER STORED. A composite written into a sidecar is
+# stale the instant any input moves and nothing can tell you it did. If a sidecar
+# ever grows a `health_score:` key, that is the bug, not this function.
+#
+# WHAT IS SCORED, AND WHY IT IS NOT THE DEFECT COUNT. A governance OS's job is to
+# make failure visible and bounded, not to avoid it. Scoring the open-defect count
+# would mean the number improves whenever detection stops working and falls every
+# time an audit succeeds. So defects render as unscored INVENTORY, and what gets
+# scored is the integrity of the loop that catches them.
+#
+# Four leading indicators (each guards one known failure mode, each actionable)
+# plus one lagging outcome indicator. The leading four are individually gameable
+# — a gate can be armed over nothing, a ritual can complete while checking
+# nothing. The outcome dial is not gameable that way but is slow and, alone,
+# would reward building many trivial controls. Either half without the other lies.
+
+INTENDED_DIAL_COUNT = 5
+
+
+def _dial(key: str, label: str, value: float | None, detail: str, note: str = "") -> dict[str, Any]:
+    return {"key": key, "label": label, "value": value, "detail": detail, "note": note}
+
+
+def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
+    """Derive the health dials + composite from a schema-1.1 sidecar.
+
+    Returns dials (some with value None = no data), the composite over the
+    dials that DO have data, and an explicit coverage statement. A composite
+    computed over 4 of 5 dials is not the same claim as one computed over 5,
+    and the difference is stated rather than left for the reader to assume.
+    """
+    dials: list[dict[str, Any]] = []
+
+    # 1 — Enforcement coverage. Two components, deliberately: a gate that is
+    # armed but carries no written condition for coming back OFF is half
+    # governed. That is exactly how gates sat teeth-off for a month with
+    # nobody able to say whether that was correct.
+    ec = sc.get("enforcement_coverage") or {}
+    built = ec.get("arms_built")
+    armed = ec.get("arms_armed")
+    exits = ec.get("arms_with_written_exit_criteria")
+    if isinstance(built, int) and built > 0 and isinstance(armed, int):
+        armed_ratio = armed / built
+        exit_ratio = (exits or 0) / built
+        dials.append(_dial(
+            "enforcement", "Enforcement coverage",
+            (armed_ratio + exit_ratio) / 2,
+            f"{armed}/{built} arms armed · {exits or 0}/{built} with a written exit criterion",
+            "Scored on two components. Armed-but-unconditioned is half credit.",
+        ))
+    else:
+        dials.append(_dial("enforcement", "Enforcement coverage", None, "no data"))
+
+    # 2 — Ritual integrity. Absorbs close discipline: P9 close is a ritual step,
+    # so scoring it separately would double-count it.
+    dm = sc.get("discipline_metrics") or {}
+    defined = dm.get("ritual_steps_defined")
+    completed = dm.get("ritual_steps_completed")
+    if isinstance(defined, int) and defined > 0 and isinstance(completed, int):
+        val = completed / defined
+        sub_due = dm.get("monthly_subritual_due")
+        sub_done = dm.get("monthly_subritual_completed")
+        detail = f"{completed}/{defined} steps"
+        if sub_due:
+            detail += f" · monthly sub-ritual {'completed' if sub_done else 'DUE, not run'}"
+            if not sub_done:
+                val = min(val, 0.5)
+        dials.append(_dial("ritual", "Ritual integrity", val, detail,
+                           "Includes session-close discipline; P9 is a ritual step."))
+    else:
+        dials.append(_dial("ritual", "Ritual integrity", None, "no data"))
+
+    # 3 — Instrument liveness. Scores the LOOP, not the absence of failure:
+    # "when an instrument lied, did something catch it". The absolute failure
+    # count rides alongside unnormalised — no denominator has been invented.
+    il = sc.get("instrument_liveness") or {}
+    observed = il.get("silent_failures_observed")
+    caught = il.get("caught_by_control")
+    if isinstance(observed, int) and isinstance(caught, int):
+        val = 1.0 if observed == 0 else caught / observed
+        dials.append(_dial(
+            "instrument", "Instrument liveness", val,
+            f"{caught}/{observed} silent failures caught by a control · "
+            f"{il.get('caught_by_review', 0)} by review",
+            "Full dial with a high failure count is the correct reading: "
+            "the loop held. The count is shown unnormalised.",
+        ))
+    else:
+        dials.append(_dial("instrument", "Instrument liveness", None, "no data"))
+
+    # 4 — Quality gate.
+    sampled = dm.get("quality_gate_traces_sampled")
+    passing = dm.get("quality_gate_traces_passing")
+    if isinstance(sampled, int) and sampled > 0 and isinstance(passing, int):
+        dials.append(_dial("quality", "Quality gate", passing / sampled,
+                           f"{passing}/{sampled} traces passing",
+                           f"Small n ({sampled}); a sampled rate, not a census."))
+    else:
+        dials.append(_dial("quality", "Quality gate", None, "no data"))
+
+    # 5 — Detection provenance (lagging outcome). Ships empty on purpose;
+    # it cannot be backfilled, because reconstructing who would have caught a
+    # past defect is fabrication rather than measurement.
+    dp = sc.get("detection_provenance") or {}
+    by_control = dp.get("caught_by_control")
+    by_operator = dp.get("caught_by_operator")
+    if isinstance(by_control, int) and isinstance(by_operator, int) and (by_control + by_operator) > 0:
+        total = by_control + by_operator + (dp.get("caught_by_accident") or 0)
+        dials.append(_dial("provenance", "Detection provenance", by_control / total,
+                           f"{by_control} caught by a control · {by_operator} by the operator"))
+    else:
+        dials.append(_dial(
+            "provenance", "Detection provenance", None,
+            f"awaiting data — instrumented from {dp.get('instrumented_from', 'a future cycle')}",
+            "The outcome metric: did a control catch it, or did the operator? "
+            "Cannot be backfilled without fabricating attributions.",
+        ))
+
+    scored = [d for d in dials if isinstance(d["value"], (int, float))]
+    composite = round(100 * sum(d["value"] for d in scored) / len(scored)) if scored else None
+    return {
+        "dials": dials,
+        "composite": composite,
+        "scored_count": len(scored),
+        "intended_count": INTENDED_DIAL_COUNT,
+    }
+
+
+def _bar(value: float | None, width: int = 10) -> str:
+    """Render a fixed-width proportion bar. None renders as an empty track."""
+    if not isinstance(value, (int, float)):
+        return f'<span class="hs-bar hs-bar-empty">{"·" * width}</span>'
+    filled = int(round(value * width))
+    return (
+        f'<span class="hs-bar">'
+        f'<span class="hs-bar-fill">{"█" * filled}</span>'
+        f'<span class="hs-bar-track">{"░" * (width - filled)}</span></span>'
+    )
+
+
+def render_health_widget(health: dict[str, Any]) -> str:
+    composite = health["composite"]
+    rows = []
+    for d in health["dials"]:
+        val = d["value"]
+        pct = f"{round(val * 100)}" if isinstance(val, (int, float)) else "—"
+        note = f'<div class="hs-note">{html.escape(d["note"])}</div>' if d.get("note") else ""
+        rows.append(f"""
+        <div class="hs-row{'' if isinstance(val, (int, float)) else ' hs-row-pending'}">
+          <div class="hs-label">{html.escape(d["label"])}</div>
+          <div class="hs-meter">{_bar(val)}</div>
+          <div class="hs-pct">{pct}</div>
+          <div class="hs-detail">{html.escape(d["detail"])}{note}</div>
+        </div>""")
+    coverage = (
+        f'Composite derived from {health["scored_count"]} of {health["intended_count"]} '
+        f'intended dials. It is an average of what could be measured, not of what matters.'
+    )
+    return f"""
+      <div class="hs-headline">
+        <div class="hs-score">{composite if composite is not None else "—"}<span class="hs-score-max">/100</span></div>
+        <div class="hs-score-caption">
+          <strong>Derived at render, never stored.</strong>
+          {html.escape(coverage)}
+        </div>
+      </div>
+      <div class="hs-rows">{"".join(rows)}</div>
+      <p class="hs-foot">
+        The open-defect count is deliberately absent from this score. A governance system
+        scored on defect count improves whenever detection stops working, and falls every
+        time an audit succeeds. Defects appear below as inventory.
+      </p>"""
+
+
+def render_defect_inventory(dl: dict[str, Any]) -> str:
+    if not dl:
+        return '<p class="empty-note">No defect ledger in this sidecar.</p>'
+    total = dl.get("open_total")
+    buckets = [
+        ("< 7 days", dl.get("age_under_7d") or 0),
+        ("7–29 days", dl.get("age_7_to_29d") or 0),
+        ("30+ days", dl.get("age_30d_plus") or 0),
+        ("undated", dl.get("age_undated") or 0),
+    ]
+    peak = max([n for _, n in buckets] + [1])
+    bar_rows = "".join(
+        f'<div class="inv-row"><span class="inv-key">{html.escape(label)}</span>'
+        f'<span class="inv-bar">{"█" * max(0, round(n / peak * 18))}</span>'
+        f'<span class="inv-n">{n}</span></div>'
+        for label, n in buckets
+    )
+    return f"""
+      <div class="inv-head">
+        <span class="inv-total">{total if total is not None else "—"}</span>
+        <span class="inv-total-label">open · <strong>not scored</strong></span>
+        <span class="inv-split">{dl.get("live", "—")} live · {dl.get("parked", "—")} parked</span>
+      </div>
+      <div class="inv-bars">{bar_rows}</div>
+      <div class="inv-foot">
+        median age <strong>{dl.get("median_age_days", "—")}d</strong> ·
+        oldest <strong>{dl.get("max_age_days", "—")}d</strong> —
+        the age distribution is the diagnostic here, not the total.
+        Measured {html.escape(str(dl.get("measured_at", "—")))}.
+      </div>"""
+
+
+def render_backlog_widget(bl: dict[str, Any]) -> str:
+    if not bl:
+        return '<p class="empty-note">No improvement backlog in this sidecar.</p>'
+    axes = [
+        ("ready", bl.get("open_ready") or 0),
+        ("decision-gated", bl.get("open_decision_gated") or 0),
+        ("upstream-blocked", bl.get("open_upstream_blocked") or 0),
+    ]
+    axis_sum = sum(n for _, n in axes)
+    open_n = bl.get("open")
+    reconcile = (
+        f"axes sum to {axis_sum}, open total {open_n}"
+        + ("" if axis_sum == open_n else " — MISMATCH: an item carries an unrecognised status")
+    )
+    chips = "".join(
+        f'<span class="bk-chip"><span class="bk-chip-n">{n}</span>{html.escape(label)}</span>'
+        for label, n in axes
+    )
+    return f"""
+      <div class="bk-head">
+        <span class="bk-total">{bl.get("total", "—")}</span>
+        <span class="bk-total-label">proposed improvements — lifetime</span>
+      </div>
+      <div class="bk-split">
+        <span>{bl.get("done", "—")} done</span><span>{open_n if open_n is not None else "—"} open</span><span>{bl.get("parked", "—")} parked</span>
+      </div>
+      <div class="bk-axes">{chips}</div>
+      <div class="bk-foot">
+        Scheduling axis is a <strong>derived</strong> view — an item whose status carries an
+        unrecognised value is dropped from it silently, so these are a claim about what
+        classified, never about what exists. Reconciled: {html.escape(reconcile)}.
+      </div>"""
+
+
 def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | None = None) -> str:
     findings = sc.get("findings", []) or []
     backlog = sc.get("proposal_backlog", {}) or {}
     discipline = sc.get("discipline_metrics", {}) or {}
     latency = sc.get("latency_observations", {}) or {}
-    meta = sc.get("meta_finding", {}) or {}
+    # `meta_finding` changed shape between sidecar generations: a dict carrying a
+    # `headline` key in p3–p16, a bare block-scalar string from p17 on. The
+    # renderer assumed dict and raised AttributeError on p17, which is why that
+    # sidecar had never rendered and index.html was still the p16 build. Accept
+    # both rather than migrating 15 historical files — a reader of an old sidecar
+    # should still get the old page.
+    meta_raw = sc.get("meta_finding") or {}
+    if isinstance(meta_raw, str):
+        meta_text = meta_raw.strip()
+    elif isinstance(meta_raw, dict):
+        meta_text = str(meta_raw.get("headline", "") or "").strip()
+    else:
+        meta_text = ""
 
     # Counts
     by_status: dict[str, int] = {}
@@ -564,6 +818,11 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     latency_violations_str = str(latency_violations) if latency_violations is not None else "—"
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
 
+    health = compute_health(sc)
+    health_html = render_health_widget(health)
+    inventory_html = render_defect_inventory(sc.get("defect_ledger") or {})
+    backlog_html = render_backlog_widget(sc.get("improvement_backlog") or {})
+
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
     tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
     fam_dispatch = sc.get("fam_dispatch_distribution") or {}
@@ -599,6 +858,27 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
         Measurement surface — what fired and how often, not what each rail is for.
       </p>
     </header>
+
+    <section class="hs-section">
+      <h2 class="section-title">Governance health <span class="section-title-suffix">integrity of the loop that catches failure — not the absence of failure</span></h2>
+      <div class="hs-widget">
+        {health_html}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Known defects <span class="section-title-suffix">inventory · deliberately unscored</span></h2>
+      <div class="bands">
+        <div class="band">
+          <h3>Defect ledger</h3>
+          {inventory_html}
+        </div>
+        <div class="band">
+          <h3>Improvement backlog</h3>
+          {backlog_html}
+        </div>
+      </div>
+    </section>
 
     <section>
       <h2 class="section-title">Decision velocity <span class="section-title-suffix">findings triaged + terminal status assigned</span></h2>
@@ -700,10 +980,10 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
         <div class="callout-icon" aria-hidden="true">◆</div>
         <div class="callout-body">
           <div class="callout-eyebrow">Meta-finding</div>
-          <div class="callout-text">{html.escape(str(meta.get("headline", "")))}</div>
+          <div class="callout-text">{html.escape(meta_text)}</div>
         </div>
       </div>
-      ''' if meta.get("headline") else ""}
+      ''' if meta_text else ""}
     </section>
 
     <footer class="scope-honest">

@@ -190,4 +190,104 @@ fam_dispatch_distribution:
     review is consequently owed on enforcement-path code that currently carries
     none — carried as an open item, not silently absorbed.
 
-schema_version: "1.0"
+# ─── Schema 1.1 blocks ────────────────────────────────────────────────────────
+#
+# Added 2026-08-02. The four blocks below feed the health-score widget set.
+#
+# ⛔ THE COMPOSITE SCORE IS NOT STORED HERE, DELIBERATELY. It is derived at
+# render time from these blocks. A derived label written into a stored field
+# goes stale the instant any input moves, and nothing can tell you it did —
+# the same defect class this OS has banked three times in two days. If you
+# find a `health_score:` key in a sidecar, it is a bug.
+
+defect_ledger:
+  measured_at: "2026-08-02 15:3x"
+  measured_from: "governance status file — escalator rows, classified by tag"
+  open_total: 38
+  live: 34
+  parked: 4
+  age_under_7d: 28
+  age_7_to_29d: 8
+  age_30d_plus: 0
+  age_undated: 2
+  median_age_days: 2
+  max_age_days: 12
+  notes: >
+    DELIBERATELY UNSCORED. This is inventory, not health. A governance OS that
+    scored itself on defect count would score highest with its instruments off,
+    and every audit that worked would lower the number. What is diagnostic here
+    is the AGE distribution, not the total: nothing on this board is older than
+    12 days and the median row is 2 days old, which describes a board being
+    worked rather than a graveyard. The total moved 37 → 38 during the session
+    that measured it, because that session filed a row; the figure names the
+    state it was measured at rather than claiming to be current.
+
+improvement_backlog:
+  total: 79
+  done: 40
+  open: 28
+  parked: 11
+  open_ready: 14
+  open_decision_gated: 12
+  open_upstream_blocked: 2
+  notes: >
+    Proposed improvements, distinct from the defect ledger above: a defect is a
+    known way the system is wrong, a backlog item is a way it could be better.
+    Kept separate because collapsing them is what produced the enforcement
+    miscount recorded below. Scheduling axis is a DERIVED view — an item whose
+    status field carries an unrecognised value is dropped from it silently, so
+    the axis figures are a claim about what classified, never about what exists;
+    they are reconciled against the raw total (14+12+2 = 28 open).
+
+enforcement_coverage:
+  measured_at: "2026-08-02 15:3x"
+  measured_from: "code — enforcement flags and deny-paths enumerated from the tree"
+  arms_built: 6
+  arms_armed: 6
+  arms_with_written_exit_criteria: 0
+  notes: >
+    ⛔ SUPERSEDES `hook_health.enforcement_gates_with_teeth_off: 3` ABOVE, which
+    is retained unedited as the record it is. That 3 was carried from a prose
+    status row that counted a gate which has NEVER BEEN BUILT. An unbuilt gate
+    is not a gate with its teeth off; it is an absent gate, and it belongs in
+    the improvement backlog. Two denominators had been collapsed into one, with
+    the effect of reporting a WORSE number than the truth while hiding an
+    unbuilt-gate backlog inside it. Re-derived from code rather than from prose:
+    6 arms can deny, 6 are armed. Two of those six were armed on the day of this
+    retro, taking the figure from 4/6 to 6/6. The zero written exit criteria is
+    the honest bad number here and it is unchanged: nothing states the condition
+    under which any of these teeth would come back off.
+
+instrument_liveness:
+  silent_failures_observed: 9
+  caught_by_control: 9
+  caught_by_review: 0
+  notes: >
+    Scores the LOOP, not the absence of failure. Nine instruments used to conduct
+    this retro each returned a confident wrong answer at least once; every one was
+    caught by a control — a positive control, a negative control, a calibration
+    file, or running the renderer instead of reading the file — and NOT ONE was
+    caught by review. The dial therefore reads full while the absolute count is
+    displayed beside it, because the health question is "when an instrument lied,
+    did something catch it", not "did any instrument lie". A denominator of
+    instruments-exercised is not recorded and has NOT been invented to make a
+    rate; the count stands unnormalised.
+
+detection_provenance:
+  status: "AWAITING-DATA"
+  instrumented_from: "2026-08-09-p18"
+  caught_by_control: null
+  caught_by_operator: null
+  caught_by_accident: null
+  notes: >
+    The outcome metric — of the defects surfaced in a cycle, how many were caught
+    by a control that COULD have failed, versus caught by the operator asking a
+    question. It ships empty on purpose. Nothing currently records, per defect,
+    who caught it, and the figure cannot be backfilled: reconstructing who would
+    have caught a past defect is fabrication, not measurement. A single-session
+    sample was available and was NOT used as the dial value — that session was
+    spent building instruments, so its control-catch rate is unrepresentative and
+    flattering, which is precisely the shape this OS treats as a warning rather
+    than a result. Real from p18 forward.
+
+schema_version: "1.1"
