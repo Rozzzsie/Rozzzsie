@@ -1,0 +1,193 @@
+# P10 Retro Sidecar — 2026-08-02 (P10 retro #17, sanitized public snapshot)
+#
+# Window 2026-07-26 → 2026-08-02 (7 days). The FIRST retro of a calendar month, so
+# the monthly housecleaning sub-ritual fires alongside the ten ritual steps.
+# Stakeholder names genericized to role-class; workspace names genericized per the
+# public workspace table; private personal-track + career-track + capital-track
+# references dropped entirely; evidence citations to private files, commit hashes,
+# hook filenames, chat/docs thread IDs, internal item numbers, exact protocol
+# version strings, and product internals stripped.
+#
+# Schema: retro-sidecar-schema-1.0 (canonical, private).
+#
+# Narrative companion: SKIP-PASS, same reason as p9–p16 — the centre of gravity IS
+# governance, so the findings below ARE the cycle's substance.
+#
+# Mode this cycle: an INSTRUMENT-FAILURE retro, and the theme is uncomfortable.
+# The operator asked for the ritual to be run end-to-end, explicitly against the
+# prior cycle's failure (closed with six of ten steps unrun). It was. But the
+# dominant finding is not about the week's engineering — it is that NINE of the
+# instruments used to CONDUCT this retro each returned a confident wrong answer at
+# least once. Eight pointed in the flattering
+# direction: "already clean", "no work needed", "everything qualifies". None was
+# caught by review. Every one was caught by a control — a positive control, a
+# negative control, a calibration file, or running the renderer instead of reading
+# the file. The cycle's honest lesson is that instrument discipline is not a
+# supporting practice for audit work; on this evidence it IS the audit work.
+
+retro_id: "2026-08-02-p17"
+retro_date: "2026-08-02"
+window_start: "2026-07-26"
+window_end: "2026-08-02"
+prior_retro: "2026-07-26-p16"
+interactive_mode: true
+trigger_source: "overdue-banner-operator-opened-interactive-explicit-end-to-end"
+
+meta_finding: >
+  Nine measurement instruments used during this retro each failed silently at least
+  once. Eight failed FLATTERINGLY — toward "no work required" or "everything already
+  qualifies" — and the ninth failed in the SELF-CRITICAL direction, which is why it
+  survived longest and reached two artifacts before being caught. A keyword classifier scored a deliberately
+  nonsensical control sentence as a pass. A token measurement compared two
+  different tokenizers and understated a file by 34%. A shell pipeline masked a
+  validator's exit code and nearly produced a false report that a live commit gate
+  was fail-open. A display pipe truncated a finding to half its true size, and the
+  halved number was stated aloud before it was corrected. A rendering fix looked
+  correct in the file and deleted the finding from eight rendered rows. The general
+  form: an instrument's silence, or its agreement with what you hoped, carries no
+  information — only a control that CAN fail tells you the instrument is alive.
+
+findings:
+  - id: "1.1"
+    title: "A THRESHOLD AND A MEASUREMENT MUST SHARE A UNIT — and 'tokens' is not a unit until the tokenizer is named. The governance OS denominates its file-size read-contracts in the token count reported by the reading harness, while a separate write-time budget gate denominates in a public byte-pair encoder. Measured on one file at one instant, the two disagree by a factor of 1.52. Consequence: the primary cross-session knowledge file measured 48.3K under the encoder and read as comfortably under its ~60K cap — SWEEP NOT NEEDED — while its true figure in the cap's own unit was ~73.6K, over by 23%. The uncalibrated reading returned the flattering answer on the exact file the ritual exists to bound. Fix is doctrine, not tooling: state the tokenizer beside any token figure, and when a cap and a measurement come from different instruments, calibrate on a file with a known reading in BOTH units before comparing. One calibration file converted an unverifiable number into a decision-grade one. This is a defect in the UNIT rather than the arithmetic, so re-measuring the value confirms it forever."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "monthly-housecleaning-execution"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-02"
+    target_surface: "output-checklist — rider on the existing measurement-discipline section"
+
+  - id: "1.2"
+    title: "A RELOCATION VERIFIED ONLY AT ITS DESTINATION IS INDISTINGUISHABLE FROM A COPY. The prior month's housecleaning sweep recorded three phases and a precise relocation count. Twenty of those entries were still live — present verbatim in BOTH the live knowledge file and the retrieval-only history file, simultaneously, for two days and across a governance version bump. The sweep asserted arrival and never asserted departure. Both files read as entirely correct in isolation: history holds what it claims, live holds real entries. Only the INTERSECTION is wrong, and no per-file check reads an intersection. Aggravator: the duplication silently inflated the very size measurement that triggers the next sweep, so the instrument that detects the condition was corrupted by the condition. Fix: a move is TWO assertions — present-in-target AND absent-from-source — plus an explicit empty-intersection check. Cost of the check is a single set-comparison command."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "monthly-housecleaning-execution"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-02"
+    target_surface: "knowledge-retention doctrine + this cycle's sweep procedure"
+
+  - id: "1.3"
+    title: "A CLASSIFIER THAT PASSES EVERYTHING IS NOT A LENIENT TEST, IT IS NOT A TEST. To decide which knowledge entries had reached a governance rule, distinctive words from each entry headline were scored against the rules corpus. The classifier returned PASS on 21 of 21 candidates, and its hit-column tracked its word-column almost exactly — the signature of a saturated matcher. Negative control: the sentence 'A PURPLE ELEPHANT CANNOT VALIDATE A SANDWICH' also scored PASS. Against a ~475KB corpus of governance prose, essentially any governance vocabulary appears somewhere. Had the sweep run on that table it would have relocated entries that never reached a rule, which the retention doctrine explicitly forbids. The instrument that WORKED was structural rather than lexical — does the cited rule section contain the entry's catalyst date — and it earned trust by returning a NO on one section while its positive control passed. Rule: before trusting a classifier, feed it something that MUST fail; if it passes, the instrument is the finding."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "monthly-housecleaning-execution"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-02"
+    target_surface: "output-checklist — measurement/instrument-discipline family"
+
+  - id: "1.4"
+    title: "THE RENDERER IS THE ONLY WITNESS FOR A RENDERING CHANGE. The status-file fold kept each row's tag plus the first sentence after it. The pattern matched the tag's OPENING delimiter instead of its closing one, so 'the sentence after the tag' was a sentence INSIDE the tag: eight rows rendered as tag-text plus a pointer with the FINDING deleted — reproducing a known open defect, freshly inflicted, during the ritual meant to reduce it. Reading the file showed nothing wrong. Running the summarizer showed it immediately. The existing rule already says to verify by running the extractor rather than reading the file; this extends it from WHETHER a row is collected to WHAT SHAPE the rendered line takes."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "monthly-housecleaning-execution"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-02"
+    target_surface: "status-surface authoring doctrine"
+
+  - id: "2.1"
+    title: "LIVE OUTPUT GRADING WAS DEAD FOR THREE DAYS AND NO INSTRUMENT COULD SEE IT — independently confirmed this cycle. The separate-model grading hook emitted 22 consecutive errors and ZERO verdicts across a three-day regression window, while the surface that reports grader health reported nothing wrong, because an error and a silence are the same observation to it. Post-fix the sibling drift-scanner produced a clean verdict, so the repair is confirmed at n=1 but the CLEAN-PATH LIVENESS gap that concealed the outage is unaddressed: nothing distinguishes 'graded and passed' from 'never ran'. Carried as an open item with a named next action rather than closed."
+    category: "hook-health"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "grader liveness instrumentation"
+
+  - id: "2.2"
+    title: "A PROPAGATION RATE COMPUTED FROM CITATIONS IS UNINTERPRETABLE IN BOTH DIRECTIONS. The knowledge-to-rule propagation census produced 70.9% and the figure should not be used. Verified against artifacts, the citation proxy was wrong on six of eight sampled exceptions — five had landed and were scored as gaps, one had been retracted. The false-negative arm has a specific cause worth recording: an entry that lands in the top-level governance file with no section number is invisible to a section-based matcher, so the most-propagated destination is the one the instrument cannot see. Correct denominator unknown. Reported as a measurement problem, explicitly NOT as a discipline finding — a rate this soft would manufacture remediation work that the underlying record does not support."
+    category: "measurement-integrity"
+    evidence_count: 8
+    source_catchment: "knowledge-delta-census"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-02"
+    target_surface: "retro procedure — census reported with its uncertainty, no derived work"
+
+  - id: "3.1"
+    title: "THE STATUS FILE BREACHED ITS MUST-FULL-LOAD READ CONTRACT BY 1.8x, AND NOT ONE OF ITS 70 OPEN ITEMS WAS CLOSEABLE. Nine rows carried resolved-shaped words, and all nine were genuinely OPEN — the words described closed HALVES inside rows whose boxes remain open, which the box-state doctrine already rules on. So the breach is not stale content and no retention sweep could fix it: the file is oversized because the open work is genuinely open and each row carries a full record. Resolved structurally instead, along the grain of the existing renderer: a row is two audiences, a one-line index entry and a full record, and only the first is rendered. Nine full records relocated to the retrieval history; every row remains open, remains on the board, and now carries headline plus pointer. File returned inside contract with all 33 escalator rows verified through the live extractor."
+    category: "structural"
+    evidence_count: 70
+    source_catchment: "monthly-housecleaning-execution"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-02"
+    target_surface: "status file + retrieval history"
+
+  - id: "4.1"
+    title: "A COUNTER THAT COUNTS FIRES WAS READ AS A COUNT OF TURNS — BY THE AUTHOR, INSIDE THE AUDIT, AGAINST AN OPEN ITEM THAT ALREADY SAYS SO. The response-discipline hook reported a rising 'session miss-count' that reached 34, and it was written into this sidecar and the private retro as 28-29 consecutive missed turns. It is not. Derived from the firelog with positive and negative controls, all 33 blocking fires carry a SINGLE distinct prior-turn signature, i.e. ONE completed turn missing its marker, graded once per tool call across a long agentic run. Post-compaction exactly two turns completed: one carried the marker, one did not. The true figure is 1 missed turn, not 33. The instrument is behaving exactly as designed and documented; the defect was entirely in the reading. Aggravators worth recording: (a) an open blocker on this very board already states that this counter counts FIRES rather than TURNS, (b) the trace template warns in writing that counting prose blocks against this firelog manufactures a phantom miss count and cites a prior session that did it, and (c) the wrong number was the SELF-CRITICAL one, so it passed review unchallenged in a way a flattering number would not have. Caught only by following the template instead of authoring from memory. Net: discipline was 1 miss; the finding is the misreading."
+    category: "discipline"
+    evidence_count: 1
+    source_catchment: "self-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-02"
+    target_surface: "retro record — enforcement-tier question left open for the operator"
+
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 3
+  notes: >
+    The learning-layer agent ran on a catchment of the insights buffer, the
+    candidate queue and the knowledge deltas. It authored three proposals — a
+    matcher-keyed-to-a-convention rule counted to n=9, a fixed-slot multiplicity
+    rule discharging a parked operator request at n=6, and a startup read-contract
+    manifest at six surfaces. It deferred three below threshold and, notably,
+    DECLINED to author one recurrence on the judgement that recurrence of a DEFECT
+    is not evidence that the RULE is ineffective, escalating that call for human
+    reversal rather than deciding it. It also caught a status reconciliation the
+    orchestrator had missed: a proposal still marked pending had in fact shipped.
+
+hook_health:
+  grading_hook_regression_window_verdicts: 0
+  grading_hook_regression_window_errors: 22
+  grading_hook_post_fix_verdicts: 1
+  enforcement_gates_with_teeth_off: 3
+  enforcement_gates_with_written_exit_criteria: 0
+  notes: >
+    Three enforcement gates continue to hold their teeth off simultaneously and
+    none has a written exit criterion — carried unchanged from the prior cycle,
+    now at multi-cycle age. One separate gate is confirmed ENFORCING. The
+    teeth-off condition is not itself the finding; the absence of any written
+    condition under which the teeth go back on is.
+
+discipline_metrics:
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 3
+  response_marker_missed_turns: 1
+  response_marker_blocking_fires: 33
+  response_marker_note: "fires != turns; all 33 fires share one prior-turn signature"
+  ritual_steps_defined: 10
+  ritual_steps_completed: 10
+  monthly_subritual_due: true
+  monthly_subritual_completed: true
+  notes: >
+    All ten ritual steps completed plus the monthly sub-ritual, directly against
+    the prior cycle's failure mode of closing with six steps unrun. Quality-gate
+    traces sampled clean with positive AND negative controls on each. The response
+    marker figure is the cycle's worst number and is reported unsoftened.
+
+latency_observations:
+  learning_agent_runtime_seconds: 609
+  notes: >
+    Single background dispatch, no degrades, no direct writes outside its own
+    proposal surface. Its two inherited figures were flagged inline as unverified
+    by it rather than silently adopted — the correct behaviour for a claim
+    received from an orchestrator.
+
+fam_dispatch_distribution:
+  learning_agent: 1
+  adversarial_reviewer: 0
+  consultant: 0
+  external_validator: 0
+  notes: >
+    The external code validator remains quota-exhausted for the rest of the month,
+    so its degrade-ladder middle rung does not exist on this machine. Adversarial
+    review is consequently owed on enforcement-path code that currently carries
+    none — carried as an open item, not silently absorbed.
+
+schema_version: "1.0"
