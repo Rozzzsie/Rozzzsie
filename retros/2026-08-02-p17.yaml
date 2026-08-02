@@ -190,17 +190,37 @@ fam_dispatch_distribution:
   learning_agent: 2
   adversarial_reviewer: 15
   consultant: 3
-  external_validator: 2
+  external_validator: 1
   notes: >
-    Measured 2026-08-02 22:45 CST over the 2026-07-26 → 2026-08-02 window;
-    the window includes the measuring session, so these are a floor.
-    `consultant` counts the framing rail only — the external code validator has
-    its own bucket, because folding the two together would make "did external
-    validation run at all?" unanswerable from this file. The two
-    external-validator dispatches are DISPATCHES, not completed reviews: that
-    tool is quota-exhausted for the rest of the month, so whether either
-    returned usable output is unverified here. Adversarial review is still owed
-    on enforcement-path code that carries none — carried as an open item.
+    Measured 2026-08-02 23:1x CST over the 2026-07-26 → 2026-08-02 window; the
+    window includes the measuring session, so these are a floor. `consultant`
+    counts the framing rail only — the external code validator has its own
+    bucket, because folding the two together would make "did external validation
+    run at all?" unanswerable from this file.
+
+    `external_validator` was corrected TWICE today, and the second correction is
+    the instructive one. It shipped as 0, was re-authored to 2 from the tally,
+    and is 1 here because auditing that 2 found a defect in the instrument
+    itself: the tally's slash-command arm counted any user-role text CONTAINING
+    the command, and the record it counted in this window is a machine-generated
+    compaction summary quoting the rule that says the command cannot be invoked
+    at all. Across the whole corpus that arm produced 20 matches, 13 of them
+    summary or meta records. It now excludes those. A stricter start-anchored
+    test was NOT applied: it returns 0 corpus-wide, which is as consistent with
+    a wrong anchor as with absent invocations, and a zero with no positive
+    control behind it is not a measurement.
+
+    The surviving 1 is a single agent dispatch. It is a DISPATCH, not a
+    completed review — that tool is quota-exhausted for the rest of the month,
+    so whether it returned usable output is unverified here. Adversarial review
+    is still owed on enforcement-path code that carries none, and is carried as
+    an open item rather than counted as discharged.
+
+    Known and not retro-fixed: earlier cycles' `codex` figures were produced by
+    the unfixed predicate and are likely inflated by the same mention-counting.
+    Those are published records of what was measured at the time and are left
+    past-accurate; the flag lives here so a reader comparing cycles knows the
+    series is not uniform.
 
 # ─── Schema 1.1 blocks ────────────────────────────────────────────────────────
 #

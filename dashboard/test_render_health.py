@@ -895,6 +895,38 @@ class TestDecisionVelocityLosesNoFinding(unittest.TestCase):
         self.assertIn("invented-status-2027", velocity)
 
 
+class TestTheNonListFindingsArmActuallyFires(unittest.TestCase):
+    """The last standing residual from the 2026-08-01 adversarial pass.
+
+    The guard itself was already correct — `findings` present but not a list
+    satisfies the required-field check (it is non-None) and would then skip the
+    per-item arm silently, so the branch exists to convert that into rc=3. What
+    was missing is any input that reaches it: an unexercised guard and a broken
+    one are indistinguishable from the suite, and this one protects a path whose
+    failure mode is a raw AttributeError from the renderer.
+    """
+
+    def _sc_with_findings(self, value):
+        sc = _sidecar()
+        sc["findings"] = value
+        return sc
+
+    def test_a_non_list_findings_block_RAISES_and_names_the_type(self):
+        for bad in ({"id": "x"}, "a string", 7):
+            with self.subTest(type=type(bad).__name__):
+                with self.assertRaises(R.SidecarSchemaError) as cm:
+                    R.validate_sidecar(self._sc_with_findings(bad))
+                msg = str(cm.exception)
+                self.assertIn("findings", msg)
+                self.assertIn(type(bad).__name__, msg, "names what it got")
+
+    def test_a_LIST_of_findings_does_not_trip_the_type_guard(self):
+        """The negative control. Without it the test above passes against a
+        guard that rejects everything, which is not the contract."""
+        warnings = R.validate_sidecar(_sidecar())
+        self.assertIsInstance(warnings, list)
+
+
 class TestTheRetractedRateIsGoneNotRedrawn(unittest.TestCase):
     """Operator decision 2026-08-02: retire the 16 rate points entirely and show
     only the new axis. A retracted series redrawn alongside its replacement
