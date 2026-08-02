@@ -198,21 +198,25 @@ class TestAbsenceNeverRendersAsZero(unittest.TestCase):
         """A MEASURED zero must survive. Absence and zero are different facts."""
         self.assertEqual(R._present(0), "0")
 
-    def test_cohort_stages_absent_from_p17_render_as_dashes(self):
-        out = R.render_dashboard(_sidecar())
-        cohort = out[out.index("Proposal backlog cohort"):]
-        cohort = cohort[:cohort.index("Latency observations")]
-        for label in ("Pending before retro", "Approved (not yet executed)", "Executed this cycle"):
-            with self.subTest(stage=label):
-                seg = cohort[cohort.index(label):]
-                seg = seg[:seg.index("</div>", seg.index("cohort-count"))]
-                self.assertIn("—", seg, f"{label} rendered a value for an unrecorded field")
-                self.assertNotIn(">0<", seg)
+    def test_an_unrecorded_flow_value_renders_a_dash_not_a_zero(self):
+        """Repointed 2026-08-02: the 5-stage cohort funnel was retired after
+        three of its stages stopped being reported. The invariant it protected
+        — an unrecorded field must never render 0 — now lives on the surviving
+        flow chips folded into the backlog widget."""
+        sc = _sidecar()
+        pb = dict(sc["proposal_backlog"])
+        pb.pop("deferred_this_cycle", None)
+        out = R.render_backlog_widget(sc["improvement_backlog"], pb)
+        seg = out[out.index("bk-flow"):]
+        self.assertIn("—", seg)
+        self.assertNotIn(">0<", seg)
 
-    def test_a_recorded_cohort_stage_still_renders_its_number(self):
-        out = R.render_dashboard(_sidecar())
-        self.assertIn("Authored this cycle", out)
-        self.assertRegex(out, r"Authored this cycle</span><span class=\"cohort-count\">3<")
+    def test_a_recorded_flow_value_still_renders_its_number(self):
+        """Retiring a WIDGET must not silently retire its DATA."""
+        sc = _sidecar()
+        out = R.render_backlog_widget(sc["improvement_backlog"], sc["proposal_backlog"])
+        self.assertIn("authored", out)
+        self.assertIn(">3<", out)
 
 
 class TestBothSidecarVocabularies(unittest.TestCase):
@@ -258,7 +262,7 @@ class TestBothSidecarVocabularies(unittest.TestCase):
     def test_no_legacy_widget_is_silently_empty_on_p17(self):
         """The ship defect: sections rendered with titles and no content."""
         out = R.render_dashboard(_sidecar())
-        for marker in ("Dispatch axis", "Ritual steps completed", "Authored this cycle"):
+        for marker in ("Dispatch axis", "Ritual steps completed", "authored"):
             with self.subTest(marker=marker):
                 self.assertIn(marker, out)
 
@@ -448,6 +452,103 @@ class TestNoInsiderVocabularyInThePublishedLayer(unittest.TestCase):
         for term in self.FORBIDDEN:
             with self.subTest(term=term):
                 self.assertNotIn(term, page)
+
+
+
+class TestSidecarSchemaGuard(unittest.TestCase):
+    """The guard against the drift that actually happened: 16 cycles in which
+    every top-level key matched and the sub-keys silently diverged."""
+
+    def test_a_missing_required_field_fails_the_render(self):
+        sc = _sidecar()
+        del sc["defect_ledger"]["open_total"]
+        with self.assertRaises(R.SidecarSchemaError) as ctx:
+            R.validate_sidecar(sc)
+        self.assertIn("defect_ledger.open_total", str(ctx.exception))
+
+    def test_a_rename_reports_BOTH_halves(self):
+        """A rename is one event with two halves. Reporting only the missing
+        key withholds the half that says what replaced it."""
+        sc = _sidecar()
+        sc["defect_ledger"]["open_count"] = sc["defect_ledger"].pop("open_total")
+        with self.assertRaises(R.SidecarSchemaError) as ctx:
+            R.validate_sidecar(sc)
+        msg = str(ctx.exception)
+        self.assertIn("open_total", msg, "the missing half")
+        self.assertIn("open_count", msg, "the replacement half")
+
+    def test_every_missing_field_is_named_not_just_the_first(self):
+        sc = _sidecar()
+        del sc["defect_ledger"]["open_total"]
+        del sc["enforcement_coverage"]["arms_built"]
+        with self.assertRaises(R.SidecarSchemaError) as ctx:
+            R.validate_sidecar(sc)
+        self.assertIn("open_total", str(ctx.exception))
+        self.assertIn("arms_built", str(ctx.exception))
+
+    def test_an_undeclared_sub_key_warns(self):
+        sc = _sidecar()
+        sc["discipline_metrics"]["brand_new_metric"] = 7
+        self.assertTrue(any("brand_new_metric" in w for w in R.validate_sidecar(sc)))
+
+    def test_an_undeclared_top_level_block_warns(self):
+        """Without this arm a renamed BLOCK passes silently — the sub-key loop
+        only inspects blocks it already knows about."""
+        sc = _sidecar()
+        sc["some_new_block"] = {"a": 1}
+        self.assertTrue(any("some_new_block" in w for w in R.validate_sidecar(sc)))
+
+    def test_record_only_blocks_do_not_warn(self):
+        """hook_health and latency_observations are carried as records with no
+        renderer. Declared, so their silence is deliberate, not an oversight."""
+        warns = R.validate_sidecar(_sidecar())
+        self.assertFalse([w for w in warns if "hook_health" in w or "latency_observations" in w])
+
+    def test_the_real_sidecar_validates_silently(self):
+        """Positive control. A guard that fires on correct input is noise."""
+        self.assertEqual(R.validate_sidecar(_sidecar()), [])
+
+    def test_an_unknown_schema_version_says_so_rather_than_passing(self):
+        sc = _sidecar()
+        sc["schema_version"] = "9.9"
+        self.assertTrue(any("no manifest" in w for w in R.validate_sidecar(sc)))
+
+
+class TestClosedSeriesIsDeclaredNotGapped(unittest.TestCase):
+    """Absence is not zero, and on a time series it is not a dip either."""
+
+    def _series(self, values):
+        return [{"retro_id": f"2026-01-01-p{i}", "discipline_metrics": {"checkpoint_bar_miss_rate": v},
+                 "proposal_backlog": {}, "fam_dispatch_distribution": {}}
+                for i, v in enumerate(values, start=1)]
+
+    def test_a_field_that_stops_being_reported_is_declared_closed(self):
+        out = R.render_trend_chart(self._series([0.3, 0.2, 0.25, None]))
+        self.assertIn("no longer reported after", out)
+
+    def test_a_live_series_is_not_declared_closed(self):
+        out = R.render_trend_chart(self._series([0.3, 0.2, 0.25, 0.1]))
+        self.assertNotIn("no longer reported after", out)
+
+
+class TestRetiredWidgetsAreGone(unittest.TestCase):
+    """Retired 2026-08-02 after measuring their sidecar coverage."""
+
+    RETIRED = ["Reframe-axis facet", "Latency observations",
+               "Proposal backlog cohort", "Pending before retro"]
+
+    def test_retired_widgets_do_not_render(self):
+        page = R.render_dashboard(_sidecar(), [_sidecar()])
+        for widget in self.RETIRED:
+            with self.subTest(widget=widget):
+                self.assertNotIn(widget, page)
+
+    def test_retiring_the_cohort_did_not_drop_its_surviving_data(self):
+        """A retired WIDGET must not silently retire its DATA."""
+        sc = _sidecar()
+        out = R.render_backlog_widget(sc["improvement_backlog"], sc["proposal_backlog"])
+        self.assertIn("authored", out)
+        self.assertIn("deferred", out)
 
 
 if __name__ == "__main__":

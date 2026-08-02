@@ -42,7 +42,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.1"
+DASHBOARD_VERSION = "3.2"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -201,6 +201,162 @@ def _parse_scalar(val: str) -> Any:
         return int(val)
     except ValueError:
         return val
+
+
+# ─── Schema validation ────────────────────────────────────────────────────────
+#
+# ⛔ WHY THIS EXISTS. Measured 2026-08-02 across 15 sidecars: every TOP-LEVEL key
+# in p17 matched p16, and at the sub-key level `discipline_metrics`,
+# `fam_dispatch_distribution`, `latency_observations` and `hook_health` shared
+# ZERO keys with p16 — `proposal_backlog` shared one of four. Nothing errored,
+# because a renamed sub-key makes `.get()` return None, which renders as an
+# em-dash: visually identical to "measured, and it was empty". Sixteen cycles
+# of sidecars drifted from their renderer one field at a time.
+#
+# Two arms, deliberately asymmetric:
+#   REQUIRED missing -> FAIL. The renderer depends on it; rendering anyway
+#     publishes a blank where a number belongs.
+#   UNKNOWN present  -> WARN. A new field is how every one of these renames
+#     announced itself, and a warn is what turns the NEXT one into a 10-second
+#     fix instead of a 16-cycle drift. It does not block, because a sidecar
+#     author adding a field before the renderer reads it is legitimate.
+#
+# The KNOWN set is the load-bearing half. A required-only check cannot see a
+# rename — it reports the old key missing and says nothing about the new key
+# sitting beside it.
+
+SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
+    "1.1": {
+        "required": [
+            "retro_id", "retro_date", "schema_version", "findings",
+            "defect_ledger.open_total",
+            "improvement_backlog.total", "improvement_backlog.open",
+            "enforcement_coverage.arms_built", "enforcement_coverage.arms_armed",
+            "instrument_liveness.silent_failures_observed",
+            "instrument_liveness.caught_by_control",
+            "discipline_metrics.ritual_steps_defined",
+            "discipline_metrics.ritual_steps_completed",
+            "discipline_metrics.quality_gate_traces_sampled",
+            "discipline_metrics.quality_gate_traces_passing",
+        ],
+        # Scalars the renderer reads directly. Declared so the unknown-block arm
+        # can stay strict: anything NOT declared here or in `known` warns.
+        "known_scalars": {
+            "retro_id", "retro_date", "schema_version", "findings", "prior_retro",
+            "window_start", "window_end", "trigger_source", "interactive_mode",
+            "meta_finding",
+        },
+        # Deliberately NOT rendered — carried as a record only. Declared so they
+        # do not warn, and so the fact that nothing reads them is explicit
+        # rather than discovered by someone wondering where the widget went.
+        "record_only": {"hook_health", "latency_observations"},
+        "known": {
+            "defect_ledger": {
+                "open_total", "live", "parked", "age_under_7d", "age_7_to_29d",
+                "age_30d_plus", "age_undated", "median_age_days", "max_age_days",
+                "measured_at", "measured_from", "notes",
+            },
+            "improvement_backlog": {
+                "total", "open", "done", "parked", "open_ready",
+                "open_decision_gated", "open_upstream_blocked", "notes",
+            },
+            "enforcement_coverage": {
+                "arms_built", "arms_armed", "arms_with_written_exit_criteria",
+                "arms_with_falsifiable_exit", "arms_declared_permanent",
+                "checks_enumerated", "checks_with_written_exit_criteria",
+                "checks_unit", "checks_unit_note", "measured_at", "measured_from",
+                "notes",
+            },
+            "instrument_liveness": {
+                "silent_failures_observed", "caught_by_control", "caught_by_review",
+                "notes",
+            },
+            "detection_provenance": {
+                "caught_by_control", "caught_by_operator", "caught_by_accident",
+                "instrumented_from", "status", "notes",
+            },
+            "discipline_metrics": {
+                "ritual_steps_defined", "ritual_steps_completed",
+                "monthly_subritual_due", "monthly_subritual_completed",
+                "quality_gate_traces_sampled", "quality_gate_traces_passing",
+                "response_marker_missed_turns", "response_marker_blocking_fires",
+                "response_marker_note", "notes",
+            },
+            "proposal_backlog": {"authored_this_cycle", "deferred_this_cycle", "notes"},
+            "fam_dispatch_distribution": {
+                "learning_agent", "adversarial_reviewer", "consultant",
+                "external_validator", "notes",
+            },
+        },
+    },
+}
+
+
+class SidecarSchemaError(Exception):
+    """A required field the renderer depends on is absent."""
+
+
+def validate_sidecar(sc: dict[str, Any]) -> list[str]:
+    """Fail on missing required fields; return a list of warnings for unknowns.
+
+    Raises SidecarSchemaError naming EVERY missing key, not just the first —
+    a validator that stops at the first failure turns one render into N.
+    """
+    version = str(sc.get("schema_version", ""))
+    spec = SIDECAR_SCHEMA.get(version)
+    if spec is None:
+        return [f"schema_version {version!r} has no manifest — nothing validated"]
+
+    def _resolve(path: str) -> Any:
+        cur: Any = sc
+        for part in path.split("."):
+            if not isinstance(cur, dict):
+                return None
+            cur = cur.get(part)
+        return cur
+
+    warnings: list[str] = []
+    # Top-level blocks absent from the manifest entirely. Without this arm a
+    # whole renamed BLOCK passes silently — the sub-key loop only inspects
+    # blocks it already knows about, so it is blind to the coarsest rename.
+    declared = (
+        set(spec["known"])
+        | set(spec.get("known_scalars", ()))
+        | set(spec.get("record_only", ()))
+    )
+    for block in sorted(set(sc) - declared):
+        warnings.append(
+            f"{block} is a top-level block with no manifest entry — it is "
+            "either record-only (no renderer reads it) or newly renamed"
+        )
+    for block, known in spec["known"].items():
+        val = sc.get(block)
+        if not isinstance(val, dict):
+            continue
+        for unknown in sorted(set(val) - known):
+            warnings.append(
+                f"{block}.{unknown} is not in the schema {version} manifest — "
+                "if this replaces an existing field, the renderer needs re-keying"
+            )
+
+    # Missing-required is computed LAST and carries the warnings with it. A
+    # rename is one event with two halves — the old key gone, the new key
+    # present — and raising before the unknown scan reports only the half that
+    # says "broken", withholding the half that says "and here is what replaced
+    # it". The docstring above claims this check can see a rename; this is what
+    # makes that true.
+    missing = [k for k in spec["required"] if _resolve(k) is None]
+    if missing:
+        msg = (
+            "sidecar is missing required field(s) the renderer depends on: "
+            + ", ".join(missing)
+            + " — this is the sub-key drift guard; either restore the field or "
+              "update SIDECAR_SCHEMA and the renderer together."
+        )
+        if warnings:
+            msg += " Undeclared field(s) present, likely the rename: " + "; ".join(warnings)
+        raise SidecarSchemaError(msg)
+    return warnings
 
 
 # ─── Renderers ────────────────────────────────────────────────────────────────
@@ -486,11 +642,17 @@ def _trend_annotation(values: list[float | int | None], lower_is_better: bool = 
 def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
     """Sprint-2 multi-retro trend rendering. Honest at n=3.
 
-    Three metric cards: checkpoint miss rate, decision velocity (executed
-    findings per cycle), Teacher invocations. Each card carries a 3-point
-    sparkline + the underlying values + a directional annotation comparing
-    the last two cycles. Apples-to-apples caveat for miss rate documented
-    inline (p3 measured this-retro-session, p4/p5 measure cycle-window).
+    Each card carries a sparkline + the underlying values + a directional
+    annotation comparing the last two cycles.
+
+    ⛔ A CARD WHOSE FIELD STOPPED BEING REPORTED IS DECLARED CLOSED, NEVER
+    SILENTLY GAPPED. Measured 2026-08-02: of 15 sidecars, `checkpoint_bar_miss_rate`
+    and `teacher_invocations` cover 14 and die at p17, while their p17 successors
+    (`response_marker_missed_turns`, `fam_dispatch_distribution.learning_agent`)
+    cover 1/15. Grafting a successor onto its predecessor's line would publish a
+    trend across a UNIT CHANGE — the old miss figure is a RATE, the new one is a
+    COUNT OF TURNS. The history is real and is kept; what is refused is the
+    implication that the line continues.
     """
     if len(sidecars) < 2:
         return (
@@ -506,8 +668,12 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
         (sc.get("discipline_metrics") or {}).get("checkpoint_bar_miss_rate")
         for sc in sidecars
     ]
+    # Re-keyed 2026-08-02: `executed_this_cycle` covers 14/15 and dies at p17;
+    # `authored_this_cycle` covers 15/15. This is a genuine re-key — the whole
+    # series exists under the new field — so the label changes with it, because
+    # authored and executed are different predicates.
     velocity_values: list[float | int | None] = [
-        (sc.get("proposal_backlog") or {}).get("executed_this_cycle")
+        (sc.get("proposal_backlog") or {}).get("authored_this_cycle")
         for sc in sidecars
     ]
     teacher_values: list[float | int | None] = [
@@ -529,6 +695,16 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
             f'<span class="trend-axis-label">{html.escape(l)}</span>' for l in labels
         )
         annotation = _trend_annotation(values, lower_is_better=lower_is_better)
+        # Declare a closed series rather than letting the reader assume the
+        # final gap is a bad cycle. Absence is not zero, and on a time series
+        # it is not a dip either.
+        last_live = max((i for i, v in enumerate(values) if v is not None), default=-1)
+        if 0 <= last_live < len(values) - 1:
+            suffix = f"series closed at {labels[last_live]}"
+            annotation = (
+                f'<span class="trend-closed">no longer reported after '
+                f'{html.escape(labels[last_live])}</span>'
+            )
         note_html = (
             f'<p class="trend-note">{html.escape(note)}</p>' if note else ""
         )
@@ -551,7 +727,7 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
                  "Windows differ by metric; treat cross-cycle deltas as indicative, not strict.",
         ),
         _card(
-            "Decision velocity", "proposals executed / cycle",
+            "Proposal authoring", "proposals authored / cycle",
             velocity_values, value_format="",
         ),
         _card(
@@ -895,7 +1071,15 @@ def render_defect_inventory(dl: dict[str, Any]) -> str:
       </div>"""
 
 
-def render_backlog_widget(bl: dict[str, Any]) -> str:
+def render_backlog_widget(bl: dict[str, Any], pb: dict[str, Any] | None = None) -> str:
+    """Improvement backlog, plus this cycle's proposal flow.
+
+    The 5-stage cohort funnel was retired 2026-08-02: three of its stages
+    (`pending_before_retro`, `approved_not_executed`, `executed_this_cycle`)
+    stopped being reported at p17, leaving a funnel that rendered two figures
+    and three dashes. The two surviving figures are folded in here rather than
+    dropped — retiring a WIDGET must not silently retire its DATA.
+    """
     if not bl:
         return '<p class="empty-note">No improvement backlog in this sidecar.</p>'
     axes = [
@@ -920,6 +1104,16 @@ def render_backlog_widget(bl: dict[str, Any]) -> str:
         f'<span class="bk-chip"><span class="bk-chip-n">{_present(n)}</span>{html.escape(label)}</span>'
         for label, n in axes
     )
+    pb = pb or {}
+    flow = [("authored", pb.get("authored_this_cycle")), ("deferred", pb.get("deferred_this_cycle"))]
+    flow_html = (
+        '<div class="bk-flow"><span class="bk-flow-label">this cycle</span>'
+        + "".join(
+            f'<span class="bk-chip"><span class="bk-chip-n">{_present(n)}</span>{html.escape(lbl)}</span>'
+            for lbl, n in flow
+        )
+        + "</div>"
+    ) if any(v is not None for _, v in flow) else ""
     return f"""
       <div class="bk-head">
         <span class="bk-total">{bl.get("total", "—")}</span>
@@ -929,6 +1123,7 @@ def render_backlog_widget(bl: dict[str, Any]) -> str:
         <span>{bl.get("done", "—")} done</span><span>{open_n if open_n is not None else "—"} open</span><span>{bl.get("parked", "—")} parked</span>
       </div>
       <div class="bk-axes">{chips}</div>
+      {flow_html}
       <div class="bk-foot">
         Scheduling axis is a <strong>derived</strong> view — an item whose status carries an
         unrecognised value is dropped from it silently, so these are a claim about what
@@ -1004,7 +1199,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     health = compute_health(sc)
     health_html = render_health_widget(health)
     inventory_html = render_defect_inventory(sc.get("defect_ledger") or {})
-    backlog_html = render_backlog_widget(sc.get("improvement_backlog") or {})
+    backlog_html = render_backlog_widget(sc.get("improvement_backlog") or {}, sc.get("proposal_backlog") or {})
 
     findings_rows_html = "".join(render_finding_row(f) for f in findings)
     tally_html = render_tally(discipline.get("luma_tally_by_category") or {})
@@ -1088,60 +1283,6 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
           <h3>Discipline metrics</h3>
           {discipline_rows_html}
         </div>
-        <div class="band band-muted">
-          <h3>Reframe-axis facet <span class="band-title-suffix">deep-dive · narrative-review-pending</span></h3>
-          <div class="tally">
-            {tally_html}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2 class="section-title">Proposal backlog cohort <span class="section-title-suffix">authoring → approval → execution flow</span></h2>
-      <div class="bands">
-        <div class="band">
-          <h3>This cycle</h3>
-          <div class="cohort">
-            <div class="cohort-stage"><span class="cohort-label">Pending before retro</span><span class="cohort-count">{_present(backlog.get("pending_before_retro"))}</span></div>
-            <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Approved (not yet executed)</span><span class="cohort-count">{_present(backlog.get("approved_not_executed"))}</span></div>
-            <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Executed this cycle</span><span class="cohort-count">{_present(backlog.get("executed_this_cycle"))}</span></div>
-            <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Authored this cycle</span><span class="cohort-count">{_present(backlog.get("authored_this_cycle"))}</span></div>
-            <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Deferred this cycle</span><span class="cohort-count">{_present(backlog.get("deferred_this_cycle"))}</span></div>
-          </div>
-        </div>
-        <div class="band">
-          <h3>Latency observations</h3>
-          {'' if latency_has_data else '<p class="empty-note">Not recorded this cycle — the band is suppressed rather than published as a row of dashes, which reads as measured-and-empty.</p>'}
-          {f'''<div class="kv-row">
-            <span class="kv-key">Source</span>
-            <span class="kv-val kv-val-mono">{html.escape(str(latency.get("source", "—")))}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-key">Sessions in window</span>
-            <span class="kv-val">{latency_window_str}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-key">Median first-tool latency</span>
-            <span class="kv-val">{latency_median_str}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-key">P95</span>
-            <span class="kv-val">{latency_p95_str}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-key">Max</span>
-            <span class="kv-val">{latency_max_str}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-key">Violations (&gt;120s)</span>
-            <span class="kv-val">{latency_violations_str}</span>
-          </div>''' if latency_has_data else ''}
-        </div>
       </div>
     </section>
 
@@ -1211,6 +1352,16 @@ def main(argv: list[str]) -> int:
         return 2
 
     sc = load_sidecar(sidecar)
+
+    # Validate BEFORE rendering. A blank widget is the failure mode this
+    # guards, so producing the page and then complaining defeats the point.
+    try:
+        for warning in validate_sidecar(sc):
+            print(f"schema: WARN  {warning}", file=sys.stderr)
+    except SidecarSchemaError as exc:
+        print(f"schema: FAIL  {exc}", file=sys.stderr)
+        return 3
+
     retros_dir = sidecar.parent
     all_sidecars = load_all_sidecars(retros_dir)
     html_out = render_dashboard(sc, all_sidecars=all_sidecars)

@@ -893,3 +893,29 @@ section {
   line-height: 1.55;
   color: var(--text-2, #9aa4b2);
 }
+
+/* This-cycle proposal flow — folded into the backlog widget when the 5-stage
+   cohort funnel was retired. Retiring a widget must not retire its data. */
+.bk-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+.bk-flow-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-3, #6b7280);
+}
+
+/* A trend series whose field stopped being reported. Declared, never gapped —
+   absence is not zero, and on a time series it is not a dip either. */
+.trend-closed {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-3, #6b7280);
+}
