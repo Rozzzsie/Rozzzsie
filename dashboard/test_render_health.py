@@ -183,5 +183,85 @@ class TestBarRendering(unittest.TestCase):
                 self.assertEqual(R._bar(value).count("█"), filled)
 
 
+
+class TestAbsenceNeverRendersAsZero(unittest.TestCase):
+    """v3.0 shipped three cohort stages reading 0 for fields p17 never carried.
+
+    A fabricated zero is worse than a blank on a public artifact: it sits among
+    honest em-dashes and reads as a measurement that was taken.
+    """
+
+    def test_present_renders_a_dash_for_none(self):
+        self.assertEqual(R._present(None), "—")
+
+    def test_present_preserves_a_real_zero(self):
+        """A MEASURED zero must survive. Absence and zero are different facts."""
+        self.assertEqual(R._present(0), "0")
+
+    def test_cohort_stages_absent_from_p17_render_as_dashes(self):
+        out = R.render_dashboard(_sidecar())
+        cohort = out[out.index("Proposal backlog cohort"):]
+        cohort = cohort[:cohort.index("Latency observations")]
+        for label in ("Pending before retro", "Approved (not yet executed)", "Executed this cycle"):
+            with self.subTest(stage=label):
+                seg = cohort[cohort.index(label):]
+                seg = seg[:seg.index("</div>", seg.index("cohort-count"))]
+                self.assertIn("—", seg, f"{label} rendered a value for an unrecorded field")
+                self.assertNotIn(">0<", seg)
+
+    def test_a_recorded_cohort_stage_still_renders_its_number(self):
+        out = R.render_dashboard(_sidecar())
+        self.assertIn("Authored this cycle", out)
+        self.assertRegex(out, r"Authored this cycle</span><span class=\"cohort-count\">3<")
+
+
+class TestBothSidecarVocabularies(unittest.TestCase):
+    """p17 renamed nearly every metric field. The renderer must speak both."""
+
+    def test_flat_dispatch_counts_render(self):
+        out = R.render_fam_dispatch_widget({"learning_agent": 1, "consultant": 0})
+        self.assertIn("learning agent", out)
+        self.assertIn("total", out)
+        self.assertNotIn("no fam activity", out)
+
+    def test_axis_shaped_dispatch_still_renders(self):
+        out = R.render_fam_dispatch_widget(
+            {"dispatch_axis": {"total": 4, "subagents": [{"name": "x", "count": 4}]}}
+        )
+        self.assertIn("Dispatch axis", out)
+        self.assertIn("x", out)
+
+    def test_genuinely_empty_dispatch_says_so(self):
+        self.assertIn("no fam activity", R.render_fam_dispatch_widget({}))
+
+    def test_discipline_renders_the_p17_vocabulary(self):
+        out = R.render_discipline_rows(_sidecar()["discipline_metrics"])
+        self.assertIn("Ritual steps completed", out)
+        self.assertIn("Quality-gate traces passing", out)
+        self.assertIn("Response-marker missed turns", out)
+        self.assertNotIn("no discipline metrics", out)
+
+    def test_discipline_renders_the_p16_vocabulary(self):
+        out = R.render_discipline_rows({"checkpoint_bar_miss_rate": 0.19})
+        self.assertIn("Checkpoint miss rate", out)
+        self.assertIn("19%", out)
+
+    def test_response_marker_shows_BOTH_units_never_fires_alone(self):
+        """Reporting fires as a turn count overstates it ~13x. Both or neither."""
+        out = R.render_discipline_rows(
+            {"response_marker_missed_turns": 1, "response_marker_blocking_fires": 33}
+        )
+        self.assertIn("1", out)
+        self.assertIn("33 blocking fires", out)
+        self.assertIn("different units", out)
+
+    def test_no_legacy_widget_is_silently_empty_on_p17(self):
+        """The ship defect: sections rendered with titles and no content."""
+        out = R.render_dashboard(_sidecar())
+        for marker in ("Dispatch axis", "Ritual steps completed", "Authored this cycle"):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

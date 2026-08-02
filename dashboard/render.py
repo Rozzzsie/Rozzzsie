@@ -205,6 +205,18 @@ def _parse_scalar(val: str) -> Any:
 
 # ─── Renderers ────────────────────────────────────────────────────────────────
 
+def _present(value: Any, dash: str = "—") -> str:
+    """Render a value, or a dash when it was never recorded.
+
+    ⛔ NEVER default a missing measurement to 0. `dict.get(key, 0)` turns "this
+    cycle did not record it" into "this cycle measured zero" — indistinguishable
+    on the page, and a fabricated measurement on a public artifact. Shipped in
+    v3.0: three cohort stages rendered 0 for fields the p17 sidecar has never
+    carried, sitting among honest em-dashes and reading as measured.
+    """
+    return dash if value is None else html.escape(str(value))
+
+
 def render_tile(value: Any, label: str, detail: str | None = None) -> str:
     detail_html = (
         f'<div class="tile-detail">{html.escape(detail)}</div>' if detail else ""
@@ -337,6 +349,36 @@ def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
     if "reactions_axis" in fam:
         sub_bands.append(_render_sub_band("Reactions axis", fam["reactions_axis"]))
 
+    # p17 onward carries FLAT counts (`learning_agent: 1`) instead of the p16
+    # axis-of-subagent-dicts shape. Neither vocabulary is wrong; the renderer
+    # simply has to speak both, or a sidecar that HAS the data renders blank —
+    # which is what shipped, and reads identically to "no dispatches happened".
+    if not sub_bands:
+        rows = [
+            (k, v) for k, v in fam.items()
+            if isinstance(v, int) and k not in ("cycle_window",)
+        ]
+        if rows:
+            rows.sort(key=lambda kv: -kv[1])
+            rows_html = "".join(
+                f'<div class="kv-row fam-row{" kv-row-muted" if n == 0 else ""}">'
+                f'<span class="kv-key">{html.escape(k.replace("_", " "))}</span>'
+                f'<span class="kv-val">{n}</span></div>'
+                for k, n in rows
+            )
+            total = sum(n for _, n in rows)
+            sub_bands.append(
+                f'<div class="fam-sub-band">'
+                f'<h4 class="fam-sub-band-label">Dispatch axis</h4>{rows_html}'
+                f'<div class="kv-row fam-row-total"><span class="kv-key">total</span>'
+                f'<span class="kv-val">{total}</span></div></div>'
+            )
+
+    if not sub_bands:
+        return (
+            "<p class='kv-row'><span class='kv-key'>"
+            "(no fam activity recorded this cycle)</span></p>"
+        )
     return "".join(sub_bands)
 
 
@@ -697,6 +739,58 @@ def render_health_widget(health: dict[str, Any]) -> str:
       </p>"""
 
 
+def render_discipline_rows(dm: dict[str, Any]) -> str:
+    """Render whichever discipline vocabulary this sidecar speaks.
+
+    p3-p16 record a checkpoint miss RATE; p17 onward record ritual-step and
+    quality-gate counts plus a response-marker figure split into turns and
+    fires. The renderer knew only the first vocabulary, so a sidecar full of
+    discipline data rendered a single em-dash. Rows are emitted only for keys
+    that are PRESENT — an absent metric produces no row at all rather than a
+    row reading zero.
+    """
+    rows: list[str] = []
+
+    def add(key: str, val: str, note: str = "") -> None:
+        note_html = f'<span class="kv-note">{html.escape(note)}</span>' if note else ""
+        rows.append(
+            f'<div class="kv-row"><span class="kv-key">{html.escape(key)}</span>'
+            f'<span class="kv-val">{val}</span>{note_html}</div>'
+        )
+
+    rate = dm.get("checkpoint_bar_miss_rate")
+    if isinstance(rate, (int, float)):
+        add("Checkpoint miss rate", f"{rate * 100:.0f}%")
+    prior = dm.get("checkpoint_bar_prior_session_rate")
+    if isinstance(prior, (int, float)):
+        add("Prior session", f"{prior * 100:.0f}%")
+
+    defined, completed = dm.get("ritual_steps_defined"), dm.get("ritual_steps_completed")
+    if defined is not None and completed is not None:
+        add("Ritual steps completed", f"{completed}/{defined}")
+    if dm.get("monthly_subritual_due") is not None:
+        add("Monthly sub-ritual",
+            "completed" if dm.get("monthly_subritual_completed") else "DUE, not run")
+
+    sampled, passing = dm.get("quality_gate_traces_sampled"), dm.get("quality_gate_traces_passing")
+    if sampled is not None and passing is not None:
+        add("Quality-gate traces passing", f"{passing}/{sampled}")
+
+    missed = dm.get("response_marker_missed_turns")
+    fires = dm.get("response_marker_blocking_fires")
+    if missed is not None:
+        # Both figures are shown because they are DIFFERENT UNITS and the larger
+        # one is the wrong one — reporting fires alone overstates the miss count
+        # by an order of magnitude, which this OS has done to itself twice.
+        detail = f" · {fires} blocking fires" if fires is not None else ""
+        add("Response-marker missed turns", f"{missed}{detail}",
+            "turns and fires are different units; the fire count is not a turn count")
+
+    if not rows:
+        return '<div class="kv-row"><span class="kv-key">(no discipline metrics recorded this cycle)</span></div>'
+    return "".join(rows)
+
+
 def render_defect_inventory(dl: dict[str, Any]) -> str:
     if not dl:
         return '<p class="empty-note">No defect ledger in this sidecar.</p>'
@@ -818,6 +912,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     latency_violations_str = str(latency_violations) if latency_violations is not None else "—"
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
 
+    discipline_rows_html = render_discipline_rows(discipline)
     health = compute_health(sc)
     health_html = render_health_widget(health)
     inventory_html = render_defect_inventory(sc.get("defect_ledger") or {})
@@ -903,11 +998,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
       <div class="bands">
         <div class="band">
           <h3>Discipline metrics</h3>
-          <div class="kv-row">
-            <span class="kv-key">Current checkpoint miss rate</span>
-            <span class="kv-val">{miss_pct}</span>
-          </div>
-          {f'<div class="kv-row"><span class="kv-key">Prior session</span><span class="kv-val">{prior_miss * 100:.0f}%</span></div>' if isinstance(prior_miss, (int, float)) else ""}
+          {discipline_rows_html}
         </div>
         <div class="band band-muted">
           <h3>Luma reframe-axis facet <span class="band-title-suffix">deep-dive · narrative-review-pending</span></h3>
@@ -924,13 +1015,15 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
         <div class="band">
           <h3>This cycle</h3>
           <div class="cohort">
-            <div class="cohort-stage"><span class="cohort-label">Pending before retro</span><span class="cohort-count">{backlog.get("pending_before_retro", 0)}</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Pending before retro</span><span class="cohort-count">{_present(backlog.get("pending_before_retro"))}</span></div>
             <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Approved (not yet executed)</span><span class="cohort-count">{backlog.get("approved_not_executed", 0)}</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Approved (not yet executed)</span><span class="cohort-count">{_present(backlog.get("approved_not_executed"))}</span></div>
             <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Executed this cycle</span><span class="cohort-count">{backlog.get("executed_this_cycle", 0)}</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Executed this cycle</span><span class="cohort-count">{_present(backlog.get("executed_this_cycle"))}</span></div>
             <div class="cohort-arrow">↓</div>
-            <div class="cohort-stage"><span class="cohort-label">Authored this cycle</span><span class="cohort-count">{backlog.get("authored_this_cycle", 0)}</span></div>
+            <div class="cohort-stage"><span class="cohort-label">Authored this cycle</span><span class="cohort-count">{_present(backlog.get("authored_this_cycle"))}</span></div>
+            <div class="cohort-arrow">↓</div>
+            <div class="cohort-stage"><span class="cohort-label">Deferred this cycle</span><span class="cohort-count">{_present(backlog.get("deferred_this_cycle"))}</span></div>
           </div>
         </div>
         <div class="band">
