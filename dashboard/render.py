@@ -1341,7 +1341,10 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
 
 def main(argv: list[str]) -> int:
     here = Path(__file__).resolve().parent
-    default_sidecar = here.parent / "retros" / "2026-07-26-p16.yaml"
+    # Retargeted every cycle at P10 step 9(c). Verify by running this file
+    # with NO arguments and reading the header: found stale at p17, where
+    # the documented bare command rendered the PREVIOUS cycle silently.
+    default_sidecar = here.parent / "retros" / "2026-08-02-p17.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar
