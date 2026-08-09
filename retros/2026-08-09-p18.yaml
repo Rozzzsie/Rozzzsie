@@ -125,9 +125,25 @@ findings:
     evidence_count: 5
     source_catchment: "learning-agent-analysis"
     recommendation: "accept"
-    status: "carried-open"
+    status: "partial-executed"
     execution_target_week: "next-cycle"
-    target_surface: "receipt-surface architecture — proposal pending operator decision"
+    target_surface: >-
+      receipt-surface registry. OPERATOR RULED AFTER THIS SIDECAR WAS FIRST
+      PUBLISHED, which is itself the finding below: accept, but narrowed to the
+      SINGLE event-driven arm whose trigger is visible in the commit index, with
+      the cadence-driven arms explicitly excluded because a staleness bound
+      fitted to expectation rather than to data is the fitted-to-its-own-tests
+      defect wearing a registry's clothes. Warn-not-block on first ship, on the
+      standing ground that a new commit-gate arm widens the blast radius of every
+      unrelated commit and gutted guards get disabled. Filed with a scheduling
+      axis and an owner rather than queued onto an event — the correction this
+      cycle's own proposal-ledger finding demanded — and recorded as RULED, NOT
+      BUILT, because those are two claims and only one is true. ⭐ THE HALF THAT
+      DID LAND IS DOCTRINE: the missing ceremony receipt became a third step in
+      the version-bump ritual in the governance anchor. That is a fifth instance
+      of the exact category this finding measures failing four times out of four.
+      It may hold; the evidence says the mechanised kind is the only kind that
+      has, and that asymmetry is the whole argument for building the registry.
 
 proposal_backlog:
   authored_this_cycle: 3
@@ -154,6 +170,23 @@ proposal_backlog:
     as wrong and used it as evidence: the orchestrator's handoff reported 62 open
     proposals, a number no matcher over that file returns, which became a live
     instance of the very class it was asked to analyse.
+
+    ⛔ AN ORDERING DEFECT IN THE RITUAL ITSELF, FOUND BY THE OPERATOR AND BY
+    NOTHING ELSE. This retrospective publishes its public record at step 9 and
+    takes operator decisions at step 8, an order that silently assumes every
+    decision is ruled before publication. Two proposals were ruled roughly forty
+    minutes AFTER this file was first written and pushed, and no step reopens it.
+    The stale field was not a narrative claim — those are records and are
+    correctly frozen — it was a forward-looking disposition reading "proposal
+    pending operator decision" on a proposal that had been decided. ⭐ A single
+    artifact carries both kinds: a title that must stay true of the state it
+    names forever, and a status that must resolve NOW, and only the second rots.
+    Nothing detects it, because a stale disposition is well-formed, plausible,
+    and describes a state that genuinely existed an hour earlier. Direction is
+    the usual one: it under-reports progress, so it reads as conservative rather
+    than wrong, and no reviewer chases a record that claims LESS than happened.
+    Recorded rather than quietly corrected, and the ritual now owes a
+    re-publication step whenever a decision lands after its own publication.
 
 hook_health:
   silent_hooks_observed: 0
