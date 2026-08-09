@@ -1,0 +1,355 @@
+# P10 Retro Sidecar — 2026-08-09 (P10 retro #18, sanitized public snapshot)
+#
+# Window 2026-08-02 → 2026-08-09 (7 days). NOT the first retro of the month —
+# the prior cycle was August's first — so the monthly housecleaning sub-ritual
+# does not fire and only the ten weekly steps are in scope.
+# Stakeholder names genericized to role-class; workspace names genericized per the
+# public workspace table; private personal-track + career-track + capital-track
+# references dropped entirely; evidence citations to private files, commit hashes,
+# hook filenames, chat/docs thread IDs, internal item numbers, exact protocol
+# version strings, and product internals stripped.
+#
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing required field). The `schema_version` below records which revision this file was authored against.
+#
+# Narrative companion: SKIP-PASS, same reason as p9–p17 — the centre of gravity IS
+# governance, so the findings below ARE the cycle's substance.
+#
+# Mode this cycle: the prior cycle found that nine instruments used to CONDUCT it
+# each returned a confident wrong answer. This cycle the same class recurred SIX
+# TIMES IN ONE RITUAL — and the rule written to prevent it had been promoted forty
+# minutes before the first instance, by the same author, who had read it at startup.
+# That is the cycle's finding. The mechanism is now understood and is narrower than
+# the rule assumed: the existing guards all trigger on a ZERO or a SILENCE, and half
+# of these failures return a plausible NON-ZERO, which is its own positive control.
+
+retro_id: "2026-08-09-p18"
+retro_date: "2026-08-09"
+window_start: "2026-08-02"
+window_end: "2026-08-09"
+prior_retro: "2026-08-02-p17"
+interactive_mode: true
+trigger_source: "overdue-banner-operator-opened-interactive-fresh-session-by-doctrine"
+
+meta_finding: >
+  A matcher is a hypothesis about a format you did not author, and the guards
+  written for this class all key on a ZERO. Six times in one ritual a pattern was
+  written from expectation rather than derived from the artifact; three of the six
+  returned a plausible NON-ZERO — 307, 4, and 62 — which no existing trigger can
+  fire on, because a non-zero result IS its own positive control: it proves the
+  object was reached, the tool ran, and the pattern compiled. It passes
+  affirmatively, so nothing invites a re-check. The pinned tripwire made this
+  worse rather than better: it summarized the governing rule as bounding what an
+  instrument can REACH, and every one of these objects was fully reachable, so
+  consulting the tripwire correctly routed the author away from the arm that was
+  failing. What actually worked, six times out of six, is not a rule and is not
+  mechanisable — a contradiction between the result and one fact known about the
+  object WITHOUT the matcher. A seventh instance fired while WRITING rather than
+  reading: a capture file was labelled as a verbatim agent return without being
+  opened, when it in fact held the full transcript, a superset. The false label
+  was the flattering one.
+
+findings:
+  - id: "1.1"
+    title: "A MATCHER IS A HYPOTHESIS ABOUT A FORMAT YOU DID NOT AUTHOR, AND HALF ITS FAILURES RETURN A PLAUSIBLE NON-ZERO. Six instances in a single ritual, each producing a confident finding-shaped wrong answer: a date pattern demanding a delimiter the entries do not carry reported ZERO changelog entries for the week on a file modified that same hour (true figure 96, corpus 70 → 332); a structural-field query keyed on the wrong envelope shape returned 307 unclassified records and an all-zero health table; a card-delimiter guess returned 4 cards against 1,439; a verdict pattern returned zero verdicts on a trace that had passed its own blocking gate, briefly resembling a hole in a Tier-1 gate; a status matcher counted every status value rather than the one asked for, reporting 62 open proposals against 13; and a heading pattern found zero version banners in a file full of them. THE GOVERNING RULE HAD BEEN PROMOTED FORTY MINUTES BEFORE THE FIRST INSTANCE, BY THE SAME AUTHOR, WHO HAD READ IT AT SESSION START — and it did not fire once. The reason is structural rather than attentional: the two guards covering this family trigger on a grep's SILENCE and on a ZERO-MATCH sweep respectively, and three of the six returned non-zero values. A non-zero result is its own positive control and passes affirmatively. Aggravator: the pinned always-on tripwire described the rule as bounding what the instrument can REACH; every object here was fully reachable, so an author who checks the tripwire, confirms reachability and proceeds has used it CORRECTLY and still ships the wrong number. What worked six times out of six was a contradiction between the result and one independently-known fact about the same object — file-modified-today versus zero entries, a live error rate versus columns summing to zero, ten thousand lines versus four cards. Fix is ORDER, not vigilance: derive the format from the artifact before writing the pattern."
+    category: "rule-extension"
+    evidence_count: 7
+    source_catchment: "self-audit-during-ritual"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-09"
+    target_surface: "output-checklist — new section, routed; plus the top-level governance file; plus correction of two pinned tripwires"
+
+  - id: "1.2"
+    title: "THE PUBLIC DASHBOARD HAS BEEN PUBLISHING A DISCIPLINE RATE DERIVED FROM FIRE COUNTS AND LABELLED AS TURNS — DENOMINATOR INFLATED 13.5x. The metrics tally that feeds this very file increments its counter once per firelog RECORD and emits the ratio with the literal comment 'substantive turns'. In a long agentic turn the post-tool hook re-grades the SAME last-completed turn once per tool call, so the raw figures for this window were 2500 of 6922 — a rate of 36% and a denominator implying roughly 182 substantive turns per session across 38 sessions. Deduplicated on the per-turn signature the hook already writes into every record, the true figures are 97 missed of 511 graded turns, a rate of 19.0%. Both numerator and denominator are inflated and the numerator inflates MORE, so the published rate is nearly double the real one. This is the same fire-versus-turn confusion the private doctrine has recorded against a triage counter for weeks; what is new is finding it in a PUBLISHED metric, where the reader has no access to the underlying log and no way to sanity-check the denominator. Caught by contradiction: the 36% figure disagreed with this same cycle's response-discipline audit, which found the marker largely healthy. The corrected figure is published below; the tally itself is a code change and is filed rather than patched inside a retro."
+    category: "measurement-integrity"
+    evidence_count: 1
+    source_catchment: "public-artifact-authoring"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-09"
+    target_surface: "this sidecar publishes the corrected figure; tally fix filed to the improvement backlog"
+
+  - id: "1.3"
+    title: "THE INSTRUMENT THAT CERTIFIES HOOK HEALTH IS BLIND TO ONE OF THE TWO RECORD SHAPES IT READS, AND FAILS OPEN. The seven-day hook fire-rate audit reports per-hook classification columns keyed on one envelope field. Three hooks emit a differently-shaped record that carries no such field, so every one of their records is silently unclassified. Consequence measured: one grading hook carries 83 error records across its lifetime while the audit's error column for that hook reads 0. The audit returns a clean bill of health and the cleanliness is partly an artefact of what it cannot parse. This is the same enumeration-bound defect as finding 1.1 one level up — the instrument's own pattern list is the limit — and it matters more here because this is the instrument whose entire job is detecting instruments that have gone quiet."
+    category: "hook-health"
+    evidence_count: 1
+    source_catchment: "hook-fire-rate-audit"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "hook-health audit script — filed, not patched in-retro"
+
+  - id: "2.1"
+    title: "TWO DEFECT ROWS WENT STALE INSIDE ONE WINDOW, BOTH MANUFACTURING PHANTOM WORK, AND NEITHER IS DETECTABLE BY ANY GATE. One row asserted an enforcement flag was built-but-parked; it was armed on day one of this window and the row was false for all seven days. A second row claimed cross-pollination had been logged once in eight days; the positive control the row itself demanded found no receipts on the originating surface but EIGHT in-window seeds across six workspaces on the destination surfaces — corroborated independently by the learning-layer agent over a different corpus. The work happened; the receipt did not. Both are the known back-edge class — the state cascade writes its changelog FORWARD and never reads the open-items board BACKWARD — and both fail in the direction nothing audits: a stale open item INVENTS an obligation, and nobody audits a to-do list for things secretly done. Scope, measured: 91 rows in the scanned region, 47 of which cite a machine-checkable file path and none of which were re-verified this cycle. Two of two rows touched were stale; that is a signal, not a rate."
+    category: "discipline"
+    evidence_count: 2
+    source_catchment: "defect-ledger-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-09"
+    target_surface: "both rows corrected; bulk re-verification of the 47 filed as its own arc"
+
+  - id: "2.2"
+    title: "A MANDATORY ADVERSARIAL-REVIEW CEREMONY RAN AND LEFT NO RECEIPT, FOR TWO CONSECUTIVE GOVERNANCE RELEASES. The standing rule requires an adversarial pass on every governance version bump, with the verdict persisted to a dated audit artifact. Across 74 such artifacts the series runs unbroken for three months and then stops one day before two releases shipped on the same day; neither has an audit file. AND THE REVIEWS DEMONSTRABLY RAN — six in-window evidence cards across at least four sessions describe findings from those passes, including findings that changed decisions, and one release's own banner asserts two rounds completed while the other's records its pass as still owed. So this is not a skipped ceremony, it is a missing RECEIPT — the same shape as the cross-pollination row above, on a different surface, in the same window. Recorded as the second member of a class the learning-layer agent independently counted to four: of five receipt surfaces in this window, the four governed by DOCTRINE all failed and the one mechanised at the commit boundary did not fail once."
+    category: "process-gap"
+    evidence_count: 2
+    source_catchment: "ceremony-audit"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "operator decision — back-fill the verdicts or record the gap and move"
+
+  - id: "3.1"
+    title: "A PROPOSAL QUEUED ONTO AN EVENT RATHER THAN AN OWNER ROTS IN BOTH DIRECTIONS, AND ONLY ONE DIRECTION LOOKS LIKE A PROBLEM. Three approved rule-change proposals carried false status records. Two had been queued to ride 'the next governance version bump' — a trigger with no reader. That trigger then FIRED TWICE on the same day and neither release carried either item, because no release author consulted the queue. The two failed in opposite ways: one is genuinely unlanded and honestly reads as pending; the other's SUBSTANCE landed eleven days later by a completely different route, driven by a live four-agent incident, into a different home than the proposal named — and the entry still read APPROVED-QUEUED, RIDES THE NEXT BUMP for twenty-one days. A third read pending while its mechanism had been live in the commit gate for eight days. The landed-elsewhere case is the dangerous one: it is phantom work with an approval attached, and any queue-depth figure quoted from the ledger inherits every stale row. One near-miss worth recording: a similarly-worded line in the protocols file looked like the missing rule having landed, and was traced by content-search to a release fifteen versions earlier — a candidate raised, checked, and correctly rejected rather than accepted as a landing."
+    category: "rule-extension"
+    evidence_count: 3
+    source_catchment: "proposal-ledger-reconciliation"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-09"
+    target_surface: "output-checklist — new section, routed; plus the state-update contract in the top-level governance file; all three statuses corrected"
+
+  - id: "4.1"
+    title: "THE CROSS-WORKSPACE STATUS FILE IS BACK IN READ-CONTRACT BREACH TWO DAYS AFTER BEING FOLDED BACK INSIDE IT. The file must full-load at session start; it now measures roughly 1.3x its token contract and truncates, silently. The prior cycle resolved an identical breach structurally — relocating full records to retrieval history and leaving each row as a headline plus pointer — and the file has grown back past the bound within a week, which reframes the prior fix as buying time rather than closing the class. The specific hazard is unchanged and is why this is reported rather than absorbed: a truncated read returns CONTENT, not an error, so no consumer can detect its own short read, and the agent proceeds believing it has the whole board. Not fixed in-retro: the fold is a judgement call about which records leave, and the last one was made deliberately with the operator rather than mechanically."
+    category: "structural"
+    evidence_count: 1
+    source_catchment: "startup-read-contract-check"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "status file — operator-gated fold"
+
+  - id: "5.1"
+    title: "A NATURAL EXPERIMENT SEPARATED DOCTRINE FROM MECHANISM ON THE SAME CLASS, IN THE SAME WEEK. Five receipt-writing surfaces were exercised in this window. The four governed by written doctrine — the version-bump audit receipt, the cross-pollination receipt, the proposal-status close, and the raw-capture-before-distillation rule — ALL failed at least once. The one mechanised as a per-surface check at the commit boundary did not fail at all, and produced a case where the gate knew about an obligation the author's own compliance check did not enumerate: the author had already reported the protocol fully discharged, truthfully, per the rule being checked against. This is the strongest available evidence that the receipt class is not a discipline problem and will not be fixed by more doctrine. It was surfaced by the learning-layer agent, not by the orchestrator, and is recorded here because the orchestrator had all five data points and did not see the pattern."
+    category: "structural"
+    evidence_count: 5
+    source_catchment: "learning-agent-analysis"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "receipt-surface architecture — proposal pending operator decision"
+
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 3
+  notes: >
+    The learning-layer agent ran on the insights buffer, the candidate queue and
+    the knowledge deltas, and authored three proposals: the non-zero arm of the
+    matcher class counted to n=9 across at least six sessions, the manual-receipt
+    class counted to n=4 failed surfaces, and a routing fan-out finding measuring
+    one index row that now resolves to 29 sections. It deferred three below
+    threshold, and declined to re-propose one on the correct judgement that the
+    item needs an operator DECISION rather than more evidence.
+
+    It also performed a post-execution audit that REVERSED a prior cycle's verdict
+    on its own work, and recorded why the reversal was structural: an audit asking
+    "is the rule being followed?" cannot surface "the rule does not cover this."
+    The prior YES was correct about what it measured.
+
+    Two contract observations worth publishing. First, the agent was dispatched
+    with a brief mandating a delivery channel it did not hold — its grant carries
+    no message-send tool — and it named that in its first line rather than failing
+    silently. The rule requiring every brief to state a channel needs a companion
+    check that the channel EXISTS. Second, it flagged a figure in its own briefing
+    as wrong and used it as evidence: the orchestrator's handoff reported 62 open
+    proposals, a number no matcher over that file returns, which became a live
+    instance of the very class it was asked to analyse.
+
+hook_health:
+  silent_hooks_observed: 0
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 1
+  enforcement_flips_verified_this_cycle: 2
+  notes: >
+    No silent or absent hooks across the seven-day audit. Both enforcement flips
+    reviewed this cycle are confirmed armed — one of them by firing on this
+    retro's own author, blocking the first mutation after a context compaction,
+    which is the strongest possible liveness evidence for a gate. The single
+    instrument defect is finding 1.3: the audit's own classification columns are
+    blind to one of the two record shapes present in the log, so a clean health
+    table is partly an artefact of what it cannot parse.
+
+discipline_metrics:
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 3
+  intent_confirmation_skip_rate: 0.14
+  response_marker_missed_turns: 97
+  response_marker_blocking_fires: 2500
+  response_marker_graded_turns: 511
+  response_marker_miss_rate: 0.19
+  response_marker_note: >
+    ⛔ THE RATE ABOVE IS DEDUPLICATED AND THE TALLY SCRIPT'S RAW OUTPUT IS NOT.
+    The tally counts firelog RECORDS and labels the ratio "substantive turns";
+    for this window it emitted 2500/6922 = 0.36. Every prior cycle's figure in
+    this series was produced the same way and is inflated. Deduplicated on the
+    per-turn signature the hook already writes, the true figures are 97 missed of
+    511 graded turns = 0.19. Denominator inflation 13.5x. Published here in the
+    corrected form with the raw denominator retained beside it so the two are not
+    confusable; earlier cycles are left past-accurate and are NOT comparable to
+    this row.
+  ritual_steps_defined: 10
+  ritual_steps_completed: 10
+  monthly_subritual_due: false
+  monthly_subritual_completed: false
+  notes: >
+    All ten weekly steps completed. The monthly sub-ritual is correctly NOT due —
+    the prior cycle was August's first retro — and that was checked rather than
+    assumed. The response-marker rate is the cycle's worst number and is reported
+    in its corrected form even though the correction makes it look better, because
+    the uncorrected figure was wrong in the alarming direction and an alarming
+    wrong number survives by rewarding the work that produced it.
+
+latency_observations:
+  source: "session-start latency log"
+  window_session_count: 157
+  median_first_tool_latency_sec: 27
+  p95_first_tool_latency_sec: 133
+  max_first_tool_latency_sec: 377
+  threshold_violations: 10
+  learning_agent_runtime_seconds: 689
+  notes: >
+    Single background dispatch for the learning layer, no degrades. It hit one
+    genuine large-read block and degraded to bounded reads rather than to
+    propose-only, which is the correct ladder.
+
+fam_dispatch_distribution:
+  # Lifted verbatim from the metrics tally's role-keyed block. NOT hand-transcribed
+  # — the prior cycle shipped this block wrong in all four positions by retyping
+  # measured numbers across two vocabularies.
+  learning_agent: 2
+  adversarial_reviewer: 10
+  consultant: 1
+  external_validator: 2
+  notes: >
+    Measured over the 2026-08-02 → 2026-08-09 window; the window includes the
+    measuring session, so these are a floor. `consultant` counts the framing rail
+    only; the external code validator has its own bucket. General-purpose
+    parallel-fanout dispatches, which are not a named rail, ran at 51 and are
+    excluded from these four buckets by design.
+
+    ⚠️ `external_validator: 2` carries the caveat established last cycle and NOT
+    re-verified here: that tool has been quota-exhausted since mid-window under an
+    inherited claim, and this count reflects DISPATCHES rather than completed
+    reviews. It is reported as measured rather than corrected, because correcting
+    it would require re-verifying the quota claim, which was not done.
+
+defect_ledger:
+  measured_at: "2026-08-09 13:4x"
+  measured_from: "governance status file — rows returned by the live escalator extractor, not by reading the file"
+  open_total: 53
+  live: 43
+  parked: 4
+  notes: >
+    DELIBERATELY UNSCORED, for the reason established last cycle: a governance OS
+    that scored itself on defect count would score highest with its instruments
+    off, and every audit that worked would lower the number. Moved 38 → 53 across
+    the window, and the rise is mostly THIS cycle's own findings being filed plus
+    a portability assessment run days earlier — a board being worked.
+
+    ⚠️ Two figures below the total are deliberately absent rather than estimated:
+    the age distribution was not re-derived this cycle. The prior cycle published
+    it; carrying those numbers forward would be a stale measurement wearing a
+    current timestamp, which is the exact defect this file recorded twice.
+
+    ⚠️ AND THE TOTAL IS A CLASSIFIER OUTPUT, NOT A COUNT OF WHAT EXISTS. 53 is
+    what the extractor returned; the scanned region holds 91 rows. The gap is
+    known and has a filed cause: rows in a workspace whose own section heading
+    does not match the extractor's literal anchor are invisible to it, so at
+    least one workspace's live defects reach no briefing at all. Reported as the
+    classifier's figure, which is the only honest reading of it.
+
+improvement_backlog:
+  total: 91
+  done: 41
+  open: 39
+  parked: 11
+  open_ready: 23
+  open_decision_gated: 13
+  open_upstream_blocked: 3
+  notes: >
+    Proposed improvements, distinct from the defect ledger: a defect is a known
+    way the system is wrong, a backlog item is a way it could be better. The
+    scheduling axis is a DERIVED view and an item carrying an unrecognised status
+    value is dropped from it silently, so these figures are a claim about what
+    classified rather than about what exists — reconciled here against the raw
+    total (23 + 13 + 3 = 39 open; 41 + 39 + 11 = 91 = the raw item count).
+
+enforcement_coverage:
+  measured_at: "2026-08-09 — PARTIAL, see notes"
+  measured_from: "two arms re-verified from code this cycle; the remaining four carried from the prior cycle and NOT re-measured"
+  arms_built: 6
+  arms_armed: 6
+  arms_with_written_exit_criteria: 6
+  arms_with_falsifiable_exit: 5
+  arms_declared_permanent: 1
+  checks_enumerated: 28
+  checks_with_written_exit_criteria: 0
+  checks_unit: "blocking exit paths in the commit-time arm"
+  checks_unit_note: >
+    Unit pinned at 28 (exit-site) as established last cycle, so that the manifest
+    and this file publish one unit for one population. The numerator is 0 under
+    every plausible denominator, so the reading does not turn on the choice.
+  notes: >
+    ⚠️ THIS BLOCK IS PARTIALLY CARRIED, AND SAYING SO IS THE POINT. Two of the six
+    arms were re-verified from code this cycle and both are armed; one of those
+    demonstrated liveness by firing on this retro's own author. The other four
+    figures are the prior cycle's measurement, unchanged and NOT re-derived. They
+    are published because dropping them would lose a real prior measurement, and
+    flagged because a carried number that looks current is the defect this OS has
+    now banked repeatedly.
+
+    The check-level zero is unchanged and remains the more honest reading of this
+    dial: arm-level coverage is complete, and not one of the 28 individually
+    retirable checks inside the commit-time arm states its own exit condition.
+
+instrument_liveness:
+  silent_failures_observed: 9
+  caught_by_control: 9
+  caught_by_review: 0
+  notes: >
+    Scores the LOOP, not the absence of failure. Nine instruments used to conduct
+    this retro each returned a confident wrong answer at least once: six matcher
+    formats, a self-authored capture label, the public metrics tally, and the
+    hook-health audit's own classification columns. Every one was caught by a
+    control and NOT ONE was caught by review — identical to the prior cycle, which
+    is itself the finding, since the review layer has now failed to catch this
+    class in two consecutive cycles.
+
+    ⛔ The specific control that worked is worth naming because it is cheaper than
+    the ones that did not: a CONTRADICTION between an instrument's output and one
+    fact known about the same object without that instrument. It requires no
+    source-reading and it fired six times out of six. A conventional positive
+    control was present in at least one case and PASSED while the result was
+    wrong — a control validates the instrument, never the enumeration.
+
+detection_provenance:
+  status: "LIVE"
+  instrumented_from: "2026-08-09-p18"
+  caught_by_control: 7
+  caught_by_operator: 0
+  caught_by_accident: 2
+  notes: >
+    First cycle with real data, as promised by the prior sidecar. Of nine defects
+    surfaced, seven were caught by a control that could have failed and two
+    emerged incidentally while doing something else — the ceremony-receipt gap
+    surfaced from a directory listing run for another purpose, and the published
+    metrics defect surfaced only because authoring this file required running the
+    tally.
+
+    ⚠️ ZERO OPERATOR CATCHES IS NOT A RESULT AND MUST NOT BE READ AS ONE. The
+    operator approved the cycle's scope and had not yet reviewed its output when
+    these figures were written, so the operator arm had no opportunity to fire.
+    The two immediately preceding cycles each had defects caught by an operator
+    question and by nothing else. A retro session is also instrument-heavy by
+    construction, which inflates the control arm — the same unrepresentativeness
+    the prior sidecar refused to publish as a dial value. Read this row as a
+    baseline whose denominator is one atypical session, not as a control-catch
+    rate.
+
+    Boundary disclosed rather than hidden: two of the seven control catches were
+    made by a dispatched agent rather than by a mechanical check. A dispatched
+    auditor can return nothing, so it is control-like, but it is not the same
+    instrument as a validator with an exit code, and the three buckets available
+    here cannot express that difference.
+
+schema_version: "1.1"

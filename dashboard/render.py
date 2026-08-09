@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.6"
+DASHBOARD_VERSION = "3.7"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -357,6 +357,26 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
                 "quality_gate_traces_sampled", "quality_gate_traces_passing",
                 "response_marker_missed_turns", "response_marker_blocking_fires",
                 "response_marker_note", "notes",
+                # Added p18 (2026-08-09) in the same edit as the sidecar that
+                # introduced them, per the step 9(a) contract.
+                #
+                # `response_marker_graded_turns` is the DENOMINATOR that the
+                # existing pair never carried: `missed_turns` has always been the
+                # deduplicated numerator and `blocking_fires` the raw one, but
+                # the population they are drawn from was only ever described in
+                # prose. Without it a reader cannot compute a rate, which is how
+                # the metrics tally shipped a fire-count ratio labelled "turns"
+                # for sixteen cycles. `response_marker_miss_rate` stores that
+                # rate explicitly so the tally's raw ratio can never be mistaken
+                # for it again.
+                #
+                # ⚠️ NOT A RE-KEY. Both pre-existing field names continue in p18
+                # with unchanged meaning, so no series closes here — the
+                # agreement-in-overlap test is satisfied for both.
+                "response_marker_graded_turns", "response_marker_miss_rate",
+                # Skip rate for the intent-confirmation protocol. New series,
+                # starts at p18; previously audited but never published.
+                "intent_confirmation_skip_rate",
             },
             "proposal_backlog": {"authored_this_cycle", "deferred_this_cycle", "notes"},
             "fam_dispatch_distribution": {
@@ -1573,7 +1593,7 @@ def main(argv: list[str]) -> int:
     # Retargeted every cycle at P10 step 9(c). Verify by running this file
     # with NO arguments and reading the header: found stale at p17, where
     # the documented bare command rendered the PREVIOUS cycle silently.
-    default_sidecar = here.parent / "retros" / "2026-08-02-p17.yaml"
+    default_sidecar = here.parent / "retros" / "2026-08-09-p18.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar
