@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.7"
+DASHBOARD_VERSION = "3.8"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -303,6 +303,55 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
         # do not warn, and so the fact that nothing reads them is explicit
         # rather than discovered by someone wondering where the widget went.
         "record_only": {"hook_health", "latency_observations"},
+        # ─── Conditionally-required groups (added p19, 2026-08-16) ───────────
+        #
+        # ⛔ WHY: `required` is unconditional, so a block that is legitimately
+        # absent in some cycles cannot go on it. That left a gap the last two
+        # cycles both fell through — MEASURED across all 16 sidecars:
+        #
+        #   p17 (2026-08-02)  latency_observations lost ALL SIX core keys at
+        #                     once, after 14 unbroken cycles (p3→p16), and was
+        #                     left holding two unrelated ones. It is `record_only`,
+        #                     so there was no em-dash anywhere to notice.
+        #   p18 (2026-08-09)  defect_ledger lost ALL SIX age keys, one cycle
+        #                     after they were introduced, while `open_total`
+        #                     survived — so the figure that ALARMS was published
+        #                     and the figure that INFORMS was not.
+        #
+        # One block per cycle, in consecutive cycles, in two different blocks.
+        # Nothing raised either time.
+        #
+        # THE CONDITION IS BLOCK PRESENCE, NOT CYCLE. If the block is absent the
+        # group is not owed — a cycle that genuinely did not measure is honest.
+        # If the block IS present, its measurement group must be complete.
+        #
+        # ⚠️ PRESENT-AND-NULL PASSES; ABSENT FAILS. That asymmetry is the whole
+        # design. An explicit null is an author SAYING "not measured this cycle";
+        # an absent key says nothing, and saying nothing is the failure mode both
+        # cycles above exhibited. This also keeps the block off `nullable_blocks`'
+        # collision course: nobody is pushed to invent a number to get a render.
+        # `age_undated` is the ledger's own escape valve for undatable defects.
+        "required_groups": {
+            "defect_ledger": {
+                "keys": frozenset({
+                    "age_under_7d", "age_7_to_29d", "age_30d_plus", "age_undated",
+                    "median_age_days", "max_age_days",
+                }),
+                "measured": "present in p17, absent in p18 — 1 of the 2 cycles "
+                            "this block has existed",
+            },
+            "latency_observations": {
+                "keys": frozenset({
+                    "window_session_count", "median_first_tool_latency_sec",
+                    "p95_first_tool_latency_sec", "max_first_tool_latency_sec",
+                    "threshold_violations", "source",
+                }),
+                "measured": "present in 15 of 16 cycles; p17 is the sole gap. "
+                            "`source` is part of the stable group and is easy to "
+                            "miss — it was omitted from the prose that specified "
+                            "this fix, which named five keys where there are six.",
+            },
+        },
         # Per-finding contract. `required` is not aspirational — every one of
         # these is present in 154/154 findings across all 15 sidecars, so a
         # missing one is drift rather than a legitimate variation.
@@ -345,6 +394,12 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
             },
             "instrument_liveness": {
                 "silent_failures_observed", "caught_by_control", "caught_by_review",
+                # Added p19: this arm kept outperforming the two above, so it is
+                # broken out rather than folded into `caught_by_control`. A
+                # contradiction between an instrument's output and one fact known
+                # about the same object WITHOUT that instrument needs no
+                # source-reading and no tooling — 4 of 6 catches in p19.
+                "caught_by_contradiction",
                 "notes",
             },
             "detection_provenance": {
@@ -374,9 +429,36 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
                 # with unchanged meaning, so no series closes here — the
                 # agreement-in-overlap test is satisfied for both.
                 "response_marker_graded_turns", "response_marker_miss_rate",
+                # Added p19: names WHEN the marker figures were taken. The prior
+                # cycle recorded that this file publishes at step 9 while its own
+                # figures keep moving until step 10; stating the boundary in the
+                # data is cheaper than re-litigating it each cycle.
+                "response_marker_measured_at",
                 # Skip rate for the intent-confirmation protocol. New series,
                 # starts at p18; previously audited but never published.
                 "intent_confirmation_skip_rate",
+            },
+            # `record_only` AND `known` on purpose (added p19, 2026-08-16).
+            # record_only keeps it out of the unknown-BLOCK warn; a `known` entry
+            # is what gives it the unknown-SUB-KEY warn, which it never had. That
+            # was the third layer of the silence p17 fell through: enumerated
+            # nowhere, unrequired, and unrendered, so a sub-key rename inside it
+            # could not be seen by any arm.
+            # ⚠️ ANTICIPATORY, not corrective — all 8 observed keys are declared,
+            # so this arm fires on nothing today. `hook_health` is the other
+            # record_only block and is deliberately NOT given the same treatment
+            # in this edit; it is out of the approved scope, and saying so here
+            # is cheaper than leaving the asymmetry to be discovered.
+            "latency_observations": {
+                "window_session_count", "median_first_tool_latency_sec",
+                "p95_first_tool_latency_sec", "max_first_tool_latency_sec",
+                "threshold_violations", "source",
+                # Added p19: a violation count without its threshold is a number
+                # without a unit, and p18 published one. Declared here (`known`)
+                # and deliberately NOT added to `required_groups`, which would
+                # retroactively invalidate every sidecar p3-p18.
+                "threshold_sec",
+                "learning_agent_runtime_seconds", "notes",
             },
             "proposal_backlog": {"authored_this_cycle", "deferred_this_cycle", "notes"},
             "fam_dispatch_distribution": {
@@ -486,13 +568,34 @@ def validate_sidecar(sc: dict[str, Any]) -> list[str]:
                     "in assets/dashboard.css — it will render as an unstyled pill"
                 )
 
+    # Conditionally-required groups. Gated on the block being PRESENT, so an
+    # absent block is not owed its group; and keyed on key ABSENCE rather than
+    # falsiness, so a deliberate `null` — an author saying "not measured this
+    # cycle" — passes while a silent drop does not. `0` and `None` are both
+    # legitimate readings here, which is exactly why `not val.get(k)` would be
+    # the wrong test: it would fail a true zero-violations cycle.
+    group_missing: list[str] = []
+    for block, grp in (spec.get("required_groups") or {}).items():
+        val = sc.get(block)
+        if not isinstance(val, dict):
+            continue
+        absent = sorted(k for k in grp["keys"] if k not in val)
+        # All-or-nothing is the observed failure shape (6 of 6, twice), but a
+        # partial drop is reported the same way — per-key, so the message names
+        # what to restore rather than just which block is unhappy.
+        for k in absent:
+            group_missing.append(f"{block}.{k}")
     # Missing-required is computed LAST and carries the warnings with it. A
     # rename is one event with two halves — the old key gone, the new key
     # present — and raising before the unknown scan reports only the half that
     # says "broken", withholding the half that says "and here is what replaced
     # it". The docstring above claims this check can see a rename; this is what
     # makes that true.
-    missing = [k for k in spec["required"] if _resolve(k) is None] + finding_missing
+    missing = (
+        [k for k in spec["required"] if _resolve(k) is None]
+        + group_missing
+        + finding_missing
+    )
     if missing:
         msg = (
             "sidecar is missing required field(s) the renderer depends on: "
@@ -1593,7 +1696,7 @@ def main(argv: list[str]) -> int:
     # Retargeted every cycle at P10 step 9(c). Verify by running this file
     # with NO arguments and reading the header: found stale at p17, where
     # the documented bare command rendered the PREVIOUS cycle silently.
-    default_sidecar = here.parent / "retros" / "2026-08-09-p18.yaml"
+    default_sidecar = here.parent / "retros" / "2026-08-16-p19.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar

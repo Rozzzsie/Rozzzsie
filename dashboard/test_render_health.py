@@ -13,11 +13,33 @@ switching the instruments off.
 from __future__ import annotations
 
 import importlib.util
+import re
 import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 RETROS = HERE.parent / "retros"
+
+# ─── Known-nonconformant published sidecars (Rosie's ruling, 2026-08-16) ──────
+#
+# `required_groups` (render.py) landed at p19 and enforces block-level
+# completeness. Two ALREADY-PUBLISHED sidecars fail it. They are NOT repaired:
+# the readings they are missing were never recorded, and back-filling plausible
+# values to turn a suite green is precisely the failure the guard exists to
+# catch. Conformance is asserted from p19 FORWARD; these two are named here with
+# the measured gap, so the exemption is a declaration rather than a silence.
+#
+# ⛔ The test asserts these still RAISE. An entry that starts passing is a
+#    signal — either it was quietly edited, or the schema was loosened — and
+#    either way the right response is to look, not to delete the line.
+KNOWN_NONCONFORMANT = {
+    # `latency_observations` lost ALL SIX core keys at once, after 14 unbroken
+    # cycles (p3→p16). The block is absent entirely, not null.
+    "2026-08-02-p17": "latency_observations absent — 6 keys, never recorded",
+    # `defect_ledger` lost ALL SIX age keys — present in p17, absent here, i.e.
+    # 1 of the 2 cycles in which this block has existed.
+    "2026-08-09-p18": "defect_ledger age group absent — 6 keys, never recorded",
+}
 
 
 def _load_render():
@@ -32,7 +54,27 @@ R = _load_render()
 
 
 def _sidecar() -> dict:
-    return R.load_sidecar(RETROS / "2026-08-02-p17.yaml")
+    """A schema-CONFORMANT p17, for tests that need "a valid 1.1 sidecar".
+
+    p17 as published is not conformant: it dropped all six `latency_observations`
+    core keys (after 14 unbroken cycles) and the p19 `required_groups` arm now
+    says so. Eight tests here use this helper as their baseline, so without a
+    fix they fail for a reason that has nothing to do with what they assert.
+
+    ⛔ THE BLOCK IS REMOVED, NOT REPOPULATED. Those six readings were never
+    recorded — there is nothing to restore, and inventing plausible latencies to
+    turn a suite green is the failure this whole guard exists to catch. Removing
+    the block uses the guard's own semantics instead: an ABSENT block is not
+    owed its group, so the fixture is conformant without asserting a single
+    number nobody measured. `latency_observations` is `record_only` and reaches
+    no rendering path, so its absence changes no other assertion in this file.
+
+    p17's `defect_ledger` age group is already complete (measured: present in
+    p17, dropped in p18), so it needs no treatment.
+    """
+    sc = R.load_sidecar(RETROS / "2026-08-02-p17.yaml")
+    sc.pop("latency_observations", None)
+    return sc
 
 
 def _all_sidecars() -> list[dict]:
@@ -716,9 +758,22 @@ class TestFindingsItemsAreUnderContract(unittest.TestCase):
                    if str(R.load_sidecar(p).get("schema_version")) in R.SIDECAR_SCHEMA]
         for p in covered:
             with self.subTest(sidecar=p.stem):
+                if p.stem in KNOWN_NONCONFORMANT:
+                    with self.assertRaises(
+                        R.SidecarSchemaError,
+                        msg=f"{p.stem} is on the known-nonconformant list but now "
+                            "validates — if it was repaired, take it off the list",
+                    ):
+                        R.validate_sidecar(R.load_sidecar(p))
+                    continue
                 R.validate_sidecar(R.load_sidecar(p))
         self.assertGreaterEqual(len(paths), 15, "positive control: sidecars found")
         self.assertGreaterEqual(len(covered), 1, "at least the current cycle")
+        # Positive control on the list itself: an allowlist that names files
+        # which do not exist is an allowlist that has quietly stopped applying.
+        stems = {p.stem for p in paths}
+        for stem in KNOWN_NONCONFORMANT:
+            self.assertIn(stem, stems, f"{stem} is allowlisted but not in the corpus")
 
 
 class TestReKeyIsTestedAgainstTheSemanticPredecessor(unittest.TestCase):
@@ -779,10 +834,37 @@ class TestReKeyIsTestedAgainstTheSemanticPredecessor(unittest.TestCase):
 
 class TestTrendScopeLabelSaysWhatItCountsOutOf(unittest.TestCase):
     def test_the_label_names_the_range_and_the_cycles_it_excludes(self):
-        label = R._trend_scope_label(_all_sidecars())
-        self.assertIn("n=15", label)
-        self.assertIn("#3", label)
-        self.assertIn("#17", label)
+        """The label must name its own count and range — DERIVED, never pinned.
+
+        ⛔ THIS TEST USED TO HARD-CODE `n=15`, AND WAS RED FOR A FULL CYCLE BECAUSE OF IT
+        (2026-08-09 → 2026-08-16, found during p19's ritual and verified on a clean tree).
+        The corpus grows by exactly one every retro cycle, so a pinned count tests the
+        CALENDAR, not behaviour: it goes red on every publish, and re-pinning buys one week.
+
+        ⭐ The repair is to assert the SHAPE — that the label reports the count it actually
+        counted, and names its own excluded range — which is stable across growth. Compare
+        `required_groups`, shipped the same cycle: also a shape assertion, also growth-stable.
+
+        📌 It went red the moment p18 published and nothing reported it for seven days, which
+        is direct evidence for the run-the-suites ceremony step added 2026-08-15 — measured on
+        the cycle immediately before that step existed.
+        """
+        sidecars = _all_sidecars()
+        label = R._trend_scope_label(sidecars)
+
+        # The count is derived from the corpus, not from a literal.
+        self.assertIn(f"n={len(sidecars)}", label,
+                      "the label must report the number it actually counted")
+
+        # The range must name a first and last cycle, whatever they currently are.
+        cycles = sorted(
+            int(mo.group(1))
+            for sc in sidecars
+            if (mo := re.search(r"-p(\d+)$", str(sc.get("retro_id", ""))))
+        )
+        self.assertTrue(cycles, "positive control: retro_ids must parse to cycle numbers")
+        self.assertIn(f"#{cycles[0]}", label, "names the first cycle in scope")
+        self.assertIn(f"#{cycles[-1]}", label, "names the last cycle in scope")
         self.assertIn("predate", label, "says what the count is out of")
 
 

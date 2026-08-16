@@ -1,0 +1,435 @@
+# P10 Retro Sidecar — 2026-08-16 (P10 retro #19, sanitized public snapshot)
+#
+# Window 2026-08-09 → 2026-08-16 (7 days). Not the first retro of the month, so the
+# monthly housecleaning sub-ritual does not fire; only the ten weekly steps are in scope.
+# Stakeholder names genericized to role-class; workspace names genericized per the public
+# workspace table; private personal-track + career-track + capital-track references dropped
+# entirely; evidence citations to private files, commit hashes, hook filenames, thread IDs,
+# internal item numbers, exact protocol version strings, and product internals stripped.
+#
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing
+# required field). `schema_version` records which revision this file was authored against.
+#
+# ⭐ THIS IS THE FIRST SIDECAR AUTHORED UNDER `required_groups`, AN ARM ADDED THIS CYCLE.
+# Two blocks — the defect age distribution and the latency observations — are now enforced
+# as COMPLETE GROUPS rather than as individually-optional keys, because each lost all six of
+# its keys at once in consecutive prior cycles and no check could see it. Every one of those
+# twelve keys below is MEASURED THIS CYCLE. The asymmetry is deliberate: present-and-null
+# passes, absent fails, so the arm can never create pressure to invent a reading.
+#
+# Narrative companion: SKIP-PASS, same reason as p9–p18 — the centre of gravity IS governance,
+# so the findings below ARE the cycle's substance.
+#
+# Mode this cycle: the ritual was run in place of a scheduled design arc at the operator's
+# direction. Its finding is not a new failure class but the DIRECTION OF ONE ALREADY KNOWN:
+# every figure that went wrong this week was correctly labelled as unverified by whoever
+# passed it on, and the label stopped nothing.
+
+retro_id: "2026-08-16-p19"
+retro_date: "2026-08-16"
+window_start: "2026-08-09"
+window_end: "2026-08-16"
+prior_retro: "2026-08-09-p18"
+interactive_mode: true
+trigger_source: "operator-rescheduled-design-arc-to-run-ritual-interactive-fresh-session"
+
+meta_finding: >
+  A PROVENANCE LABEL IS NOT A VERIFICATION GATE. An unverified figure was handed to the
+  learning-layer agent, which did everything correctly — it used the figure, attributed it,
+  and stated in writing that it could not check it. The figure still hardened into three
+  separate places in a published proposal. Attribution preserves accountability and does
+  nothing whatsoever to stop propagation: a disclaimed number travels exactly as far as an
+  undisclaimed one and arrives wearing a caveat that reads as diligence. The same figure then
+  passed through a fourth hop, to the consultant rail, which again labelled it correctly and
+  again could not stop it. Four hops, four correct labels, one wrong number.
+
+  The sharper half is the learning agent's own: A RATIO IS ONE CLAIM, NOT TWO. It audited the
+  pair, corrected the numerator, and flagged the denominator as unverified — and thereby moved
+  the published figure FURTHER from the truth than leaving both alone would have, because the
+  half that was checked lends its credibility to the half that was not. The flag read as
+  caution and functioned as a pass.
+
+  Corrected, the finding is stronger than either original: not a rate but a DEATH DATE. The
+  observability convention it measures has been dead since a specific day three weeks ago. A
+  rate invites "tighten the discipline"; a date asks what changed on a particular day, which
+  is a question with an answer.
+
+findings:
+  - id: "1.1"
+    title: "A PROVENANCE LABEL IS NOT A VERIFICATION GATE, AND FOUR CORRECT LABELS DID NOT STOP ONE WRONG NUMBER. An unverified count was passed from the orchestrator to the learning-layer agent, which used it, attributed it, and stated explicitly that it could not check it; the figure hardened into three places in that agent's published proposal. It then passed to the consultant rail, which again labelled it correctly and again did not stop it. The number was wrong in three independent ways: wrong magnitude, wrong denominator scope, and a corpus-state mismatch between its two halves with neither half labelled — so the published ratio described a state that never existed. THE LOAD-BEARING ERROR WAS THE DENOMINATOR: a named-rail numerator was paired against an all-dispatch corpus, most of whose members were never owed the thing being counted. That is a join-key error, committed on a figure the author generated himself. Corrective direction: verify BEFORE handing a figure to a deputy; labelling it afterward is a receipt for a check nobody ran."
+    category: "measurement-integrity"
+    evidence_count: 4
+    source_catchment: "cross-agent-reconciliation"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-16"
+    target_surface: "cross-workspace knowledge file; the proposal's evidence bullet corrected OF RECORD rather than silently"
+
+  - id: "1.2"
+    title: "A RATIO IS ONE CLAIM, NOT TWO — CORRECTING ONE HALF WHILE TRUSTING THE OTHER MOVED THE PUBLISHED FIGURE FURTHER FROM THE TRUTH THAN LEAVING BOTH ALONE. The learning-layer agent audited a ratio it had been handed, corrected the numerator upward on its own independent census, and flagged the denominator as the orchestrator's and unverified. Both acts were individually correct and locally defensible. The result was worse than inaction, because a one-sided correction transfers the credibility of the checked half onto the unchecked half, and the unverified-flag reads as caution while functioning as a pass. The agent banked this against itself in the proposal rather than quietly fixing the number, which is why it is publishable. Corrective direction: audit a ratio as ONE object — numerator, denominator, and the corpus state of each — or leave it whole and say so."
+    category: "measurement-integrity"
+    evidence_count: 1
+    source_catchment: "learning-agent-self-audit"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-16"
+    target_surface: "cross-workspace knowledge file; proposal lifecycle log"
+
+  - id: "1.3"
+    title: "A CORRECT RECOMMENDATION CAN REST ON A WRONG PREMISE, AND THE CONCLUSION SURVIVES EVERY CHECK YOU RUN ON IT. A routing recommendation was argued on the grounds that a governance file sat at 94.5 percent of its enforced size bound with roughly four sessions of headroom. Measured, it was at 84.92 percent with 22,614 units of headroom — the premise was ten points off. THE RECOMMENDATION WAS STILL RIGHT, because the true figure sits 0.08 points under the warn threshold, so a substantial addition trips it anyway. This is the hardest shape to catch: agreeing with a conclusion is not evidence about its premise, and every check aimed at the conclusion confirms it. Corrective direction: when you accept a recommendation, state which of its premises you actually verified — accepting the routing and verifying the bound are two different facts."
+    category: "measurement-integrity"
+    evidence_count: 1
+    source_catchment: "self-audit-during-ritual"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-16"
+    target_surface: "cross-workspace knowledge file"
+
+  - id: "2.1"
+    title: "AN OBSERVABILITY CONVENTION IS NOT DECAYING — IT IS DEAD, AND IT HAS A DEATH DATE. A hand-written log line recording every named-rail agent invocation is consumed by a standing health audit and by a session-scoping gate. In-window the count is ZERO such lines against twelve named-rail dispatches: not a low rate, a total absence. Whole-file the practice yields seven lines since January, all of them clustered before a single day three weeks ago, after which nothing. One rail has never been covered by the convention at all. Separately, the same file's heading grammar has at least eight mutually incompatible live shapes while a gate keys on a literal heading prefix, and the file is unrotated since January at 4,500-plus lines — the only one of six audited governance surfaces with no size or shape discipline of any kind. THE AUDIT READS AN EMPTY SURFACE AND CANNOT REPORT THAT IT READ NOTHING: a zero tally does not surface as broken, it surfaces as a quiet week, because nothing compares it against the dispatches that actually occurred."
+    category: "structural"
+    evidence_count: 3
+    source_catchment: "learning-agent-analysis"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "operator ruled: extend the existing convention-drift rule, and retire the hand-written line in favour of artifacts that already exist; no new commit-gate arm. Parked to the improvement backlog with three carried constraints."
+
+  - id: "2.2"
+    title: "A TEST PINNED TO A VALUE THE SYSTEM INCREMENTS ON SCHEDULE HAS BEEN RED SINCE THE PREVIOUS CYCLE, AND NOTHING REPORTED IT. A dashboard test asserts a hard-coded corpus size against a corpus that grows by exactly one every retro cycle. It went red the moment the previous cycle published and has been red for seven days; verified on a clean tree, so it is independent of this cycle's changes. THIS IS DIRECT EVIDENCE FOR A CEREMONY STEP ADDED ONE DAY BEFORE THIS CYCLE — the step that requires running the test suites at every version bump and reading the result line — measured on the cycle immediately preceding it: the prior bump either never ran its suites or absorbed a red silently. The deeper defect is that an assertion pinned to a scheduled increment tests the calendar rather than behaviour; re-pinning buys exactly one week. Contrast with the arm shipped this cycle, which asserts a SHAPE (these six keys exist) and is stable across growth."
+    category: "test-integrity"
+    evidence_count: 1
+    source_catchment: "build-step-verification"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "dashboard test suite — operator decision pending on re-pin versus derive"
+
+  - id: "3.1"
+    title: "A VERIFICATION PREDICATE OF PRESENCE WHERE THE RIGHT ONE WAS ASSERTION — AND IT FLAGS THE MOST CAREFUL AUTHORS WHILE PASSING ANYONE WHO OVERWRITES SILENTLY. Checking that a correction had landed, the orchestrator swept for whether the wrong figure was PRESENT and got three hits, and was about to report a failure. All three sat inside the corrected region as CORRECTION RECORDS — contrastive statements of the old value beside the new, which is the house standard. The right predicate was whether the wrong figure was still ASSERTED. These two diverge precisely when someone corrects WELL, because good practice deliberately preserves the wrong number in contrastive form. A must-be-gone sweep is therefore the wrong instrument for any surface whose convention is relocate-don't-delete. Aggravator recorded rather than omitted: the same sweep was a whole-file count about to become a claim about ONE section — the wrong-region mechanism, committed one turn after correcting the same family in another agent."
+    category: "rule-extension"
+    evidence_count: 1
+    source_catchment: "self-audit-during-ritual"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-16"
+    target_surface: "cross-workspace knowledge file"
+
+  - id: "4.1"
+    title: "A PORTABILITY CONSTRAINT DOES NOT FIRE WHEN THE QUESTION PRESENTS AS ACCURACY, AND A DEPUTY INHERITS THE LEAD'S FRAME SILENTLY. A proposal to fix the accuracy of a self-audit instrument was relayed to the operator inside the frame it arrived in. The operator asked a single question — is this for portability — and exposed that the proposal OPTIMISES A MEASUREMENT WITHOUT ASKING WHETHER THE MEASUREMENT BELONGS WHERE IT LIVES. As scoped it would have made the architecture MORE coupled to one specific CLI, against a workspace whose stated value proposition is independence from any one vendor. The governing rule was already live and binding, and its own text nearly predicts the miss: it warns that the constraint fails to fire when a question presents as SECURITY, TOOLING or CONVENIENCE. ADD ACCURACY TO THAT LIST — it is the most disarming presentation of all, because making a number correct reads as strictly-good and frame-neutral, and nobody asks whether a bug fix has an architecture. THE DEPUTY COULD NOT HAVE CAUGHT THIS: a well-executed proposal inside the wrong frame is indistinguishable from a well-executed proposal, so the frame question is the lead's and must be asked BEFORE dispatch."
+    category: "rule-extension"
+    evidence_count: 2
+    source_catchment: "operator-question"
+    recommendation: "accept"
+    status: "executed"
+    execution_target_week: "2026-08-16"
+    target_surface: "cross-workspace knowledge file; the affected proposal was held, reframed by the consultant rail, and parked"
+
+  - id: "4.2"
+    title: "THE CONSULTANT RAIL RETIRED THE QUESTION IT WAS ASKED RATHER THAN ANSWERING IT, AND THE REFRAME IS THE RESULT. Asked where a governance measurement should be STORED — vendor-specific log versus an artifact the architecture owns — the rail answered that storage is not the axis. The axis is HOW MANY PLACES KNOW HOW TO READ THE RECORD, currently three: a pure module, a bash recipe embedded in a mandated authoring template, and every author's head. Coupling is a function of that count, not of where the bytes sit: a pure function taking records and a session id is ALREADY substrate-neutral, while a bash recipe grepping a vendor log from inside a doctrine template is not and cannot be made so. Therefore the accuracy fix and the portability fix are THE SAME EDIT, landed in the module — with no fork of a 45,000-record historical series, so the must-not-change-what-it-counts contract is satisfied by construction rather than by argument. The rail also told the orchestrator, correctly, that he had over-corrected: routing an accuracy fix through a portability lens is a category error at the level asked, but the operator's question still earned its keep by RELOCATING the fix rather than reopening it."
+    category: "structural"
+    evidence_count: 1
+    source_catchment: "consultant-rail-analysis"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "operator accepted the reframe; parked to the improvement backlog with the honest costs attached"
+
+  - id: "4.3"
+    title: "A MANDATED AUTHORING TEMPLATE STATES ITS OWN LIMITATION BACKWARDS, AND NO CODE FIX TOUCHES IT. The template governing this OS's discipline-metrics authoring says the log yields an EXACT miss count but not an exact denominator, and instructs the author to report the denominator as unavailable rather than estimating it. Under a ruling made two days into this window, that is inverted: the exact numerator is exact in FIRES, which is the wrong unit, while the sanctioned degradation is applied to the half that is merely unmeasured. THE TEMPLATE THEREFORE LICENSES THE AUTHOR TO DISTRUST THE UNMEASURED HALF AND TRUST THE WRONGLY-MEASURED ONE. This was found by the consultant rail while reading source for a different question, and it is a DOCTRINE sentence rather than a code defect — no correction to the template's command recipe reaches it, so a fix that only rewrites the recipe would leave the inverted instruction standing directly beneath it."
+    category: "measurement-integrity"
+    evidence_count: 1
+    source_catchment: "consultant-rail-analysis"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "authoring template — must ship in the same edit as the instrument fix, filed that way on the backlog"
+
+  - id: "5.1"
+    title: "THE QUALITATIVE CATCHMENT SURFACE HAS GONE SILENT AND THE INSTRUMENT CANNOT SAY SO. The candidate queue that is meant to receive human-flagged retrospective material holds ZERO in-window entries; its newest is thirteen days old. Against 322 evidence cards and 250 knowledge-file deltas in the same window, that is roughly one receipt per 570 signal items, down from 629 the prior cycle. The learning-layer agent surfaced this and correctly declined to author a new proposal for it, folding it instead as strengthening evidence onto an existing open proposal about receipt surfaces — same trigger, same direction, so a new proposal would have forked it. Recorded here because a catchment surface that stops receiving does not report an error; it reports a quiet week, which is the same signature as finding 2.1 one layer up."
+    category: "process-gap"
+    evidence_count: 1
+    source_catchment: "learning-agent-analysis"
+    recommendation: "accept"
+    status: "carried-open"
+    execution_target_week: "next-cycle"
+    target_surface: "existing open proposal on receipt surfaces — evidence added, not duplicated"
+
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 3
+  notes: >
+    The learning-layer agent ran on the evidence buffer, the candidate queue and the knowledge
+    deltas. Six patterns cleared threshold; it authored three, deferred three, added one
+    evidence update to an existing open proposal rather than competing with it, and performed
+    two post-execution audits of its own prior work — one returning NO, which became a
+    rule-ineffective re-authoring, and one returning YES.
+
+    ⛔ ITS SINGLE MOST VALUABLE CONTRIBUTION WAS A REFUSAL. On a pattern that had failed three
+    consecutive times, it declined to author a fifth ceremony step on the explicit ground that
+    doing so would be a SIXTH instance of the category that has now failed four times out of
+    four. It folded the item onto an existing proposal instead, with a distinction that was in
+    nobody's handoff and is load-bearing: the other failures in that class produce NO artifact,
+    which an existence check catches, whereas this one produces every artifact correctly and
+    what was skipped is a READ OF A LEDGER, which leaves no trace at all. Built as an existence
+    check it would have reported the surface as governed while covering none of the measured
+    recurrences. The correct predicate is a QUEUE DRAIN.
+
+    All three authored proposals were ruled by the operator this cycle and then PARKED to the
+    improvement backlog by explicit instruction, so that the ritual could finish before any
+    build began. Their backlog entries carry the rulings, the carried constraints and the
+    honest costs, with the gate field written as decision-CLEARED rather than left null —
+    because a null gate conflates no-gate-exists with gate-has-been-cleared, which is itself
+    one of this cycle's deferred findings.
+
+    ⚠️ One defect found in a proposal's own structure, and by the operator rather than by any
+    check: its recommended-option tag contradicted its own accept gate, marking one option as
+    recommended while the gate and the surrounding argument both pointed at another. The
+    orchestrator relayed both without noticing they disagreed — an internal-contradiction check
+    that needs no access to any artifact and should run before any relay.
+
+hook_health:
+  silent_hooks_observed: 0
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 1
+  enforcement_flips_verified_this_cycle: 1
+  notes: >
+    No silent or absent hooks. The single instrument defect is a companion-agent trigger that
+    fired a SHIP notification on a version-control command that committed nothing, and took a
+    line of the orchestrator's own console output as the ship description. It is the inverse of
+    a known class: there, content in the stream HID a real event; here, content in the stream
+    FABRICATES one, and what it fabricates is a ship record. Held at a single observation and
+    not promoted to a rule.
+
+    The blocking discipline gate demonstrated liveness by firing on this retro's own author
+    immediately after a context compaction and refusing a tool call until the marker was
+    emitted — the strongest available liveness evidence for a gate, and the second consecutive
+    cycle in which it has been produced by the gate inconveniencing its own maintainer.
+
+discipline_metrics:
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 3
+  intent_confirmation_skip_rate: 0.0
+  response_marker_missed_turns: 1
+  response_marker_blocking_fires: 120
+  response_marker_graded_turns: 9
+  response_marker_miss_rate: 0.111
+  response_marker_measured_at: "session close, not mid-ritual — see note"
+  response_marker_note: >
+    ⛔ SEVEN FIRES ON ONE GRADED TURN. Every one of the seven blocking records carried an
+    IDENTICAL per-turn signature, so they are the same turn re-graded seven times, not seven
+    missed turns. Divided by that signature the figure is ONE missed turn — the post-compaction
+    boundary, which is the documented miss location. The published rate uses the deduplicated
+    denominator, consistent with the prior cycle's correction and NOT comparable to any cycle
+    before it. Reported at the corrected value even though the correction makes the number look
+    better, on the standing ground that a wrong number in the alarming direction survives by
+    rewarding the work that produced it.
+
+    ⛔ RE-MEASURED AT SESSION CLOSE, AND THE RE-MEASUREMENT IS THE POINT. This block first
+    published 6 graded turns / 7 fires / 0.166 while the ritual was still running. By close the
+    same session had reached 9 graded turns and 120 fires — a 13x fire-to-turn inflation and a
+    materially different denominator, against an unchanged numerator of ONE genuinely missed
+    turn. THE PRIOR CYCLE RECORDED EXACTLY THIS DEFECT AS A RITUAL-ORDERING PROBLEM: this file
+    is published at step 9 while facts it reports keep moving until step 10. That finding is
+    honoured here rather than reproduced — the figures are re-derived at close and the
+    measurement boundary is stated in the data rather than left implicit.
+
+    Both figures were produced by the EXISTING per-turn collapse function rather than by a
+    hand-written reducer, which is the fix proposed this cycle and parked; using it here cost
+    nothing and is the first time this series has been authored that way.
+  ritual_steps_defined: 10
+  ritual_steps_completed: 9
+  monthly_subritual_due: false
+  monthly_subritual_completed: false
+  notes: >
+    ⚠️ NINE OF TEN, AND THE SHORTFALL IS NAMED RATHER THAN ROUNDED UP. The output-checklist
+    cross-check step was NOT run as a separate pass; this cycle's gaps surfaced from the build
+    and from the cross-agent exchange instead. That is a real omission and is recorded as one.
+    Learning propagation is likewise HALF-DISCHARGED: five learnings reached the cross-workspace
+    knowledge file and none reached the checklist, which the contract requires as a second
+    surface. The remaining half was deliberately deferred rather than forced, because it carries
+    a routing obligation whose content depended on a decision taken late in the cycle.
+
+latency_observations:
+  source: "session-start latency log — per-session first-tool latency, parsed from the log's own format rather than an assumed one"
+  window_session_count: 159
+  median_first_tool_latency_sec: 42
+  p95_first_tool_latency_sec: 203
+  max_first_tool_latency_sec: 1070
+  threshold_violations: 19
+  threshold_sec: 120
+  notes: >
+    ⭐ THIS BLOCK IS ONE OF THE TWO NOW ENFORCED AS A COMPLETE GROUP, and it is the block that
+    vanished entirely two cycles ago after fourteen unbroken cycles. All six keys are measured
+    this cycle from a window filter over 1,326 total log rows.
+
+    ⚠️ `threshold_sec` is published alongside `threshold_violations` because the prior cycle
+    published a violation count WITHOUT stating the threshold it counted against, which makes
+    the two series non-comparable. The threshold is 120 seconds here; at 180s the count is 12
+    and at 300s it is 3. A violation count without its threshold is a number without a unit.
+
+    The maximum is an outlier roughly five times the p95 and is published unsmoothed.
+
+fam_dispatch_distribution:
+  learning_agent: 1
+  adversarial_reviewer: 4
+  consultant: 7
+  external_validator: 0
+  notes: >
+    Measured over the window by enumerating dispatch identities BEFORE filtering on any expected
+    name — the ordering that this cycle's own findings say is load-bearing.
+
+    ⛔ THE DENOMINATOR DISCIPLINE HERE IS THE POINT, AND IT IS WHY THIS BLOCK IS NARROW. The
+    transcript corpus holds 112 dispatches in-window of ALL types, the overwhelming majority of
+    which are general-purpose parallel fan-out and are NOT named rails. Pairing a named-rail
+    figure against that corpus is precisely the join-key error corrected in finding 1.1, so the
+    four buckets above total 12 and the remaining 100 are excluded BY DESIGN rather than lost.
+
+    One further rail exists and is deliberately absent from these buckets, having been dispatched
+    once this window; it has never been covered by the observability convention discussed in
+    finding 2.1, which is itself part of that finding. `external_validator: 0` is a true zero:
+    that tool has been quota-exhausted for the whole window, and the fallback reviewer carried
+    its load.
+
+defect_ledger:
+  measured_at: "2026-08-16 17:1x"
+  measured_from: "governance status file — rows returned by the live escalator extractor, not by reading the file"
+  open_total: 67
+  age_under_7d: 13
+  age_7_to_29d: 53
+  age_30d_plus: 0
+  age_undated: 1
+  median_age_days: 14
+  max_age_days: 26
+  notes: >
+    ⭐ THE AGE GROUP IS RE-DERIVED THIS CYCLE RATHER THAN CARRIED. The prior cycle published the
+    total and deliberately omitted the distribution, on the correct ground that carrying stale
+    ages forward would be a stale measurement wearing a current timestamp. This cycle the six
+    keys are enforced as a group and are measured; the buckets sum exactly to the total, which
+    is stated as a control rather than assumed.
+
+    ⚠️ AN HONEST BOUND ON WHAT THESE AGES MEAN, AND IT WEAKENS THEM. The age of a row is taken
+    from the most recent date appearing in that row's text. For a row that has been UPDATED,
+    that is its last-touched date and not its filed date. So `age_30d_plus: 0` and a maximum of
+    26 days are a FLOOR on the board's true age, not a finding about it — an actively-maintained
+    old row is indistinguishable here from a new one. Published with the bound stated rather
+    than either suppressed or presented as a clean result.
+
+    DELIBERATELY UNSCORED, for the reason established two cycles ago: a governance architecture
+    that scored itself on defect count would score highest with its instruments switched off,
+    and every audit that worked would lower the number.
+
+    ⚠️ AND THE TOTAL REMAINS A CLASSIFIER OUTPUT, NOT A COUNT OF WHAT EXISTS. The extractor's
+    region anchor is a literal heading, and a full audit this window measured the consequence:
+    of twelve workspaces, five render zero and have no such rows at all, six are correct, and
+    ONE HOLDS TWO LIVE LEDGERS — 80 rows under a heading the extractor ignores and 14 under the
+    one it reads — so the instrument publishes the smaller and cannot report that it ignored the
+    larger. That audit also found that an earlier audit of the same defect returned a FALSE
+    CLEAN, because it computed rows-in-region using the extractor's own anchor: instrument and
+    subject corroborating each other.
+
+improvement_backlog:
+  total: 116
+  done: 48
+  open: 51
+  parked: 17
+  open_ready: 35
+  open_decision_gated: 16
+  open_upstream_blocked: 0
+  notes: >
+    Proposed improvements, distinct from the defect ledger: a defect is a known way the system
+    is wrong, a backlog item is a way it could be better. Reconciled against the raw total as a
+    control: 35 + 16 = 51 open, and 48 + 51 + 17 = 116 = the raw item count.
+
+    Moved 91 → 116 across the window. Three of the additions are this cycle's own ruled-then-
+    parked proposals; the rise is a board being worked rather than a board decaying.
+
+    ⚠️ The scheduling axis remains a DERIVED view, so these figures are a claim about what
+    classified rather than about what exists. The gate field that drives it is overloaded — it
+    conflates no-gate-exists with gate-has-been-cleared — which was flagged as a deferred
+    pattern this cycle and sits inside an already-filed repair. This cycle's three new entries
+    write the cleared state explicitly in prose to avoid inheriting that ambiguity.
+
+enforcement_coverage:
+  measured_at: "2026-08-16 — CARRIED, not re-measured; see notes"
+  measured_from: "prior cycle's measurement, carried unchanged; one new arm added and verified this cycle"
+  arms_built: 7
+  arms_armed: 7
+  arms_with_written_exit_criteria: 6
+  arms_with_falsifiable_exit: 5
+  arms_declared_permanent: 1
+  checks_enumerated: 28
+  checks_with_written_exit_criteria: 0
+  checks_unit: "blocking exit paths in the commit-time arm"
+  checks_unit_note: >
+    Unit pinned at 28 (exit-site) as established two cycles ago, so the manifest and this file
+    publish one unit for one population. The numerator is 0 under every plausible denominator.
+  notes: >
+    ⚠️ THIS BLOCK IS CARRIED APART FROM THE NEW ARM, AND SAYING SO IS THE POINT. The seventh arm
+    is the conditionally-required group check shipped this cycle; it was built, tested and
+    verified armed, including negative controls constructed specifically because the first
+    attempt at a control passed VACUOUSLY — it exercised sidecars on an older schema revision
+    where the new arm returns before running, so the control was green without ever reaching the
+    code it claimed to test. The remaining six figures are the prior cycle's measurement,
+    unchanged and NOT re-derived. They are published because dropping them would lose a real
+    prior measurement, and flagged because a carried number that looks current is a defect this
+    architecture has now banked repeatedly.
+
+    The new arm ships with a deliberate asymmetry: a block that is present but null PASSES,
+    while a block that is absent FAILS. Two published sidecars fail it and were NOT repaired —
+    the readings they lack were never recorded, and inventing plausible values to turn a suite
+    green is exactly the failure the guard exists to catch. They are named on an explicit
+    known-nonconformant list with their reasons, and the test asserts that they still fail, so
+    an entry that starts passing is a signal rather than a silent drift.
+
+instrument_liveness:
+  silent_failures_observed: 6
+  caught_by_control: 2
+  caught_by_review: 0
+  caught_by_contradiction: 4
+  notes: >
+    Scores the LOOP, not the absence of failure. Six instruments used to conduct this retro
+    returned a confident wrong answer: a card-delimiter matcher that returned 4 against roughly
+    1,757; a windowed reduction whose heading anchor returned zero against a corpus with at
+    least eight heading grammars; the dispatch count central to finding 1.1; an inherited size
+    figure ten points off; a test-selection pattern that returned zero selected and was briefly
+    read as evidence; and a verification predicate that tested presence where assertion was
+    meant. NOT ONE WAS CAUGHT BY REVIEW — the third consecutive cycle in which the review layer
+    has failed to catch this class, which is itself the finding.
+
+    ⛔ FOUR OF SIX WERE CAUGHT BY CONTRADICTION rather than by a control, and that arm is broken
+    out separately here for the first time because it keeps outperforming the controls. A
+    contradiction between an instrument's output and one fact known about the same object
+    WITHOUT that instrument requires no source-reading and no tooling. The two conventional
+    control catches both came from deliberately constructing a case the instrument should fail.
+
+    ⚠️ A CONTROL CAN PASS VACUOUSLY, and one did this cycle: a negative control for the new
+    enforcement arm was green because every case it exercised returned before reaching the code
+    under test. A control validates the instrument only if it reaches it.
+
+detection_provenance:
+  status: "LIVE"
+  instrumented_from: "2026-08-09-p18"
+  caught_by_control: 4
+  caught_by_operator: 2
+  caught_by_accident: 3
+  notes: >
+    Second cycle with real data, and the operator arm is non-zero for the first time — which
+    matters, because the prior sidecar warned in writing that its own zero must not be read as
+    a result, since the operator had not yet reviewed the cycle's output when those figures were
+    written. That warning is now vindicated rather than merely cautious.
+
+    ⛔ BOTH OPERATOR CATCHES WERE SINGLE QUESTIONS, AND NEITHER WAS FINDABLE FROM INSIDE. The
+    first asked why the retrospective's proposal slate had been reported as a COUNT rather than
+    its contents — exposing that the ritual was being delivered conversationally against a
+    template that has carried a dedicated section for that slate for two cycles. The second
+    asked whether an accuracy proposal was really about portability, which retired the frame the
+    proposal had been written and relayed in. Neither is the kind of defect a gate can hold,
+    because both are errors of FRAME, and a frame error is only visible from outside the frame.
+
+    Boundary disclosed rather than hidden: the accident bucket includes findings surfaced while
+    reading for something else, which a ritual of this shape produces in quantity. As established
+    last cycle, this session is instrument-heavy by construction and inflates the control arm;
+    read these as a second baseline point, not as a rate.
+
+schema_version: "1.1"
