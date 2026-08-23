@@ -1,0 +1,325 @@
+# P10 Retro Sidecar — 2026-08-23 (P10 retro #20, sanitized public snapshot)
+#
+# Window 2026-08-16 → 2026-08-23 (7 days). Not the first retro of the month, so the monthly
+# housecleaning sub-ritual does not fire; only the ten weekly steps are in scope.
+# Stakeholder names genericized to role-class; workspace names genericized per the public
+# workspace table; private personal-track + career-track + capital-track references dropped
+# entirely; evidence citations to private files, commit hashes, hook filenames, thread IDs,
+# internal item numbers, exact protocol version strings, and product internals stripped.
+#
+# Schema: `dashboard/render.py` § SIDECAR_SCHEMA — the enforced contract (rc=3 on a missing
+# required field). `schema_version` records which revision this file was authored against.
+#
+# ⭐ THE REVIEW LAYER CAUGHT ONE THIS CYCLE, ENDING A THREE-CYCLE STREAK. p19 recorded that
+# not one silent instrument failure had been caught by review in three consecutive cycles.
+# This cycle one was — and it was caught by the learning-layer agent auditing the ORCHESTRATOR's
+# matcher, not by a human reading a diff. The catch is real and its shape is worth stating: the
+# reviewer had no access to the corpus the orchestrator used, ran its own instrument, and the
+# two disagreed. Review worked here because it was INDEPENDENT, not because it was careful.
+
+retro_id: "2026-08-23-p20"
+retro_date: "2026-08-23"
+schema_version: "1.1"
+window_start: "2026-08-16"
+window_end: "2026-08-23"
+prior_retro: "2026-08-16-p19"
+interactive_mode: true
+trigger_source: "session-start-overdue-flag-operator-confirmed-run-ritual"
+
+meta_finding: >
+  AN AUDIT STEP THAT NAMES THE OBLIGATION AND NOT THE INSTRUMENT IS RE-IMPLEMENTED BY HAND EVERY
+  CYCLE, AND THE HAND-ROLLED INSTRUMENT IS WORSE THAN THE ONE ALREADY IN THE TREE. Two of this
+  ritual's ten steps mandate a sweep and name no parser. Three parsers for the same format already
+  exist in the codebase and all three are correct. The ritual used a fourth, invented at the point
+  of use, which lost roughly 40% of the corpus — and the loss was not uniform: it silently dropped
+  three workspaces to zero on a step whose own text says "all active workspaces."
+
+  The sharper half is the direction. A hand-rolled matcher that under-counts returns a PLAUSIBLE
+  NON-ZERO, and a non-zero is its own positive control — it proves the file was reached, the tool
+  ran, and the pattern compiled. So it passes affirmatively and nothing invites a re-check. Every
+  zero-keyed tripwire in this architecture is blind to it by construction. What caught it was not
+  a control but a CONTRADICTION: one fact known about the corpus without the matcher.
+
+  And the same step failed in the opposite direction on the same cycle. Its second audit tripwire
+  names no corpus AND has no affirmative token, so "never observed = regression" is true by
+  construction — unfalsifiable, and it would have published a regression that does not exist. The
+  independent check showed 77% compliance. Both failures are one defect: the step specifies WHAT
+  to conclude and not WHAT to read.
+
+findings:
+  - id: "p20-f1"
+    title: "An audit step that mandates a sweep and names no parser is re-implemented by hand every cycle"
+    category: "ritual-specification"
+    evidence_count: 3
+    source_catchment: "cross-workspace changelog corpus; three existing parsers in-tree; independent re-measurement by the learning-layer agent"
+    recommendation: >
+      Name the canonical parser in the step text, the same shape as the publication step which
+      already names its enforcing surface explicitly rather than its schema file. Measured both
+      ways this cycle: the ad-hoc matcher returned 68 of 182 from one corpus and 81 of 195 from
+      another. The counts differ because the corpora differ; the finding does not, because in
+      both the loss is non-uniform and drops three workspaces to zero.
+    status: "approved"
+    execution_target_week: "2026-08-30"
+    target_surface: "retrospective protocol unit, step 1"
+
+  - id: "p20-f2"
+    title: "An audit tripwire with no corpus and no affirmative token is unfalsifiable"
+    category: "ritual-specification"
+    evidence_count: 2
+    source_catchment: "session log; transcript store; learning-layer agent verbatim re-read"
+    recommendation: >
+      The step must name its corpus and state the token that counts as compliance. The natural
+      surface returns near-silence, which reads as regression; the transcript store shows 30 of
+      39 in-window sessions demonstrably compliant, so no regression exists. Meanwhile the
+      natural surface's one in-window line is a SHORTFALL record, not a compliance citation —
+      so the step is wrong in both directions at once. Its silence is not evidence of failure
+      and its content is not evidence of success.
+    status: "approved"
+    execution_target_week: "2026-08-30"
+    target_surface: "retrospective protocol unit, step 5"
+
+  - id: "p20-f3"
+    title: "A fold creates a two-copy invariant with no consumer that can see both halves"
+    category: "documentation-architecture"
+    evidence_count: 1
+    source_catchment: "governance anchor and its reference companion, read as a pair"
+    recommendation: >
+      The reference companion carried a paragraph stating that nine surfaces were unaudited,
+      nine days after the anchor recorded all twelve as audited. Nothing can detect this: each
+      file reads complete on its own and only the PAIRING is wrong. A fold's edit must close by
+      re-reading the reference section it targets, and must record in the reference when a
+      paragraph has been superseded — otherwise a later reader cannot distinguish a repaired
+      section from an original one.
+    status: "executed"
+    execution_target_week: "2026-08-23"
+    target_surface: "governance reference companion"
+
+  - id: "p20-f4"
+    title: "A rule's own home violated the rule — three count and ordering defects inside the section that forbids them"
+    category: "self-application"
+    evidence_count: 3
+    source_catchment: "governance anchor, measured against itself"
+    recommendation: >
+      The section carries an obligation reading "before writing a count for a CLASS, grep the
+      class name on the surface that tracks it — never enumerate from the local paragraph."
+      Measured in that very section: the header claimed five mechanisms against six named; the
+      obligations header said "all four" while listing six; and the obligations were numbered
+      1 2 3 4 6 5. All three are corrected, the missing mechanism is restored as a named clause,
+      and the rotting count in the body is replaced with an unnumbered form. Being the author of
+      a rule confers no protection: the reasoning that names a pattern runs somewhere other than
+      the habit that would prevent it.
+    status: "executed"
+    execution_target_week: "2026-08-23"
+    target_surface: "governance anchor"
+
+  - id: "p20-f5"
+    title: "A module docstring asserted shadow mode for 21 days after the gate was armed"
+    category: "stale-assertion"
+    evidence_count: 1
+    source_catchment: "enforcement gate source, docstring compared against live calibration knob"
+    recommendation: >
+      The gate's calibration-knob comment block was current and correct; the docstring 55 lines
+      above still said the deny path is built but never fires, and that enforcement was deferred
+      to a date two months past. The arming was recorded at the knob and never reached the
+      surface a reader reads FIRST. Direction is toward inaction: a reader concludes there are no
+      teeth and may write code assuming the deny is inert. Corrected, with a standing instruction
+      that any future change to the arming knobs updates the docstring in the same edit.
+    status: "executed"
+    execution_target_week: "2026-08-23"
+    target_surface: "enforcement gate module docstring"
+
+  - id: "p20-f6"
+    title: "A corrective signal is unsatisfiable after a context compaction, and its counter is fire-denominated"
+    category: "instrument-calibration"
+    evidence_count: 1
+    source_catchment: "this session's own hook firelog, reduced by turn signature"
+    recommendation: >
+      Measured live: 58 corrective records against ONE distinct turn signature — 58x inflation,
+      above the documented aggregate and median. The graded turn was frozen on the far side of a
+      compaction and could not be retroactively repaired, so the remedy line "self-correct in the
+      current turn" was unsatisfiable: the correction HAD been made, and the withholding gate had
+      already cleared on it. The two instruments disagreed about the same session at the same
+      moment — gate cleared, corrective reporting a growing consecutive run. Belongs on the
+      existing parked backlog row for this class, with the post-compaction arm as a new axis.
+    status: "deferred"
+    execution_target_week: "2026-09-06"
+    target_surface: "improvement backlog, existing parked row"
+
+defect_ledger:
+  measured_at: "2026-08-23"
+  measured_from: "governance status file — rows returned by the live escalator extractor, not by reading the file"
+  open_total: 72
+  age_under_7d: 16
+  age_7_to_29d: 55
+  age_30d_plus: 1
+  age_undated: 0
+  median_age_days: 18
+  max_age_days: 33
+  notes: >
+    Re-derived this cycle, not carried. The buckets sum exactly to the total, stated as a control
+    rather than assumed: 16 + 55 + 1 + 0 = 72. Ownership split reconciles independently against
+    the session-start card at 55 orchestrator-side, 13 operator-gated, 4 parked — two instruments
+    reading the same rows and agreeing, which is a weaker check than a contradiction but a real one.
+
+    ⚠️ THE SAME HONEST BOUND AS LAST CYCLE, RESTATED BECAUSE IT HAS NOT BEEN FIXED. A row's age is
+    taken from the most recent date in its text, so for an UPDATED row that is its last-touched
+    date, not its filed date. The distribution therefore understates true age, and the single
+    30-day-plus row is a floor rather than a count.
+
+improvement_backlog:
+  total: 118
+  done: 50
+  open: 51
+  parked: 17
+  open_ready: 32
+  open_decision_gated: 16
+  open_upstream_blocked: 3
+  notes: >
+    Reconciled against the raw total as a control: 32 + 16 + 3 = 51 open, and 50 + 51 + 17 = 118
+    = the raw item count. Moved 116 → 118 across the window.
+
+enforcement_coverage:
+  measured_at: "2026-08-23 — PARTIALLY re-measured; see notes"
+  measured_from: "two of seven arms verified armed at runtime this cycle; the remaining five carried"
+  arms_built: 7
+  arms_armed: 7
+  arms_with_written_exit_criteria: 6
+  arms_with_falsifiable_exit: 5
+  arms_declared_permanent: 1
+  checks_enumerated: 28
+  checks_with_written_exit_criteria: 0
+  checks_unit: "blocking exit paths in the commit-time arm"
+  checks_unit_note: >
+    Unit pinned at 28 (exit-site) as established three cycles ago, so the manifest and this file
+    publish one unit for one population. The numerator is 0 under every plausible denominator.
+  notes: >
+    ⭐ AN IMPROVEMENT ON LAST CYCLE'S BLANKET CARRY, AND A PARTIAL ONE, WHICH IS WHY IT IS LABELLED
+    PER-ARM. The scheduled enforce-flip review walked both dated bindings and verified each AT
+    RUNTIME rather than in source: the retraction gate's shadow flag is unset in the live
+    environment and the gate is registered; the withholding gate's arming knob is false-for-dry-run
+    and it is registered. Registration was checked separately from arming, because armed code that
+    is not registered is an ABSENT guard, not a weak one.
+
+    The withholding gate additionally has its FIRST in-session evidence rather than shadow data:
+    it denied three times this cycle, then approved once a canonical acknowledgement was emitted —
+    no wedge. A malformed acknowledgement using the wrong field separator correctly did NOT clear
+    it. Both adversarial-audit MUSTs that blocked the original flip therefore held under real load.
+
+    ⚠️ THE REMAINING FIVE ARMS ARE CARRIED AND WERE NOT RE-DERIVED. Stated because a carried number
+    that looks current is a defect this architecture has banked repeatedly, and because "partially
+    re-measured" read as "re-measured" is the exact shape of a partial-mechanisation claim.
+
+instrument_liveness:
+  silent_failures_observed: 11
+  caught_by_control: 4
+  caught_by_review: 1
+  caught_by_contradiction: 6
+  notes: >
+    Scores the LOOP, not the absence of failure. Eleven instruments used to conduct this retro
+    returned a wrong answer: a changelog matcher losing ~40% of its corpus; a grep against a path
+    that does not exist, whose empty output read as a finding; a self-authored echo line asserting
+    a zero directly above its own contradicting output; an audit tripwire that would have published
+    a regression that does not exist; an exact-match citation resolver reporting 13 dangling
+    pointers where the consumer resolves by prefix and none dangle; a pagination matcher keyed on
+    one notation where five exist; a shell variable holding a newline-separated list, passed as a
+    single filename; an interpreter chosen by hand rather than read from the registered command,
+    missing a module the real one has; and a library call passed text where it expects a path.
+
+    ⭐ RE-DERIVED AT CLOSE, NOT AT AUTHORING — AND THE COUNT MOVED FROM 9 TO 11 BECAUSE TWO MORE
+    OCCURRED WHILE THIS FILE WAS BEING WRITTEN. One was caught by the schema's own unknown-field
+    arm: the tally script's output key names were lifted verbatim into the sidecar, where the
+    schema has a different vocabulary, and six fields warned. That is an ENFORCEMENT LAYER DOING
+    ITS JOB on the author of the retro, and the correct response was to re-key the block rather
+    than widen the schema around the mistake. A control render of the prior cycle's sidecar
+    returned zero warnings, which is what established the drift as newly introduced rather than
+    inherited. The other was a hand-written confidentiality check whose shell logic reported a
+    leak on every row while printing a zero count beside it.
+
+    ⛔ SIX OF ELEVEN WERE CAUGHT BY CONTRADICTION, which continues to outperform the controls — one
+    fact known about the object WITHOUT the instrument, requiring no source-reading and no tooling.
+    Four were caught by a control in the strong sense that a runtime or a validator raised. 
+
+    ⭐ ONE WAS CAUGHT BY REVIEW, ENDING A THREE-CYCLE STREAK OF ZERO. The learning-layer agent
+    audited the orchestrator's own pagination matcher and inverted its conclusion. Why it worked is
+    the transferable half: the reviewer had NO access to the corpus the orchestrator used, ran its
+    own instrument, and the two disagreed. That is not carefulness, it is INDEPENDENCE — and it is
+    the only property that distinguished this catch from the three cycles of misses before it.
+
+    ⚠️ TWO OF THE NINE WERE THE ORCHESTRATOR'S OWN MATCHERS BEING NARROWER THAN THE CONSUMER'S,
+    not too narrow in the ordinary sense. Re-running them, checking their flags, or adding a
+    positive control all CONFIRM them and change nothing, because they were correct about the
+    question they asked and wrong about the question that mattered.
+
+discipline_metrics:
+  ritual_steps_defined: 10
+  ritual_steps_completed: 10
+  monthly_subritual_due: false
+  monthly_subritual_completed: false
+  quality_gate_traces_sampled: 2
+  quality_gate_traces_passing: 2
+  intent_confirmation_skip_rate: null  # not measured this cycle
+  response_marker_missed_turns: 45
+  response_marker_graded_turns: 280
+  response_marker_blocking_fires: 935
+  response_marker_miss_rate: 0.16
+  response_marker_measured_at: "window-wide, auto-tallied — NOT this session alone; see note"
+  response_marker_note: >
+    ⛔ THE UNIT IS THE WINDOW, NOT THE SESSION, AND SAYING SO IS THE POINT. The prior cycle
+    published a SINGLE SESSION's figures in these keys (9 graded turns, 120 fires). This cycle
+    publishes the WINDOW, auto-tallied: 45 missed turns of 280 graded, from 935 blocking fires
+    of 3,838 total. The two are not comparable and neither is comparable to cycles before the
+    per-turn correction, which published the raw fire form.
+
+    ⭐ THE FIRE-TO-TURN INFLATION WAS MEASURED DIRECTLY THIS CYCLE, IN THE ORCHESTRATOR'S OWN
+    SESSION, AT 58 FIRES AGAINST ONE TURN SIGNATURE — far above the documented aggregate and median
+    for this class, and the evidence behind finding f6.
+
+    ⛔ AND THE PRECONDITION FOR THAT DIVISION WAS CHECKED RATHER THAN ASSUMED, BECAUSE A STANDING
+    BOARD ROW SAYS IT MUST BE. The divide-by-signature rule recovers a TURN count only while the
+    signature pointer ADVANCES; against a frozen pointer the identical arithmetic cannot separate
+    one miss re-graded N times from N turns never graded, and both readings fit every field the
+    instrument writes. The flattering reading is the one the sanctioned formula hands you, which is
+    why the check is owed. Here the pointer demonstrably advanced: three signature blocks, strictly
+    sequential with no interleaving — a non-substantive stretch graded no-op, then 36 consecutive
+    PASS records on a fully compliant turn, then the current block run. The quotient is therefore a
+    turn count, and it is stated as one on VERIFIED grounds rather than by citing the rule.
+
+    ⭐ THAT ALSO SUPPLIES THE DISCRIMINATOR THE BOARD ROW WAS OPENED TO FIND: clean sequential
+    transitions across several distinct signatures is positive evidence the pointer tracks turns;
+    a SINGLE signature spanning an entire session is what indicts it. The test needs no source
+    reading, which is what makes it usable at close.
+
+    ⚠️ THAT SESSION'S 22 ARE NOT REPAIRABLE AND THE INSTRUMENT CANNOT SAY SO. The graded turn sits
+    on the far side of a context compaction: it is frozen, cannot be retroactively marked, and the
+    corrective's instruction to self-correct in the current turn is therefore unsatisfiable. The
+    withholding gate, reading turns rather than fires, had already CLEARED on the emitted marker
+    while the corrective went on reporting a growing consecutive run. Two instruments, one
+    session, one moment, opposite answers — only one of them right about the present.
+  notes: >
+    Auto-tallied by the metrics script, not author-estimated. The per-TURN denominator is the only
+    honest one; the raw fire counts inflate by roughly an order of magnitude.
+
+fam_dispatch_distribution:
+  learning_agent: 2
+  adversarial_reviewer: 0
+  consultant: 1
+  external_validator: 0
+  notes: >
+    Measured over the window by enumerating dispatch identities BEFORE filtering on any expected
+    name. The same denominator discipline as the prior cycle: the transcript corpus holds 14
+    general-purpose fan-out dispatches in-window which are NOT named rails, and they are excluded
+    BY DESIGN rather than lost — pairing a named-rail figure against the full corpus would be a
+    join-key error. The four buckets above total 3.
+
+    `adversarial_reviewer: 0` is a true zero and is a gap worth naming rather than a clean result:
+    no adversarial audit ran this window, and the standing ceremony ties one to each governance
+    version bump. `external_validator: 0` is also a true zero — that tool has been quota-exhausted
+    across recent windows and the fallback reviewer carries its load.
+
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 112
+  median_first_tool_latency_sec: 39.0
+  p95_first_tool_latency_sec: 217
+  max_first_tool_latency_sec: 678
+  threshold_violations: 17

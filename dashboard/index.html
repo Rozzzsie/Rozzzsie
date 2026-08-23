@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rozzzsie Governance Dashboard — Retrospective 2026-08-16-p19</title>
+  <title>Rozzzsie Governance Dashboard — Retrospective 2026-08-23-p20</title>
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
 <body>
@@ -11,12 +11,12 @@
 
     <header class="hero">
       <div class="hero-eyebrow">Rozzzsie Governance Dashboard</div>
-      <h1>Retrospective #2026-08-16-p19</h1>
+      <h1>Retrospective #2026-08-23-p20</h1>
       <p class="hero-tagline">Evaluation as continuous governing function, not terminal checkpoint.</p>
       <div class="hero-meta">
-        <div><strong>Window</strong> 2026-08-09 → 2026-08-16</div>
+        <div><strong>Window</strong> 2026-08-16 → 2026-08-23</div>
         <div><strong>Mode</strong> interactive</div>
-        <div><strong>Trigger</strong> operator-rescheduled-design-arc-to-run-ritual-interactive-fresh-session</div>
+        <div><strong>Trigger</strong> session-start-overdue-flag-operator-confirmed-run-ritual</div>
         <div><strong>Schema</strong> v1.1</div>
       </div>
       <p class="hero-context">
@@ -32,10 +32,10 @@
       <div class="hs-widget">
         
       <div class="hs-headline">
-        <div class="hs-score">66<span class="hs-score-max">/100</span></div>
+        <div class="hs-score">75<span class="hs-score-max">/100</span></div>
         <div class="hs-score-caption">
           <strong>Derived at render, never stored.</strong>
-          Composite derived from 5 of 5 intended dials — an unweighted mean over ratios with different denominators and different evidentiary grades. It is an average of what could be measured, not of what matters.
+          Composite derived from 4 of 5 intended dials — an unweighted mean over ratios with different denominators and different evidentiary grades. It is an average of what could be measured, not of what matters.
         </div>
       </div>
       <p class="hs-caveat">All four scored dials are LEADING indicators and each is individually gameable — a gate can be armed over nothing, a ritual can complete while checking nothing. The one OUTCOME dial, which is not gameable that way, is the one with no data. A high score here means four leading indicators are saturated; it is not a claim that the system is working.</p>
@@ -44,31 +44,31 @@
           <div class="hs-label">Enforcement coverage</div>
           <div class="hs-meter"><span class="hs-bar"><span class="hs-bar-fill">██████</span><span class="hs-bar-track">░░░░</span></span></div>
           <div class="hs-pct">62</div>
-          <div class="hs-detail">7/7 arms armed · 6/7 state an exit condition (5 falsifiable · 1 documented permanence) · 0/28 individual checks with one<div class="hs-note">Coverage is measured per ARM and again per CHECK. Arm-level coverage is complete; check-level coverage is zero — the commit-time arm holds many individually-retirable checks and not one states its own exit condition. That is the honest reading of this dial. Check unit: blocking exit paths in the commit-time arm. Basis: prior cycle&#x27;s measurement, carried unchanged; one new arm added and verified this cycle.</div></div>
+          <div class="hs-detail">7/7 arms armed · 6/7 state an exit condition (5 falsifiable · 1 documented permanence) · 0/28 individual checks with one<div class="hs-note">Coverage is measured per ARM and again per CHECK. Arm-level coverage is complete; check-level coverage is zero — the commit-time arm holds many individually-retirable checks and not one states its own exit condition. That is the honest reading of this dial. Check unit: blocking exit paths in the commit-time arm. Basis: two of seven arms verified armed at runtime this cycle; the remaining five carried.</div></div>
         </div>
         <div class="hs-row">
           <div class="hs-label">Ritual integrity</div>
-          <div class="hs-meter"><span class="hs-bar"><span class="hs-bar-fill">█████████</span><span class="hs-bar-track">░</span></span></div>
-          <div class="hs-pct">90</div>
-          <div class="hs-detail">9/10 steps<div class="hs-note">Self-attested by the session that ran the ritual. Includes session-close discipline, which is one of the ritual steps rather than a separate score.</div></div>
+          <div class="hs-meter"><span class="hs-bar"><span class="hs-bar-fill">██████████</span><span class="hs-bar-track"></span></span></div>
+          <div class="hs-pct">100</div>
+          <div class="hs-detail">10/10 steps<div class="hs-note">Self-attested by the session that ran the ritual. Includes session-close discipline, which is one of the ritual steps rather than a separate score.</div></div>
         </div>
         <div class="hs-row">
           <div class="hs-label">Instrument liveness</div>
-          <div class="hs-meter"><span class="hs-bar"><span class="hs-bar-fill">███</span><span class="hs-bar-track">░░░░░░░</span></span></div>
-          <div class="hs-pct">33</div>
-          <div class="hs-detail">2/6 silent failures caught by a control · 0 by review<div class="hs-note">Self-attested. Full dial with a high failure count is the correct reading: the loop held. The count is shown unnormalised. The dial&#x27;s failing arm is a failure caught by REVIEW rather than by an instrument, which scores zero. Its blind spot is stated rather than scored: a silent failure that nothing caught at all is never observed, so it enters neither term.</div></div>
+          <div class="hs-meter"><span class="hs-bar"><span class="hs-bar-fill">████</span><span class="hs-bar-track">░░░░░░</span></span></div>
+          <div class="hs-pct">36</div>
+          <div class="hs-detail">4/11 silent failures caught by a control · 1 by review<div class="hs-note">Self-attested. Full dial with a high failure count is the correct reading: the loop held. The count is shown unnormalised. The dial&#x27;s failing arm is a failure caught by REVIEW rather than by an instrument, which scores zero. Its blind spot is stated rather than scored: a silent failure that nothing caught at all is never observed, so it enters neither term.</div></div>
         </div>
         <div class="hs-row">
           <div class="hs-label">Quality gate</div>
           <div class="hs-meter"><span class="hs-bar"><span class="hs-bar-fill">██████████</span><span class="hs-bar-track"></span></span></div>
           <div class="hs-pct">100</div>
-          <div class="hs-detail">3/3 traces passing<div class="hs-note">Small n (3); a sampled rate, not a census.</div></div>
+          <div class="hs-detail">2/2 traces passing<div class="hs-note">Small n (2); a sampled rate, not a census.</div></div>
         </div>
-        <div class="hs-row">
+        <div class="hs-row hs-row-pending">
           <div class="hs-label">Detection provenance</div>
-          <div class="hs-meter"><span class="hs-bar"><span class="hs-bar-fill">████</span><span class="hs-bar-track">░░░░░░</span></span></div>
-          <div class="hs-pct">44</div>
-          <div class="hs-detail">4 caught by a control · 2 by the operator</div>
+          <div class="hs-meter"><span class="hs-bar hs-bar-empty">··········</span></div>
+          <div class="hs-pct">—</div>
+          <div class="hs-detail">awaiting data — instrumented from a future cycle<div class="hs-note">The outcome metric: did a control catch it, or did the operator? Cannot be backfilled without fabricating attributions.</div></div>
         </div></div>
       <p class="hs-foot">
         The open-defect count is deliberately absent from this score. A governance system
@@ -85,16 +85,16 @@
           <h3>Defect ledger</h3>
           
       <div class="inv-head">
-        <span class="inv-total">67</span>
+        <span class="inv-total">72</span>
         <span class="inv-total-label">open as measured · <strong>not scored</strong></span>
         <span class="inv-split">— live · — parked</span>
       </div>
-      <div class="inv-bars"><div class="inv-row"><span class="inv-key">&lt; 7 days</span><span class="inv-bar">████</span><span class="inv-n">13</span></div><div class="inv-row"><span class="inv-key">7–29 days</span><span class="inv-bar">██████████████████</span><span class="inv-n">53</span></div><div class="inv-row"><span class="inv-key">30+ days</span><span class="inv-bar"></span><span class="inv-n">0</span></div><div class="inv-row"><span class="inv-key">undated</span><span class="inv-bar"></span><span class="inv-n">1</span></div></div>
+      <div class="inv-bars"><div class="inv-row"><span class="inv-key">&lt; 7 days</span><span class="inv-bar">█████</span><span class="inv-n">16</span></div><div class="inv-row"><span class="inv-key">7–29 days</span><span class="inv-bar">██████████████████</span><span class="inv-n">55</span></div><div class="inv-row"><span class="inv-key">30+ days</span><span class="inv-bar"></span><span class="inv-n">1</span></div><div class="inv-row"><span class="inv-key">undated</span><span class="inv-bar"></span><span class="inv-n">0</span></div></div>
       <div class="inv-foot">
-        median age <strong>14d</strong> ·
-        oldest <strong>26d</strong> —
+        median age <strong>18d</strong> ·
+        oldest <strong>33d</strong> —
         the age distribution is the diagnostic here, not the total.
-        Measured 2026-08-16 17:1x — a stamped
+        Measured 2026-08-23 — a stamped
         record of that state, not a current count. The board moved during the
         session that measured it.
         Basis: governance status file — rows returned by the live escalator extractor, not by reading the file.
@@ -104,14 +104,14 @@
           <h3>Improvement backlog</h3>
           
       <div class="bk-head">
-        <span class="bk-total">116</span>
+        <span class="bk-total">118</span>
         <span class="bk-total-label">proposed improvements — lifetime</span>
       </div>
       <div class="bk-split">
-        <span>48 done</span><span>51 open</span><span>17 parked</span>
+        <span>50 done</span><span>51 open</span><span>17 parked</span>
       </div>
-      <div class="bk-axes"><span class="bk-chip"><span class="bk-chip-n">35</span>ready</span><span class="bk-chip"><span class="bk-chip-n">16</span>decision-gated</span><span class="bk-chip"><span class="bk-chip-n">0</span>upstream-blocked</span></div>
-      <div class="bk-flow"><span class="bk-flow-label">this cycle</span><span class="bk-chip"><span class="bk-chip-n">3</span>authored</span><span class="bk-chip"><span class="bk-chip-n">3</span>deferred</span></div>
+      <div class="bk-axes"><span class="bk-chip"><span class="bk-chip-n">32</span>ready</span><span class="bk-chip"><span class="bk-chip-n">16</span>decision-gated</span><span class="bk-chip"><span class="bk-chip-n">3</span>upstream-blocked</span></div>
+      
       <div class="bk-foot">
         Scheduling axis is a <strong>derived</strong> view — an item whose status carries an
         unrecognised value is dropped from it silently, so these are a claim about what
@@ -126,7 +126,7 @@
       <div class="tiles">
         
     <div class="tile">
-      <div class="tile-value">10</div>
+      <div class="tile-value">6</div>
       <div class="tile-label">Findings triaged</div>
       
     </div>
@@ -135,17 +135,17 @@
     <div class="tile">
       <div class="tile-value">5</div>
       <div class="tile-label">Accepted / shipped</div>
-      <div class="tile-detail">5 executed</div>
+      <div class="tile-detail">3 executed · 2 approved</div>
     </div>
     
     <div class="tile">
-      <div class="tile-value">0</div>
+      <div class="tile-value">1</div>
       <div class="tile-label">Deferred</div>
       
     </div>
     
     <div class="tile">
-      <div class="tile-value">5</div>
+      <div class="tile-value">0</div>
       <div class="tile-label">Carried open</div>
       
     </div>
@@ -157,13 +157,13 @@
     </div>
     
       </div>
-      <p class="velocity-reconcile">buckets sum to 10 · 10 findings triaged</p>
+      <p class="velocity-reconcile">buckets sum to 6 · 6 findings triaged</p>
     </section>
     
     <section>
-      <h2 class="section-title">Governance trend <span class="section-title-suffix">n=17 · retrospectives #3–#19 · #1–#2 predate the sidecar</span></h2>
+      <h2 class="section-title">Governance trend <span class="section-title-suffix">n=18 · retrospectives #3–#20 · #1–#2 predate the sidecar</span></h2>
       <div class="trend-grid">
-        <div class="trend-card"><h3>Checkpoint discipline <span class="trend-card-suffix">missed turns · new series · n=3</span></h3><div class="trend-values"><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">97</span><span class="trend-arrow">→</span><span class="trend-value">1</span></div><svg viewBox="0 0 960 80" class="trend-svg" aria-hidden="true"><polyline points="16.0,70.0 480.0,10.0 944.0,70.0" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="16.0" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="480.0" cy="10.0" r="3.5" fill="var(--accent)" /><circle cx="944.0" cy="70.0" r="3.5" fill="var(--accent)" /></svg><div class="trend-axis-labels"><span class="trend-axis-label">p17</span><span class="trend-axis-label">p18</span><span class="trend-axis-label">p19</span></div><p class="trend-closed">The 16-cycle rate that preceded this axis was RETRACTED — it counted hook fires, not turns, and no turn denominator is derivable from the record. Its points are retired from this page rather than redrawn beside a different unit; the values remain in the sidecars.</p><p class="trend-note">A count of turns that shipped without the response marker — what was actually measurable, in place of a ratio that was not. One observation is a value, not a trend.</p></div><div class="trend-card"><h3>Proposal authoring <span class="trend-card-suffix">proposals authored / cycle</span></h3><div class="trend-values"><span class="trend-value">0</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">5</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">4</span><span class="trend-arrow">→</span><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">4</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">7</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span></div><svg viewBox="0 0 960 80" class="trend-svg" aria-hidden="true"><polyline points="16.0,70.0 74.0,52.9 132.0,27.1 190.0,44.3 248.0,35.7 306.0,61.4 364.0,35.7 422.0,52.9 480.0,44.3 538.0,52.9 596.0,10.0 654.0,44.3 712.0,44.3 770.0,44.3 828.0,44.3 886.0,44.3 944.0,44.3" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="16.0" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="74.0" cy="52.9" r="3.5" fill="var(--accent)" /><circle cx="132.0" cy="27.1" r="3.5" fill="var(--accent)" /><circle cx="190.0" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="248.0" cy="35.7" r="3.5" fill="var(--accent)" /><circle cx="306.0" cy="61.4" r="3.5" fill="var(--accent)" /><circle cx="364.0" cy="35.7" r="3.5" fill="var(--accent)" /><circle cx="422.0" cy="52.9" r="3.5" fill="var(--accent)" /><circle cx="480.0" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="538.0" cy="52.9" r="3.5" fill="var(--accent)" /><circle cx="596.0" cy="10.0" r="3.5" fill="var(--accent)" /><circle cx="654.0" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="712.0" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="770.0" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="828.0" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="886.0" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="944.0" cy="44.3" r="3.5" fill="var(--accent)" /></svg><div class="trend-axis-labels"><span class="trend-axis-label">p3</span><span class="trend-axis-label">p4</span><span class="trend-axis-label">p5</span><span class="trend-axis-label">p6</span><span class="trend-axis-label">p7</span><span class="trend-axis-label">p8</span><span class="trend-axis-label">p9</span><span class="trend-axis-label">p10</span><span class="trend-axis-label">p11</span><span class="trend-axis-label">p12</span><span class="trend-axis-label">p13</span><span class="trend-axis-label">p14</span><span class="trend-axis-label">p15</span><span class="trend-axis-label">p16</span><span class="trend-axis-label">p17</span><span class="trend-axis-label">p18</span><span class="trend-axis-label">p19</span></div><div class="trend-annotation"><span class="trend-flat">→ flat</span></div></div><div class="trend-card"><h3>Learning-layer invocations <span class="trend-card-suffix">learning-layer adoption</span></h3><div class="trend-values"><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">4</span><span class="trend-arrow">→</span><span class="trend-value">5</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">1</span></div><svg viewBox="0 0 960 80" class="trend-svg" aria-hidden="true"><polyline points="16.0,70.0 74.0,55.0 132.0,25.0 190.0,10.0 248.0,55.0 306.0,40.0 364.0,40.0 422.0,70.0 480.0,55.0 538.0,40.0 596.0,55.0 654.0,55.0 712.0,55.0 770.0,55.0 828.0,55.0 886.0,55.0 944.0,70.0" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="16.0" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="74.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="132.0" cy="25.0" r="3.5" fill="var(--accent)" /><circle cx="190.0" cy="10.0" r="3.5" fill="var(--accent)" /><circle cx="248.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="306.0" cy="40.0" r="3.5" fill="var(--accent)" /><circle cx="364.0" cy="40.0" r="3.5" fill="var(--accent)" /><circle cx="422.0" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="480.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="538.0" cy="40.0" r="3.5" fill="var(--accent)" /><circle cx="596.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="654.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="712.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="770.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="828.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="886.0" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="944.0" cy="70.0" r="3.5" fill="var(--accent)" /></svg><div class="trend-axis-labels"><span class="trend-axis-label">p3</span><span class="trend-axis-label">p4</span><span class="trend-axis-label">p5</span><span class="trend-axis-label">p6</span><span class="trend-axis-label">p7</span><span class="trend-axis-label">p8</span><span class="trend-axis-label">p9</span><span class="trend-axis-label">p10</span><span class="trend-axis-label">p11</span><span class="trend-axis-label">p12</span><span class="trend-axis-label">p13</span><span class="trend-axis-label">p14</span><span class="trend-axis-label">p15</span><span class="trend-axis-label">p16</span><span class="trend-axis-label">p17</span><span class="trend-axis-label">p18</span><span class="trend-axis-label">p19</span></div><div class="trend-annotation"><span class="trend-down">↓ slowing</span></div></div>
+        <div class="trend-card"><h3>Checkpoint discipline <span class="trend-card-suffix">missed turns · new series · n=4</span></h3><div class="trend-values"><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">97</span><span class="trend-arrow">→</span><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">45</span></div><svg viewBox="0 0 960 80" class="trend-svg" aria-hidden="true"><polyline points="16.0,70.0 325.3,10.0 634.7,70.0 944.0,42.5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="16.0" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="325.3" cy="10.0" r="3.5" fill="var(--accent)" /><circle cx="634.7" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="944.0" cy="42.5" r="3.5" fill="var(--accent)" /></svg><div class="trend-axis-labels"><span class="trend-axis-label">p17</span><span class="trend-axis-label">p18</span><span class="trend-axis-label">p19</span><span class="trend-axis-label">p20</span></div><p class="trend-closed">The 16-cycle rate that preceded this axis was RETRACTED — it counted hook fires, not turns, and no turn denominator is derivable from the record. Its points are retired from this page rather than redrawn beside a different unit; the values remain in the sidecars.</p><p class="trend-note">A count of turns that shipped without the response marker — what was actually measurable, in place of a ratio that was not. One observation is a value, not a trend.</p></div><div class="trend-card"><h3>Proposal authoring <span class="trend-card-suffix">series closed at p19</span></h3><div class="trend-values"><span class="trend-value">0</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">5</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">4</span><span class="trend-arrow">→</span><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">4</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">7</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">—</span></div><svg viewBox="0 0 960 80" class="trend-svg" aria-hidden="true"><polyline points="16.0,70.0 70.6,52.9 125.2,27.1 179.8,44.3 234.4,35.7 288.9,61.4 343.5,35.7 398.1,52.9 452.7,44.3 507.3,52.9 561.9,10.0 616.5,44.3 671.1,44.3 725.6,44.3 780.2,44.3 834.8,44.3 889.4,44.3" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="16.0" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="70.6" cy="52.9" r="3.5" fill="var(--accent)" /><circle cx="125.2" cy="27.1" r="3.5" fill="var(--accent)" /><circle cx="179.8" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="234.4" cy="35.7" r="3.5" fill="var(--accent)" /><circle cx="288.9" cy="61.4" r="3.5" fill="var(--accent)" /><circle cx="343.5" cy="35.7" r="3.5" fill="var(--accent)" /><circle cx="398.1" cy="52.9" r="3.5" fill="var(--accent)" /><circle cx="452.7" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="507.3" cy="52.9" r="3.5" fill="var(--accent)" /><circle cx="561.9" cy="10.0" r="3.5" fill="var(--accent)" /><circle cx="616.5" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="671.1" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="725.6" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="780.2" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="834.8" cy="44.3" r="3.5" fill="var(--accent)" /><circle cx="889.4" cy="44.3" r="3.5" fill="var(--accent)" /></svg><div class="trend-axis-labels"><span class="trend-axis-label">p3</span><span class="trend-axis-label">p4</span><span class="trend-axis-label">p5</span><span class="trend-axis-label">p6</span><span class="trend-axis-label">p7</span><span class="trend-axis-label">p8</span><span class="trend-axis-label">p9</span><span class="trend-axis-label">p10</span><span class="trend-axis-label">p11</span><span class="trend-axis-label">p12</span><span class="trend-axis-label">p13</span><span class="trend-axis-label">p14</span><span class="trend-axis-label">p15</span><span class="trend-axis-label">p16</span><span class="trend-axis-label">p17</span><span class="trend-axis-label">p18</span><span class="trend-axis-label">p19</span><span class="trend-axis-label">p20</span></div><div class="trend-annotation"><span class="trend-closed">no longer reported after p19</span></div></div><div class="trend-card"><h3>Learning-layer invocations <span class="trend-card-suffix">learning-layer adoption</span></h3><div class="trend-values"><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">4</span><span class="trend-arrow">→</span><span class="trend-value">5</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">3</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">2</span><span class="trend-arrow">→</span><span class="trend-value">1</span><span class="trend-arrow">→</span><span class="trend-value">2</span></div><svg viewBox="0 0 960 80" class="trend-svg" aria-hidden="true"><polyline points="16.0,70.0 70.6,55.0 125.2,25.0 179.8,10.0 234.4,55.0 288.9,40.0 343.5,40.0 398.1,70.0 452.7,55.0 507.3,40.0 561.9,55.0 616.5,55.0 671.1,55.0 725.6,55.0 780.2,55.0 834.8,55.0 889.4,70.0 944.0,55.0" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="16.0" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="70.6" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="125.2" cy="25.0" r="3.5" fill="var(--accent)" /><circle cx="179.8" cy="10.0" r="3.5" fill="var(--accent)" /><circle cx="234.4" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="288.9" cy="40.0" r="3.5" fill="var(--accent)" /><circle cx="343.5" cy="40.0" r="3.5" fill="var(--accent)" /><circle cx="398.1" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="452.7" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="507.3" cy="40.0" r="3.5" fill="var(--accent)" /><circle cx="561.9" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="616.5" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="671.1" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="725.6" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="780.2" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="834.8" cy="55.0" r="3.5" fill="var(--accent)" /><circle cx="889.4" cy="70.0" r="3.5" fill="var(--accent)" /><circle cx="944.0" cy="55.0" r="3.5" fill="var(--accent)" /></svg><div class="trend-axis-labels"><span class="trend-axis-label">p3</span><span class="trend-axis-label">p4</span><span class="trend-axis-label">p5</span><span class="trend-axis-label">p6</span><span class="trend-axis-label">p7</span><span class="trend-axis-label">p8</span><span class="trend-axis-label">p9</span><span class="trend-axis-label">p10</span><span class="trend-axis-label">p11</span><span class="trend-axis-label">p12</span><span class="trend-axis-label">p13</span><span class="trend-axis-label">p14</span><span class="trend-axis-label">p15</span><span class="trend-axis-label">p16</span><span class="trend-axis-label">p17</span><span class="trend-axis-label">p18</span><span class="trend-axis-label">p19</span><span class="trend-axis-label">p20</span></div><div class="trend-annotation"><span class="trend-up">↑ accelerating</span></div></div>
       </div>
     </section>
     
@@ -171,13 +171,13 @@
     <section>
       <h2 class="section-title">Specialist agent dispatches <span class="section-title-suffix">across specialist agents, this cycle</span></h2>
       <div class="fam-widget">
-        <div class="fam-sub-band"><h4 class="fam-sub-band-label">Dispatch axis</h4><div class="kv-row fam-row"><span class="kv-key">consultant</span><span class="kv-val">7</span></div><div class="kv-row fam-row"><span class="kv-key">adversarial reviewer</span><span class="kv-val">4</span></div><div class="kv-row fam-row"><span class="kv-key">learning agent</span><span class="kv-val">1</span></div><div class="kv-row fam-row kv-row-muted"><span class="kv-key">external validator</span><span class="kv-val">0</span></div><div class="kv-row fam-row-total"><span class="kv-key">total</span><span class="kv-val">12</span></div></div>
+        <div class="fam-sub-band"><h4 class="fam-sub-band-label">Dispatch axis</h4><div class="kv-row fam-row"><span class="kv-key">learning agent</span><span class="kv-val">2</span></div><div class="kv-row fam-row"><span class="kv-key">consultant</span><span class="kv-val">1</span></div><div class="kv-row fam-row kv-row-muted"><span class="kv-key">adversarial reviewer</span><span class="kv-val">0</span></div><div class="kv-row fam-row kv-row-muted"><span class="kv-key">external validator</span><span class="kv-val">0</span></div><div class="kv-row fam-row-total"><span class="kv-key">total</span><span class="kv-val">3</span></div></div>
       </div>
     </section>
 
 
     <section>
-      <h2 class="section-title">Findings detail <span class="section-title-suffix">10 items, every one statused</span></h2>
+      <h2 class="section-title">Findings detail <span class="section-title-suffix">6 items, every one statused</span></h2>
       <div class="findings">
         <div class="findings-row header">
           <div>id</div>
@@ -187,73 +187,45 @@
         </div>
         
     <div class="findings-row">
-      <div class="finding-id">1.1</div>
-      <div class="finding-title">A PROVENANCE LABEL IS NOT A VERIFICATION GATE, AND FOUR CORRECT LABELS DID NOT STOP ONE WRONG NUMBER. An unverified count was passed from the orchestrator to the learning-layer agent, which used it, attributed it, and stated explicitly that it could not check it; the figure hardened into three places in that agent&#x27;s published proposal. It then passed to the consultant rail, which again labelled it correctly and again did not stop it. The number was wrong in three independent ways: wrong magnitude, wrong denominator scope, and a corpus-state mismatch between its two halves with neither half labelled — so the published ratio described a state that never existed. THE LOAD-BEARING ERROR WAS THE DENOMINATOR: a named-rail numerator was paired against an all-dispatch corpus, most of whose members were never owed the thing being counted. That is a join-key error, committed on a figure the author generated himself. Corrective direction: verify BEFORE handing a figure to a deputy; labelling it afterward is a receipt for a check nobody ran.</div>
+      <div class="finding-id">p20-f1</div>
+      <div class="finding-title">An audit step that mandates a sweep and names no parser is re-implemented by hand every cycle</div>
+      <div><span class="pill pill-approved">approved</span></div>
+      <div class="finding-cat">ritual-specification</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">p20-f2</div>
+      <div class="finding-title">An audit tripwire with no corpus and no affirmative token is unfalsifiable</div>
+      <div><span class="pill pill-approved">approved</span></div>
+      <div class="finding-cat">ritual-specification</div>
+    </div>
+    
+    <div class="findings-row">
+      <div class="finding-id">p20-f3</div>
+      <div class="finding-title">A fold creates a two-copy invariant with no consumer that can see both halves</div>
       <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">measurement-integrity</div>
+      <div class="finding-cat">documentation-architecture</div>
     </div>
     
     <div class="findings-row">
-      <div class="finding-id">1.2</div>
-      <div class="finding-title">A RATIO IS ONE CLAIM, NOT TWO — CORRECTING ONE HALF WHILE TRUSTING THE OTHER MOVED THE PUBLISHED FIGURE FURTHER FROM THE TRUTH THAN LEAVING BOTH ALONE. The learning-layer agent audited a ratio it had been handed, corrected the numerator upward on its own independent census, and flagged the denominator as the orchestrator&#x27;s and unverified. Both acts were individually correct and locally defensible. The result was worse than inaction, because a one-sided correction transfers the credibility of the checked half onto the unchecked half, and the unverified-flag reads as caution while functioning as a pass. The agent banked this against itself in the proposal rather than quietly fixing the number, which is why it is publishable. Corrective direction: audit a ratio as ONE object — numerator, denominator, and the corpus state of each — or leave it whole and say so.</div>
+      <div class="finding-id">p20-f4</div>
+      <div class="finding-title">A rule&#x27;s own home violated the rule — three count and ordering defects inside the section that forbids them</div>
       <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">measurement-integrity</div>
+      <div class="finding-cat">self-application</div>
     </div>
     
     <div class="findings-row">
-      <div class="finding-id">1.3</div>
-      <div class="finding-title">A CORRECT RECOMMENDATION CAN REST ON A WRONG PREMISE, AND THE CONCLUSION SURVIVES EVERY CHECK YOU RUN ON IT. A routing recommendation was argued on the grounds that a governance file sat at 94.5 percent of its enforced size bound with roughly four sessions of headroom. Measured, it was at 84.92 percent with 22,614 units of headroom — the premise was ten points off. THE RECOMMENDATION WAS STILL RIGHT, because the true figure sits 0.08 points under the warn threshold, so a substantial addition trips it anyway. This is the hardest shape to catch: agreeing with a conclusion is not evidence about its premise, and every check aimed at the conclusion confirms it. Corrective direction: when you accept a recommendation, state which of its premises you actually verified — accepting the routing and verifying the bound are two different facts.</div>
+      <div class="finding-id">p20-f5</div>
+      <div class="finding-title">A module docstring asserted shadow mode for 21 days after the gate was armed</div>
       <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">measurement-integrity</div>
+      <div class="finding-cat">stale-assertion</div>
     </div>
     
     <div class="findings-row">
-      <div class="finding-id">2.1</div>
-      <div class="finding-title">AN OBSERVABILITY CONVENTION IS NOT DECAYING — IT IS DEAD, AND IT HAS A DEATH DATE. A hand-written log line recording every named-rail agent invocation is consumed by a standing health audit and by a session-scoping gate. In-window the count is ZERO such lines against twelve named-rail dispatches: not a low rate, a total absence. Whole-file the practice yields seven lines since January, all of them clustered before a single day three weeks ago, after which nothing. One rail has never been covered by the convention at all. Separately, the same file&#x27;s heading grammar has at least eight mutually incompatible live shapes while a gate keys on a literal heading prefix, and the file is unrotated since January at 4,500-plus lines — the only one of six audited governance surfaces with no size or shape discipline of any kind. THE AUDIT READS AN EMPTY SURFACE AND CANNOT REPORT THAT IT READ NOTHING: a zero tally does not surface as broken, it surfaces as a quiet week, because nothing compares it against the dispatches that actually occurred.</div>
-      <div><span class="pill pill-carried-open">carried-open</span></div>
-      <div class="finding-cat">structural</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">2.2</div>
-      <div class="finding-title">A TEST PINNED TO A VALUE THE SYSTEM INCREMENTS ON SCHEDULE HAS BEEN RED SINCE THE PREVIOUS CYCLE, AND NOTHING REPORTED IT. A dashboard test asserts a hard-coded corpus size against a corpus that grows by exactly one every retro cycle. It went red the moment the previous cycle published and has been red for seven days; verified on a clean tree, so it is independent of this cycle&#x27;s changes. THIS IS DIRECT EVIDENCE FOR A CEREMONY STEP ADDED ONE DAY BEFORE THIS CYCLE — the step that requires running the test suites at every version bump and reading the result line — measured on the cycle immediately preceding it: the prior bump either never ran its suites or absorbed a red silently. The deeper defect is that an assertion pinned to a scheduled increment tests the calendar rather than behaviour; re-pinning buys exactly one week. Contrast with the arm shipped this cycle, which asserts a SHAPE (these six keys exist) and is stable across growth.</div>
-      <div><span class="pill pill-carried-open">carried-open</span></div>
-      <div class="finding-cat">test-integrity</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">3.1</div>
-      <div class="finding-title">A VERIFICATION PREDICATE OF PRESENCE WHERE THE RIGHT ONE WAS ASSERTION — AND IT FLAGS THE MOST CAREFUL AUTHORS WHILE PASSING ANYONE WHO OVERWRITES SILENTLY. Checking that a correction had landed, the orchestrator swept for whether the wrong figure was PRESENT and got three hits, and was about to report a failure. All three sat inside the corrected region as CORRECTION RECORDS — contrastive statements of the old value beside the new, which is the house standard. The right predicate was whether the wrong figure was still ASSERTED. These two diverge precisely when someone corrects WELL, because good practice deliberately preserves the wrong number in contrastive form. A must-be-gone sweep is therefore the wrong instrument for any surface whose convention is relocate-don&#x27;t-delete. Aggravator recorded rather than omitted: the same sweep was a whole-file count about to become a claim about ONE section — the wrong-region mechanism, committed one turn after correcting the same family in another agent.</div>
-      <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">rule-extension</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">4.1</div>
-      <div class="finding-title">A PORTABILITY CONSTRAINT DOES NOT FIRE WHEN THE QUESTION PRESENTS AS ACCURACY, AND A DEPUTY INHERITS THE LEAD&#x27;S FRAME SILENTLY. A proposal to fix the accuracy of a self-audit instrument was relayed to the operator inside the frame it arrived in. The operator asked a single question — is this for portability — and exposed that the proposal OPTIMISES A MEASUREMENT WITHOUT ASKING WHETHER THE MEASUREMENT BELONGS WHERE IT LIVES. As scoped it would have made the architecture MORE coupled to one specific CLI, against a workspace whose stated value proposition is independence from any one vendor. The governing rule was already live and binding, and its own text nearly predicts the miss: it warns that the constraint fails to fire when a question presents as SECURITY, TOOLING or CONVENIENCE. ADD ACCURACY TO THAT LIST — it is the most disarming presentation of all, because making a number correct reads as strictly-good and frame-neutral, and nobody asks whether a bug fix has an architecture. THE DEPUTY COULD NOT HAVE CAUGHT THIS: a well-executed proposal inside the wrong frame is indistinguishable from a well-executed proposal, so the frame question is the lead&#x27;s and must be asked BEFORE dispatch.</div>
-      <div><span class="pill pill-executed">executed</span></div>
-      <div class="finding-cat">rule-extension</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">4.2</div>
-      <div class="finding-title">THE CONSULTANT RAIL RETIRED THE QUESTION IT WAS ASKED RATHER THAN ANSWERING IT, AND THE REFRAME IS THE RESULT. Asked where a governance measurement should be STORED — vendor-specific log versus an artifact the architecture owns — the rail answered that storage is not the axis. The axis is HOW MANY PLACES KNOW HOW TO READ THE RECORD, currently three: a pure module, a bash recipe embedded in a mandated authoring template, and every author&#x27;s head. Coupling is a function of that count, not of where the bytes sit: a pure function taking records and a session id is ALREADY substrate-neutral, while a bash recipe grepping a vendor log from inside a doctrine template is not and cannot be made so. Therefore the accuracy fix and the portability fix are THE SAME EDIT, landed in the module — with no fork of a 45,000-record historical series, so the must-not-change-what-it-counts contract is satisfied by construction rather than by argument. The rail also told the orchestrator, correctly, that he had over-corrected: routing an accuracy fix through a portability lens is a category error at the level asked, but the operator&#x27;s question still earned its keep by RELOCATING the fix rather than reopening it.</div>
-      <div><span class="pill pill-carried-open">carried-open</span></div>
-      <div class="finding-cat">structural</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">4.3</div>
-      <div class="finding-title">A MANDATED AUTHORING TEMPLATE STATES ITS OWN LIMITATION BACKWARDS, AND NO CODE FIX TOUCHES IT. The template governing this OS&#x27;s discipline-metrics authoring says the log yields an EXACT miss count but not an exact denominator, and instructs the author to report the denominator as unavailable rather than estimating it. Under a ruling made two days into this window, that is inverted: the exact numerator is exact in FIRES, which is the wrong unit, while the sanctioned degradation is applied to the half that is merely unmeasured. THE TEMPLATE THEREFORE LICENSES THE AUTHOR TO DISTRUST THE UNMEASURED HALF AND TRUST THE WRONGLY-MEASURED ONE. This was found by the consultant rail while reading source for a different question, and it is a DOCTRINE sentence rather than a code defect — no correction to the template&#x27;s command recipe reaches it, so a fix that only rewrites the recipe would leave the inverted instruction standing directly beneath it.</div>
-      <div><span class="pill pill-carried-open">carried-open</span></div>
-      <div class="finding-cat">measurement-integrity</div>
-    </div>
-    
-    <div class="findings-row">
-      <div class="finding-id">5.1</div>
-      <div class="finding-title">THE QUALITATIVE CATCHMENT SURFACE HAS GONE SILENT AND THE INSTRUMENT CANNOT SAY SO. The candidate queue that is meant to receive human-flagged retrospective material holds ZERO in-window entries; its newest is thirteen days old. Against 322 evidence cards and 250 knowledge-file deltas in the same window, that is roughly one receipt per 570 signal items, down from 629 the prior cycle. The learning-layer agent surfaced this and correctly declined to author a new proposal for it, folding it instead as strengthening evidence onto an existing open proposal about receipt surfaces — same trigger, same direction, so a new proposal would have forked it. Recorded here because a catchment surface that stops receiving does not report an error; it reports a quiet week, which is the same signature as finding 2.1 one layer up.</div>
-      <div><span class="pill pill-carried-open">carried-open</span></div>
-      <div class="finding-cat">process-gap</div>
+      <div class="finding-id">p20-f6</div>
+      <div class="finding-title">A corrective signal is unsatisfiable after a context compaction, and its counter is fire-denominated</div>
+      <div><span class="pill pill-deferred">deferred</span></div>
+      <div class="finding-cat">instrument-calibration</div>
     </div>
     
       </div>
@@ -263,9 +235,9 @@
         <div class="callout-icon" aria-hidden="true">◆</div>
         <div class="callout-body">
           <div class="callout-eyebrow">Meta-finding</div>
-          <div class="callout-text">A PROVENANCE LABEL IS NOT A VERIFICATION GATE. An unverified figure was handed to the learning-layer agent, which did everything correctly — it used the figure, attributed it, and stated in writing that it could not check it. The figure still hardened into three separate places in a published proposal. Attribution preserves accountability and does nothing whatsoever to stop propagation: a disclaimed number travels exactly as far as an undisclaimed one and arrives wearing a caveat that reads as diligence. The same figure then passed through a fourth hop, to the consultant rail, which again labelled it correctly and again could not stop it. Four hops, four correct labels, one wrong number.
-The sharper half is the learning agent&#x27;s own: A RATIO IS ONE CLAIM, NOT TWO. It audited the pair, corrected the numerator, and flagged the denominator as unverified — and thereby moved the published figure FURTHER from the truth than leaving both alone would have, because the half that was checked lends its credibility to the half that was not. The flag read as caution and functioned as a pass.
-Corrected, the finding is stronger than either original: not a rate but a DEATH DATE. The observability convention it measures has been dead since a specific day three weeks ago. A rate invites &quot;tighten the discipline&quot;; a date asks what changed on a particular day, which is a question with an answer.</div>
+          <div class="callout-text">AN AUDIT STEP THAT NAMES THE OBLIGATION AND NOT THE INSTRUMENT IS RE-IMPLEMENTED BY HAND EVERY CYCLE, AND THE HAND-ROLLED INSTRUMENT IS WORSE THAN THE ONE ALREADY IN THE TREE. Two of this ritual&#x27;s ten steps mandate a sweep and name no parser. Three parsers for the same format already exist in the codebase and all three are correct. The ritual used a fourth, invented at the point of use, which lost roughly 40% of the corpus — and the loss was not uniform: it silently dropped three workspaces to zero on a step whose own text says &quot;all active workspaces.&quot;
+The sharper half is the direction. A hand-rolled matcher that under-counts returns a PLAUSIBLE NON-ZERO, and a non-zero is its own positive control — it proves the file was reached, the tool ran, and the pattern compiled. So it passes affirmatively and nothing invites a re-check. Every zero-keyed tripwire in this architecture is blind to it by construction. What caught it was not a control but a CONTRADICTION: one fact known about the corpus without the matcher.
+And the same step failed in the opposite direction on the same cycle. Its second audit tripwire names no corpus AND has no affirmative token, so &quot;never observed = regression&quot; is true by construction — unfalsifiable, and it would have published a regression that does not exist. The independent check showed 77% compliance. Both failures are one defect: the step specifies WHAT to conclude and not WHAT to read.</div>
         </div>
       </div>
       
@@ -273,7 +245,7 @@ Corrected, the finding is stronger than either original: not a rate but a DEATH 
 
     <footer class="scope-honest">
       <p>
-        Dashboard v3.8
+        Dashboard v3.9
         <span class="sep">·</span> Schema v1.1
         <span class="sep">·</span> <a href="https://arxiv.org/abs/2411.13768">EDD 2024</a>
         <span class="sep">·</span> <a href="https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard">Source</a>
