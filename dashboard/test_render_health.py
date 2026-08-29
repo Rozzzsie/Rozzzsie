@@ -39,6 +39,11 @@ KNOWN_NONCONFORMANT = {
     # `defect_ledger` lost ALL SIX age keys — present in p17, absent here, i.e.
     # 1 of the 2 cycles in which this block has existed.
     "2026-08-09-p18": "defect_ledger age group absent — 6 keys, never recorded",
+    # Three WHOLE BLOCKS absent: `proposal_backlog` and `hook_health` after 17
+    # unbroken cycles (p3→p19), `detection_provenance` after all 3 cycles in
+    # which it has existed. Caught by the deficit arm added 2026-08-29; before
+    # that arm this sidecar validated with zero warnings and zero errors.
+    "2026-08-23-p20": "proposal_backlog + detection_provenance absent — whole blocks",
 }
 
 
@@ -1063,3 +1068,227 @@ class TestDroppedRailsNoteIsGone(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestWithdrawnIsAThirdDialState(unittest.TestCase):
+    """A dial measured for three cycles and then dropped is NOT the same state
+    as a dial never instrumented, and until 2026-08-29 the renderer had one
+    bucket for both.
+
+    MEASURED on the published corpus: `detection_provenance` ran p17→p19 and is
+    absent from p20. The dial fell out of `scored`, the denominator went 5→4,
+    and the composite ROSE 66→75. Withdrawing a measurement paid more than any
+    improvement available inside it.
+    """
+
+    def _p19_p20(self):
+        scs = _all_sidecars()
+        by_id = {s.get("retro_id"): s for s in scs}
+        return scs, by_id["2026-08-16-p19"], by_id["2026-08-23-p20"]
+
+    def test_a_block_measured_in_priors_and_absent_now_is_scored_not_pending(self):
+        scs, _, p20 = self._p19_p20()
+        dial = next(d for d in R.compute_health(p20, scs)["dials"]
+                    if d["key"] == "provenance")
+        self.assertTrue(dial["withdrawn"], "provenance should be marked withdrawn in p20")
+        self.assertEqual(dial["value"], R.WITHDRAWN_SCORE)
+        # Assert on the SUBJECT, not on a generic fragment: "WITHDRAWN" alone
+        # would also match a message about some other block going away.
+        self.assertIn("2026-08-16-p19", dial["detail"],
+                      "the detail must name the last cycle that carried the block")
+        self.assertIn("2026-08-02-p17", dial["detail"],
+                      "the detail must name the first cycle that carried the block")
+        self.assertIn("RETRACTED", dial["note"],
+                      "a withdrawn dial must say it is not a measured zero")
+
+    def test_withdrawal_lowers_the_composite_rather_than_raising_it(self):
+        """The D10 assertion. This is the whole point of the third state: a
+        published score must never go UP because a measurement stopped."""
+        scs, p19, p20 = self._p19_p20()
+        prior = R.compute_health(p19, scs)["composite"]
+        after = R.compute_health(p20, scs)["composite"]
+        self.assertLess(
+            after, prior,
+            f"p20 dropped a measured dial and scored {after} against p19's {prior} — "
+            "withdrawal must cost, never pay",
+        )
+        self.assertEqual(
+            R.compute_health(p20, scs)["scored_count"],
+            R.compute_health(p20, scs)["intended_count"],
+            "a withdrawn dial stays in the denominator",
+        )
+
+    def test_a_block_never_measured_stays_pending_and_is_not_withdrawn(self):
+        """Negative control, part 1: the block is PRESENT but carries no
+        readings. p17 is the first cycle to ship it."""
+        scs = _all_sidecars()
+        p17 = next(s for s in scs if s.get("retro_id") == "2026-08-02-p17")
+        dial = next(d for d in R.compute_health(p17, scs)["dials"]
+                    if d["key"] == "provenance")
+        self.assertFalse(dial["withdrawn"])
+        self.assertIsNone(dial["value"])
+
+    def test_a_block_absent_with_no_prior_carrying_it_is_not_withdrawn(self):
+        """Negative control, part 2 — and it is the discriminating one.
+
+        Part 1 leaves the block PRESENT, so an implementation that withdraws
+        unconditionally never reaches the history check and passes it anyway.
+        This case makes the block ABSENT while no prior carries it, which is
+        the only shape where the history check is the sole thing standing
+        between the input and a pass.
+        """
+        scs = _all_sidecars()
+        p17 = next(s for s in scs if s.get("retro_id") == "2026-08-02-p17")
+        stripped = {k: v for k, v in p17.items() if k != "detection_provenance"}
+        earlier = [s for s in scs
+                   if str(s.get("retro_date", "")) < str(p17.get("retro_date"))]
+        self.assertTrue(earlier, "positive control: p17 must have priors at all")
+        self.assertFalse(
+            any(s.get("detection_provenance") for s in earlier),
+            "positive control: no cycle before p17 may carry the block, or this "
+            "test is not exercising the never-measured case",
+        )
+        dial = next(d for d in R.compute_health(stripped, earlier)["dials"]
+                    if d["key"] == "provenance")
+        self.assertFalse(
+            dial["withdrawn"],
+            "a block absent from a cycle whose priors never carried it was never "
+            "withdrawn — it was never instrumented",
+        )
+        self.assertIsNone(dial["value"])
+
+    def test_a_sanctioned_null_redaction_is_not_a_withdrawal(self):
+        """`discipline_metrics` may legitimately be redacted to null (operator
+        decision 2026-08-02). Scoring that as a withdrawal would penalise the
+        exact behaviour that decision exists to protect."""
+        scs = _all_sidecars()
+        p20 = next(s for s in scs if s.get("retro_id") == "2026-08-23-p20")
+        redacted = dict(p20)
+        redacted["discipline_metrics"] = None
+        withdrawn = R._withdrawn_blocks(
+            redacted, scs, R.SIDECAR_SCHEMA["1.1"]["nullable_blocks"]
+        )
+        self.assertNotIn("discipline_metrics", withdrawn,
+                         "a present-and-null nullable block is a redaction, not a withdrawal")
+        # And the other direction: removing it entirely IS a withdrawal.
+        dropped = {k: v for k, v in p20.items() if k != "discipline_metrics"}
+        self.assertIn(
+            "discipline_metrics",
+            R._withdrawn_blocks(dropped, scs, R.SIDECAR_SCHEMA["1.1"]["nullable_blocks"]),
+            "an absent nullable block is still a dropped record",
+        )
+
+    def test_every_dial_key_has_a_source_block(self):
+        """The source map fails OPEN — a dial with no entry is simply never
+        withdrawable, and nothing else would report that."""
+        keys = {d["key"] for d in R.compute_health(_sidecar())["dials"]}
+        missing = sorted(keys - set(R._DIAL_SOURCE_BLOCK))
+        self.assertEqual(
+            missing, [],
+            f"dial(s) {missing} have no entry in _DIAL_SOURCE_BLOCK and can never "
+            "be marked withdrawn",
+        )
+        self.assertEqual(len(keys), R.INTENDED_DIAL_COUNT)
+
+    def test_the_caveat_paragraph_counts_the_dials_it_actually_has(self):
+        """The published caveat read 'All four scored dials are LEADING …' for
+        every cycle, including the two where five were scored. Prose asserting a
+        census must be derived from the census."""
+        scs = _all_sidecars()
+        p19 = next(s for s in scs if s.get("retro_id") == "2026-08-16-p19")
+        p20 = next(s for s in scs if s.get("retro_id") == "2026-08-23-p20")
+        html_p19 = R.render_health_widget(R.compute_health(p19, scs))
+        html_p20 = R.render_health_widget(R.compute_health(p20, scs))
+        # p19 scores the outcome dial; p20 withdraws it. The two paragraphs
+        # must not be identical, and p20's must name the withdrawal.
+        self.assertIn("has data this cycle", html_p19)
+        self.assertIn("ABSENT from this one", html_p20)
+        self.assertNotIn(
+            "the one with no data", html_p20,
+            "a withdrawn outcome dial is not 'the one with no data'",
+        )
+
+
+class TestTheDeficitArmSeesADroppedBlock(unittest.TestCase):
+    """`required` is key-level WITHIN a block, `known` warns on a block
+    APPEARING, `required_groups` fires only when its block is already there.
+    A block that simply VANISHES was visible to none of them.
+
+    The surplus arm was built to catch RENAMES, and a rename shows up from
+    either side. A pure DELETION shows up from one side only — the side that
+    had no arm.
+    """
+
+    def _conformant(self) -> dict:
+        scs = _all_sidecars()
+        return next(s for s in scs if s.get("retro_id") == "2026-08-16-p19")
+
+    def test_a_conformant_sidecar_still_validates_clean(self):
+        """Positive control, stated as a value rather than an absence: p19 is
+        the one published 1.1 sidecar that conforms, and it must stay clean."""
+        self.assertEqual(R.validate_sidecar(self._conformant()), [])
+
+    def test_a_required_block_absent_raises_and_names_that_block(self):
+        for block in sorted(R.SIDECAR_SCHEMA["1.1"]["required_blocks"]):
+            with self.subTest(block=block):
+                sc = {k: v for k, v in self._conformant().items() if k != block}
+                with self.assertRaises(R.SidecarSchemaError) as ctx:
+                    R.validate_sidecar(sc)
+                # Name the SUBJECT. A bare "missing required field" also matches
+                # a sub-key failure and would keep passing if this arm were
+                # deleted and some unrelated key happened to be absent.
+                self.assertIn(block, str(ctx.exception))
+                self.assertIn("whole block absent", str(ctx.exception))
+
+    def test_a_record_only_block_absent_warns_and_does_not_raise(self):
+        """`hook_health` reaches no renderer, so its loss costs an archive
+        rather than a widget. It must stop being SILENT without blocking a
+        publish."""
+        sc = {k: v for k, v in self._conformant().items() if k != "hook_health"}
+        warnings = R.validate_sidecar(sc)          # must not raise
+        self.assertTrue(
+            any("hook_health" in w and "ABSENT" in w for w in warnings),
+            f"expected a hook_health absence warning, got {warnings}",
+        )
+
+    def test_a_required_groups_block_absent_stays_exempt(self):
+        """`required_groups` states in writing that an absent block is not owed
+        its group — 'a cycle that genuinely did not measure is honest'. The
+        deficit arm must not contradict a neighbouring arm's stated design."""
+        for block in sorted(R.SIDECAR_SCHEMA["1.1"]["required_groups"]):
+            with self.subTest(block=block):
+                sc = {k: v for k, v in self._conformant().items() if k != block}
+                # ⚠️ THE ASSERTION IS SCOPED TO THIS ARM, NOT TO THE VERDICT.
+                # `defect_ledger` also carries a dotted entry in the top-level
+                # `required` list, so removing it raises for a DIFFERENT and
+                # pre-existing reason. Asserting "does not raise" would make
+                # this test report on the wrong arm — it would have gone red
+                # here while the exemption worked perfectly.
+                try:
+                    reported = "; ".join(R.validate_sidecar(sc))
+                except R.SidecarSchemaError as exc:
+                    reported = str(exc)
+                self.assertNotIn(
+                    f"{block} (whole block absent",
+                    reported,
+                    f"{block} has a required_groups contract and must be exempt "
+                    f"from the deficit arm; got {reported}",
+                )
+                self.assertFalse(
+                    any(
+                        line.startswith(block) and "ABSENT from this sidecar" in line
+                        for line in reported.split("; ")
+                    ),
+                    f"{block} must raise no deficit-arm warning; got {reported}",
+                )
+
+    def test_the_published_p20_is_what_this_arm_was_built_from(self):
+        """Provenance for the arm. If p20 is ever repaired this goes red, and
+        the right response is to look, not to delete the line."""
+        p20 = next(s for s in _all_sidecars() if s.get("retro_id") == "2026-08-23-p20")
+        with self.assertRaises(R.SidecarSchemaError) as ctx:
+            R.validate_sidecar(p20)
+        msg = str(ctx.exception)
+        for block in ("detection_provenance", "proposal_backlog"):
+            self.assertIn(block, msg)
+        self.assertIn("hook_health", msg, "the record-only loss must still be reported")
