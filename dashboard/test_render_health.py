@@ -15,6 +15,7 @@ from __future__ import annotations
 import importlib.util
 import re
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -39,11 +40,17 @@ KNOWN_NONCONFORMANT = {
     # `defect_ledger` lost ALL SIX age keys — present in p17, absent here, i.e.
     # 1 of the 2 cycles in which this block has existed.
     "2026-08-09-p18": "defect_ledger age group absent — 6 keys, never recorded",
-    # Three WHOLE BLOCKS absent: `proposal_backlog` and `hook_health` after 17
-    # unbroken cycles (p3→p19), `detection_provenance` after all 3 cycles in
-    # which it has existed. Caught by the deficit arm added 2026-08-29; before
-    # that arm this sidecar validated with zero warnings and zero errors.
-    "2026-08-23-p20": "proposal_backlog + detection_provenance absent — whole blocks",
+    # ⛔ 2026-08-23-p20 IS DELIBERATELY NOT LISTED HERE, AND THE ABSENCE IS
+    # LOAD-BEARING. It is missing three whole blocks — `proposal_backlog` and
+    # `hook_health` after 17 unbroken cycles (p3→p19), `detection_provenance`
+    # after all 3 cycles in which it has existed — and before the deficit arm
+    # was added 2026-08-29 it validated with zero warnings and zero errors.
+    # It was briefly listed here, between that arm landing and the operator
+    # ruling that a PUBLISHED artifact is not repaired to satisfy a guard
+    # written afterwards. `render.PUBLISHED_NONCONFORMANT` now records it, so
+    # it VALIDATES-WITH-WARNINGS rather than raising, and this list is only for
+    # sidecars that still raise. `TestThePublishedRecordIsNotABlanketHole`
+    # holds its assertions now.
 }
 
 
@@ -1095,9 +1102,16 @@ class TestWithdrawnIsAThirdDialState(unittest.TestCase):
         # Assert on the SUBJECT, not on a generic fragment: "WITHDRAWN" alone
         # would also match a message about some other block going away.
         self.assertIn("2026-08-16-p19", dial["detail"],
-                      "the detail must name the last cycle that carried the block")
-        self.assertIn("2026-08-02-p17", dial["detail"],
-                      "the detail must name the first cycle that carried the block")
+                      "the detail must name the last cycle in which the DIAL scored")
+        # ⛔ p18, NOT p17 — and the difference is the point of deciding per DIAL.
+        # p17 shipped the block with no readings in it, so the measurement began
+        # at p18; p17's own dial says "instrumented from 2026-08-09-p18". A
+        # block-level span would claim p17 and be wrong about when the
+        # instrument actually started producing.
+        self.assertIn("2026-08-09-p18", dial["detail"],
+                      "the detail must name the first cycle in which the DIAL scored")
+        self.assertNotIn("2026-08-02-p17", dial["detail"],
+                         "p17 carried the block but no reading — it must not open the span")
         self.assertIn("RETRACTED", dial["note"],
                       "a withdrawn dial must say it is not a measured zero")
 
@@ -1165,18 +1179,51 @@ class TestWithdrawnIsAThirdDialState(unittest.TestCase):
         p20 = next(s for s in scs if s.get("retro_id") == "2026-08-23-p20")
         redacted = dict(p20)
         redacted["discipline_metrics"] = None
-        withdrawn = R._withdrawn_blocks(
-            redacted, scs, R.SIDECAR_SCHEMA["1.1"]["nullable_blocks"]
-        )
-        self.assertNotIn("discipline_metrics", withdrawn,
-                         "a present-and-null nullable block is a redaction, not a withdrawal")
-        # And the other direction: removing it entirely IS a withdrawal.
+        nullable = R.SIDECAR_SCHEMA["1.1"]["nullable_blocks"]
+        withdrawn = R._withdrawn_dials(redacted, scs, nullable)
+        for key in ("ritual", "quality"):          # both read discipline_metrics
+            self.assertNotIn(
+                key, withdrawn,
+                f"{key} reads a nullable block; a present-and-null redaction is "
+                "not a withdrawal",
+            )
+        # And the other direction: removing the block entirely IS a withdrawal.
         dropped = {k: v for k, v in p20.items() if k != "discipline_metrics"}
-        self.assertIn(
-            "discipline_metrics",
-            R._withdrawn_blocks(dropped, scs, R.SIDECAR_SCHEMA["1.1"]["nullable_blocks"]),
-            "an absent nullable block is still a dropped record",
-        )
+        dropped_keys = R._withdrawn_dials(dropped, scs, nullable)
+        for key in ("ritual", "quality"):
+            self.assertIn(
+                key, dropped_keys,
+                f"{key}'s block is absent entirely — still a dropped record",
+            )
+
+    def test_a_block_present_with_all_null_values_is_still_a_withdrawal(self):
+        """⛔ THE CASE THAT BROKE THE FIRST VERSION, within the hour it shipped.
+
+        A block written present-with-explicit-nulls is a NON-EMPTY dict, so the
+        original block-level truthiness test called it "still here" and the
+        composite went straight back to the inflated value. But absent and
+        present-with-nulls mean the SAME thing to a dial — no reading. Only the
+        ARTIFACT should distinguish them; the SCORE must not, or declaring a
+        non-measurement is rewarded exactly as much as hiding it.
+        """
+        scs = _all_sidecars()
+        p20 = next(s for s in scs if s.get("retro_id") == "2026-08-23-p20")
+        declared = dict(p20)
+        declared["detection_provenance"] = {
+            "status": "NOT MEASURED THIS CYCLE",
+            "instrumented_from": "2026-08-09-p18",
+            "caught_by_control": None,
+            "caught_by_operator": None,
+            "caught_by_accident": None,
+            "notes": "explicitly declared, not silently dropped",
+        }
+        self.assertTrue(declared["detection_provenance"],
+                        "positive control: the block must be a NON-EMPTY dict, or "
+                        "this test does not exercise the case it names")
+        dial = next(d for d in R.compute_health(declared, scs)["dials"]
+                    if d["key"] == "provenance")
+        self.assertTrue(dial["withdrawn"])
+        self.assertEqual(dial["value"], R.WITHDRAWN_SCORE)
 
     def test_every_dial_key_has_a_source_block(self):
         """The source map fails OPEN — a dial with no entry is simply never
@@ -1207,6 +1254,131 @@ class TestWithdrawnIsAThirdDialState(unittest.TestCase):
             "the one with no data", html_p20,
             "a withdrawn outcome dial is not 'the one with no data'",
         )
+
+
+class TestDerivedProseIsGrammatical(unittest.TestCase):
+    """The caveat under the composite is DERIVED from the dial census, so its
+    number words are generated rather than written. A generated word carries no
+    grammatical position with it, and the published page read "A high score
+    here means Four leading indicators are saturated" for as long as the
+    withdrawal fix took to render.
+
+    ⛔ THE DEFECT EXISTS ONLY IN THE RENDERED STRING. Reading the generator is
+    not enough — every call site looked identical and one of them was wrong.
+    So this reads the HTML.
+    """
+
+    # A capitalised number word that is not opening a sentence.
+    MID_SENTENCE_CAPITAL = re.compile(
+        r"[a-z,] (No|One|Two|Three|Four|Five)\b"
+    )
+
+    def test_no_count_word_is_capitalised_mid_sentence(self):
+        for sc in _all_sidecars():
+            with self.subTest(sidecar=sc.get("retro_id")):
+                html_out = R.render_health_widget(R.compute_health(sc, _all_sidecars()))
+                text = re.sub(r"<[^>]+>", " ", html_out)
+                hit = self.MID_SENTENCE_CAPITAL.search(text)
+                self.assertIsNone(
+                    hit, f"capitalised count word mid-sentence: ...{text[max(0, (hit.start() if hit else 0) - 60):(hit.end() if hit else 0) + 20]}..."
+                )
+
+    def test_the_caveat_still_opens_with_a_capital(self):
+        """The mirror. Defaulting to lowercase must not silently decapitalise
+        the slot that legitimately opens a sentence."""
+        for sc in _all_sidecars():
+            with self.subTest(sidecar=sc.get("retro_id")):
+                html_out = R.render_health_widget(R.compute_health(sc, _all_sidecars()))
+                caveat = re.search(r'class="hs-caveat">(.*?)</p>', html_out, re.S)
+                self.assertIsNotNone(caveat, "caveat paragraph not found")
+                opening = caveat.group(1).strip()
+                self.assertRegex(opening, r"^[A-Z]", opening[:40])
+
+
+class TestThePublishedRecordIsNotABlanketHole(unittest.TestCase):
+    """The deficit arm binds PROSPECTIVELY. p20 is already published, so it is
+    recorded rather than repaired — and the whole risk of that shape is the
+    recorded exemption quietly widening into "this file never has to conform".
+
+    Every case here is about the BOUNDARY of the exemption, not about p20.
+    """
+
+    def test_the_published_sidecar_renders_and_says_so_loudly(self):
+        sc = R.load_sidecar(RETROS / "2026-08-23-p20.yaml")
+        warnings = R.validate_sidecar(sc)          # must NOT raise
+        loud = [w for w in warnings if "PUBLISHED sidecar with a recorded deficit" in w]
+        self.assertEqual(len(loud), 1, warnings)
+        # Tolerated is not silent: the id and both blocks must be nameable
+        # from the warning alone, or the deficit becomes invisible by habit.
+        self.assertIn("2026-08-23-p20", loud[0])
+        self.assertIn("proposal_backlog", loud[0])
+        self.assertIn("detection_provenance", loud[0])
+
+    def test_a_further_dropped_block_in_the_same_sidecar_still_fails(self):
+        """The kill case for a blanket exemption. A recorded id must not become
+        a licence for the NEXT omission in the same file."""
+        sc = R.load_sidecar(RETROS / "2026-08-23-p20.yaml")
+        # ⛔ THE VICTIM IS CHOSEN SO THE EXEMPTION IS THE ONLY THING BETWEEN
+        # THIS INPUT AND A PASS. `enforcement_coverage` was the first choice
+        # and was WRONG: it carries dotted `required` entries, so deleting it
+        # raises through the key-level arm no matter what the exemption does —
+        # the test passed while never reaching the predicate it names, and a
+        # blanket-exemption mutation survived it. `fam_dispatch_distribution`
+        # is in `known`, has no `required` path and no `required_groups`
+        # contract, so the deficit arm is its only route to a failure.
+        victim = "fam_dispatch_distribution"
+        self.assertIn(victim, sc, "fixture assumption: p20 still carries this")
+        self.assertFalse(
+            [k for k in R.SIDECAR_SCHEMA["1.1"]["required"] if k.startswith(victim)],
+            "victim must have no key-level required entries, or this test "
+            "passes through a different arm",
+        )
+        del sc[victim]
+        # `required_blocks` currently holds exactly the two blocks the record
+        # already covers, so a third must be introduced to exercise the SUBSET
+        # predicate at all. Patching the schema is the honest way to reach it:
+        # the claim under test is "absent ⊆ recorded", not the schema's content.
+        widened = dict(R.SIDECAR_SCHEMA["1.1"])
+        widened["required_blocks"] = set(widened["required_blocks"]) | {victim}
+        with unittest.mock.patch.dict(R.SIDECAR_SCHEMA, {"1.1": widened}):
+            with self.assertRaises(R.SidecarSchemaError) as caught:
+                R.validate_sidecar(sc)
+        self.assertIn(victim, str(caught.exception))
+
+    def test_an_unrecorded_sidecar_dropping_the_same_blocks_still_fails(self):
+        """The exemption is keyed on identity, not on which blocks are absent —
+        otherwise recording p20 would license the same drift everywhere."""
+        sc = _sidecar()                              # p17, not in the record
+        self.assertNotIn(str(sc["retro_id"]), R.PUBLISHED_NONCONFORMANT)
+        for block in ("proposal_backlog", "detection_provenance"):
+            sc.pop(block, None)
+        with self.assertRaises(R.SidecarSchemaError) as caught:
+            R.validate_sidecar(sc)
+        self.assertIn("proposal_backlog", str(caught.exception))
+
+    def test_the_failure_message_names_the_offending_sidecar(self):
+        """Measured need: the first render after the revert printed a bare
+        `schema: FAIL` across a 4-sidecar corpus and named none of them."""
+        sc = _sidecar()
+        sc.pop("proposal_backlog", None)
+        with self.assertRaises(R.SidecarSchemaError) as caught:
+            R.validate_sidecar(sc)
+        self.assertIn(str(sc["retro_id"]), str(caught.exception))
+
+    def test_the_recorded_deficit_matches_what_the_artifact_is_missing(self):
+        """A record that drifts from its artifact is worse than no record: it
+        would tolerate blocks that are present and mis-describe the defect."""
+        for retro_id, entry in R.PUBLISHED_NONCONFORMANT.items():
+            with self.subTest(retro_id=retro_id):
+                matches = list(RETROS.glob(f"{retro_id}.yaml"))
+                self.assertEqual(len(matches), 1, f"{retro_id} does not resolve")
+                sc = R.load_sidecar(matches[0])
+                for block in entry["blocks"]:
+                    self.assertNotIn(
+                        block, sc,
+                        f"{retro_id} carries {block} — the record is stale and "
+                        "is now exempting a block that is present",
+                    )
 
 
 class TestTheDeficitArmSeesADroppedBlock(unittest.TestCase):
@@ -1283,12 +1455,19 @@ class TestTheDeficitArmSeesADroppedBlock(unittest.TestCase):
                 )
 
     def test_the_published_p20_is_what_this_arm_was_built_from(self):
-        """Provenance for the arm. If p20 is ever repaired this goes red, and
-        the right response is to look, not to delete the line."""
+        """Provenance for the arm.
+
+        This asserted `assertRaises` when the arm landed. It stopped being true
+        four hours later — not because p20 was repaired but because the arm was
+        deliberately scoped to bind PROSPECTIVELY, with p20 recorded in
+        `PUBLISHED_NONCONFORMANT` instead. Rewritten rather than deleted: the
+        provenance is the point, and what it must now prove is that the
+        record-only loss is STILL reported when the two required blocks are
+        tolerated. That is the arm's residual value on this artifact.
+        """
         p20 = next(s for s in _all_sidecars() if s.get("retro_id") == "2026-08-23-p20")
-        with self.assertRaises(R.SidecarSchemaError) as ctx:
-            R.validate_sidecar(p20)
-        msg = str(ctx.exception)
+        warnings = R.validate_sidecar(p20)          # tolerated, not silent
+        joined = " ".join(warnings)
         for block in ("detection_provenance", "proposal_backlog"):
-            self.assertIn(block, msg)
-        self.assertIn("hook_health", msg, "the record-only loss must still be reported")
+            self.assertIn(block, joined)
+        self.assertIn("hook_health", joined, "the record-only loss must still be reported")
