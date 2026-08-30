@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.9"
+DASHBOARD_VERSION = "3.10"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -291,6 +291,32 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
         # is real and is accepted: drift in these four keys is now invisible to
         # the schema, so the ritual and quality-gate dials degrade to an em-dash
         # rather than raising. They render as UNKNOWN, never as zero.
+        # ⛔ THE DEFICIT ARM (added 2026-08-29). Blocks that must be PRESENT,
+        # not merely well-formed if present. Everything else in this manifest
+        # is surplus-facing: `required` is key-level WITHIN a block, `known`
+        # warns on an unknown block APPEARING, `required_groups` fires only
+        # when its block is already there. A block that simply VANISHES was
+        # visible to none of them.
+        #
+        # ⭐ WHY THE SURPLUS ARM WAS NOT ENOUGH, WHICH IS THE WHOLE LESSON: it
+        # was built to catch RENAMES, and a rename is visible from either side
+        # — the new name shows up as a surplus. A pure DELETION is visible from
+        # ONE side only, and that was the side with no arm.
+        #
+        # MEASURED on p20 (2026-08-23): `proposal_backlog` and `hook_health`
+        # had been present in all 17 prior cycles and `detection_provenance` in
+        # all 3 since it was introduced. p20 dropped all three, and
+        # `validate_sidecar` returned NO WARNINGS AND NO ERROR. The sidecar had
+        # been re-authored from a tally script's output rather than derived from
+        # the prior cycle, so it contained what the script emits and nothing
+        # else — and the six warnings the author DID receive were all
+        # surplus-direction, which read as an enforcement layer doing its job.
+        #
+        # Only the two blocks a renderer READS are hard-required. `hook_health`
+        # is `record_only`, so its loss costs an archive rather than a widget
+        # and it degrades to a warning — the point is that it stops being
+        # silent, not that it blocks a publish.
+        "required_blocks": {"proposal_backlog", "detection_provenance"},
         "nullable_blocks": {"discipline_metrics"},
         # Scalars the renderer reads directly. Declared so the unknown-block arm
         # can stay strict: anything NOT declared here or in `known` warns.
@@ -474,6 +500,36 @@ class SidecarSchemaError(Exception):
     """A required field the renderer depends on is absent."""
 
 
+# ⛔ A PUBLISHED SIDECAR IS A RECORD, NOT A SOURCE TO BE CORRECTED. The
+# deficit arm above binds PROSPECTIVELY: it exists so the next re-authored
+# sidecar cannot drop a measured block quietly. It cannot bind
+# RETROSPECTIVELY, because the artifacts it would refuse are already published
+# on the public dashboard, and editing a published record to satisfy a guard
+# written after the fact is falsification dressed as maintenance.
+#
+# So each already-published nonconformant sidecar is recorded HERE, by id and
+# by the EXACT set of required blocks it is known to be missing. Two properties
+# make this a record rather than a hole:
+#
+#   • It is keyed on the exact defect. A *different* required block going
+#     missing from the same sidecar still fails — the subset test below is
+#     what buys that, and a blanket `{"2026-08-23-p20"}` exemption would not.
+#   • It is LOUD. Every render prints a WARN naming the id and the blocks, so
+#     the deficit can never become invisible by being tolerated.
+#
+# An entry is added ONLY for a sidecar that is already published. A sidecar
+# that has not shipped gets repaired, not recorded.
+PUBLISHED_NONCONFORMANT: dict[str, dict[str, Any]] = {
+    "2026-08-23-p20": {
+        "blocks": frozenset({"proposal_backlog", "detection_provenance"}),
+        "why": (
+            "re-authored from a tally script rather than derived from p19; the "
+            "omission was measured 2026-08-29 and the artifact left as published"
+        ),
+    },
+}
+
+
 def validate_sidecar(sc: dict[str, Any]) -> list[str]:
     """Fail on missing required fields; return a list of warnings for unknowns.
 
@@ -507,6 +563,57 @@ def validate_sidecar(sc: dict[str, Any]) -> list[str]:
             f"{block} is a top-level block with no manifest entry — it is "
             "either record-only (no renderer reads it) or newly renamed"
         )
+    # The mirror of the arm above, and the one that was missing. A declared
+    # block ABSENT from the sidecar: hard failure if a renderer reads it,
+    # warning otherwise. `known_scalars` are excluded deliberately — the
+    # top-level `required` list already covers the scalars that matter, and a
+    # scalar's absence is not a dropped measurement block.
+    required_blocks = set(spec.get("required_blocks", ()))
+    # ⛔ A BLOCK WITH A `required_groups` ENTRY IS EXEMPT, AND THAT IS NOT A
+    # CARVE-OUT FOR CONVENIENCE. That arm's contract states in writing that an
+    # ABSENT block is not owed its group, "a cycle that genuinely did not
+    # measure is honest" — so for those blocks absence is a SANCTIONED state
+    # with a documented meaning. Warning on it would have this arm contradict
+    # a neighbouring arm's stated design, and the collision is real: p17 never
+    # recorded its six latency readings, and dropping the block is how the
+    # conformant fixture expresses that without inventing numbers. Making the
+    # two arms disjoint keeps each one's semantics intact.
+    exempt = set(spec.get("required_groups", {}))
+    declared_blocks = (set(spec["known"]) | set(spec.get("record_only", ()))) - exempt
+    block_missing: list[str] = []
+    for block in sorted(declared_blocks - set(sc)):
+        if block in required_blocks:
+            block_missing.append(
+                f"{block} (whole block absent; a renderer reads it)"
+            )
+        else:
+            warnings.append(
+                # ⚠️ NO CROSS-CYCLE CLAIM HERE. This function sees ONE sidecar
+                # and has no history, so it must not assert the block "has been
+                # carried in prior cycles" — that is `compute_health`'s
+                # withdrawal pass, which does hold the series.
+                f"{block} is declared in the schema {version} manifest and is "
+                "ABSENT from this sidecar — no renderer reads it, so nothing "
+                "breaks; if it was carried in earlier cycles this is a dropped "
+                "record rather than a clean omission"
+            )
+    # Downgrade against the published-record allowlist. Subset, never equality:
+    # a sidecar missing FEWER blocks than recorded is still covered, one
+    # missing MORE has drifted since and must fail.
+    grandfathered = PUBLISHED_NONCONFORMANT.get(str(sc.get("retro_id", "")))
+    if block_missing and grandfathered:
+        absent_required = {b for b in sorted(declared_blocks - set(sc))
+                           if b in required_blocks}
+        if absent_required <= set(grandfathered["blocks"]):
+            block_missing = []
+            warnings.append(
+                f"{sc.get('retro_id')} is a PUBLISHED sidecar with a recorded "
+                f"deficit: {', '.join(sorted(absent_required))} absent. "
+                f"{grandfathered['why']}. The dials these blocks feed are "
+                "scored WITHDRAWN, not dropped, so the composite is not "
+                "inflated by the omission — see compute_health"
+            )
+
     # ⛔ THE COALESCE LICENSE BELONGS ON THE PATH THAT RUNS. The overlap test
     # that licenses merging these two fields into one trend series lives in the
     # suite — which the bare `python3 render.py` of a retro close never invokes.
@@ -593,18 +700,22 @@ def validate_sidecar(sc: dict[str, Any]) -> list[str]:
     # makes that true.
     missing = (
         [k for k in spec["required"] if _resolve(k) is None]
+        + block_missing
         + group_missing
         + finding_missing
     )
     if missing:
         msg = (
-            "sidecar is missing required field(s) the renderer depends on: "
+            f"sidecar {sc.get('retro_id', '?')} is missing required field(s) "
+            "the renderer depends on: "
             + ", ".join(missing)
             + " — this is the sub-key drift guard; either restore the field or "
               "update SIDECAR_SCHEMA and the renderer together."
         )
         if warnings:
-            msg += " Undeclared field(s) present, likely the rename: " + "; ".join(warnings)
+            # Neutral prefix: this list now carries ABSENCE warnings too, and
+            # "undeclared field present" is false of every one of those.
+            msg += " Warnings raised alongside: " + "; ".join(warnings)
         raise SidecarSchemaError(msg)
     return warnings
 
@@ -1172,12 +1283,113 @@ def render_trend_chart(sidecars: list[dict[str, Any]]) -> str:
 
 INTENDED_DIAL_COUNT = 5
 
+# ─── The third dial state: WITHDRAWN (added 2026-08-29) ──────────────────────
+#
+# ⛔ A DIAL HAS THREE STATES, NOT TWO. Until this, `compute_health` knew only
+# "has data" and "no data" — so a block measured for three cycles and then
+# dropped landed in the SAME bucket as one never instrumented, and rendered as
+# "awaiting data — instrumented from a future cycle", untrue in both halves.
+#
+# MEASURED on p20 (2026-08-23): `detection_provenance` was present in p17, p18
+# and p19 and absent in p20. The dial fell out of `scored`, the denominator went
+# 5 -> 4, and the published composite ROSE 66 -> 75. p20 carrying p19's block
+# verbatim scores 69 — so 6 of those 9 points were the DIAL LEAVING, not the
+# system improving. Withdrawing a measurement paid better than any improvement
+# available inside it, which is the one thing a health score must never do.
+#
+# So a withdrawn dial stays IN the denominator at WITHDRAWN_SCORE. It is NOT a
+# measured zero, and the rendered label says so — it is the price of retracting
+# a measurement.
+#
+# ⚠️ NAMED AND NOT CLOSED: this arm fires on block ABSENCE. A block present with
+# all-null values still yields `None` and still shrinks the denominator. For
+# `discipline_metrics` that is deliberate (see `nullable_blocks` — redaction to
+# null is sanctioned); for every other block it is the same defect one notch
+# quieter, and it is left open rather than fixed silently.
+WITHDRAWN_SCORE = 0.0
+
+# Which sidecar block each dial reads. This map exists ONLY for the
+# `nullable_blocks` carve-out below — withdrawal itself is decided PER DIAL by
+# replaying the dial against earlier cycles, so a dial missing from this map is
+# still withdrawable. The suite asserts full coverage anyway, because the
+# carve-out is the arm that protects a sanctioned redaction from being scored
+# as a retraction.
+_DIAL_SOURCE_BLOCK: dict[str, str] = {
+    "enforcement": "enforcement_coverage",
+    "ritual": "discipline_metrics",
+    "instrument": "instrument_liveness",
+    "quality": "discipline_metrics",
+    "provenance": "detection_provenance",
+}
+
+
+def _withdrawn_dials(
+    sc: dict[str, Any],
+    prior_sidecars: list[dict[str, Any]] | None,
+    nullable_blocks: "frozenset[str] | set[str]" = frozenset(),
+) -> dict[str, tuple[str, str]]:
+    """Dials that were SCORED in an earlier cycle and score nothing in `sc`.
+
+    Returns {dial_key: (first_seen_retro_id, last_seen_retro_id)}.
+
+    ⛔ THE UNIT IS THE DIAL, NOT THE BLOCK — corrected 2026-08-29, same day the
+    block-level version shipped, because repairing the p20 sidecar exposed the
+    gap immediately. A block written present-with-explicit-nulls is a NON-EMPTY
+    dict, so a block-level truthiness test called it "still here" and the
+    composite went straight back to the inflated 75. But present-with-nulls and
+    absent mean the SAME thing to a dial: no reading. Only the ARTIFACT
+    distinguishes them, and it should — one is an honest declaration, the other
+    a silent drop — while the SCORE must treat them alike, or declaring the
+    non-measurement is rewarded exactly as much as hiding it.
+
+    Deciding per dial also removes a fail-open: earlier cycles are replayed
+    through `compute_health` itself, so "did this dial have data" is answered by
+    the dial's own logic rather than by a hand-kept guess at which keys count.
+    No recursion risk — the replay passes no priors, so its own withdrawal pass
+    sees an empty series and returns immediately.
+
+    ⛔ ONE CARVE-OUT, AND IT IS ASYMMETRIC ON PURPOSE. Where a block's redaction
+    to null is SANCTIONED (`nullable_blocks`; operator decision 2026-08-02), a
+    dial reading that block is withdrawn only when the block is ABSENT
+    ENTIRELY. Scoring a sanctioned redaction as a retraction would penalise the
+    exact behaviour that decision exists to protect.
+
+    Priors are filtered by `retro_date` rather than trusted from the caller, so
+    passing the whole series — which is what `load_all_sidecars` returns, `sc`
+    included — is correct and cannot count a cycle against itself.
+    """
+    here = str(sc.get("retro_date", ""))
+    priors = sorted(
+        (p for p in (prior_sidecars or []) if str(p.get("retro_date", "")) < here),
+        key=lambda p: str(p.get("retro_date", "")),
+    )
+    if not priors:
+        return {}
+
+    seen: dict[str, list[str]] = {}
+    for prior in priors:
+        for d in compute_health(prior)["dials"]:          # no priors: no recursion
+            if d["value"] is not None:
+                seen.setdefault(d["key"], []).append(str(prior.get("retro_id", "?")))
+
+    out: dict[str, tuple[str, str]] = {}
+    for key, cycles in seen.items():
+        block = _DIAL_SOURCE_BLOCK.get(key)
+        if block in nullable_blocks and block in sc:
+            continue                                      # sanctioned redaction
+        out[key] = (cycles[0], cycles[-1])
+    return out
+
 
 def _dial(key: str, label: str, value: float | None, detail: str, note: str = "") -> dict[str, Any]:
-    return {"key": key, "label": label, "value": value, "detail": detail, "note": note}
+    return {"key": key, "label": label, "value": value, "detail": detail,
+            "note": note, "withdrawn": False}
 
 
-def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
+def compute_health(
+    sc: dict[str, Any],
+    prior_sidecars: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     """Derive the health dials + composite from a schema-1.1 sidecar.
 
     Returns dials (some with value None = no data), the composite over the
@@ -1321,6 +1533,28 @@ def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
             "Cannot be backfilled without fabricating attributions.",
         ))
 
+    # ─── Withdrawal pass ─────────────────────────────────────────────────────
+    # Runs AFTER every dial is built, so no dial has to know about history. A
+    # dial that produced a value is never reconsidered; only a `None` can be
+    # reclassified from "never measured" to "measured, then retracted".
+    spec = SIDECAR_SCHEMA.get(str(sc.get("schema_version", ""))) or {}
+    withdrawn = _withdrawn_dials(sc, prior_sidecars, spec.get("nullable_blocks") or frozenset())
+    for d in dials:
+        if d["value"] is not None:
+            continue
+        if d["key"] not in withdrawn:
+            continue
+        first_seen, last_seen = withdrawn[d["key"]]
+        span = first_seen if first_seen == last_seen else f"{first_seen} through {last_seen}"
+        d["value"] = WITHDRAWN_SCORE
+        d["withdrawn"] = True
+        d["detail"] = f"WITHDRAWN — measured {span}, no reading in this cycle"
+        d["note"] = (
+            f"Scored {WITHDRAWN_SCORE:g} because the measurement was RETRACTED, not "
+            "because nothing was caught. A withdrawn dial stays in the denominator: "
+            "dropping a measured dial must never raise the composite."
+        )
+
     scored = [d for d in dials if isinstance(d["value"], (int, float))]
     composite = round(100 * sum(d["value"] for d in scored) / len(scored)) if scored else None
     return {
@@ -1328,7 +1562,28 @@ def compute_health(sc: dict[str, Any]) -> dict[str, Any]:
         "composite": composite,
         "scored_count": len(scored),
         "intended_count": INTENDED_DIAL_COUNT,
+        "withdrawn_count": sum(1 for d in dials if d.get("withdrawn")),
     }
+
+
+def _count_word(n: int, *, sentence_start: bool = False) -> str:
+    """Small-number words, so derived prose reads like the prose it replaced.
+
+    ⛔ CASE IS A PARAMETER, AND THE DEFAULT IS LOWERCASE. This returned a
+    capitalised word unconditionally, which is right in the one slot that opens
+    a sentence and wrong in every other — the published caveat read "A high
+    score here means Four leading indicators are saturated". Nothing in the
+    code looks wrong; the defect exists only in the rendered string, which is
+    why it survived review and was caught by reading the regenerated HTML.
+    Lowercase is the default because mid-sentence is the common case, so a
+    call site that forgets the flag is wrong in the rarer position.
+    """
+    word = {0: "no", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five"}.get(n, str(n))
+    return word[0].upper() + word[1:] if sentence_start else word
+
+
+def _plural(n: int, word: str) -> str:
+    return word if n == 1 else word + "s"
 
 
 def _bar(value: float | None, width: int = 10) -> str:
@@ -1349,9 +1604,17 @@ def render_health_widget(health: dict[str, Any]) -> str:
     for d in health["dials"]:
         val = d["value"]
         pct = f"{round(val * 100)}" if isinstance(val, (int, float)) else "—"
+        # A withdrawn dial is scored, so it must NOT inherit the pending class —
+        # it is not awaiting anything. It gets its own hook instead.
+        if d.get("withdrawn"):
+            cls = " hs-row-withdrawn"
+        elif isinstance(val, (int, float)):
+            cls = ""
+        else:
+            cls = " hs-row-pending"
         note = f'<div class="hs-note">{html.escape(d["note"])}</div>' if d.get("note") else ""
         rows.append(f"""
-        <div class="hs-row{'' if isinstance(val, (int, float)) else ' hs-row-pending'}">
+        <div class="hs-row{cls}">
           <div class="hs-label">{html.escape(d["label"])}</div>
           <div class="hs-meter">{_bar(val)}</div>
           <div class="hs-pct">{pct}</div>
@@ -1367,13 +1630,39 @@ def render_health_widget(health: dict[str, Any]) -> str:
     # strongest sentence in the design and reached no reader. A caveat in the
     # stripped layer is a caveat the author and the approver both read and the
     # audience never does.
+    # ⛔ DERIVED, NOT HARDCODED (2026-08-29). This paragraph read "All four
+    # scored dials are LEADING indicators … the one OUTCOME dial is the one with
+    # no data" for every cycle, including p18 and p19 where the outcome dial was
+    # scored and the count was five. Prose asserting a dial census must be
+    # computed from the census, or it becomes a confident false statement on the
+    # most-read line of the page the moment the composition changes.
+    outcome_dial = next((d for d in health["dials"] if d["key"] == "provenance"), None)
+    leading = [
+        d for d in health["dials"]
+        if d["key"] != "provenance" and isinstance(d["value"], (int, float))
+    ]
     gameable = (
-        "All four scored dials are LEADING indicators and each is individually "
-        "gameable — a gate can be armed over nothing, a ritual can complete "
-        "while checking nothing. The one OUTCOME dial, which is not gameable "
-        "that way, is the one with no data. A high score here means four "
-        "leading indicators are saturated; it is not a claim that the system "
-        "is working."
+        f"{_count_word(len(leading), sentence_start=True)} scored "
+        f"{_plural(len(leading), 'dial')} "
+        f"{'is' if len(leading) == 1 else 'are'} LEADING "
+        "indicators and each is individually gameable — a gate can be armed over "
+        "nothing, a ritual can complete while checking nothing. "
+    )
+    if outcome_dial is not None and outcome_dial.get("withdrawn"):
+        gameable += (
+            "The one OUTCOME dial, which is not gameable that way, was measured in "
+            "earlier cycles and is ABSENT from this one; it is scored zero here as "
+            "the cost of that withdrawal, not as a measured result. "
+        )
+    elif outcome_dial is not None and isinstance(outcome_dial["value"], (int, float)):
+        gameable += "The one OUTCOME dial, which is not gameable that way, has data this cycle. "
+    else:
+        gameable += "The one OUTCOME dial, which is not gameable that way, is the one with no data. "
+    gameable += (
+        f"A high score here means {_count_word(len(leading))} leading "
+        f"{_plural(len(leading), 'indicator')} "
+        f"{'is' if len(leading) == 1 else 'are'} saturated; it is not a claim "
+        "that the system is working."
     )
     return f"""
       <div class="hs-headline">
@@ -1559,7 +1848,7 @@ def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | No
     )
     latency_window_str = str(latency.get("window_session_count")) if latency.get("window_session_count") is not None else "—"
 
-    health = compute_health(sc)
+    health = compute_health(sc, all_sidecars)
     health_html = render_health_widget(health)
     inventory_html = render_defect_inventory(sc.get("defect_ledger") or {})
     backlog_html = render_backlog_widget(sc.get("improvement_backlog") or {}, sc.get("proposal_backlog") or {})
@@ -1696,7 +1985,7 @@ def main(argv: list[str]) -> int:
     # Retargeted every cycle at P10 step 9(c). Verify by running this file
     # with NO arguments and reading the header: found stale at p17, where
     # the documented bare command rendered the PREVIOUS cycle silently.
-    default_sidecar = here.parent / "retros" / "2026-08-23-p20.yaml"
+    default_sidecar = here.parent / "retros" / "2026-08-30-p21.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar

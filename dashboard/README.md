@@ -14,6 +14,16 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 
 ## Release notes
 
+### v3.10 — 2026-08-30 (a health audit cited for four months and never built)
+
+- **Re-render against the new sidecar.** `retros/2026-08-23-p20.yaml` → `retros/2026-08-30-p21.yaml` (window 2026-08-23 → 2026-08-30, 6 findings × 11 fields). `default_sidecar` retargeted and verified by the argument-less run, which is the check rather than a shortcut.
+- **Trend extension to n=19 sidecars.** All 20 schema blocks present, including the three that p20 dropped (`proposal_backlog`, `hook_health`, `detection_provenance`). This sidecar was derived from p19 rather than re-authored from the tally script's output — the precise mistake that produced p20's deficit, and the reason the deficit arm exists.
+- **The cycle's meta-finding: the record exists, the consumer does not.** Four independent findings reduce to one shape — a status token nothing reads on a cadence, a watch condition with no reader, a proposal queue eleven deep with no scheduled consumer, and a health audit asserted twice in the live protocols index as "(existing)" while the protocol that would run it contains no such step. That last one was specified against the retrospective's *previous* protocol number; at the renumber the citation was updated and the audit was never carried across. A maintained pointer is not evidence of a live referent.
+- **A parenthetical that vouches for its own referent inverts the reader's burden.** A bare citation invites *is there one?*; "(existing)" answers the question before it is asked, which is why the gap survived four months and several audits.
+- **An operator challenge caught what no instrument could.** A published dispatch figure was questioned on instinct as implausibly low. The challenge surfaced two separate things: a scope boundary that was correct but undocumented, and a metric that counts a *mechanism* (in-session agent tool-calls) rather than an *effect* (a delegated run happened) — so work that runs as its own headless session has always been invisible to it. Both recorded as findings; neither was reachable from inside the instrument.
+- **Status vocabulary corrected before publish.** Four findings were authored with an unstyled status value; the validator caught it and they were moved to the canonical styled vocabulary. Validator now returns clean — no warnings, no errors.
+- **Release-note gap disclosed rather than backfilled.** `DASHBOARD_VERSION` advanced 3.7 → 3.8 → 3.9 across p18, p19 and p20 with **no release note written for any of them** — this step-9 sub-step was skipped three consecutive cycles and nothing raised. The three missing notes are *not* reconstructed here; writing them now from a later vantage would manufacture a record rather than repair one. The gap is stated so it is visible in the one place a reader would look for it.
+
 ### v3.6 — 2026-08-02 (an operator read the numbers and three of them were wrong)
 
 Every item here started as a question about the *rendered page*, not the code. That is the finding: four of these had been shipping for weeks or months, each behind a surface that looked internally consistent.
