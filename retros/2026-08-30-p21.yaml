@@ -1,0 +1,263 @@
+retro_id: '2026-08-30-p21'
+retro_date: '2026-08-30'
+window_start: '2026-08-23'
+window_end: '2026-08-30'
+prior_retro: '2026-08-23-p20'
+schema_version: '1.1'
+interactive_mode: true
+trigger_source: 'session-start-hook-OVERDUE-verdict-run-interactive-same-day'
+
+meta_finding: >-
+  THE RECORD EXISTS; THE CONSUMER DOES NOT. Four independent findings this cycle
+  reduce to one shape. A status token is written correctly and nothing reads it on
+  a schedule. A watch condition banks a numeric trigger with no reader. A proposal
+  queue accretes to eleven items, oldest ninety-eight days, because nothing consumes
+  "pending". And a health audit is cited twice in the live index as "(existing)" while
+  the protocol that would run it contains no such step — it was specified against the
+  retrospective's PREVIOUS protocol number, and at the renumber someone updated the
+  citation and never carried the audit across. The generalisation is that a maintained
+  pointer is not evidence of a live referent, and a parenthetical that vouches for its
+  own target inverts the reader's burden: a bare citation invites "is there one?",
+  while "(existing)" answers the question before it is asked.
+
+findings:
+  - id: 21.1
+    title: >-
+      A HEALTH AUDIT ASSERTED AS "(existing)" WAS NEVER BUILT, AND ITS EMPTY OUTPUT
+      REACHED THE LEARNING LAYER AS A FINDING. The consultant rail ran five times
+      in-window, confirmed at member level by two independent corpora; its hand-written
+      receipt surface carried zero. The zero was consumed as a measured value and came
+      one threshold short of generating a proposal to remedy underuse that is not occurring.
+    category: instrument-vacuity
+    evidence_count: 5
+    source_catchment: protocol-surface-audit
+    recommendation: accept
+    status: approved-queued
+    execution_target_week: 2026-08-30
+    target_surface: >-
+      the retrospective protocol unit and the protocols index; rebuild the denominator
+      from the machine-written dispatch capture corpus and retire the hand-written receipt
+    alternative_framings: >-
+      (a) rebuild against the machine corpus and drop the manual line; (b) keep the manual
+      line and add a producer-side gate; (c) declare the audit retired. (a) recommended:
+      it removes a hand-maintained link rather than adding an obligation to remember.
+
+  - id: 21.2
+    title: >-
+      A COUNT TAKEN WITH AN AD-HOC INSTRUMENT FAILED THREE TIMES IN ONE CYCLE, ALL THREE
+      RETURNING A PLAUSIBLE NON-ZERO OR ZERO AND NONE RAISING. A date matcher requiring a
+      trailing bracket dropped an entire workspace; a card counter keyed on a marker the
+      capture hook deletes returned zero against the richest week on record; and a queue
+      census read off a truncated listing under-reported by 40 percent. Every one was caught
+      by contradiction, none by a gate.
+    category: measurement-integrity
+    evidence_count: 3
+    source_catchment: self-audit-during-ritual
+    recommendation: accept
+    status: approved-queued
+    execution_target_week: 2026-08-30
+    target_surface: >-
+      the retrospective protocol's audit steps, which name the obligation and not the
+      instrument, plus a checklist rider that truncating an output you are JUDGING is an
+      instrument failure distinct from truncating one you are READING
+    enforcement_log_ref: 'proposal authored one cycle earlier predicted this exact recurrence'
+
+  - id: 21.3
+    title: >-
+      A METRIC KEYED ON A MECHANISM CANNOT SEE THE EFFECT IT NAMES. The dispatch
+      distribution counts in-session agent tool-calls; delegated work that runs as its own
+      headless session produces no such call and is invisible by construction. Measured:
+      forty-five such runs in-window against a published figure that can only ever count
+      the other kind.
+    category: instrument-scope
+    evidence_count: 45
+    source_catchment: operator-challenge-to-a-published-figure
+    recommendation: accept
+    status: approved-queued
+    execution_target_week: 2026-09-06
+    target_surface: >-
+      the metrics tally script; state the counted unit in the emitted field rather than
+      leaving it inferable only from the source glob
+    blocked_by: 'requires a decision on whether headless runs belong in this metric at all'
+
+  - id: 21.4
+    title: >-
+      A SCRIPT'S HEADER COMMENT CLAIMED A WIDER READ SCOPE THAN ITS CODE HAS, AND THE
+      DIVERGENCE IS THE ONLY THING PREVENTING A CONFIDENTIALITY LEAK. The narrow scope is
+      correct and undocumented; the documentation describes the broad scope. A future
+      session reconciling the two in the obvious direction would pull out-of-scope activity
+      onto a published artifact, and that change reads as tidying an inconsistency.
+    category: confidentiality-boundary
+    evidence_count: 1
+    source_catchment: operator-challenge-to-a-published-figure
+    recommendation: accept
+    status: approved-queued
+    execution_target_week: 2026-08-30
+    target_surface: >-
+      the metrics tally script header; state the scope as a deliberate boundary with its
+      reason, so the correct behaviour stops depending on an accident of the glob
+    enforcement_log_ref: 'highest priority of the cycle: the only finding with an outbound direction'
+
+  - id: 21.5
+    title: >-
+      A REPORTER'S POPULATION CLAIM INFLATED A BLOCKED BANK BY MIXING BUDGET-BLOCKED ITEMS
+      WITH CORRECT NON-PROMOTIONS. Six were claimed as at-threshold-and-blocked; three are,
+      and the other three are deliberate non-promotions for reasons that are not budget —
+      two already covered by an existing rule, one awaiting evidence. Discharging those
+      would file doctrine onto surfaces that already comply.
+    category: inherited-claim
+    evidence_count: 6
+    source_catchment: learning-agent-return
+    recommendation: accept
+    status: executed
+    execution_target_week: 2026-08-30
+    target_surface: >-
+      verified during the propagation step and corrected before any promotion shipped;
+      the accompanying claim that the bank was dischargeable at zero cost was also false —
+      measured headroom is 754 units against a rider typical of one
+
+  - id: 21.6
+    title: >-
+      A PROPOSAL QUEUE ACCRETED TO ELEVEN PENDING ITEMS WITH NO SCHEDULED CONSUMER, OLDEST
+      NINETY-EIGHT DAYS. Six predate the third month of the queue's existence. Nothing reads
+      the pending state on a cadence, so the queue's depth and age are invisible unless
+      someone greps for them deliberately.
+    category: ledger-decay
+    evidence_count: 11
+    source_catchment: learning-agent-return
+    recommendation: watch
+    status: carried-open
+    execution_target_week: 2026-09-06
+    target_surface: >-
+      the learning-agent proposal ledger; a disposition pass is owed before the queue is
+      treated as a backlog rather than an archive
+
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 1
+  notes: >-
+    Three authored, two existing proposals updated in place rather than re-proposed, and
+    two corrections of record filed against the learning agent's own prior published text.
+    All five acts landed on the agent's own authoring surface; no governance surface was
+    written directly. Four proposals were accepted by the operator during the ritual and
+    carry an execution queue anchored to a named event in the same session rather than to
+    an unread future trigger.
+
+hook_health:
+  silent_hooks_observed: 0
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 0
+  enforcement_flips_verified_this_cycle: 2
+  notes: >-
+    No silent-candidate and no absent-from-firelog rows above the small-sample floor.
+    Both dated enforcement-flip review bindings were walked mechanically.
+
+discipline_metrics:
+  ritual_steps_defined: 10
+  ritual_steps_completed: 10
+  monthly_subritual_due: false
+  monthly_subritual_completed: false
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 3
+  response_marker_missed_turns: 35
+  response_marker_graded_turns: 398
+  response_marker_blocking_fires: 511
+  response_marker_miss_rate: 0.09
+  response_marker_measured_at: '2026-08-30'
+  response_marker_note: >-
+    Per-turn form. The raw fire count of 511 over 5634 is a per-tool-call figure that
+    re-grades the same turn many times in a long agentic run; the two are not comparable
+    and cycles p1 through p17 published the raw form.
+  intent_confirmation_skip_rate: null
+  notes: >-
+    The monthly sub-ritual is not due: this is the fifth retrospective of the calendar
+    month and the sub-ritual fires on the first.
+
+latency_observations:
+  source: '.claude/session-start-latency.log'
+  window_session_count: 136
+  median_first_tool_latency_sec: 50.0
+  p95_first_tool_latency_sec: 301
+  max_first_tool_latency_sec: 1340
+  threshold_sec: 120
+  threshold_violations: 28
+  notes: 'Unchanged in shape from the prior cycle; no regression investigated.'
+
+fam_dispatch_distribution:
+  learning_agent: 2
+  adversarial_reviewer: 8
+  consultant: 5
+  external_validator: 0
+  notes: >-
+    SCOPE IS DELIBERATE AND NARROW: counted from the governance session root only, and
+    only from in-session agent tool-calls. Delegated work running as its own headless
+    session is invisible to this unit by construction — see finding 21.3 — and activity
+    outside the governance root is excluded on a confidentiality boundary, not by
+    oversight. Total in scope: 32.
+
+defect_ledger:
+  open_total: 91
+  live: 86
+  parked: 5
+  age_under_7d: 27
+  age_7_to_29d: 54
+  age_30d_plus: 10
+  age_undated: 0
+  median_age_days: 17
+  max_age_days: 36
+  measured_at: '2026-08-30'
+  measured_from: 'the operational state file, rendered through its own consumer functions'
+  notes: >-
+    Owner split: 72 agent-side, 14 requiring an operator decision, 5 parked. Every row
+    carried a parseable date this cycle, so the undated escape valve is genuinely zero
+    rather than unmeasured.
+
+improvement_backlog:
+  total: 121
+  open: 58
+  done: 51
+  parked: 12
+  open_ready: 39
+  open_decision_gated: 16
+  open_upstream_blocked: 3
+  notes: 'Ready items outnumber gated ones better than two to one; the constraint is execution time, not decisions owed.'
+
+enforcement_coverage:
+  arms_built: 5
+  arms_armed: 4
+  arms_with_written_exit_criteria: 3
+  arms_with_falsifiable_exit: 2
+  arms_declared_permanent: 1
+  checks_enumerated: 6
+  checks_with_written_exit_criteria: 3
+  checks_unit: 'stop-gate structural validations'
+  checks_unit_note: >-
+    Counted as validations, not as hooks. Three of these execute only when the session's
+    productive-file set is non-empty, so a green close is not by itself evidence they ran.
+  measured_at: '2026-08-30'
+  measured_from: 'the stop-gate script and the quality-gate protocol unit'
+  notes: 'One arm remains shadow-only pending a calibration precondition that is unmet by design.'
+
+instrument_liveness:
+  silent_failures_observed: 5
+  caught_by_control: 1
+  caught_by_review: 0
+  caught_by_contradiction: 3
+  notes: >-
+    The contradiction arm again outperformed every other route, as in the prior cycle.
+    Each of the three needed no source-reading and no tooling — only one fact known about
+    the object WITHOUT the instrument. The single control catch is the strongest kind:
+    a stated positive control fired at zero and proved the matcher wrong rather than the
+    corpus empty. The fifth failure was caught by neither and is recorded under provenance.
+
+detection_provenance:
+  caught_by_control: 1
+  caught_by_operator: 1
+  caught_by_accident: 0
+  instrumented_from: '2026-08-09-p18'
+  status: measured
+  notes: >-
+    The operator catch is the one worth naming: a published dispatch figure was challenged
+    on instinct as implausibly low, and the challenge surfaced both a scope boundary that
+    was correct-but-undocumented and a metric that counts a mechanism rather than an effect.
+    Neither was reachable from inside the instrument.
