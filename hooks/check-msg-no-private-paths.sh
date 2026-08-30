@@ -2,62 +2,52 @@
 # check-msg-no-private-paths.sh — commit-MESSAGE guard for the public repo. WARN-ONLY.
 #
 # WHY THIS EXISTS
-#   check-no-private-paths.sh reads the staged SET: paths and file content. A commit
-#   message is neither, so it passes through that guard untouched — and a message is
-#   as permanent and as public as the diff. The repo's own history carries the proof:
+#   check-no-private-paths.sh reads the staged set: paths and file content. A commit
+#   message is neither, so it passes that guard untouched — and a message is as
+#   permanent and as public as the diff. This repo's own history carries the proof:
 #   the commit that REMEDIATED an earlier leak itemised, in its message, every private
-#   file it had just removed.
+#   file it had just removed, and closed with a zero-remaining verification claim that
+#   was true of tracked content and false of the message asserting it.
 #
 # WHY IT WARNS AND DOES NOT BLOCK
 #   `git commit --no-verify` skips pre-commit AND commit-msg — one switch, both guards.
 #   A blocking version here would mean the override you reach for also disarms the
-#   staged-content guard, and the commits most likely to trip this one are the commits
-#   DOING confidentiality work. That is exactly when you least want the other guard off.
-#   Warning costs one look and couples nothing.
+#   staged-content guard, and the commits most likely to trip a message check are the
+#   commits DOING confidentiality work. That is precisely when you least want the other
+#   guard off. Warning costs one look and couples nothing.
 #
 # WHY IT NAMES NOTHING
-#   The watch list is derived from .gitignore at runtime. This repo is PUBLIC, so a
-#   hard-coded list would publish the very names the guard exists to keep out of it.
-#   .gitignore must name them to function; nothing else here has to.
+#   The watch list resolves at runtime from outside this repo (hooks/lib/private-names.sh).
+#   This repo is PUBLIC, so a hard-coded list would publish the very names the guard
+#   exists to keep out of it.
 #
 # SCOPE — what this does NOT do
-#   It matches name strings in the message text, not meaning. It never blocks, and it
-#   is not a review. A silent run means "no watched name appeared", never "safe".
+#   It matches name strings in the message text, not meaning. It never blocks, and it is
+#   not a review. A silent run means "no watched name appeared", never "safe".
 
 set -uo pipefail
 
 MSG_FILE="${1:-}"
 [ -n "$MSG_FILE" ] && [ -f "$MSG_FILE" ] || exit 0
 
-# --- derive the watch list from .gitignore's private block --------------------
-# git runs hooks with cwd = repo root, so the bare path resolves. Bounded read: from
-# the marker comment to the first blank line. Entries starting with '.' or '#' are
-# skipped, so tooling ignores in the same block are not treated as workspace names.
-NAMES=$(awk '
-  /^# Private workspaces/            { inblock = 1; next }
-  inblock && /^[[:space:]]*$/        { exit }
-  inblock && /^[^.#].*\/$/           { sub(/\/$/, ""); print }
-' .gitignore 2>/dev/null || true)
+# git runs hooks with cwd = repo root, so the bare path resolves.
+# shellcheck source=lib/private-names.sh
+. hooks/lib/private-names.sh
 
-count=$(printf '%s\n' "$NAMES" | /usr/bin/grep -c . || true)
-
-# An empty or short list would make this hook pass EVERYTHING — the failure mode that
-# looks exactly like success. Say so out loud rather than exiting 0 in silence.
-if [ "${count:-0}" -lt 3 ]; then
+# An unresolved list cannot be scanned against. Warn-only means this hook may not
+# block, so it says plainly that it is not covering you rather than exiting quietly.
+if [ "${PRIVATE_NAMES_COUNT:-0}" -lt 3 ]; then
   {
     echo ""
-    echo "⚠️  check-msg-no-private-paths: derived only ${count:-0} name(s) from .gitignore."
-    echo "    Expected at least 3. The watch list is unreliable, so THIS GUARD IS NOT"
-    echo "    COVERING YOU on this commit. Check the '# Private workspaces' block."
-    echo ""
+    echo "⚠️  check-msg-no-private-paths: THIS GUARD IS NOT COVERING THIS COMMIT."
+    _pn_unresolved_msg
   } >&2
   exit 0
 fi
 
-# --- scan the message, minus the comment lines git strips ---------------------
+# Scan the message, minus the comment lines git strips.
 # -E is mandatory: BSD grep does not honour BRE \| alternation and silently under-counts.
-alt=$(printf '%s' "$NAMES" | tr '\n' '|'); alt="${alt%|}"
-hits=$(/usr/bin/grep -vE '^#' "$MSG_FILE" | /usr/bin/grep -nE "(${alt})" || true)
+hits=$(/usr/bin/grep -vE '^#' "$MSG_FILE" | /usr/bin/grep -nE "(${PRIVATE_NAMES_ALT})" || true)
 
 if [ -n "$hits" ]; then
   {

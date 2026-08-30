@@ -1,13 +1,15 @@
 .claude/session-start
 .claude/session-start-commit
 
-# Private workspaces — never sync to public repo
-# (digest agent + retro draft generator have historically misrouted content here;
-# the .gitignore is the defensive guard until the routing fix lands per Task #7)
-personal-learnings/
-career-move-2026/
-personal-ventures/
-external-track-ramp/
+# Private workspaces — never sync to public repo.
+#
+# Their names are deliberately NOT listed here. This repo is public, so an ignore list
+# that names them publishes them — the denylist becomes the disclosure it exists to
+# prevent. They live in .git/info/exclude, which is machine-local and never published,
+# and the commit guards resolve the same list from outside this tree entirely.
+#
+# Consequence, stated so it is not discovered the hard way: a fresh clone has neither
+# the exclude file nor the hook symlinks. See hooks/README.md for the one-time setup.
 .firecrawl/
 
 .claude/focus-chain-counter
