@@ -42,10 +42,11 @@ Two private workspaces (lightweight personal-learning log + sandbox for fun buil
 - The four-role split (Root / Luma / Teacher / controller) — each rail load-bearing against exactly one failure mode
 - Symlink-canonical pattern for versioned governance docs (governance changes don't require N-file rename sweeps)
 - Workspace state-update protocol (CONTEXT + CHANGELOG after every meaningful work increment)
-- Verify-to-artifact §14 family — 10 sub-families codified, propagation across all workspace LEARNINGS (extended through 2026-05-09 attribution-conflation entry)
+- Verify-to-artifact §14 family — 11 sub-families codified, propagation across all workspace LEARNINGS (extended through 2026-08-28 operator-recollection entry)
 - Sumi 5th P3 enforcement layer (v1.0/v1.1/v1.2/v1.3 trilogy 2026-05-09/10) — read-only governance grader for subagent output / paste-text / design specs + drift-scan invocation walking active rubrics
 
 **Evolving** (active development surface):
+- Instrument-independence family (NEW 2026-08-28, n=3 same-session) — diagnostics that route through the subsystem under repair: recovery channel / test target / symptom string. Landed in root `LEARNINGS.md` only; **not yet propagated** to `_config/output-checklist.md` or workspace LEARNINGS files, so it is an observation at rule-tier but not yet enforced — P5 step (b) outstanding
 - Synthesis-Surface Pre-Render Pattern (reference implementation on SessionStart shipped v3.5.0; output-side mirror via MD-canonical+HTML-render hybrid shipped 2026-05-10 as deliverable format convention)
 - Teacher proposal cadence + auto-promotion gating (P8 firmware ON as of v3.9.1 — Teacher agent + grammars + ledger + auto-promote-enabled gate; gate still controller-supervised in observation window)
 - MUTATION_TOOLS doctrine (v3.10.3 introduced + v3.10.4 Conservative extended; Aggressive direction pre-staged as Teacher proposal pending SDK MCP tool surface stabilization)
