@@ -30,18 +30,32 @@ wired by a symlink rather than by `.claude/settings.json`, and it runs on plain 
 with no agent or harness dependency — deliberately, so the guard survives a change of CLI
 while the enforcement layer above it does not.
 
-| Hook | Event | What it does |
-|------|-------|--------------|
-| `check-no-private-paths.sh` | git `pre-commit` | Blocks a commit that stages a private-workspace path, or that quotes one inside an otherwise-legitimate file. Scans staged paths and staged content; allowlists `.gitignore` and itself. |
+| Hook | Event | What it does | On a hit |
+|------|-------|--------------|----------|
+| `check-no-private-paths.sh` | git `pre-commit` | Reads the staged set — paths and file content. Allowlists `.gitignore` and itself. | **blocks** |
+| `check-msg-no-private-paths.sh` | git `commit-msg` | Reads the commit message. Derives its watch list from `.gitignore` at runtime, so it names nothing itself. | **warns** |
 
-**A clone does not install it.** `.git/` is not part of the repository, so cloning gets you
-the script and none of the wiring. Run once, from the repo root:
+**Why one blocks and one warns.** `git commit --no-verify` skips *both* hooks — one
+switch, both guards. A blocking message check would mean the override you reach for
+also disarms the staged-content check, and the commits most likely to trip the message
+check are the commits *doing* confidentiality work. That is exactly when you least want
+the other guard off. The message hook therefore warns and exits `0`, always.
+
+**A clone does not install either.** `.git/` is not part of the repository, so cloning
+gets you the scripts and none of the wiring. Run once, from the repo root:
 
 ```sh
-ln -sfn ../../hooks/check-no-private-paths.sh .git/hooks/pre-commit
+ln -sfn ../../hooks/check-no-private-paths.sh     .git/hooks/pre-commit
+ln -sfn ../../hooks/check-msg-no-private-paths.sh .git/hooks/commit-msg
 ```
 
-**What a pass does and does not mean.** It matches path strings, not meaning — content
-pasted without a path is invisible to it. It reads only the *staged* set, so anything
-already committed is never re-scanned. A pass means "nothing new was staged", never
-"this is sanitized".
+**What a pass does and does not mean.** Both match name and path strings, not meaning —
+content pasted without a path is invisible to them. The `pre-commit` hook reads only the
+*staged* set, so anything already committed is never re-scanned. A pass means "nothing
+watched appeared", never "this is sanitized".
+
+**The message hook's own failure mode is loud on purpose.** Its watch list is derived, so
+a `.gitignore` whose `# Private workspaces` block has moved or been renamed yields an
+empty list — which would make the hook pass everything, silently. It therefore refuses to
+run quietly on a list shorter than three entries and says on stderr that it is not
+covering you.
