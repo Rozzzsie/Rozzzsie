@@ -6,9 +6,11 @@
 # the .gitignore is the defensive guard until the routing fix lands per Task #7)
 personal-learnings/
 career-move-2026/
+personal-ventures/
 external-track-ramp/
 .firecrawl/
 
 .claude/focus-chain-counter
 .claude/pre-compact-snapshots/
 __pycache__/
+.DS_Store
