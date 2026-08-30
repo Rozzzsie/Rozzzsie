@@ -9,7 +9,7 @@ The enforcement layer. These scripts are what make the protocols mechanical inst
 | `bash-write-reminder.sh` | `PostToolUse:Bash` | Lightweight nudge to check whether a Bash write needs state capture | P4 |
 | `stop-gate.sh` | `Stop` | Hard gate. Blocks session-close on protocol failures: missing checkpoint bar, unupdated state files, untracked productive files, stale CHANGELOG | P3, P4, P7 |
 | `insights-capture.py` | `Stop` | Parses the session transcript for `★ Insight ─...` cards and appends deduped entries to `.claude/insights-buffer.md` for P8 audit | P5, P8 |
-| `lib/workspace-tier.sh` | (sourced) | Single source of truth for workspace list + tier semantics. Sourced by `stop-gate.sh` and the pre-commit hook so both reach the same layer. | — |
+| `lib/workspace-tier.sh` | (sourced) | Single source of truth for workspace list + tier semantics. `stop-gate.sh` is its only consumer here. The git `pre-commit` hook deliberately does *not* source it — that hook is plain bash + git with no dependency on this layer, which is what lets it survive a change of CLI. | — |
 
 ## The shape
 
