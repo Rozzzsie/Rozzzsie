@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.10"
+DASHBOARD_VERSION = "3.11"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -415,7 +415,8 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
                 "arms_built", "arms_armed", "arms_with_written_exit_criteria",
                 "arms_with_falsifiable_exit", "arms_declared_permanent",
                 "checks_enumerated", "checks_with_written_exit_criteria",
-                "checks_unit", "checks_unit_note", "measured_at", "measured_from",
+                "checks_unit", "checks_unit_note", "arms_unit", "arms_unit_note",
+                "measured_at", "measured_from",
                 "notes",
             },
             "instrument_liveness": {
@@ -429,6 +430,11 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
                 "notes",
             },
             "detection_provenance": {
+                # A second series measuring this same question landed at p22.
+                # Registered AND rendered — registering alone would silence the
+                # warning while publishing nothing, which is what
+                # `checks_unit_note` has been doing since p20.
+                "relation_to_detection_source_distribution",
                 "caught_by_control", "caught_by_operator", "caught_by_accident",
                 "instrumented_from", "status", "notes",
             },
@@ -487,6 +493,22 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
                 "learning_agent_runtime_seconds", "notes",
             },
             "proposal_backlog": {"authored_this_cycle", "deferred_this_cycle", "notes"},
+            # detection_source_distribution — added p22 (2026-09-06) with the P6
+            # v1.1.0 `caught-by:` field. ⛔ NOT on `required`: the field ships this
+            # cycle, so every earlier sidecar legitimately lacks the block, and a
+            # required entry would fail rc=3 on re-rendering any of the 21 prior
+            # ones. It is `known` so an unknown SUB-KEY warns — which is the arm
+            # that matters here, since a renamed sub-key renders as an em-dash,
+            # indistinguishable from "measured, and it was empty".
+            # ⭐ `nothing` is a REAL bucket (the corpus caught it by no
+            # instrument), never an absence — read `annotation_coverage` before
+            # any bucket, and `status` before both.
+            "detection_source_distribution": {
+                "source", "learnings_files_scanned", "entries_in_window",
+                "entries_annotated", "annotation_coverage", "status",
+                "gate", "deputy", "self", "rosie", "contradiction", "nothing",
+                "by_name", "notes",
+            },
             "fam_dispatch_distribution": {
                 "learning_agent", "adversarial_reviewer", "consultant",
                 "external_validator", "notes",
@@ -1442,15 +1464,37 @@ def compute_health(
             unit = ec.get("checks_unit", "blocking exit paths")
             detail += f" · {checks_exits}/{checks} individual checks with one"
 
-        note = (
-            "Coverage is measured per ARM and again per CHECK. Arm-level "
-            "coverage is complete; check-level coverage is zero — the "
-            "commit-time arm holds many individually-retirable checks and not "
-            "one states its own exit condition. That is the honest reading of "
-            "this dial."
-        )
+        # The note used to assert "check-level coverage is zero" as fixed prose.
+        # That was true when it was written and became false the first cycle a
+        # check stated an exit condition — a narrative pinned to one reading of
+        # the data it sits beside. Derived from the measurement instead, so it
+        # cannot drift away from the number it explains.
+        note = "Coverage is measured per ARM and again per CHECK."
+        if isinstance(exits, int) and built:
+            note += (
+                f" Arm-level: {exits} of {built} arms state an exit condition."
+                if exits < built else
+                f" Arm-level coverage is complete at {built}/{built}."
+            )
+        if isinstance(checks, int) and checks > 0 and isinstance(checks_exits, int):
+            note += (
+                " Check-level coverage is zero — the arms hold individually-"
+                "retirable checks and not one states its own exit condition."
+                if checks_exits == 0 else
+                f" Check-level: {checks_exits} of {checks} individual checks "
+                "state one."
+            )
+        note += " An arm is a hook; a check is one invariant inside it."
         if isinstance(checks, int):
             note += f" Check unit: {unit}."
+        arms_unit = ec.get("arms_unit")
+        if arms_unit:
+            note += f" Arm unit: {arms_unit}."
+        # A changed unit is not a changed number, and publishing the second
+        # without the first is how a series silently stops being a series.
+        arms_note = ec.get("arms_unit_note")
+        if arms_note:
+            note += f" {arms_note.strip()}"
         basis = ec.get("measured_from")
         if basis:
             note += f" Basis: {basis}."
@@ -1523,8 +1567,16 @@ def compute_health(
     if isinstance(by_control, int) and isinstance(by_operator, int) and (by_control + by_operator) > 0:
         by_accident = dp.get("caught_by_accident")
         total = by_control + by_operator + (by_accident if isinstance(by_accident, int) else 0)
+        note = ("The outcome metric: did a control catch it, or did the "
+                "operator? Cannot be backfilled without fabricating attributions.")
+        # A dashboard carrying two series for one question must say so on the
+        # face of the card, not in a sidecar key no renderer reads.
+        rel = dp.get("relation_to_detection_source_distribution")
+        if rel:
+            note += " " + " ".join(rel.split())
         dials.append(_dial("provenance", "Detection provenance", by_control / total,
-                           f"{by_control} caught by a control · {by_operator} by the operator"))
+                           f"{by_control} caught by a control · {by_operator} by the operator",
+                           note))
     else:
         dials.append(_dial(
             "provenance", "Detection provenance", None,
@@ -1985,7 +2037,7 @@ def main(argv: list[str]) -> int:
     # Retargeted every cycle at P10 step 9(c). Verify by running this file
     # with NO arguments and reading the header: found stale at p17, where
     # the documented bare command rendered the PREVIOUS cycle silently.
-    default_sidecar = here.parent / "retros" / "2026-08-30-p21.yaml"
+    default_sidecar = here.parent / "retros" / "2026-09-06-p22.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar
