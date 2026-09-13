@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.6** (2026-08-02) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.12** (2026-09-13) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,16 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.12 — 2026-09-13 (the retrospective's own bookkeeping was the instrument that failed)
+
+- **Re-render against the new sidecar.** `retros/2026-09-06-p22.yaml` → `retros/2026-09-13-p23.yaml` (window 2026-09-06 → 2026-09-13, 11 findings × 11 fields). `default_sidecar` retargeted and verified by the argument-less run, which is the check rather than a shortcut. Trend lines extend to n=21 sidecars.
+- **Derived, not re-authored, and checked by comparison.** Every top-level key, every block's sub-key order and the finding field set match p22 exactly. Schema validation is clean.
+- **The cycle's meta-finding: a record accurate about what was done and silent about what was not.** A housecleaning pass reported the size of its edit set as the size of the stale set; an approved build recorded as "filed" sat on no ledger for a week; four findings the prior cycle carried forward were on no work list. Every re-read confirmed each record, and all three surfaced from one census run for a different reason.
+- **An enforcement series continues because the continuity was tested.** p22 published fifteen commit-boundary validator arms. Counting the distinct validator scripts the hook invokes reproduces fifteen at the hook's state on p22's date, so the series is continued rather than closed: seventeen today. Both additions block, and neither carries a written exit criterion.
+- **Carried figures are labelled as carried.** The stop-gate check counts and the arms' exit-criteria counts were not re-derived this cycle, and the sidecar's unit notes say so instead of presenting them as measured.
+- **The narrative companion was skipped this cycle**, which the ritual permits.
+- **Two release-note gaps disclosed, not backfilled.** No v3.11 note was written at the prior cycle. And this file's "Current release" header had read v3.6 since 2026-08-02, through six later releases. The header is corrected here; the v3.11 note is not reconstructed from a later vantage.
 
 ### v3.10 — 2026-08-30 (a health audit cited for four months and never built)
 

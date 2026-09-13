@@ -1,0 +1,388 @@
+retro_id: '2026-09-13-p23'
+retro_date: '2026-09-13'
+prior_retro: '2026-09-06-p22'
+schema_version: '1.1'
+window_start: '2026-09-06'
+window_end: '2026-09-13'
+trigger_source: session-start-overdue-flag
+interactive_mode: true
+
+meta_finding: >-
+  The sharpest instrument failure this cycle was the retrospective's own bookkeeping, and
+  it failed three times in one direction. A housecleaning pass reported the size of its
+  edit set as the size of the stale set. An approved build recorded as "filed" sat on no
+  ledger for a week. Four findings the prior cycle carried forward were on no work list at
+  all. Each record was accurate about what had been done and silent about what had not,
+  so every re-read confirmed it. None was caught by an instrument aimed at it; all three
+  surfaced from a full census run for a different reason.
+
+findings:
+  - id: p23-1
+    title: A housecleaning pass published its edit count as the count of stale items
+    category: count-validity
+    evidence_count: 2
+    source_catchment: full status census of the proposal ledger
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-09-13'
+    target_surface: the proposal ledger + the operational changelog
+    detail_ref: >-
+      Seven stale proposal statuses were reported corrected. A census of every pending
+      status afterwards found more: one shipped item still read pending, and one approved
+      item had never been filed. Seven was the number of edits made, not the number of
+      items that needed one. The count is corrected where it was published, and the older
+      pending statuses the census did not verify are named as unverified rather than
+      counted as clean.
+
+  - id: p23-2
+    title: An approved build was recorded as filed and sat on no ledger for a week
+    category: half-discharge
+    evidence_count: 1
+    source_catchment: full status census of the proposal ledger
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-09-13'
+    target_surface: the architecture backlog
+    detail_ref: >-
+      The prior retro's table said the build was filed with its coverage caveat. The
+      backlog, the open-items list, the changelog and the session history were each
+      searched and none carried it. A table cell in a narrative artifact had been the only
+      record. Filed on the backlog this cycle, caveat attached, with the proposal status
+      corrected in the same pass.
+
+  - id: p23-3
+    title: Four findings carried forward by the prior cycle were on no work list
+    category: convergence-gap
+    evidence_count: 4
+    source_catchment: backlog and open-items sweep against the prior sidecar
+    recommendation: reconcile
+    status: partial-executed
+    execution_target_week: '2026-09-20'
+    target_surface: the retrospective protocol unit + the architecture backlog
+    detail_ref: >-
+      Three were marked carried-open and one approved, all due this week. None of the
+      three instruments they named had a commit since the prior retro. The approved one is
+      now filed (finding 2); the other three remain open and are re-carried here. A
+      carried-open status in a published sidecar is a disposition, and nothing in the
+      ritual converts it into a filing.
+
+  - id: p23-4
+    title: A rule's recorded home never held it
+    category: text-mechanism-divergence
+    evidence_count: 3
+    source_catchment: learning-agent proposal, verified against the file history
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-09-13'
+    target_surface: the output checklist
+    detail_ref: >-
+      An attribution-checking rule was recorded as promoted to a named checklist section.
+      That section has only ever carried a different rule, and a history search confirmed
+      it never held this one. The operator approved fixing the named section; the fix
+      shipped as a new section carrying the rule, widened from quoted rulings to quoted
+      speech, stated intent and who-did-what, with a correction of record naming every
+      site that repeated the false claim.
+
+  - id: p23-5
+    title: Rule triggers borrow the wording of the case that prompted them
+    category: class-recurrence
+    evidence_count: 9
+    source_catchment: learning-agent cross-stream scan
+    recommendation: widen
+    status: executed
+    execution_target_week: '2026-09-13'
+    target_surface: the learning-capture protocol unit
+    detail_ref: >-
+      A trigger phrased in the catalyst's own vocabulary reads as not applying wherever
+      the logic applies but the words differ. Nine in-window instances, none caught by any
+      gate. The learning-capture unit gained a test: before shipping a rule, check its
+      trigger against one case that is not the one that prompted it.
+
+  - id: p23-6
+    title: The session-close ordering rule was satisfiable only by discipline
+    category: enforcement-gap
+    evidence_count: 7
+    source_catchment: learning-agent proposal + adversarial review of the build
+    recommendation: build
+    status: executed
+    execution_target_week: '2026-09-13'
+    target_surface: the session-close protocol unit
+    detail_ref: >-
+      The rule that one state file must be written last had recurred seven times, because
+      the commit hook demands further writes as a precondition of the commit. A small
+      helper now performs the close writes in a fixed order in one process. Adversarial
+      review found four serious defects before it shipped; each became a regression test
+      that fails against the pre-fix code by assertion.
+
+  - id: p23-7
+    title: Three approved rules shipped with named bounds and widening was declined
+    category: enforcement-gap
+    evidence_count: 2
+    source_catchment: adversarial review of this cycle's own ship
+    recommendation: watch
+    status: deferred
+    execution_target_week: '2026-09-20'
+    target_surface: the learning-capture unit + the output checklist
+    detail_ref: >-
+      Review named surfaces both new rules miss by reading their text: rules written into
+      hook error messages, agent briefs and memory files, and attribution to agents or
+      roles. No in-window instance of harm on those surfaces was measured. The operator
+      ruled to keep the bounds; the next cycle counts real instances there, and an unquoted
+      attribution that is correct does not count as one.
+
+  - id: p23-8
+    title: A planned deny-list keys on a field that is empty on every error it must deny
+    category: instrument-validity
+    evidence_count: 103
+    source_catchment: hook firelog re-measure
+    recommendation: rework
+    status: carried-open
+    execution_target_week: '2026-09-20'
+    target_surface: the subagent-return guard
+    detail_ref: >-
+      The guard logged 103 errors in the window. Its first planned fix shipped; its second
+      was a deny-list by agent type, and the type field is empty on every no-transcript
+      error row while nearly every passing row is typed. The source of the untyped payloads
+      is unattributed; naming one would be narration this measurement cannot support.
+
+  - id: p23-9
+    title: The response-marker miss recurred on a context-compaction resume
+    category: class-recurrence
+    evidence_count: 3
+    source_catchment: checkpoint firelog, grouped by consecutive-miss runs
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-09-20'
+    target_surface: the response-marker rule
+    detail_ref: >-
+      This retro's own session missed the marker on three graded turns, one of them the
+      resume after compaction, which a standing rule already covers. The fires collapse to
+      three turns, not to the raw fire count. An open item already records that misses
+      cluster on compaction boundaries with the mechanism unattributed; this is added
+      evidence, not a new mechanism.
+
+  - id: p23-10
+    title: Session boundaries in the operational log lost their headers again
+    category: class-recurrence
+    evidence_count: 3
+    source_catchment: session-log audit
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-09-20'
+    target_surface: the session-log writer
+    detail_ref: >-
+      Three session starts in the window open on a bare intent line with no heading, and
+      two more use a one-level heading a two-level search does not see. The same defect was
+      caught and fixed once in the prior window. A header search therefore undercounts
+      sessions, which is the denominator several audits use.
+
+  - id: p23-11
+    title: The backlog age instrument still covers under a third of the open queue
+    category: measurement-gap
+    evidence_count: 1
+    source_catchment: backlog census
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-09-27'
+    target_surface: the architecture backlog schema
+    detail_ref: >-
+      Carried from the prior cycle and unchanged in kind: 25 of 88 open items carry an
+      opened date, against 12 of 64 a week ago. Every item filed since then was dated, so
+      coverage improves only by intake, and the undated tail is the old one.
+
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 3
+  notes: >-
+    All three authored proposals were ruled and approved in-session and all three shipped
+    this cycle, one modified in placement because the section the operator named had never
+    held the rule. Three further patterns were held back by the learning agent as not yet
+    meeting its evidence bar. A full census of the ledger found two older statuses stale in
+    ways the agent's own housecleaning had missed; see findings 1 and 2.
+
+hook_health:
+  silent_hooks_observed: 5
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 0
+  enforcement_flips_verified_this_cycle: 0
+  notes: >-
+    Five hooks flagged as silent candidates. Two are the prior cycle's known false
+    positives, still unfixed and re-carried (finding 3). One is a deliberate partial no-op.
+    Two are real: the subagent-return guard (finding 8), and a drift-scan hook keyed on a
+    tool name, so any write through a different tool never reaches it. No new audit
+    instrument defect was found, and no enforcement flip was verified by this retro.
+
+discipline_metrics:
+  ritual_steps_defined: 16
+  ritual_steps_completed: 15
+  monthly_subritual_due: false
+  monthly_subritual_completed: false
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 3
+  response_marker_missed_turns: 61
+  response_marker_graded_turns: 530
+  response_marker_blocking_fires: 1449
+  response_marker_miss_rate: 0.12
+  response_marker_measured_at: '2026-09-13'
+  response_marker_note: >-
+    Per-turn form from the mandated tally, taken while this retro's own session was still
+    open, so it includes that session's three missed turns. A census earlier the same
+    evening read 60 of 524; the difference is the session's later turns, not a change of
+    method.
+  intent_confirmation_skip_rate: 0.0
+  notes: >-
+    Fifteen of sixteen steps are counted complete at publication. The last step writes the
+    retro artifact, which records this publication's own push receipt and therefore
+    follows it; it is not counted here. One of three sampled quality traces passed with two
+    flagged defects, neither of them fabrication.
+
+latency_observations:
+  source: session-start latency log
+  window_session_count: 156
+  median_first_tool_latency_sec: 25
+  p95_first_tool_latency_sec: 162
+  max_first_tool_latency_sec: 3538
+  threshold_sec: 120
+  threshold_violations: 18
+  notes: >-
+    Median and p95 both improved against the prior cycle and the maximum rose again, as it
+    did last cycle. The maximum was not investigated, for the second cycle running.
+
+fam_dispatch_distribution:
+  learning_agent: 2
+  adversarial_reviewer: 20
+  consultant: 1
+  external_validator: 0
+  notes: >-
+    SCOPE IS UNCHANGED AND DELIBERATELY NARROW: counted from the governance session root
+    only, because other roots hold private work and this figure is published, and the
+    counted unit is an in-session dispatch call, a MECHANISM rather than the EFFECT of
+    delegated work happening. Parallel read-only helpers numbered 16 and are not in these
+    four roles. The external-validator zero is still NOT a measurement of disuse: the
+    instrument defect behind it (prior finding 1) is unfixed, and the validator's account
+    was out of quota for the whole window, with review falling back to the adversarial
+    reviewer.
+    THIS REMAINS THE SECOND EFFICACY SERIES ON THIS DASHBOARD. `detection_provenance` grades
+    the same question over retro findings; the mapping between the two vocabularies is still
+    unwritten, so do not re-key the provenance trend card on this block.
+
+defect_ledger:
+  open_total: 121
+  live: 113
+  parked: 8
+  age_under_7d: 20
+  age_7_to_29d: 59
+  age_30d_plus: 42
+  age_undated: 0
+  median_age_days: 18
+  max_age_days: 50
+  measured_at: '2026-09-13'
+  measured_from: the operational state file, rendered through its own consumer functions
+  notes: >-
+    Owner split 87 agent-side, 26 requiring an operator decision, 8 parked. Open rows rose
+    from 98 to 121 and the 30-day bucket from 31 to 42, while the median moved only from 17
+    to 18, so the growth is again in the tail. Two rows opened this cycle were closed the
+    same day, one by filing its item and one by an operator ruling; the figures are taken
+    after both closures.
+
+improvement_backlog:
+  total: 175
+  open: 88
+  done: 75
+  parked: 12
+  open_ready: 58
+  open_decision_gated: 27
+  open_upstream_blocked: 3
+  notes: >-
+    Measured 2026-09-13 through the backlog consumer's own readiness predicate. Twenty-one
+    items entered and three closed, so the open queue grew by eighteen against a closure
+    rate of about one in seven intakes, sharply down from nearly two in three the prior
+    cycle. The headline total is cumulative and includes finished items. Two of this
+    cycle's intake were filed by this retro: the build found unfiled (finding 2) and a
+    watch on the operator's bound ruling (finding 7).
+
+enforcement_coverage:
+  arms_built: 17
+  arms_armed: 16
+  arms_with_written_exit_criteria: 3
+  arms_with_falsifiable_exit: 2
+  arms_declared_permanent: 1
+  checks_enumerated: 6
+  checks_with_written_exit_criteria: 3
+  checks_unit: stop-gate structural validations
+  checks_unit_note: >-
+    Not re-derived this cycle; these check figures are the prior cycle's, carried and
+    labelled as carried. Three execute only when the session's productive-file set is
+    non-empty, so a green close is not by itself evidence they ran.
+  arms_unit: commit-boundary validator arms
+  arms_unit_note: >-
+    SAME UNIT AS THE PRIOR CYCLE, AND THE CONTINUITY WAS TESTED RATHER THAN ASSUMED. Counting
+    distinct validator scripts the commit-boundary hook invokes reproduces the prior cycle's
+    fifteen exactly at the hook's state on that date, and returns seventeen today. The two
+    added arms are an identifier-shape gate and a grader-receipt gate; both block, and both
+    were read for written exit criteria and carry none. The three exit-criteria figures were
+    otherwise not re-derived and are the prior cycle's.
+  measured_at: '2026-09-13'
+  measured_from: the commit-boundary hook at today's state and at the prior retro's date
+  notes: >-
+    Arms built rose by two and neither new arm carries an exit criterion, so the share of
+    arms with a written way out fell from three in fifteen to three in seventeen.
+
+instrument_liveness:
+  silent_failures_observed: 10
+  caught_by_control: 1
+  caught_by_review: 5
+  caught_by_contradiction: 4
+  notes: >-
+    Hand-classified. The control catch is the guard re-measure, where a field the planned
+    fix depended on read empty (finding 8). Four review catches are serious defects in the
+    new close helper found before it shipped; the fifth is the sweep that found the prior
+    cycle's findings on no work list. The four contradiction catches are the housecleaning
+    count, the unfiled approved build, the rule whose recorded home never held it, and a
+    verification command whose exit status was silently replaced by a pipe's.
+
+detection_provenance:
+  caught_by_control: 1
+  caught_by_operator: 0
+  caught_by_accident: 0
+  instrumented_from: p18
+  status: measured
+  relation_to_detection_source_distribution: >-
+    SAME QUESTION, DIFFERENT POPULATION — read the two together or neither. This block
+    grades the FINDINGS in this retro in three buckets; the distribution block grades
+    LEARNINGS ENTRIES across the cycle in six. The vocabularies are not yet mapped, the
+    denominators differ by construction, and the two will not sum. This one is the
+    six-cycle series and stays the trend card.
+  notes: >-
+    One of eleven findings was caught by a control. None was caught by the operator, the
+    first zero on that arm in several cycles. The remaining findings came from the learning
+    agent's scan, adversarial review and a self-run census, which this three-bucket block
+    does not grade, so the low totals here are a statement about the block's vocabulary as
+    much as about the cycle.
+
+detection_source_distribution:
+  source: the capture-format caught-by field, read from the learnings corpus
+  learnings_files_scanned: 18
+  entries_in_window: 248
+  entries_annotated: 31
+  annotation_coverage: 0.125
+  status: measured-second-cycle
+  gate: 1
+  deputy: 7
+  self: 16
+  rosie: 4
+  contradiction: 3
+  nothing: 0
+  by_name:
+    deputy:breakline: 7
+    gate:test-suite: 1
+  notes: >-
+    READ THE COVERAGE FIGURE BEFORE ANY BUCKET. At 31 of 248 this is still a sample, though
+    no longer a sample of one session: coverage rose from 2 percent to 12.5 percent in its
+    second cycle. Every unannotated entry means NOT WRITTEN, never "caught by nothing". The
+    emitter scanned 18 learnings files against 13 the prior cycle, and the rise is
+    unattributed. The self bucket leads, which is what a field written by the same agent
+    that made the mistake would be expected to show, so it is the bucket to read most
+    sceptically. The nothing bucket is still zero, and zero there means none recorded.
+    THIS IS THE SECOND EFFICACY SERIES ON THIS DASHBOARD. Do NOT re-key the provenance trend
+    card on this block; the bucket mapping is unwritten.
