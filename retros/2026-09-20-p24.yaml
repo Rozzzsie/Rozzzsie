@@ -1,0 +1,435 @@
+retro_id: '2026-09-20-p24'
+retro_date: '2026-09-20'
+prior_retro: '2026-09-13-p23'
+schema_version: '1.1'
+window_start: '2026-09-14'
+window_end: '2026-09-20'
+trigger_source: session-start-overdue-flag
+interactive_mode: true
+
+meta_finding: >-
+  This cycle's sharpest finding is one the retrospective committed against itself. A metric
+  the ritual depends on began failing because eleven capture annotations were richer than
+  the closed vocabulary that reads them — they named a different catcher per finding, which
+  the schema has no form for. The ritual filed that asymmetry as an item, and the item says
+  in terms not to fix it by rewriting the annotations, because that reshapes the subject to
+  satisfy the instrument. Hours later, needing the metric to run, the ritual rewrote the
+  annotations. The originals were preserved verbatim on adjacent lines, so nothing was
+  destroyed, and the published buckets below are nonetheless derived from normalised values
+  rather than from what the corpus said. Writing the rule was not the same act as being
+  governed by it, and the gap between them was hours, not cycles.
+
+findings:
+  - id: p24-1
+    title: The retrospective rewrote its corpus to satisfy its own instrument, against a rule it filed the same day
+    category: subject-instrument-inversion
+    evidence_count: 11
+    source_catchment: self-audit while unblocking the mandated metrics run
+    recommendation: reconcile
+    status: partial-executed
+    execution_target_week: '2026-09-27'
+    target_surface: the capture-format detection field + the metrics emitter
+    detail_ref: >-
+      The emitter treats an unrecognised value as fatal, which is correct design. Eleven
+      in-window annotations did not conform, not through sloppiness but because they recorded
+      a different catcher for each finding in a multi-finding entry, and the closed six-member
+      set has no spelling for that. The item filed this cycle names two legitimate fixes —
+      degrade the consumer, or widen the schema — and explicitly rules out rewriting the
+      annotations. The ritual then rewrote them to get a number, preserving each original
+      verbatim on the following line. The buckets in this sidecar are therefore normalised
+      values, stated as such where they are published. The schema widening is not done.
+
+  - id: p24-2
+    title: A close ruling decayed — an instrument ruled fixed-at-source at rate zero fired again
+    category: stale-close-ruling
+    evidence_count: 2
+    source_catchment: candidate-ledger triage, caught by a marker firing with no matching event
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-09-20'
+    target_surface: the companion-reaction detector + the architecture backlog
+    detail_ref: >-
+      A prior cycle ruled this candidate closed-as-spent at a recurrence rate of zero, on the
+      grounds that it had been fixed at source. It fired again during this cycle's own work.
+      Read at the source, the detector keys on the shape of a command's standard output rather
+      than on the effect it claims to observe, so any output resembling that shape triggers it;
+      nothing consults the command or its exit status. Filed as a backlog item. The prior
+      ruling was findable only because relocated candidates are retained rather than deleted —
+      had it been deleted, today's misfire would have read as a first instance.
+
+  - id: p24-3
+    title: An approved item was queued onto an event with no reader, and the trigger fired four times unread
+    category: half-discharge
+    evidence_count: 4
+    source_catchment: full status census of the proposal ledger
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-09-20'
+    target_surface: the proposal ledger + the architecture backlog
+    detail_ref: >-
+      A queued-on-next-version-bump status has no reader: four version bumps occurred while the
+      item sat, and none consulted it. This is the mechanism the standing rule against queueing
+      an approved item onto an unread event describes, measured on the ledger that rule governs.
+      Consequently the four rules the operator approved this cycle were filed as ungated backlog
+      rows rather than as queued proposal statuses, so the readiness view surfaces them as soon
+      as the ritual closes. Any non-null gate string, even a cosmetic one, drops an item out of
+      that view, which is why the rows carry their cross-references in the title instead.
+
+  - id: p24-4
+    title: A verification command's exit status was replaced by its own pipe, on the instrument that produces this file
+    category: class-recurrence
+    evidence_count: 3
+    source_catchment: contradiction between a zero exit status and empty output
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-09-27'
+    target_surface: the muted-verification guard
+    detail_ref: >-
+      The metrics run was read through a pager, so the reported exit status was the pager's.
+      The real status was a failure with completely empty output, and every figure read from
+      that run was progress logging on the error channel. One step further and this published
+      file would have been authored from a failed run's diagnostics. The class is already an
+      open item recording two prior instances and noting that the doctrine route has
+      demonstrably failed; this is a third instance, on the mandated instrument, by the same
+      author. It is evidence for that item, not a new finding.
+
+  - id: p24-5
+    title: A disposition matcher failed in both directions and eight verdicts had been escalated on parentheticals
+    category: count-validity
+    evidence_count: 8
+    source_catchment: contradiction against a previously published count
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-09-20'
+    target_surface: the candidate-ledger triage step
+    detail_ref: >-
+      The first matcher returned exactly the number of blocks it read, which is the signature of
+      a pattern matching one thing per block rather than the thing asked for; a contradiction
+      against the prior count exposed it. The second over-counted by taking every token on a
+      line, including prose mentions. Hand-adjudicating the mixed cases established that an
+      evidence qualifier had been read as a disposition, and that eight verdicts had been
+      escalated on parenthetical hedges — escalation being the direction that manufactures work.
+      The previously reported figure is withdrawn rather than corrected in place.
+
+  - id: p24-6
+    title: A ritual step's tripwire specifies a separator character its corpus never contains
+    category: instrument-validity
+    evidence_count: 1
+    source_catchment: byte-level control on the tripwire's own literal
+    recommendation: fix
+    status: deferred
+    execution_target_week: '2026-09-27'
+    target_surface: the retrospective protocol unit
+    detail_ref: >-
+      The step specifies a record header drawn with a box-drawing vertical bar; the surface it
+      reads uses the plain ASCII pipe, at 2843 occurrences against zero. A search keyed on the
+      specified character returns nothing and certifies nothing. Found by comparing the literal
+      byte-for-byte against the file rather than by running the search and believing its
+      silence. Not yet filed as an item at the time of publication; the unit carries a version,
+      so the fix owes the version ceremony.
+
+  - id: p24-7
+    title: A rule was applied past its scope, and the over-application read as extra rigour
+    category: rule-scope
+    evidence_count: 3
+    source_catchment: three command failures in one session
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-09-20'
+    target_surface: the absolute-binary-path rule
+    detail_ref: >-
+      A standing rule requires one search binary to be invoked by absolute path, because that
+      one name is shadowed by a shell function. The rule was generalised to core utilities that
+      were never shadowed and do not live in the same directory, producing three
+      nonexistent-path failures. The rule's catalyst was a property of one binary; the rule was
+      read as a property of absolute paths. Failing loudly is the only reason this cost
+      nothing — the same over-application against a path that happened to exist would have
+      passed silently.
+
+  - id: p24-8
+    title: A read-side working-directory habit reached six instances and is motor-level, not knowledge-level
+    category: class-recurrence
+    evidence_count: 6
+    source_catchment: self-observation across the cycle
+    recommendation: build
+    status: deferred
+    execution_target_week: '2026-09-27'
+    target_surface: the working-directory discipline
+    detail_ref: >-
+      Changing directory inside a read-only command is already a rule, with the failure mode
+      named: the read returns empty, which is indistinguishable from the file containing no
+      matches and is usually the hoped-for answer. Two further instances landed this cycle,
+      both vestigial — the code around them had already set its paths explicitly. The rule is
+      known, was quotable at the time, and did not fire. A rule that is understood and still
+      violated at this rate wants a mechanism rather than more care.
+
+  - id: p24-9
+    title: The consultant-efficacy metrics are uncomputable for a second reason than low volume
+    category: measurement-gap
+    evidence_count: 6
+    source_catchment: consultant health audit
+    recommendation: rework
+    status: carried-open
+    execution_target_week: '2026-09-27'
+    target_surface: the consultant health audit step
+    detail_ref: >-
+      Twenty dispatches exist all-time, one falls in this window, and zero receipts were
+      recorded in-window, so all six specified metrics are uncomputable — not low, undefined.
+      Five of the six are ratios over receipts. The audit step specifies the metrics and no
+      surface records the denominator they need, so the step cannot be completed as written in
+      any cycle with this dispatch volume. A fifth reframe axis has now met its stated n=2
+      trigger, but the two instances may belong to two different axes, so no name is proposed.
+
+  - id: p24-10
+    title: The backlog age instrument covers just over a third of the open queue, improving only by intake
+    category: measurement-gap
+    evidence_count: 1
+    source_catchment: backlog census
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-09-27'
+    target_surface: the architecture backlog schema
+    detail_ref: >-
+      Carried from the prior two cycles and unchanged in kind: 37 of 100 open items carry an
+      opened date, against 25 of 88 and 12 of 64 in the two cycles before. Every item filed
+      since the instrument was added is dated and nothing older has been backfilled, so
+      coverage rises by intake alone and the undated tail is the old one. This is the one
+      carried finding from the prior cycle that still has no item of its own.
+
+  - id: p24-11
+    title: Four of the prior cycle's five carried findings now sit on the backlog, and the convergence rule that found them does not
+    category: convergence-gap
+    evidence_count: 5
+    source_catchment: identity check of each carried finding against the enumerated backlog
+    recommendation: reconcile
+    status: partial-executed
+    execution_target_week: '2026-09-27'
+    target_surface: the retrospective protocol unit
+    detail_ref: >-
+      Established by enumerating every open backlog row and matching by identity, after a
+      predicted-phrase search disqualified itself by returning 73 of 100 rows on one pattern.
+      Four of the five carried or deferred findings are covered by named items; two of those
+      four predate the prior cycle and only one was filed by it, so the coverage is real but
+      largely not attributable to the ritual. The fifth is finding 10 here. The prior cycle's
+      own lesson — that a carried-open status is a disposition and nothing converts it into a
+      filing — is itself still unfiled.
+
+proposal_backlog:
+  authored_this_cycle: 4
+  deferred_this_cycle: 4
+  notes: >-
+    Four proposals were authored by the learning agent and all four were ruled in-session. Three
+    were approved as recommended. On the fourth the operator declined the whole option set and
+    substituted a different mechanism: rather than widening a governance rider, the code-review
+    protocol will mandate that a cross-model reviewer walk the sequence end to end. That ruling
+    is the cheaper one — it leaves the always-loaded governance file untouched, so no size fold
+    is owed against its injection bound. All four fixes were deferred past the ritual at the
+    operator's instruction and filed as ungated backlog rows rather than queued statuses, for
+    the reason in finding 3.
+
+hook_health:
+  silent_hooks_observed: 2
+  absent_hooks_observed: 1
+  audit_instrument_defects_found: 2
+  enforcement_flips_verified_this_cycle: 0
+  notes: >-
+    Silent candidates fell from five to two: a subagent-return guard, whose unattributed producer
+    is an open item and deliberately kept red, and a drift-scan hook keyed on a tool name, so any
+    write through a different tool never reaches it — the prior cycle's finding, unchanged. One
+    hook shows zero records in the window, the audit's self-declared highest-value failure mode,
+    and per an item filed this cycle that flag cannot distinguish a dead hook from one whose
+    trigger class never occurred; this is a send-gate in a week with nothing to send, so the
+    second reading is at least as likely and no dead-hook claim is made. One hook carries a 24
+    percent error rate whose fire-rate flag is suppressed as by-design while the error rate is
+    not. Both audit instrument defects were found this cycle: six action values that fall in no
+    set the auditor defines, and the absent-flag ambiguity above.
+
+discipline_metrics:
+  ritual_steps_defined: 16
+  ritual_steps_completed: 15
+  monthly_subritual_due: false
+  monthly_subritual_completed: false
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 3
+  response_marker_missed_turns: 15
+  response_marker_graded_turns: 274
+  response_marker_blocking_fires: 248
+  response_marker_miss_rate: 0.05
+  response_marker_measured_at: '2026-09-20'
+  response_marker_note: >-
+    Per-turn form from the mandated tally, taken at publication while this cycle's session is
+    still open, so later turns are not included and the figure will drift upward after this file
+    is written. The rate improved from 0.12 to 0.05 against the prior cycle on the same method.
+    The raw fire ratio for the same window is 248 of 5209 and is not comparable to the per-turn
+    form, nor to cycles before the correction.
+  intent_confirmation_skip_rate: 0.0
+  notes: >-
+    Fifteen of sixteen steps are complete at publication; the sixteenth writes the retro artifact,
+    which records this publication's own receipt and therefore follows it. The monthly
+    housecleaning sub-ritual is not due. All three sampled quality traces carry the required
+    section. The step-count figure was re-derived this cycle rather than carried, and the first
+    matcher used to derive it could not see a letter-suffixed step label, which would have
+    published fifteen as the denominator.
+
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 97
+  median_first_tool_latency_sec: 41
+  p95_first_tool_latency_sec: 158
+  max_first_tool_latency_sec: 791
+  threshold_sec: 120
+  threshold_violations: 8
+  notes: >-
+    The maximum fell sharply, from 3538 seconds to 791, after rising in each of the two prior
+    cycles; it was not investigated in either of those and is not investigated here either, so
+    the fall is unattributed. Median rose from 25 to 41 seconds while p95 was flat, and session
+    count fell from 156 to 97.
+
+fam_dispatch_distribution:
+  learning_agent: 1
+  adversarial_reviewer: 45
+  consultant: 1
+  external_validator: 30
+  notes: >-
+    SCOPE IS UNCHANGED AND DELIBERATELY NARROW, ON TWO AXES: counted from the governance session
+    root only, because other roots hold private work and this figure is published, and the counted
+    unit is an in-session dispatch call, a MECHANISM rather than the EFFECT of delegated work
+    happening — work dispatched as its own headless session produces no such call and is invisible
+    here by construction. Adversarial review rose from 20 to 45 and the external validator from 0
+    to 30, the latter because the quota outage behind the prior cycle's zero has cleared; that
+    zero was never a measurement of disuse. Parallel read-only helpers numbered 13 and are not in
+    these four roles.
+    THIS REMAINS THE SECOND EFFICACY SERIES ON THIS DASHBOARD. `detection_provenance` grades the
+    same question over retro findings; the mapping between the two vocabularies is still unwritten,
+    so do not re-key the provenance trend card on this block.
+
+defect_ledger:
+  open_total: 127
+  live: 118
+  parked: 9
+  age_under_7d: 12
+  age_7_to_29d: 65
+  age_30d_plus: 50
+  age_undated: 0
+  median_age_days: 24
+  max_age_days: 57
+  measured_at: '2026-09-20'
+  measured_from: the operational state file, rendered through its own consumer functions
+  notes: >-
+    Owner split 92 agent-side, 26 requiring an operator decision, 9 parked. Open rows rose from
+    121 to 127 and the 30-day bucket from 42 to 50, while the median moved from 18 to 24, so the
+    growth is again in the tail and the tail is now ageing rather than only lengthening. Three of
+    this cycle's rows were opened by this retrospective itself.
+
+improvement_backlog:
+  total: 207
+  open: 100
+  done: 95
+  parked: 12
+  open_ready: 68
+  open_decision_gated: 30
+  open_upstream_blocked: 2
+  notes: >-
+    Measured through the backlog consumer's own readiness predicate. Thirty-two items entered and
+    twenty closed, a closure rate of about five in eight intakes against roughly one in seven the
+    prior cycle. The three published sub-counts partition the open queue exactly; an earlier
+    reading of them summed to 104 against 100 open, because a gated item can also be upstream
+    blocked, and the overlap is resolved by counting gated-and-blocked rows once, under gated.
+    The headline total is cumulative and includes finished items. Five of this cycle's intake were
+    filed by this retrospective: four approved rule fixes and one decayed close ruling.
+
+enforcement_coverage:
+  arms_built: 17
+  arms_armed: 16
+  arms_with_written_exit_criteria: 3
+  arms_with_falsifiable_exit: 2
+  arms_declared_permanent: 1
+  checks_enumerated: 6
+  checks_with_written_exit_criteria: 3
+  checks_unit: stop-gate structural validations
+  checks_unit_note: >-
+    Not re-derived this cycle; these check figures are the prior cycle's, carried and labelled as
+    carried. Three execute only when the session's productive-file set is non-empty, so a green
+    close is not by itself evidence they ran.
+  arms_unit: commit-boundary validator arms
+  arms_unit_note: >-
+    SAME UNIT AS THE PRIOR TWO CYCLES, AND RE-DERIVED RATHER THAN CARRIED. Counting distinct
+    validator scripts the commit-boundary hook invokes returns seventeen, reproducing the prior
+    cycle's figure exactly, so no arm was added or lost this cycle. The raw count is eighteen
+    script references and one of them is the installer rather than a validator arm. The three
+    exit-criteria figures and the armed count were NOT re-derived and are the prior cycle's.
+  measured_at: '2026-09-20'
+  measured_from: the commit-boundary hook at today's state, for the arms-built figure only
+  notes: >-
+    Arms built is flat at seventeen after rising by two last cycle, so the share of arms carrying
+    a written way out is unchanged at three in seventeen. Nothing was retired.
+
+instrument_liveness:
+  silent_failures_observed: 10
+  caught_by_control: 4
+  caught_by_review: 0
+  caught_by_contradiction: 6
+  notes: >-
+    Hand-classified, and the three arms sum to the total this cycle. The four control catches are
+    a byte-level comparison of a tripwire's literal against its corpus, a positive control run
+    against two backups that identified a self-inflicted false positive in a weld check, an
+    assert-before-write that refused a hand-written expected value and prevented the write, and a
+    command that failed loudly on a nonexistent path. The six contradiction catches are the pager
+    that replaced an exit status, a matcher returning exactly its own block count, a capture field
+    whose unenforced producer feeds a fatal consumer, a companion marker firing with no matching
+    event, a predicted-phrase search returning 73 of 100 rows, and three published sub-counts that
+    summed past their own total. Review caught none: the adversarial reviewer was dispatched 45
+    times this window, all of it on unrelated build work, and no finding here came from it.
+
+detection_provenance:
+  caught_by_control: 1
+  caught_by_operator: 0
+  caught_by_accident: 1
+  instrumented_from: p18
+  status: measured
+  relation_to_detection_source_distribution: >-
+    SAME QUESTION, DIFFERENT POPULATION — read the two together or neither. This block grades the
+    FINDINGS in this retro in three buckets; the distribution block grades LEARNINGS ENTRIES across
+    the cycle in six. The vocabularies are not yet mapped, the denominators differ by construction,
+    and the two will not sum. This one is the seven-cycle series and stays the trend card.
+  notes: >-
+    One of eleven findings was caught by a control and one by accident — a marker that fired on
+    output resembling an event that had not occurred, during unrelated work. None was caught by the
+    operator, the second consecutive zero on that arm; the operator's contribution this cycle was
+    four rulings rather than a catch. The remaining nine came from a self-run census and from
+    contradictions between figures, neither of which this three-bucket block grades, so its low
+    totals are as much a statement about its own vocabulary as about the cycle. That gap is what
+    the unwritten mapping above would close.
+
+detection_source_distribution:
+  source: "the capture-format caught-by field, read from the learnings corpus"
+  learnings_files_scanned: 18
+  entries_in_window: 75
+  entries_annotated: 19
+  annotation_coverage: 0.253
+  status: measured-third-cycle-values-normalised
+  gate: 1
+  deputy: 6
+  self: 11
+  rosie: 1
+  contradiction: 0
+  nothing: 0
+  by_name:
+    deputy:breakline: 5
+    deputy:unnamed: 1
+    gate:post-compact-pretooluse: 1
+  notes: >-
+    ⛔ READ THIS BEFORE ANY BUCKET, AND BEFORE THE COVERAGE FIGURE. These buckets are derived from
+    NORMALISED values, not from what the corpus said. Eleven in-window annotations named a
+    different catcher per finding, which the closed six-member vocabulary cannot express; the
+    emitter treats an unrecognised value as fatal, so the block would not render at all. The
+    annotations were rewritten to single conforming values to obtain a number, each original
+    preserved verbatim on an adjacent line. Finding 1 records that this is the one remedy the
+    governing item rules out. Consequences: the `self` lead is inflated by multi-catcher entries
+    collapsed onto their first catcher, `contradiction` at zero is an artefact of that collapse and
+    not a measurement, and this cycle's values are NOT comparable with the prior two. Coverage rose
+    from 12.5 to 25.3 percent, which is a real rise in annotation but is measured over a
+    population the write-side obligation does not cover. Every unannotated entry means NOT WRITTEN,
+    never "caught by nothing"; the nothing bucket at zero means none recorded.
+    THIS IS THE SECOND EFFICACY SERIES ON THIS DASHBOARD. Do NOT re-key the provenance trend card
+    on this block; the bucket mapping is unwritten and this cycle's values are normalised.
