@@ -1,26 +1,32 @@
-# P3 trace — 2026-07-27 scheduled digest task
+# P3 trace — 2026-08-28 remote web session (recognition check → infrastructure debug → LEARNINGS landing)
 
 ## Session type
-Scheduled automated run: weekly AI agent digest fetch for personal-learnings workspace.
+Interactive remote session (Claude Code on the web, branch `claude/recognition-check-dhg5uk`). Opened as a recognition check; became a multi-hour out-of-band troubleshooting arc on the operator's personal networking stack; closed by landing two rule-tier governance entries. No workspace initiative advanced.
 
 ## Section verdicts
 
-### Fetch attempt
-**FAIL** — aiagentstore.ai returned 403 Forbidden via both curl (proxy CONNECT tunnel blocked) and WebFetch tool. No digest content was retrieved. No digest or analysis files were written, per task instructions.
+### Diagnostic accuracy
+**PASS with one self-corrected error** — Every eliminated hypothesis was closed against a directly observed artifact (provider status page, filesystem listing, port probe, service listener dump), not inference; the ruled-out table in the handoff brief traces each row to a specific observation in the transcript. One error was made and corrected in-session: a test-target flaw was identified and then treated as though it predicted a passing result, which cost one round before an external target disproved it.
 
-### personal-learnings workspace bootstrap
-**PASS** — Workspace did not exist. Created `personal-learnings/_input/`, `CONTEXT.md`, `CHANGELOG.md`, and `_input/2026-07-27_digest-fetch-failed.md`. All files verified written successfully.
+### Handoff brief (operational deliverable)
+**PASS** — 122-line brief authored to the scratchpad and delivered to the operator out-of-repo. Checked against the session record: facts section and ruled-out table contain no claim not grounded in a direct observation. Deliberately not committed to this remote — it carries host address, panel base path, and client identifiers, and this repository is public.
 
-### P4 state update
-**PASS** — `personal-learnings/CONTEXT.md` updated with current state and open blocker. `personal-learnings/CHANGELOG.md` created with first entry.
+### LEARNINGS authoring
+**PASS** — Two landings. §14 verify-to-artifact extended 10 → 11 sub-families (`operator-recollection`); one new top-level entry (instrument-independence) promoted on n=3 same-session instances. Both written in the file's existing shape: dated header, catalyst prose, italicised `**Rule.**` block. Header count corrected five → six; that count change is flagged to the operator for curation since the doc's stated invariant is a curated top-five.
 
-### P5 surprises
-**NOTED** — Two surprises: (1) personal-learnings/ workspace did not exist (task assumes it does); (2) aiagentstore.ai is blocked by the environment proxy. Neither constitutes a cross-workspace learning requiring LEARNINGS.md propagation — both are infrastructure/environment facts specific to this scheduled task setup.
+### P4 state updates
+**PASS** — `CHANGELOG.md` entry prepended in the established `[date] | [scope] — [what was produced]` form, carrying both landings, both banked-not-promoted observations, and an explicit propagation-status disclosure. `CONTEXT.md` §14 sub-family count advanced 10 → 11 with the anchor entry re-dated, plus a new Evolving-surface bullet naming the instrument-independence family as landed-but-unpropagated.
+
+### Sanitization (public-remote gate)
+**PASS** — All authored text is abstracted: no IP address, hostname, panel path, client identifier, subscription URL, API key, or vendor name appears in any committed file. Verified by explicit leak-scan over the staged diff rather than by reading back the prose. The concrete detail lives only in the out-of-repo handoff brief.
+
+### P5 / P6 propagation
+**INCOMPLETE — declared, not silent** — Both landings sit in root `LEARNINGS.md` only. `_config/output-checklist.md` is untouched and no workspace LEARNINGS file was seeded, so a learning that changes how outputs are validated has not yet been made enforceable. Per the doc's own standard this leaves them observations rather than iterations. Held deliberately for operator review rather than expanded unilaterally into the enforcement surface; the gap is stated in `CONTEXT.md` and in the CHANGELOG entry rather than left to be discovered.
 
 ### Output checklist
-**PASS (n/a for most items)** — No deliverable content produced (fetch failed). Failure note is accurate, concise, and does not fabricate content. State files are consistent.
+**PASS** — Deliverables are concrete and directly usable (a runnable handoff brief; state entries in the repository's existing formats). No fabricated content: where the session had no record of a claimed prior event, that absence was reported as verified absence with the search that established it, not smoothed over.
 
 ## Checkpoint bar
-Substantive responses this session: 2
-Checkpoint lines present: 0
-Missed: initial response (writing files), continuation response — both bar-mandatory turns (multiple Write tool calls)
+Substantive responses this session: 38
+Checkpoint lines present: 38
+Missed: none
