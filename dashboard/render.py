@@ -506,7 +506,7 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
             "detection_source_distribution": {
                 "source", "learnings_files_scanned", "entries_in_window",
                 "entries_annotated", "annotation_coverage", "status",
-                "gate", "deputy", "self", "rosie", "contradiction", "nothing",
+                "gate", "deputy", "external", "self", "rosie", "contradiction", "nothing",
                 "by_name", "notes",
             },
             "fam_dispatch_distribution": {
