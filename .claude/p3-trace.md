@@ -51,6 +51,10 @@ retro is 7 days old (2026-09-20). A comment on the check directly above it docum
 the hook nor the ledger was edited to clear the block: hook logic is governance code owned by the operator,
 and rewording a ledger line to satisfy an instrument is the failure the §14 family exists to name.
 
+## Section 8 — Correction to Section 6, same session
+
+Verdict: FAIL — Section 6 named the recency misread as what stops this gate, which is true only on macOS. Clearing the state-file checks let the gate run further and it then aborted instead of blocking: `stat -f %m` is the BSD spelling, GNU `-f` means `--file-system` with `%m` read as a filename, so the file's filesystem block lands on the stdout the `||` fallback then appends the epoch to, and the numeric comparison evaluates `File:` as a variable and dies under `set -u` with no JSON emitted. Section 6 was a description of an instrument that had only been exercised as far as its fourth check — the same surrogate-reading error the §14 family names, committed here against a hook rather than against a status table.
+
 ## Section 7 — Scope discipline
 
 Verdict: PASS — nothing was propagated to `_config/output-checklist.md` or workspace LEARNINGS files, and no
