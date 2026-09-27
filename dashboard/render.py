@@ -503,9 +503,18 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
             # ⭐ `nothing` is a REAL bucket (the corpus caught it by no
             # instrument), never an absence — read `annotation_coverage` before
             # any bucket, and `status` before both.
+            # ⛔ SERIES BREAK at p26 (backlog #235): `annotation_coverage` p22-p25
+            # divided every in-window value by every in-window entry; from p26 it
+            # is since-ship annotated ENTRIES over `entries_since_ship`, entries
+            # whose heading date is on or after 2026-09-26, when the field became
+            # owed. `annotation_coverage_basis` names the basis and is absent
+            # on the older sidecars; `entries_pre_design` is published beside it.
+            # Never chart the two bases as one series.
             "detection_source_distribution": {
                 "source", "learnings_files_scanned", "entries_in_window",
-                "entries_annotated", "annotation_coverage", "status",
+                "entries_since_ship", "entries_pre_design",
+                "entries_annotated", "entries_since_ship_annotated",
+                "annotation_coverage", "annotation_coverage_basis", "status",
                 "gate", "deputy", "external", "self", "rosie", "contradiction", "nothing",
                 "by_name", "notes",
             },
