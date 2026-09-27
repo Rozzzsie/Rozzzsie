@@ -1,32 +1,70 @@
-# P3 trace — 2026-08-28 remote web session (recognition check → infrastructure debug → LEARNINGS landing)
+# P3 Quality-Gate Trace
 
-## Session type
-Interactive remote session (Claude Code on the web, branch `claude/recognition-check-dhg5uk`). Opened as a recognition check; became a multi-hour out-of-band troubleshooting arc on the operator's personal networking stack; closed by landing two rule-tier governance entries. No workspace initiative advanced.
+Session: 2026-09-27 (remote Claude Code on the web; PR-monitoring continuation session)
+Output type: public GitHub repository — sanitized governance snapshot, open draft PR
+Baseline commit: 354d815 (recorded in `.claude/session-start-commit`)
 
-## Section verdicts
+---
 
-### Diagnostic accuracy
-**PASS with one self-corrected error** — Every eliminated hypothesis was closed against a directly observed artifact (provider status page, filesystem listing, port probe, service listener dump), not inference; the ruled-out table in the handoff brief traces each row to a specific observation in the transcript. One error was made and corrected in-session: a test-target flaw was identified and then treated as though it predicted a passing result, which cost one round before an external target disproved it.
+## Section 1 — Merge of the default branch into the PR branch
 
-### Handoff brief (operational deliverable)
-**PASS** — 122-line brief authored to the scratchpad and delivered to the operator out-of-repo. Checked against the session record: facts section and ruled-out table contain no claim not grounded in a direct observation. Deliberately not committed to this remote — it carries host address, panel base path, and client identifiers, and this repository is public.
+Verdict: PASS — `git merge-tree --write-tree --name-only HEAD origin/main` returned a tree oid with no
+conflict list before the merge was run, and the incoming commit touched only `dashboard/render.py`, which
+has zero overlap with the four files this branch owns. Merge commit 3878f58, ort strategy, pushed to origin.
 
-### LEARNINGS authoring
-**PASS** — Two landings. §14 verify-to-artifact extended 10 → 11 sub-families (`operator-recollection`); one new top-level entry (instrument-independence) promoted on n=3 same-session instances. Both written in the file's existing shape: dated header, catalyst prose, italicised `**Rule.**` block. Header count corrected five → six; that count change is flagged to the operator for curation since the doc's stated invariant is a curated top-five.
+## Section 2 — Branch content survived the merge (verified by reading, not by exit status)
 
-### P4 state updates
-**PASS** — `CHANGELOG.md` entry prepended in the established `[date] | [scope] — [what was produced]` form, carrying both landings, both banked-not-promoted observations, and an explicit propagation-status disclosure. `CONTEXT.md` §14 sub-family count advanced 10 → 11 with the anchor entry re-dated, plus a new Evolving-surface bullet naming the instrument-independence family as landed-but-unpropagated.
+Verdict: PASS — `git diff --stat 354d815 HEAD -- LEARNINGS.md CONTEXT.md CHANGELOG.md .claude/p3-trace.md`
+was empty at merge time, i.e. all four were byte-identical through the merge; the only content change versus
+the pre-merge commit was the single line in `render.py`. Substance was then grepped back out of the files
+rather than assumed: CONTEXT.md still carries "11 sub-families" and the "P5 step (b) outstanding" bullet,
+LEARNINGS.md still reads "the most valuable six" with the instrument entry at its own heading.
 
-### Sanitization (public-remote gate)
-**PASS** — All authored text is abstracted: no IP address, hostname, panel path, client identifier, subscription URL, API key, or vendor name appears in any committed file. Verified by explicit leak-scan over the staged diff rather than by reading back the prose. The concrete detail lives only in the out-of-repo handoff brief.
+## Section 3 — Sanitization of the public surface
 
-### P5 / P6 propagation
-**INCOMPLETE — declared, not silent** — Both landings sit in root `LEARNINGS.md` only. `_config/output-checklist.md` is untouched and no workspace LEARNINGS file was seeded, so a learning that changes how outputs are validated has not yet been made enforceable. Per the doc's own standard this leaves them observations rather than iterations. Held deliberately for operator review rather than expanded unilaterally into the enforcement surface; the gap is stated in `CONTEXT.md` and in the CHANGELOG entry rather than left to be discovered.
+Verdict: PASS — leak scan re-run over only the branch's added lines (38) against 28 patterns covering host
+address, panel path, client identifiers, subscription URL, vendor names, ports and private workspace names:
+0 hits. The matcher was proved live by a positive control in the same run, since an empty hit list and a
+broken matcher are identical at the exit code.
 
-### Output checklist
-**PASS** — Deliverables are concrete and directly usable (a runnable handoff brief; state entries in the repository's existing formats). No fabricated content: where the session had no record of a claimed prior event, that absence was reported as verified absence with the search that established it, not smoothed over.
+## Section 4 — Positive-control figure retired
+
+Verdict: PASS — the "positive control 9" figure carried in this branch's daily check-in notes for a month is
+not reproducible; no control term returns 9, and because the scanned line count has been identical every day
+a genuine control would have been stable. The control is now pinned to an explicit term rather than a
+remembered number, so future runs are comparable. This is an instrument-hygiene correction, disclosed rather
+than quietly dropped.
+
+## Section 5 — P4 state update for this increment
+
+Verdict: PASS — root `CHANGELOG.md` took a long-form entry covering the merge, the stop-gate defect and the
+retired control figure; root `CONTEXT.md` took an Evolving-surface bullet for the stop-gate defect. Both are
+written at the public grain, with no host, path, credential or private workspace name.
+
+## Section 6 — Published stop-gate defect (the session's substantive finding)
+
+Verdict: FAIL — and the failure is the instrument's, declared rather than worked around. The published
+`hooks/stop-gate.sh` assumes a bottom-append CHANGELOG in two checks; this ledger is newest-first. Its
+entry-length check passes by luck because the oldest entry is long. Its retrospective-recency check reads the
+date off the oldest matching line, computes 151 days against a 14-day grace, and blocks although the real
+retro is 7 days old (2026-09-20). A comment on the check directly above it documents the assumption. Neither
+the hook nor the ledger was edited to clear the block: hook logic is governance code owned by the operator,
+and rewording a ledger line to satisfy an instrument is the failure the §14 family exists to name.
+
+## Section 7 — Scope discipline
+
+Verdict: PASS — nothing was propagated to `_config/output-checklist.md` or workspace LEARNINGS files, and no
+hook was patched. The two operator decisions this branch has been waiting on (the LEARNINGS header count, and
+whether to propagate the two landings) remain untouched and unmade on the operator's behalf.
+
+## External validation
+
+External validation for this public-facing output was the leak scan with its positive control (Section 3) and
+the pre-merge `git merge-tree` conflict prediction (Section 1) — both run against the artifact rather than
+against a description of it. No cross-model reviewer was invoked: this increment authored no code, only a
+merge and two state-file entries.
 
 ## Checkpoint bar
-Substantive responses this session: 38
-Checkpoint lines present: 38
+Substantive responses this session: 3
+Checkpoint lines present: 3
 Missed: none
