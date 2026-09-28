@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.12** (2026-09-13) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.14** (2026-09-27) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,15 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.14 — 2026-09-27 (an instrument deleted the evidence of the thing it measured)
+
+- **Re-render against the new sidecar.** `retros/2026-09-20-p24.yaml` → `retros/2026-09-27-p25.yaml` (window 2026-09-21 → 2026-09-26, six days because the retro ran a day early; 10 findings). `default_sidecar` was retargeted and checked by the argument-less run. The schema check returns clean. That result was validated by two positive controls: a renamed ledger sub-key warns by name, and a dropped required block raises.
+- **The ritual tally is a measurement, not a forecast, apart from one act.** The sidecar was authored with `ritual_steps_completed: null`, and sixteen was written only after the canonical retro artifact existed and the private close had committed. The single remaining forecast is this push itself, and a failed push reverts the figure to null.
+- **Meta-finding: recurrence, and one instrument that ate its subject.** Four of the five recurring gap classes already had a written rule that failed in practice. The new failure was a production-log leak canary. It classed a live governance gate's records as test fixtures, and a purge on the same predicate removed them, so the hook audit reported the gate as absent. The fix exempts only that gate's exact label shape. It was reviewed twice and was wrong both times before it held.
+- **The enforcement series was re-derived by member, not by count.** Seventeen arms are built, and one new arm warns until 2026-10-02, so armed stays at sixteen. Counting the prior cycle's date with the same method gives sixteen, against the seventeen published then. That one-arm gap is published as unattributed, not reconciled.
+- **Backlog closures outnumbered intake for the first time:** thirty-seven closed against twenty-seven opened. The defect ledger shrank from 127 to 120 open rows, and aged: the thirty-day bucket rose from 50 to 66.
+- **Correction:** the "Current release" line above still read v3.12 through the v3.13 release. It is corrected here.
 
 ### v3.13 — 2026-09-20 (the ritual broke a rule it had filed hours earlier, to get a number)
 

@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.13"
+DASHBOARD_VERSION = "3.14"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -503,9 +503,18 @@ SIDECAR_SCHEMA: dict[str, dict[str, Any]] = {
             # ⭐ `nothing` is a REAL bucket (the corpus caught it by no
             # instrument), never an absence — read `annotation_coverage` before
             # any bucket, and `status` before both.
+            # ⛔ SERIES BREAK at p26 (backlog #235): `annotation_coverage` p22-p25
+            # divided every in-window value by every in-window entry; from p26 it
+            # is since-ship annotated ENTRIES over `entries_since_ship`, entries
+            # whose heading date is on or after 2026-09-26, when the field became
+            # owed. `annotation_coverage_basis` names the basis and is absent
+            # on the older sidecars; `entries_pre_design` is published beside it.
+            # Never chart the two bases as one series.
             "detection_source_distribution": {
                 "source", "learnings_files_scanned", "entries_in_window",
-                "entries_annotated", "annotation_coverage", "status",
+                "entries_since_ship", "entries_pre_design",
+                "entries_annotated", "entries_since_ship_annotated",
+                "annotation_coverage", "annotation_coverage_basis", "status",
                 "gate", "deputy", "external", "self", "rosie", "contradiction", "nothing",
                 "by_name", "notes",
             },
@@ -2037,7 +2046,7 @@ def main(argv: list[str]) -> int:
     # Retargeted every cycle at P10 step 9(c). Verify by running this file
     # with NO arguments and reading the header: found stale at p17, where
     # the documented bare command rendered the PREVIOUS cycle silently.
-    default_sidecar = here.parent / "retros" / "2026-09-20-p24.yaml"
+    default_sidecar = here.parent / "retros" / "2026-09-27-p25.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar
