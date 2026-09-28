@@ -1,74 +1,68 @@
 # P3 Quality-Gate Trace
 
-Session: 2026-09-27 (remote Claude Code on the web; PR-monitoring continuation session)
+Session: 2026-09-28 (remote Claude Code on the web; PR-monitoring continuation, resumed on a re-provisioned container)
 Output type: public GitHub repository — sanitized governance snapshot, open draft PR
-Baseline commit: 354d815 (recorded in `.claude/session-start-commit`)
+Baseline commit recorded at session start: 7daf130 (the default branch's tip, because the container was fresh)
 
 ---
 
-## Section 1 — Merge of the default branch into the PR branch
+## Section 1 — Branch recovery after container loss
 
-Verdict: PASS — `git merge-tree --write-tree --name-only HEAD origin/main` returned a tree oid with no
-conflict list before the merge was run, and the incoming commit touched only `dashboard/render.py`, which
-has zero overlap with the four files this branch owns. Merge commit 3878f58, ort strategy, pushed to origin.
+Verdict: PASS — the working tree came back on a fresh clone with the branch recreated at the default branch's
+tip, so none of this branch's commits were present. Before resetting anything, the two commits on the local tip
+were each tested with `git merge-base --is-ancestor <sha> origin/main` and both were confirmed to be the default
+branch's own, so the reset could not discard unique work. The branch was then restored to its pushed tip
+59001bc and the four owned files were grepped back to confirm content, not assumed from the sha.
 
-## Section 2 — Branch content survived the merge (verified by reading, not by exit status)
+## Section 2 — Merge with a real content conflict
 
-Verdict: PASS — `git diff --stat 354d815 HEAD -- LEARNINGS.md CONTEXT.md CHANGELOG.md .claude/p3-trace.md`
-was empty at merge time, i.e. all four were byte-identical through the merge; the only content change versus
-the pre-merge commit was the single line in `render.py`. Substance was then grepped back out of the files
-rather than assumed: CONTEXT.md still carries "11 sub-families" and the "P5 step (b) outstanding" bullet,
-LEARNINGS.md still reads "the most valuable six" with the instrument entry at its own heading.
+Verdict: PASS — `git merge-tree` predicted one conflicted path before the merge ran, and the merge produced
+exactly that: both sides had prepended a 2026-09-27 CHANGELOG entry. Both were kept and ordered newest-first by
+commit time rather than by the date they share — retro #25 at 08:07 UTC above this branch's entry at 03:53 UTC.
+Resolution was applied by a script with assertions on both sides' opening text, so a mis-identified hunk would
+have aborted rather than silently reordered the ledger.
 
-## Section 3 — Sanitization of the public surface
+## Section 3 — Auto-merged files verified by reading
 
-Verdict: PASS — leak scan re-run over only the branch's added lines (38) against 28 patterns covering host
-address, panel path, client identifiers, subscription URL, vendor names, ports and private workspace names:
-0 hits. The matcher was proved live by a positive control in the same run, since an empty hit list and a
-broken matcher are identical at the exit code.
+Verdict: PASS — CONTEXT.md auto-merged and was read back rather than trusted: the retro's own snapshot heading,
+its last-retrospective row and its dashboard v3.14 row are present, and both of this branch's bullets survived.
+`git diff 59001bc -- LEARNINGS.md .claude/p3-trace.md` was empty, so neither was touched by the merge.
 
-## Section 4 — Positive-control figure retired
+## Section 4 — A suspicion killed by the artifact, not by argument
 
-Verdict: PASS — the "positive control 9" figure carried in this branch's daily check-in notes for a month is
-not reproducible; no control term returns 9, and because the scanned line count has been identical every day
-a genuine control would have been stable. The control is now pinned to an explicit term rather than a
-remembered number, so future runs are comparable. This is an instrument-hygiene correction, disclosed rather
-than quietly dropped.
+Verdict: PASS — the retro-cadence flag flipped from overdue to not-due overnight and the first hypothesis was
+that this branch's own 2026-09-27 entry had poisoned the detector, since that entry contains the word the
+detector greps for and the detector takes the first match. Reading the matched line refuted it in one command:
+the match is the real retro #25 entry, which had genuinely landed. The hypothesis was one step from motivating
+a reword of a committed ledger line to satisfy an instrument that turned out to be correct.
 
-## Section 5 — P4 state update for this increment
+## Section 5 — Sanitization of the public surface
 
-Verdict: PASS — root `CHANGELOG.md` took a long-form entry covering the merge, the stop-gate defect and the
-retired control figure; root `CONTEXT.md` took an Evolving-surface bullet for the stop-gate defect. Both are
-written at the public grain, with no host, path, credential or private workspace name.
+Verdict: PASS — leak scan run over only the lines this session adds, against the full pattern set covering host
+address, panel path, client identifiers, subscription URL, vendor names, ports and private workspace names: 0
+hits, with the matcher proved live by the pinned positive control in the same run.
 
-## Section 6 — Published stop-gate defect (the session's substantive finding)
+## Section 6 — P4 state update
 
-Verdict: FAIL — and the failure is the instrument's, declared rather than worked around. The published
-`hooks/stop-gate.sh` assumes a bottom-append CHANGELOG in two checks; this ledger is newest-first. Its
-entry-length check passes by luck because the oldest entry is long. Its retrospective-recency check reads the
-date off the oldest matching line, computes 151 days against a 14-day grace, and blocks although the real
-retro is 7 days old (2026-09-20). A comment on the check directly above it documents the assumption. Neither
-the hook nor the ledger was edited to clear the block: hook logic is governance code owned by the operator,
-and rewording a ledger line to satisfy an instrument is the failure the §14 family exists to name.
+Verdict: PASS — root CHANGELOG.md took a 2026-09-28 entry covering the recovery, the conflict resolution and
+the near-miss; root CONTEXT.md had its stop-gate bullet extended with the session-scope property that explains
+why a merge carrying a productive file trips the root-CHANGELOG check. Both at the public grain.
 
-## Section 8 — Correction to Section 6, same session
+## Section 7 — Known instrument state, not re-investigated
 
-Verdict: FAIL — Section 6 named the recency misread as what stops this gate, which is true only on macOS. Clearing the state-file checks let the gate run further and it then aborted instead of blocking: `stat -f %m` is the BSD spelling, GNU `-f` means `--file-system` with `%m` read as a filename, so the file's filesystem block lands on the stdout the `||` fallback then appends the epoch to, and the numeric comparison evaluates `File:` as a variable and dies under `set -u` with no JSON emitted. Section 6 was a description of an instrument that had only been exercised as far as its fourth check — the same surrogate-reading error the §14 family names, committed here against a hook rather than against a status table.
-
-## Section 7 — Scope discipline
-
-Verdict: PASS — nothing was propagated to `_config/output-checklist.md` or workspace LEARNINGS files, and no
-hook was patched. The two operator decisions this branch has been waiting on (the LEARNINGS header count, and
-whether to propagate the two landings) remain untouched and unmade on the operator's behalf.
+Verdict: FAIL — the published `hooks/stop-gate.sh` still cannot complete on this platform: `stat -f %m` is the
+BSD spelling and its GNU failure mode writes a filesystem block to the stdout the `||` fallback feeds, so the
+numeric comparison aborts under `set -u` with no verdict. Reported yesterday with the ledger-ordering defect;
+neither was patched today either, because hook logic is governance code owned by the operator.
 
 ## External validation
 
-External validation for this public-facing output was the leak scan with its positive control (Section 3) and
-the pre-merge `git merge-tree` conflict prediction (Section 1) — both run against the artifact rather than
-against a description of it. No cross-model reviewer was invoked: this increment authored no code, only a
-merge and two state-file entries.
+External validation for this public-facing output was the pre-merge `git merge-tree` conflict prediction, the
+ancestor tests run before the reset, and the leak scan with its positive control — each run against the
+artifact rather than against a description of it. No cross-model reviewer was invoked: this increment authored
+no code, only a conflict resolution and two state-file entries.
 
 ## Checkpoint bar
-Substantive responses this session: 3
-Checkpoint lines present: 3
+Substantive responses this session: 1
+Checkpoint lines present: 1
 Missed: none
