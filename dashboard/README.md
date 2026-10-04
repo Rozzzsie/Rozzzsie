@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.14** (2026-09-27) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.15** (2026-10-03) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,15 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.15 — 2026-10-03 (two records that never existed)
+
+- **Re-render against the new sidecar.** `retros/2026-09-27-p25.yaml` → `retros/2026-10-03-p26.yaml` (window 2026-09-27 → 2026-10-03; 11 findings; the first P10 of October, so the monthly-housecleaning sub-ritual ran). `default_sidecar` was retargeted and checked by the argument-less run. The schema check returns clean, and a dropped required block still raises.
+- **The ritual tally stays a measurement apart from this push.** `ritual_steps_completed` was null at authoring; 16 of 16 was written only after the canonical retro artifact existed and the private close had committed, and a failed push reverts it to null.
+- **Meta-finding: nothing reports a record that was never written.** The learning-agent count placed each run by its transcript file's UTC date, so every retro's own run fell into the next week's window, and the previous cycle published zero for a week in which the agent had run. The operator caught it by knowing the run happened. This cycle's figure of one carries that note on the page; the counting fix is deferred to a build session. Separately, four hooks call a logging function that was never defined, behind an error suppression, so three of them have never appeared in the hook audit. The audit lists hooks by the records it finds, so their absence read as nothing to report.
+- **Removing a capability worked where wording had not.** Of the previous cycle's recurring gap classes, the one whose capability was removed by a setting and a guard fell from eleven instances to five, and the one attempt after the guard went live was blocked. The two classes answered only with written rules grew.
+- **The enforcement series reads 17 built, 17 armed,** the same seventeen members as the previous cycle by member comparison; the arm that warned until 2026-10-02 is now armed.
+- **Backlog intake outran closures again:** sixty-four opened against thirty-two closed. The defect ledger fell from 120 to 118 open rows and kept aging: the over-thirty-days bucket rose from 66 to 79.
 
 ### v3.14 — 2026-09-27 (an instrument deleted the evidence of the thing it measured)
 

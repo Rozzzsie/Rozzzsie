@@ -1,0 +1,445 @@
+retro_id: '2026-10-03-p26'
+retro_date: '2026-10-03'
+prior_retro: '2026-09-27-p25'
+schema_version: '1.1'
+window_start: '2026-09-27'
+window_end: '2026-10-03'
+trigger_source: operator-requested-one-day-early-interactive-with-first-monthly-housecleaning
+interactive_mode: true
+
+meta_finding: >-
+  Two of this cycle's sharpest findings were about records that never existed, and nothing
+  reports a record that was never written. The public dashboard's learning-agent count placed
+  each run by the date its transcript file was last written, in UTC, so every retro's own run
+  was counted a week late, and last cycle published zero for a week in which it had run. The
+  operator caught that by knowing the run had happened. Separately, four hooks call a logging
+  function that was never defined, and an error suppression on the call hid it, so three of
+  them have never appeared in the hook audit at all. The audit lists hooks by the records it
+  finds, so their absence read as nothing to report. The recurring gap classes from last cycle
+  grew, except one: the habit whose capability was removed by a setting fell from eleven
+  instances to five, and the one attempt after the guard went live was blocked. Removing a
+  capability worked where adding wording had not.
+
+findings:
+  - id: p26-1
+    title: The learning-agent count placed each run by its transcript file's UTC date, so every retro's own run was counted a week late
+    category: instrument-validity
+    evidence_count: 2
+    source_catchment: the operator's question about last cycle's zero, traced to the tally script's window test
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-10-11'
+    target_surface: the sidecar metrics tally's window test
+    detail_ref: >-
+      The tally decides whether a session belongs to the week by the date its transcript file was
+      last written, in UTC, not by when each call happened. The retro runs in the operator's
+      evening, which is already the next day in UTC. Last cycle's window ended the day before
+      the retro ran, so its own learning-agent run fell outside and the dashboard published
+      zero. This cycle's figure of 1 is last cycle's run. Tonight's run will be counted next
+      cycle. The same test places every agent in the dispatch distribution, not only this one.
+      The operator chose to publish tonight's figure with this note and fix the script in a
+      later build session, rather than change the counting rule mid-ritual. Caught by the
+      operator, who knew the run had happened.
+
+  - id: p26-2
+    title: Four hooks call a logging function that was never defined, so three of them have never appeared in the hook audit
+    category: instrument-validity
+    evidence_count: 4
+    source_catchment: reading a hook's source while checking a helper's by-design verdict on its low fire rate
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-10-11'
+    target_surface: the shell logging library and its four callers
+    detail_ref: >-
+      Four shell hooks start with a call that should log each run. The function they call does
+      not exist in the shared library, and never has (the library's history contains no
+      definition). The call's error output is discarded and its failure ignored, so nothing
+      ever reported it. Three of the four hooks have no record at all in a log that starts in
+      June. The fire-rate audit lists hooks by the records it finds, so those three were never
+      in it, and their absence read as nothing to report. The helper that audited hook health
+      did not see this, because it reasoned from the records that exist. It is an instance of a
+      rule promoted earlier in this same retro: an arm that fails open must leave a record
+      saying so. Filed for a build session.
+
+  - id: p26-3
+    title: The stop gate died mid-run 72 times in four days and not once since its timeout was raised, and the harness's own records were the witness
+    category: reliability
+    evidence_count: 72
+    source_catchment: the hook log, recounted independently, plus the harness's own turn-end records
+    recommendation: watch
+    status: partial-executed
+    execution_target_week: '2026-10-11'
+    target_surface: the stop gate and its harness timeout
+    detail_ref: >-
+      Seventy-two deaths between 09-29 and 10-02, all one reason class, and none in the 272 runs
+      since the timeout was raised from 10 to 60 seconds. The harness's turn-end records show
+      81 of 164 sampled runs since the raise took 10 seconds or more, the longest 19.3, so the
+      raise is what prevents the deaths. Runs fall into two groups, about 2 seconds and 10 to 19
+      seconds, and the cause of the slow group is not established. The gate's own death records
+      come from its exit handler, so they can only cover deaths it survives long enough to log;
+      the harness records are the independent witness. The open item stays open until the slow
+      group is explained.
+
+  - id: p26-4
+    title: Removing a capability worked where wording had not — stray directory changes fell from eleven to five, and the one after the guard was blocked
+    category: class-recurrence
+    evidence_count: 5
+    source_catchment: the window's learning entries, grouped by judgement and counted from their headings
+    recommendation: watch
+    status: executed
+    execution_target_week: '2026-10-03'
+    target_surface: the tracked project settings and the directory-change guard
+    detail_ref: >-
+      Last cycle shipped a setting that resets the shell's directory after every call, and a
+      guard went live mid-window. Instances fell from eleven to five, and the only one after the
+      guard went live was refused before it ran. One more occurred during this retro and was
+      also refused. The drop is not a controlled measurement: the two cycles differ in exposure
+      and in what got logged, so the cause is inferred. It is the only one of last cycle's five
+      classes that fell.
+
+  - id: p26-5
+    title: The two largest recurring gap classes grew again, and both already have written rules that held on paper
+    category: class-recurrence
+    evidence_count: 30
+    source_catchment: the window's learning entries, grouped by judgement and counted from their headings
+    recommendation: build
+    status: carried-open
+    execution_target_week: '2026-10-11'
+    target_surface: review prompts and mechanisms at the point of the act
+    detail_ref: >-
+      Seventeen entries describe a check that shared the model of the thing it checked, up from
+      six, and sixteen describe a claim written from memory or a summary instead of the source,
+      up from five. Three entries sit in both, so the two classes cover 30 distinct entries. The
+      larger counts partly reflect a wider grouping this cycle, so the growth is inferred, not
+      measured. Both rules are written and cited by the entries themselves; they fail at the
+      moment of building the check, which is when they are least likely to be recalled. The
+      response stays mechanisms, not more wording.
+
+  - id: p26-6
+    title: A mirrored roster drifted for the third time, and a patch to a third-party prompt vanished in an update with nothing watching
+    category: convergence-gap
+    evidence_count: 2
+    source_catchment: retro-candidate triage, each candidate checked against its artifact
+    recommendation: fix
+    status: partial-executed
+    execution_target_week: '2026-10-11'
+    target_surface: the roles-map mirror and the plugin patch register
+    detail_ref: >-
+      A short copy of the agent roster kept for discoverability had missed a member added two
+      versions ago, its third drift. It was synced to the canonical table, and a drift check
+      that was approved in May and never built is now a backlog row. Separately, a one-line
+      patch to a third-party plugin's prompt was gone, lost at some update with no warning. It
+      was reapplied, with the text extracted by script from its register rather than retyped.
+      Nothing watches for the next loss; the register is still the only guard, and that is
+      recorded where the register lives.
+
+  - id: p26-7
+    title: The retro-candidate list converged for the third cycle running, from 49 live candidates to 30
+    category: triage-convergence
+    evidence_count: 19
+    source_catchment: retro-candidate triage, every candidate ruled with a measured rate
+    recommendation: reconcile
+    status: executed
+    execution_target_week: '2026-10-03'
+    target_surface: the retro-candidate file and its history file
+    detail_ref: >-
+      Every live candidate was ruled with a recurrence rate and the matcher that produced it.
+      After the operator's rulings, 19 closed and moved verbatim to the history file: 11 were
+      promoted or routed to a backlog row, 8 closed as spent. Two of the promotions landed
+      inside private workspaces and are counted here only. The 30 that stay are all holds, two
+      of them narrowed: one keeps a single unpromoted rule, and one stays parked by the
+      operator pending a design session. The move was checked line for line: every line of
+      every relocated candidate arrived in the history file.
+
+  - id: p26-8
+    title: Every learning entry in the window now names its catcher, and the bucket for defects nothing caught read zero for the first time
+    category: measurement-gap
+    evidence_count: 127
+    source_catchment: the capture-format caught-by field, read by the mandated tally
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-10-11'
+    target_surface: the detection-source distribution
+    detail_ref: >-
+      The new learning-entry write path's first full cycle: 127 of 127 entries in the window carry
+      a valid caught-by value. In September the bucket for defects that no party caught ran about
+      level with the gate bucket; this cycle it is zero. That could mean better catching, or
+      authors avoiding the value. It is not explained yet, and an unexplained improvement earns
+      the scrutiny a worsening gets for free. The coverage figure changed basis this cycle and
+      cannot be charted against the prior four.
+
+  - id: p26-9
+    title: External reviews timed out on their first run nine times, up from six, despite the reading-map brief
+    category: tooling-reliability
+    evidence_count: 9
+    source_catchment: session-log audit, cross-checked against saved review returns
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-10-11'
+    target_surface: the external-review brief format
+    detail_ref: >-
+      Nine first-run reviews hit the 540-second limit with no verdict; every one was re-run to a
+      verdict. One of the nine was never written to the session log and was found only in the
+      saved returns. Last cycle's reading-map brief did not stop the timeouts, and the brief
+      skeleton filed last cycle is not built. No reviewer was unavailable, and no security
+      signal fired.
+
+  - id: p26-10
+    title: The consultant was dispatched three times, the capture record saw one, and one decision left no receipt
+    category: measurement-gap
+    evidence_count: 3
+    source_catchment: consultant health audit, two instruments compared
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-10-11'
+    target_surface: the dispatch capture record and the receipt convention
+    detail_ref: >-
+      Same shape as last cycle, carried. The capture record sees only one kind of spawn, so it
+      under-counts, and one of the three dispatches, a track-ordering consult, has no receipt, so
+      the audit can see the dispatch and not the decision. No dispatch was dropped and none
+      ended without a pick. The efficacy metrics remain receipt-bound and are not published as
+      zero.
+
+  - id: p26-11
+    title: The post-compaction gate's one allowed denial is spent once per session, not once per compaction
+    category: design-gap
+    evidence_count: 1
+    source_catchment: a learning-agent proposal, checked against the gate's source before it was put to the operator
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-10-11'
+    target_surface: the post-compaction checkpoint gate
+    detail_ref: >-
+      The gate allows one denial after a compaction and then stands down. Its counter filters by
+      session only, so a second compaction in the same session gets no enforcement. The stated
+      reason for the cap is that repeat denials after the same compaction add nothing, which
+      does not cover a second compaction. This retro's own session had two compactions and one
+      denial. The operator approved counting the cap per compaction. It is a backlog row, not
+      yet built.
+
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 3
+  notes: >-
+    The learning agent authored three proposals from the window's catchment. One was checked
+    against source code before it reached the operator, and the check turned a suspected bug
+    into a design question. The operator approved all three as recommended: two in full and
+    one as a backlog row rather than a build this week. None was executed in session; all
+    three are backlog rows, so they surface in the readiness view rather than as queued
+    statuses.
+
+hook_health:
+  silent_hooks_observed: 4
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 2
+  enforcement_flips_verified_this_cycle: 0
+  notes: >-
+    Measured over a rolling seven days. Four hooks flagged silent, each read against its own
+    records. One flag comes from timeouts in a single session a week ago, with none since. One
+    is a ruled suppression the auditor does not classify, the defect last cycle named, now a
+    backlog row. One is the subagent-return guard, deliberately kept red, whose next diagnosis
+    needs a different instrument: a helper measured zero matches between its records and any
+    subagent transcript. One is partly explained by finding 2. The audit's absent flag read
+    zero, but three hooks are invisible to it because they have never written a record, which
+    is the second instrument defect. The stop gate errored on 72 of 611 runs, all before its
+    timeout raise; see finding 3.
+
+discipline_metrics:
+  ritual_steps_defined: 16
+  ritual_steps_completed: 16
+  monthly_subritual_due: true
+  monthly_subritual_completed: true
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 3
+  response_marker_missed_turns: 7
+  response_marker_graded_turns: 405
+  response_marker_blocking_fires: 145
+  response_marker_miss_rate: 0.02
+  response_marker_measured_at: '2026-10-03'
+  response_marker_note: >-
+    Per-turn form from the mandated tally over the retro window. The rate is 7 of 405, which
+    rounds to 0.02 against last cycle's 0.01 on the same method. The raw fire ratio, 145 of
+    8277, is not comparable to the per-turn form. The graded share of turns rose from 42.6 to
+    56.5 percent on a rolling seven-day audit. Every missed turn is named in its own session's
+    trace, and the counts match the hook log.
+  intent_confirmation_skip_rate: 0.0
+  notes: >-
+    The steps-completed figure is written only after the retro artifact exists and the private
+    close has committed. The monthly housecleaning ran first, for the first time inside the
+    retro: one completed row moved out of the state file's head and into its history, verbatim.
+    All three sampled quality traces pass. Two of them do not mention that the post-compaction
+    gate denied one call in their session; that is a disclosure gap, not a false count, and
+    later traces do mention it.
+
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 167
+  median_first_tool_latency_sec: 31
+  p95_first_tool_latency_sec: 269
+  max_first_tool_latency_sec: 2371
+  threshold_sec: 120
+  threshold_violations: 16
+  notes: >-
+    Sessions nearly doubled, from 85 to 167. The median fell from 44 to 31 seconds and p95 from
+    452 to 269, with 16 violations against 19. The maximum rose to 2371 seconds. Last cycle's
+    explanation still applies: a startup briefing delivered after a first round of probes reads
+    as a slow first tool call, and the operator accepts that ordering. Not a health signal on
+    its own.
+
+fam_dispatch_distribution:
+  learning_agent: 1
+  adversarial_reviewer: 25
+  consultant: 3
+  external_validator: 59
+  notes: >-
+    Scope is unchanged and deliberately narrow: governance session root only, counting
+    in-session dispatch calls. The learning agent's 1 is last cycle's run, not this cycle's;
+    see finding 1. This cycle's run will be counted next cycle, and the window test is filed
+    for a fix. The same placement rule applies to the other three roles. Adversarial review
+    rose from 6 to 25, the consultant from 1 to 3, and the external validator from 51 to 59,
+    all on one route, with first-run timeouts counted as launch attempts. Parallel read-only
+    helpers numbered 18 and are not in these four roles. Do not re-key the provenance trend card
+    on this block.
+
+defect_ledger:
+  open_total: 118
+  live: 112
+  parked: 6
+  age_under_7d: 7
+  age_7_to_29d: 32
+  age_30d_plus: 79
+  age_undated: 0
+  median_age_days: 37
+  max_age_days: 70
+  measured_at: '2026-10-03'
+  measured_from: the operational state file, rendered through its own consumer functions
+  notes: >-
+    Owner split: 85 agent-side, 27 need an operator decision, 6 parked. Open rows fell from 120
+    to 118, the second small fall. The ledger is still ageing in place: the thirty-day bucket
+    grew from 66 to 79 and the median age from 31.5 to 37 days, while seven rows opened in the
+    last week. Measured before this retrospective closes anything of its own.
+
+improvement_backlog:
+  total: 304
+  open: 125
+  done: 166
+  parked: 13
+  open_ready: 80
+  open_decision_gated: 40
+  open_upstream_blocked: 3
+  notes: >-
+    Measured through the backlog consumer's own readiness predicate. The three published open
+    sub-counts sum to 123; the other 2 open items wait on a date, a class this block has no key
+    for. 64 items entered since the window opened and 32 closed, so intake outran closures two
+    to one, reversing last cycle. Nine of the intake were filed by this retrospective. The
+    headline total is cumulative and includes finished items.
+
+enforcement_coverage:
+  arms_built: 17
+  arms_armed: 17
+  arms_with_written_exit_criteria: 3
+  arms_with_falsifiable_exit: 2
+  arms_declared_permanent: 1
+  checks_enumerated: 6
+  checks_with_written_exit_criteria: 3
+  checks_unit: stop-gate structural validations
+  checks_unit_note: >-
+    Not re-derived this cycle. These check figures are carried from the prior cycle and
+    labelled as carried.
+  arms_unit: commit-boundary validator arms
+  arms_unit_note: >-
+    Re-derived by member, not by count: distinct validator scripts named on non-comment lines
+    of the commit-boundary hook. Seventeen at today's state, and the same seventeen members as
+    of the prior cycle's date. The learning-entry check that last cycle counted as built but not
+    armed began blocking on 2026-10-02 under its own dated arming, so armed rises from 16 to 17.
+    The three exit-criteria figures are carried.
+  measured_at: '2026-10-03'
+  measured_from: the commit-boundary hook at today's state and as of 2026-09-27, for the built and armed figures only
+  notes: >-
+    No arm was added or retired. One arm moved from built to armed on a dated schedule, which is
+    a written way in, not a way out, so the exit-criteria share is unchanged at three of
+    seventeen.
+
+instrument_liveness:
+  silent_failures_observed: 7
+  caught_by_control: 1
+  caught_by_review: 4
+  caught_by_contradiction: 2
+  notes: >-
+    Hand-classified; the three arms sum to the total. The control catch: a search that never
+    ran, because the shell expanded its file pattern first, was re-run with the pattern quoted
+    and a known file as control. The four review catches:
+    - a helper checked a prompt patch at its artifact and found it gone;
+    - a helper found the roster mirror short a member;
+    - a helper found that a recorded baseline of zero sites for a code pattern was wrong, with
+      three sites present;
+    - a pass result read from a piped command was the pipe's exit code, not the search's, and
+      was re-run without the pipe.
+    The two contradiction catches:
+    - the operator knew the learning agent had run while the dashboard said zero (finding 1);
+    - a hook's source writes a record on every run while the log holds none for it (finding 2).
+
+detection_provenance:
+  caught_by_control: 0
+  caught_by_operator: 1
+  caught_by_accident: 0
+  instrumented_from: p18
+  status: measured
+  relation_to_detection_source_distribution: >-
+    Same question, different population; read the two together or neither. This block grades
+    the findings in this retro in three buckets. The distribution block grades learning entries
+    across the cycle in its own buckets. The vocabularies are not yet mapped, the denominators
+    differ by construction, and the two will not sum. This one is the long-running series and
+    stays the trend card.
+  notes: >-
+    One of eleven findings was caught by the operator: finding 1, the first non-zero operator arm
+    in four cycles. None was caught by a control, and none by accident. Finding 2 came from a
+    contradiction between a hook's source and its records, found while checking a helper's
+    verdict; the other nine came from audits, triage and the learning agent, none of which this
+    three-bucket block grades.
+
+detection_source_distribution:
+  source: "the capture-format caught-by field, read from the learnings corpus"
+  learnings_files_scanned: 19
+  entries_in_window: 127
+  entries_since_ship: 127
+  entries_pre_design: 0
+  entries_annotated: 127
+  entries_since_ship_annotated: 127
+  annotation_coverage: 1.0
+  annotation_coverage_basis: entries_since_ship
+  status: measured-fifth-cycle
+  gate: 16
+  deputy: 24
+  external: 10
+  self: 61
+  rosie: 10
+  contradiction: 6
+  nothing: 0
+  by_name:
+    deputy:breakline: 10
+    deputy:general-purpose: 1
+    deputy:kimi: 10
+    deputy:luma: 1
+    deputy:peer-session-7aeb7cb7: 1
+    deputy:peer-session-b6e0168f: 1
+    external:weekly-digest: 10
+    gate:bash-cd-guard: 1
+    gate:checkpoint-bar-pretool-gate: 4
+    gate:kimi-run: 1
+    gate:mutation-control: 1
+    gate:mutation-pass: 1
+    gate:new-row-novelty-grep: 1
+    gate:p10-retro: 3
+    gate:run-hook-suites: 1
+    gate:test-sumi-degraded-banner: 1
+    gate:test_rate_limit.py: 1
+    gate:test_state_file_write_gate_deputy_carry_forward.py: 1
+  notes: >-
+    Series break: from this cycle the coverage figure is since-ship annotated entries over
+    since-ship entries, so do not chart it against the prior four. Every entry in the window
+    carries a valid value. The counts include five entries written by this retro, three of
+    them caught by the retro itself. The nothing bucket is zero for the first time; in
+    September it ran about level with the gate bucket, and the change is not explained (see
+    finding 8). An unannotated entry means not written, never caught by nothing. Do not re-key
+    the provenance trend card on this block.
