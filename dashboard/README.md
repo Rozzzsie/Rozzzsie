@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.15** (2026-10-03) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.16** (2026-10-11) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,15 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.16 — 2026-10-11 (records that were confidently wrong about themselves)
+
+- **Re-render against the new sidecar.** `retros/2026-10-03-p26.yaml` → `retros/2026-10-11-p27.yaml` (window 2026-10-04 → 2026-10-11; 12 findings; the monthly-housecleaning sub-ritual was not due). `default_sidecar` was retargeted and checked by the argument-less run. The schema check returns clean.
+- **The ritual tally stays a measurement apart from this push.** `ritual_steps_completed` was null at authoring. 16 of 16 was written only after the canonical retro artifact existed and the private close had committed, and a failed push reverts it to null.
+- **Meta-finding: the records answered, and they were wrong.** A proposal ledger kept eight items marked pending for four to five months, and one of them had already been superseded in its own lifecycle log. The hook audit read two healthy hooks as failing, because its list of result words is kept by hand. A rule against unverified "this is new" claims lived only in a reference file, and five such claims were made in the week. A push-safety rule fired only after a block, while the pushes that published another session's work followed no block. In each case the rule or record was attached to a place or trigger the act never passed through, and each was moved to where the act happens.
+- **A release condition keyed on this retro was in no step's brief.** A parked backlog row said to close if two consecutive retros found nothing. Its second check ran only because the row was read before closing: 24 candidates, none wrong, and the operator ruled it closed. A gap in the retro's triage step is filed so it asks which rows name the retro as their release condition.
+- **The enforcement series reads 17 built, 17 armed,** the same members as the previous cycle.
+- **Backlog intake outran closures again,** fourteen opened against six closed, seven of the fourteen filed by this retro. The defect ledger fell from 118 to 115 open rows and kept aging: the over-thirty-days bucket rose from 79 to 97.
 
 ### v3.15 — 2026-10-03 (two records that never existed)
 
