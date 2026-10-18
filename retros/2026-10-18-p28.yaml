@@ -1,0 +1,397 @@
+retro_id: '2026-10-18-p28'
+retro_date: '2026-10-18'
+prior_retro: '2026-10-11-p27'
+schema_version: '1.1'
+window_start: '2026-10-11'
+window_end: '2026-10-18'
+trigger_source: session-start-overdue-flag-interactive
+interactive_mode: true
+
+meta_finding: >-
+  This cycle's sharpest findings were numbers and pointers that were faithful to their input and
+  wrong about what the input was. The metrics tally counted 132 external-validator launches, and
+  every one was the always-loaded rules file quoting the command it says cannot be launched. A
+  lesson deferred five weeks ago said it was filed on a backlog row, and that row had closed
+  without it, so it sat on no ledger. Four quality traces counted hook fires or responses as
+  turns. A guard on sub-agent returns logged thousands of agents that left no transcript, and
+  what spawns them is still unattributed. In each case the count or pointer resolved and its
+  arithmetic was right; it had been keyed on a string, an id or a record kind rather than on the
+  thing it was meant to stand for. The corrected figure is published here, and each fix is on a
+  ledger.
+
+findings:
+  - id: p28-1
+    title: The metrics tally counted the always-loaded rules file as 132 external-validator launches
+    category: instrument-validity
+    evidence_count: 132
+    source_catchment: a contradiction between the tally's output and the rule that this launch route cannot be used by the agent, then a census of the contributing records by kind
+    recommendation: fix
+    status: partial-executed
+    execution_target_week: '2026-10-25'
+    target_surface: the sidecar metrics tally's typed-command arm
+    detail_ref: >-
+      The tally matches any user-role text containing the command string and skips only
+      compaction summaries and meta records. The record that injects the rules file at session
+      start is neither, and the rules quote the command, so every session added about three
+      launches. All 132 contributing records were that one kind. Real launches on that route this
+      window were zero, which fits that validator being at its usage cap. This sidecar publishes
+      the corrected figure, 17, by hand, with the raw figure in the block's note. It is the third
+      time this script has counted a mention as an invocation, and each earlier fix excluded only
+      the record kind that had been seen. The fix is a backlog row: key the count on a structure
+      only a real invocation leaves. Last cycle's published 38 may be inflated the same way; it
+      cannot be re-measured now, so it is unverified.
+
+  - id: p28-2
+    title: A commit flag that fences paths, not authors, swept other live sessions' lines into commits three times, and the lesson had been on no ledger for five weeks
+    category: class-recurrence
+    evidence_count: 4
+    source_catchment: a learning-agent proposal, checked against the window's learning entries and the backlog
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-10-18'
+    target_surface: the always-loaded governance file and the output checklist's commit section
+    detail_ref: >-
+      A commit restricted to named paths takes every change at those paths, including another
+      session's uncommitted lines in a file several sessions write by design. Three sessions hit
+      it this week. The same lesson was learned in September and recorded as owed; the backlog row
+      it pointed to closed without it. The rule now says to read the file's diff first and stage
+      only your own lines, or commit it whole and name whose lines rode along. The governance file
+      was close to its size warning line, so the addition shipped with a fold of three background
+      passages to the companion reference, in one commit.
+
+  - id: p28-3
+    title: Four hand-built mutation-test loops hit known traps, two of them missing from the checklist
+    category: convergence-gap
+    evidence_count: 4
+    source_catchment: a learning-agent proposal, both missing traps confirmed absent from the checklist section
+    recommendation: fix
+    status: partial-executed
+    execution_target_week: '2026-10-18'
+    target_surface: the output checklist's mutation-testing section and a backlog row for a shared runner
+    detail_ref: >-
+      Two traps were new: a raised-exception mismatch read as a crash rather than a kill, and an
+      interrupted run whose summary looked complete. A third trap was already in the checklist and
+      its author did not fetch it. On the operator's ruling, the two missing traps became checklist
+      riders this cycle, and a shared runner with every trap built into its first lines is a
+      backlog row, since it is critical logic that needs two cross-model reviews.
+
+  - id: p28-4
+    title: The commit-time timestamp check will admit future-dated entries after the clock change, and skips 162 entries that carry zone text inside the bracket
+    category: design-gap
+    evidence_count: 162
+    source_catchment: two deferred learning-agent items, re-measured across every change log
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-10-18'
+    target_surface: the learning-entry template and the always-loaded state-update rule
+    detail_ref: >-
+      When the machine clock falls back on 1 November, a stamp labelled with the summer zone will
+      pass up to an hour in the future. Separately, entries that put zone text before the closing
+      bracket are never graded: 162 of 1,640 timed lines across 20 change logs, up from 88 to 156
+      on the eight files first measured five days earlier. No rule prescribed that shape; it was
+      habit. On the operator's ruling both were fixed in doctrine rather than in the gate: the
+      template says to copy the zone from the session clock line, and the state-update rule says
+      zone text goes after the bracket. No gate changed, so no review was owed.
+
+  - id: p28-5
+    title: A guard on sub-agent returns logged thousands of agents that left no transcript, and what spawns them is unattributed
+    category: measurement-gap
+    evidence_count: 422
+    source_catchment: reading a parked item whose release date had passed, then measuring the guard's log against the transcript store
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-10-25'
+    target_surface: the sub-agent return guard and its open backlog row
+    detail_ref: >-
+      The parked reminder's release date was 26 days past and its condition was met, so it was
+      unparked. The guard logged 3,904 records. Every agent this retro dispatched by name matched
+      its transcript, but 3,552 of 3,792 ids have no transcript anywhere, and 422 records are
+      no-transcript errors. Nothing run could see what spawns those agents, and no agent-type
+      hooks are configured. The operator ruled to attribute the source first and decide on
+      suppression afterwards; the measurement is on the guard's row.
+
+  - id: p28-6
+    title: About ten unpropagated lessons became rules in their own workspaces in one approved batch, then their bodies were folded to history
+    category: convergence-gap
+    evidence_count: 11
+    source_catchment: the learning-file read across every routed file
+    recommendation: reconcile
+    status: executed
+    execution_target_week: '2026-10-18'
+    target_surface: five workspace rule files, two checklist riders, and seven history files
+    detail_ref: >-
+      The promotion batch edited more existing entries than the commit check allows without the
+      operator's approval line, so it was put to her and approved. Eleven receipts were written.
+      Fifteen promoted entries then moved byte-identical to their workspaces' history bands in a
+      separate commit, as last cycle's finding required, and four history files were created.
+      Two items were held: one is covered by a standing memory and goes to the learning agent with
+      the time-claims family, and one needs the operator's judgement.
+
+  - id: p28-7
+    title: Four traces over-claimed their checkpoint denominator, and the template's label still names the unit the operator ruled against
+    category: class-recurrence
+    evidence_count: 4
+    source_catchment: cross-reference of every in-window trace against the hook log
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-10-25'
+    target_surface: the quality-trace template
+    detail_ref: >-
+      Three traces counted responses or fires above the graded-turn count, and one recorded 13
+      hook fires as turns against about two graded turns. None under-reported a miss. The label
+      the stop gate parses says responses, while the ruled unit is the graded turn. One of three
+      sampled traces failed on this, below the escalation threshold. A backlog row adds a guidance
+      line beside the label without changing the gate's key.
+
+  - id: p28-8
+    title: The four rules recorded as not holding are the same four as last cycle
+    category: class-recurrence
+    evidence_count: 28
+    source_catchment: the instance-of tally over every learning file, with spelling variants merged
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-10-25'
+    target_surface: the always-loaded governance file's affected rules
+    detail_ref: >-
+      Post-compaction checkpoint placement 6, inherited owed items 9, absence claims 6, and counts
+      as measurements 7. The first already has a gate, so its instances were caught there rather
+      than slipping past. The other three are reasoning rules with no mechanical form. All four
+      are held. The tally splits one rule across two spellings, which is a defect in the tally.
+
+  - id: p28-9
+    title: Seven of 37 gradeable entries skipped the routing judgement, all in one private workspace, and seeded lessons are rarely acted on
+    category: measurement-gap
+    evidence_count: 7
+    source_catchment: the routing census over the window
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-10-25'
+    target_surface: the cross-pollination protocol's routing line
+    detail_ref: >-
+      Cumulatively 31 seeded lessons have arrived in other workspaces; two were promoted there and
+      none was cited. One routing judgement ruled a workspace out because it did no mutation
+      testing, and that workspace ran mutation tests two days later.
+
+  - id: p28-10
+    title: The consultant's dispatch capture has recorded nothing since late September, so its health metrics stay unmeasured
+    category: measurement-gap
+    evidence_count: 0
+    source_catchment: consultant health audit, capture files and session-log receipts compared
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-10-25'
+    target_surface: the consultant receipt convention
+    detail_ref: >-
+      No consult ran in this window, so all six health metrics have a zero denominator, which is
+      unmeasured rather than zero. The capture also missed last cycle's two consults. Last cycle's
+      approved backlog row covers the receipt; it is not built.
+
+  - id: p28-11
+    title: The share of checkpoint turns the hook graded fell ten points while the per-turn pass rate held
+    category: measurement-gap
+    evidence_count: 1
+    source_catchment: the hook fire-rate audit, compared with the two prior cycles
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-10-25'
+    target_surface: the checkpoint-bar hook and its open grading-coverage row
+    detail_ref: >-
+      Graded share 49.4 percent against 59.5 last cycle and 56.5 the cycle before, while about 98
+      percent of graded turns passed. The audit cannot flag a fall in coverage on its own. The
+      denominator's definition was not re-checked this cycle.
+
+proposal_backlog:
+  authored_this_cycle: 2
+  deferred_this_cycle: 8
+  notes: >-
+    The learning agent found ten patterns above its threshold, wrote two full proposals and
+    deferred eight. Both proposals were checked against their cited sources before they reached
+    the operator. The first was accepted as recommended; the second was accepted in modified form,
+    doctrine now and the runner as a backlog row. Two deferred items needed the operator and were
+    ruled at the retro presentation (findings 4 and 9's time-claims family).
+
+hook_health:
+  silent_hooks_observed: 2
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 1
+  enforcement_flips_verified_this_cycle: 0
+  notes: >-
+    Measured over a rolling seven days. Two hooks flagged silent. One is the identity hook, healthy,
+    whose two result words the auditor still does not recognise; that is last cycle's defect,
+    carried on its backlog row. The other is the sub-agent return guard (finding 5). The per-retro
+    promotion gate had been skipped last cycle and was run this cycle, so it is not absent. Of the
+    two enforcement flips due for review, the send-retraction gate auto-approved 61 calls to 24 tools
+    it has no category for, as designed; 16 of those calls were browser-acting tools, up from one
+    last cycle, which is noted for the operator. The checkpoint ack gate did not flip, for last
+    cycle's reason. The flip reviews ran after the retro presentation, not before it.
+
+discipline_metrics:
+  ritual_steps_defined: 16
+  ritual_steps_completed: 16
+  monthly_subritual_due: false
+  monthly_subritual_completed: false
+  quality_gate_traces_sampled: 3
+  quality_gate_traces_passing: 2
+  response_marker_missed_turns: 5
+  response_marker_graded_turns: 320
+  response_marker_blocking_fires: 52
+  response_marker_miss_rate: 0.02
+  response_marker_measured_at: '2026-10-18'
+  response_marker_note: >-
+    Per-turn form from the mandated tally over the retro window: 5 of 320, which rounds to 0.02,
+    the same as the last two cycles on the same method. The raw fire ratio, 52 of 4960, is not
+    comparable to the per-turn form. On a rolling seven-day audit the graded share of turns fell
+    from 59.5 to 49.4 percent (finding 11). The window includes the retro day, so the counts were
+    taken while it was still running.
+  intent_confirmation_skip_rate: 0.0
+  notes: >-
+    The steps-completed figure is written only after the retro artifact exists and the private
+    close has committed. One of three sampled quality traces failed, on its checkpoint section
+    (finding 7). The monthly sub-ritual ran at the first retro of the month.
+
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 134
+  median_first_tool_latency_sec: 40.5
+  p95_first_tool_latency_sec: 664
+  max_first_tool_latency_sec: 6295
+  threshold_sec: 120
+  threshold_violations: 26
+  notes: >-
+    Sessions rose from 133 to 134. The median rose from 36 to 40.5 seconds and p95 from 516 to
+    664, with 26 violations against 20. The maximum is unchanged at 6295 seconds, a session left
+    open before its first call. A startup briefing delivered after a first round of reads still
+    registers as a slow first tool call, so this is not a health signal on its own.
+
+fam_dispatch_distribution:
+  learning_agent: 2
+  adversarial_reviewer: 3
+  consultant: 0
+  external_validator: 17
+  notes: >-
+    Scope is unchanged and deliberately narrow: governance session root only, counting in-session
+    dispatch calls. The external-validator figure is corrected by hand. The mandated tally reported
+    149, of which 132 were mentions of a launch command inside the injected rules file and zero
+    were launches (finding 1); the remaining 17 are all one validator. The learning agent's 2 is
+    still not attributed between cycles. Parallel read-only helpers numbered 42 and are not in these
+    four roles. Do not re-key the provenance trend card on this block.
+
+defect_ledger:
+  open_total: 113
+  live: 109
+  parked: 4
+  age_under_7d: 0
+  age_7_to_29d: 13
+  age_30d_plus: 100
+  age_undated: 0
+  median_age_days: 53
+  max_age_days: 85
+  measured_at: '2026-10-18'
+  measured_from: the operational state file, rendered through its own consumer functions
+  notes: >-
+    Owner split: 83 agent-side, 26 need an operator decision, 4 parked. Open rows fell from 115 to
+    113; one of the two was a parked row this retro closed when its release date had passed
+    (finding 5). Measured after this retrospective's own closes, as last cycle. No row is dated in
+    the last seven days. The thirty-day bucket grew from 97 to 100 and the median age from 46 to 53
+    days. Age is read from the date in each row's status tag.
+
+improvement_backlog:
+  total: 325
+  open: 136
+  done: 177
+  parked: 12
+  open_ready: 89
+  open_decision_gated: 43
+  open_upstream_blocked: 3
+  notes: >-
+    Measured through the backlog consumer's own readiness predicate. The three published open
+    sub-counts sum to 135; the other one is overdue on a date gate, a class this block has no key
+    for. By each item's own opened and closed dates, 13 items opened in the window and 6 closed;
+    the 13 are consecutive identifiers, which agrees. Six of the intake were filed by this
+    retrospective, and three of the closes are items it shipped. The headline total is cumulative.
+
+enforcement_coverage:
+  arms_built: 17
+  arms_armed: 17
+  arms_with_written_exit_criteria: 3
+  arms_with_falsifiable_exit: 2
+  arms_declared_permanent: 1
+  checks_enumerated: 6
+  checks_with_written_exit_criteria: 3
+  checks_unit: stop-gate structural validations
+  checks_unit_note: >-
+    Not re-derived this cycle. These check figures are carried from the prior cycle and labelled
+    as carried.
+  arms_unit: commit-boundary validator arms
+  arms_unit_note: >-
+    The commit-boundary hook has no commit since 3 October, before the prior cycle, so its members
+    are the prior cycle's seventeen; a count of distinct validator scripts named on its non-comment
+    lines also reads seventeen. The three exit-criteria figures are carried.
+  measured_at: '2026-10-18'
+  measured_from: the commit-boundary hook's commit history and its non-comment lines, for the built and armed figures only
+  notes: >-
+    No arm was added or retired, and none changed state.
+
+instrument_liveness:
+  silent_failures_observed: 2
+  caught_by_control: 0
+  caught_by_review: 1
+  caught_by_contradiction: 1
+  notes: >-
+    Hand-classified; the arms sum to the total. The contradiction catch: the tally's validator
+    count disagreed with the rule that the route cannot be used by the agent (finding 1). The
+    review catch: the over-claimed trace denominators, found by cross-referencing traces against
+    the hook log (finding 7).
+
+detection_provenance:
+  caught_by_control: 0
+  caught_by_operator: 0
+  caught_by_accident: 0
+  instrumented_from: p18
+  status: measured
+  relation_to_detection_source_distribution: >-
+    Same question, different population; read the two together or neither. This block grades
+    the findings in this retro in three buckets. The distribution block grades learning entries
+    across the cycle in its own buckets. The vocabularies are not yet mapped, the denominators
+    differ by construction, and the two will not sum. This one is the long-running series and
+    stays the trend card.
+  notes: >-
+    None of the eleven findings was caught by the operator, by a control or by accident. They came
+    from the learning agent, audits, a census, a parked row's release date and a contradiction,
+    none of which this three-bucket block grades.
+
+detection_source_distribution:
+  source: "the capture-format caught-by field, read from the learnings corpus"
+  learnings_files_scanned: 20
+  entries_in_window: 62
+  entries_since_ship: 62
+  entries_pre_design: 0
+  entries_annotated: 62
+  entries_since_ship_annotated: 62
+  annotation_coverage: 1.0
+  annotation_coverage_basis: entries_since_ship
+  status: measured-seventh-cycle
+  gate: 5
+  deputy: 5
+  external: 12
+  self: 27
+  rosie: 10
+  contradiction: 3
+  nothing: 0
+  by_name:
+    deputy:chart-read-deputies: 1
+    deputy:general-purpose: 1
+    deputy:kimi: 3
+    external:internal-team-chat: 1
+    external:weekly-digest: 11
+    gate:output-sign-off: 1
+    gate:mutants: 1
+    gate:p4-back-edge: 1
+    gate:validate-entry-stamps: 1
+    gate:validate-learnings-entry: 1
+  notes: >-
+    Coverage is on the since-ship basis, as last cycle. Every entry in the window carries a valid
+    value. Two named sources are published under generic labels: a workplace chat and a sign-off
+    step in a private workspace. The tally ran before this retro wrote its own entry, so that entry
+    is not counted. The nothing bucket is zero for the third cycle. An unannotated entry means not
+    written, never caught by nothing. Do not re-key the provenance trend card on this block.

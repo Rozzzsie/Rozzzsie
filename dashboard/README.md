@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.16** (2026-10-11) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.17** (2026-10-18) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,15 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.17 — 2026-10-18 (counts that were right about their input and wrong about what it was)
+
+- **Re-render against the new sidecar.** `retros/2026-10-11-p27.yaml` → `retros/2026-10-18-p28.yaml` (window 2026-10-11 → 2026-10-18; 11 findings; the monthly-housecleaning sub-ritual was not due). `default_sidecar` was retargeted and checked by the argument-less run. The schema check returns clean, and a copy with two required fields removed still raises.
+- **The ritual tally stays a measurement apart from this push.** `ritual_steps_completed` was null at authoring. 16 of 16 was written only after the canonical retro artifact existed and the private close had committed, and a failed push reverts it to null.
+- **One published figure is corrected by hand, and says so.** The external-validator count is 17, not the tally's 149: 132 of the tally's matches were the always-loaded rules file quoting a launch command, and zero were launches. The block's note carries both figures. Last cycle's 38 may be inflated the same way and is not re-measurable, so it stands with that caveat rather than being rewritten.
+- **Meta-finding: faithful to the input, wrong about the input.** Besides the tally, a deferred lesson pointed at a closed backlog row and sat on no ledger for five weeks, four quality traces counted fires or responses as turns, and a sub-agent guard logged thousands of agents that left no transcript. Each fix is on a ledger.
+- **The enforcement series reads 17 built, 17 armed,** the same members as the previous cycle; the commit-boundary hook has not changed since 3 October.
+- **Backlog intake outran closures again,** thirteen opened against six closed, six of the thirteen filed by this retro. The defect ledger fell from 115 to 113 open rows and kept aging: the over-thirty-days bucket rose from 97 to 100 and the median age from 46 to 53 days.
 
 ### v3.16 — 2026-10-11 (records that were confidently wrong about themselves)
 
