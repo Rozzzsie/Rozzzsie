@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.17"
+DASHBOARD_VERSION = "3.18"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -2046,7 +2046,7 @@ def main(argv: list[str]) -> int:
     # Retargeted every cycle at P10 step 9(c). Verify by running this file
     # with NO arguments and reading the header: found stale at p17, where
     # the documented bare command rendered the PREVIOUS cycle silently.
-    default_sidecar = here.parent / "retros" / "2026-10-18-p28.yaml"
+    default_sidecar = here.parent / "retros" / "2026-10-25-p29.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar

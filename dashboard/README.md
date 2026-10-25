@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.17** (2026-10-18) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.18** (2026-10-25) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,13 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.18 — 2026-10-25 (a faithful form, read as something it does not mean)
+
+- **Re-render against the new sidecar.** `retros/2026-10-18-p28.yaml` → `retros/2026-10-25-p29.yaml` (window 2026-10-18 → 2026-10-25; 10 findings; the monthly-housecleaning sub-ritual was not due). `default_sidecar` was retargeted and checked by the argument-less run. The schema check returns clean, and a copy with required fields removed still raises.
+- **The ritual tally stays a measurement apart from this push.** `ritual_steps_completed` was null at authoring. 16 of 16 was written only after the canonical retro artifact existed and the private close had committed, and a failed push reverts it to null.
+- **The external-validator figure is corrected by hand again, and says so.** The tally matched 317; 306 of those were mentions of a launch command and none were launches. The block publishes 11 and its note carries both figures. The tally's matcher is on a ledger.
+- **Meta-finding: a faithful form, read wrong.** An intent-confirmation template showed a skip line the stop gate blocks, so four sessions followed the template and could not close. A team-set label was read as its meaning nine times. Insight cards record a run folder that is the same for every workspace. The template and two close rules were fixed this cycle; the gate half, the tally and the card field are on ledgers.
 
 ### v3.17 — 2026-10-18 (counts that were right about their input and wrong about what it was)
 
