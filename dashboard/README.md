@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.18** (2026-10-25) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.19** (2026-11-01) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,15 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.19 — 2026-11-01 (a number copied forward instead of derived)
+
+- **Re-render against the new sidecar.** `retros/2026-10-25-p29.yaml` → `retros/2026-11-01-p30.yaml` (window 2026-10-25 → 2026-11-01; 14 findings; the monthly-housecleaning sub-ritual was due and ran). `default_sidecar` was retargeted and checked by the argument-less run. The schema check returns clean, and a copy with a required field removed still raises.
+- **The ritual dial's denominator moves from 16 to 17.** The ritual has had seventeen numbered steps since a step was added in September, while the denominator came from a prose list of sixteen, so five cycles published sixteen of sixteen with that step never counted. This cycle counts the labels in the step list itself: 17 of 17, written only after the canonical retro artifact existed and the private close had committed, and a failed push reverts it to null. The prose list is on a ledger.
+- **The stop gate's check count is re-derived: 18, not 6.** The five prior sidecars carried six. It is now counted from the gate's own numbered check headers, eighteen including the sub-checks, and the unit field names that source. Exit conditions per check were not re-measured against the new count and are published as null, which scores like an absent component.
+- **Renderer fix: a counted check total with an unmeasured exit count no longer crashes the page.** The enforcement note read the check unit whenever a count existed, but the unit was only set when the exit count was also a number, so this cycle's honest null raised before any page rendered. The unit is now set with the count. A regression test reproduces the crash on the old code and passes on the new; a null-one-field sweep over all 28 published sidecars found no other case of this kind. A separate crash it surfaced, on a null dispatch-axis value that no published sidecar carries, is on a ledger.
+- **The external-validator figure is corrected by hand again, and says so.** The tally reported 319, of which 313 were mentions of a launch command. The block publishes 13, counted from review receipts, and its note carries both figures.
+- **Meta-finding: a published number copied forward instead of derived from the thing it counts.** The ritual denominator, the gate's check count, the validator tally and the hook audit's error vocabulary were each honest about their source and wrong about what they measured. The two counts are re-derived here; the producer fixes are on ledgers.
 
 ### v3.18 — 2026-10-25 (a faithful form, read as something it does not mean)
 

@@ -398,6 +398,29 @@ class TestEnforcementThirdComponent(unittest.TestCase):
         dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
         self.assertAlmostEqual(dial["value"], 1.0)
 
+    def test_counted_checks_with_an_unmeasured_exit_count_still_render(self):
+        """p30 shape: the checks were re-counted, the exit count was not measured.
+
+        The note's unit line was guarded on the count alone while the unit was
+        only bound when BOTH fields were integers, so this shape raised
+        UnboundLocalError and no page rendered. An unmeasured exit count must
+        score like an absent one, and the unit still describes the count.
+        """
+        absent = _sidecar()
+        del absent["enforcement_coverage"]["checks_enumerated"]
+        del absent["enforcement_coverage"]["checks_with_written_exit_criteria"]
+        expected = next(d for d in R.compute_health(absent)["dials"] if d["key"] == "enforcement")
+
+        sc = _sidecar()
+        ec = sc["enforcement_coverage"]
+        ec["checks_enumerated"] = 18
+        ec["checks_with_written_exit_criteria"] = None
+        ec["checks_unit"] = "stop-gate check headers"
+        dial = next(d for d in R.compute_health(sc)["dials"] if d["key"] == "enforcement")
+        self.assertAlmostEqual(dial["value"], expected["value"])
+        self.assertIn("Check unit: stop-gate check headers.", dial["note"])
+        self.assertNotIn("individual checks", dial["detail"])
+
 
 
 class TestInstrumentLivenessCanActuallyFail(unittest.TestCase):

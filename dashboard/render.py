@@ -43,7 +43,7 @@ except ImportError:
 # difference for readers (copy polish, visual hierarchy, layout fix, schema
 # extension). Major bumps reserved for multi-retro trend rendering
 # and beyond. Consistent-with-spine semver, mirrors `agent-protocols-X.Y.Z.md`.
-DASHBOARD_VERSION = "3.18"
+DASHBOARD_VERSION = "3.19"
 
 
 # ─── YAML loader ──────────────────────────────────────────────────────────────
@@ -1468,9 +1468,13 @@ def compute_health(
         # not of the system.
         checks = ec.get("checks_enumerated")
         checks_exits = ec.get("checks_with_written_exit_criteria")
+        # Bound with the count, not with the score: the note names the unit
+        # whenever a count exists, and a cycle can re-count the checks without
+        # measuring their exit conditions (p30). Binding it inside the scoring
+        # branch made that shape raise UnboundLocalError below.
+        unit = ec.get("checks_unit", "blocking exit paths")
         if isinstance(checks, int) and checks > 0 and isinstance(checks_exits, int):
             components.append(checks_exits / checks)
-            unit = ec.get("checks_unit", "blocking exit paths")
             detail += f" · {checks_exits}/{checks} individual checks with one"
 
         # The note used to assert "check-level coverage is zero" as fixed prose.
@@ -2046,7 +2050,7 @@ def main(argv: list[str]) -> int:
     # Retargeted every cycle at P10 step 9(c). Verify by running this file
     # with NO arguments and reading the header: found stale at p17, where
     # the documented bare command rendered the PREVIOUS cycle silently.
-    default_sidecar = here.parent / "retros" / "2026-10-25-p29.yaml"
+    default_sidecar = here.parent / "retros" / "2026-11-01-p30.yaml"
     default_out = here / "index.html"
 
     sidecar = Path(argv[1]) if len(argv) > 1 else default_sidecar

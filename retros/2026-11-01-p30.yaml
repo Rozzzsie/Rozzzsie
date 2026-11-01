@@ -1,0 +1,442 @@
+retro_id: '2026-11-01-p30'
+retro_date: '2026-11-01'
+prior_retro: '2026-10-25-p29'
+schema_version: '1.1'
+window_start: '2026-10-25'
+window_end: '2026-11-01'
+trigger_source: session-start-overdue-flag-interactive
+interactive_mode: true
+
+meta_finding: >-
+  This cycle's findings share one shape: a published or relied-on number that was copied forward
+  instead of derived from the thing it counts. The ritual dial's denominator came from a prose list
+  of sixteen step labels, while the ritual has had seventeen since a step was added in September,
+  so five cycles published sixteen of sixteen with that step never counted. A count of the stop
+  gate's checks was carried as six for five cycles, against eighteen checks in the gate, under a
+  backlog row that already said to stop carrying it. The metrics tally again counted mentions of a
+  launch command as launches. The hook audit again read a benign skip as an error, because its
+  error vocabulary was written for one hook and applies to all. Each figure was honest about where
+  it came from and wrong about what it measured. This cycle derives the two counts from the
+  structure they count and puts the producer fixes on ledgers.
+
+findings:
+  - id: p30-1
+    title: Two attribution slips in drafts fell outside the rule meant to catch them
+    category: class-recurrence
+    evidence_count: 2
+    source_catchment: the learning delta, then a learning-agent proposal checked against the checklist section
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-11-01'
+    target_surface: the output checklist's attribution section and its routing table
+    detail_ref: >-
+      The rule fires on a sentence that says a named person did or will do something. One slip
+      assigned a stance to a person through a possessive label, which the trigger did not name;
+      the other was inside the trigger and the rule did not hold. On the operator's ruling the
+      trigger now names possessives and labels that assign a stance, value, ownership or
+      authorship, and the section is routed from the output type for anything said out loud and
+      from the act of reporting a finding. Three learning entries gained a dated pointer to it.
+
+  - id: p30-2
+    title: A reviewer's proposed remedy was treated as part of its finding three times
+    category: convergence-gap
+    evidence_count: 3
+    source_catchment: the learning delta, then a learning-agent proposal checked against the routing table
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-11-01'
+    target_surface: the output checklist's act-routing table
+    detail_ref: >-
+      The rule that a remedy is a second claim, separate from the finding it fixes, already existed,
+      but the act of reporting or relaying a finding did not route to the section holding it. The
+      operator chose the narrower option: the section was added to that act's row, and no text
+      changed.
+
+  - id: p30-3
+    title: The planned shared mutation-test runner gained three requirements from this window's traps
+    category: design-gap
+    evidence_count: 2
+    source_catchment: a learning-agent proposal against an open backlog row
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-11-08'
+    target_surface: the specification carried by the mutation-runner backlog row
+    detail_ref: >-
+      A gate's own mutation harness had scored every mutant as killed because its copies lacked a
+      library the real file had. The runner's specification now requires an unmutated copy placed
+      the way the mutants are placed, a warning when three or more mutants fail identically, and a
+      self-test. The runner itself is still unbuilt.
+
+  - id: p30-4
+    title: The ritual dial counted sixteen steps for five cycles while the ritual had seventeen
+    category: instrument-validity
+    evidence_count: 5
+    source_catchment: the sidecar authoring step, enumerating the protocol's numbered labels
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-11-08'
+    target_surface: the retrospective protocol's publication step
+    detail_ref: >-
+      A September version bump added a step that folds promoted learning bodies into history. The
+      publication step tells the author to count from a written list of sixteen labels, which the
+      bump did not touch, so every sidecar since has published sixteen of sixteen and the new step
+      was never scored. This sidecar publishes seventeen as the denominator; the earlier pages are
+      left as published. The protocol fix, and deriving the denominator from the numbered labels
+      rather than a prose list, is on the backlog.
+
+  - id: p30-5
+    title: A count of the stop gate's checks was carried for five cycles after a row said to re-derive it
+    category: instrument-validity
+    evidence_count: 5
+    source_catchment: the sidecar authoring step, against an open backlog row
+    recommendation: fix
+    status: partial-executed
+    execution_target_week: '2026-11-08'
+    target_surface: the enforcement-coverage block of this sidecar
+    detail_ref: >-
+      The figure was published as six and labelled as carried, which is honest about where it came
+      from and silent about whether it is right. Counted this cycle from the gate's own check
+      headers, it is eighteen. The count of checks with a written exit condition was never
+      re-derived either, so it is published as unmeasured rather than as a stale three over a new
+      denominator.
+
+  - id: p30-6
+    title: The hook audit flagged a healthy hook's benign skips as an error rate, for the second time
+    category: instrument-validity
+    evidence_count: 2
+    source_catchment: the hook fire-rate audit, traced to the hook's own code
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-11-08'
+    target_surface: the hook fire-rate auditor's action vocabulary
+    detail_ref: >-
+      Two records from one session that closed with nothing to close were written as skip, by
+      design. The auditor counts skip as an error for every hook because one other hook uses the
+      word for a real failure, so a seven percent error rate appeared on a hook that worked. The
+      first instance was three cycles ago and the fix, a per-hook vocabulary, is on an open row.
+
+  - id: p30-7
+    title: The most repeated rule is the post-compaction marker rule, and its mechanism is filed but unbuilt
+    category: class-recurrence
+    evidence_count: 6
+    source_catchment: the whole-store repeat-rule tally
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-11-08'
+    target_surface: the post-compaction checkpoint gate
+    detail_ref: >-
+      Six learning entries cite this rule as an instance, the highest value in the store. The
+      operator chose a mechanism over more rule text. A mechanism row already existed: the gate
+      that enforces the rule stops after its first denial per session rather than per compaction,
+      and several of the six describe a second or third compaction. All six predate that row, and
+      none has been written since. The ruling was recorded on the existing row rather than a new
+      one. The other three repeat families were held.
+
+  - id: p30-8
+    title: The session-close rule that moves scratch scripts into the repo does not require reviewing them
+    category: design-gap
+    evidence_count: 1
+    source_catchment: the learning delta, deferred by the learning agent
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-11-15'
+    target_surface: the session-close protocol
+    detail_ref: >-
+      Last cycle's close saved four scripts under that rule, and their cross-model review ran after
+      the commit and found a write-before-read ordering. One sentence would tie the move to a
+      review in the same close. At a single instance the operator chose a backlog row over a
+      protocol bump this cycle.
+
+  - id: p30-9
+    title: Three rule-text candidates were written on the operator's ruling
+    category: convergence-gap
+    evidence_count: 5
+    source_catchment: the learning delta's unpropagated list
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-11-01'
+    target_surface: two output-checklist sections and one private workspace's rule file
+    detail_ref: >-
+      A program with its own write primitives is allowlisted only by testing that a command is a
+      read shape, never that it lacks a write marker, after a flag denylist let four writes
+      through. A reply into an existing conversation is drafted from the conversation as it is
+      now, after one was drafted from a read forty minutes old. A private workspace gained a rule
+      that a file kept out of version control is named to its ignore pattern and checked against
+      it before use, after the third instance of its class.
+
+  - id: p30-10
+    title: The metrics tally counted 313 external-validator launches, almost all of them mentions
+    category: instrument-validity
+    evidence_count: 313
+    source_catchment: the mandated tally, compared with the session-log review receipts
+    recommendation: fix
+    status: carried-open
+    execution_target_week: '2026-11-08'
+    target_surface: the sidecar metrics tally's typed-command arm
+    detail_ref: >-
+      Same mechanism as the last two cycles: the count comes from a typed-command route that the
+      always-loaded rules quote. The session log's receipt lines record thirteen real reviews,
+      twelve by one validator and one by the other, and this sidecar publishes that figure by hand. The fix is
+      an open backlog row.
+
+  - id: p30-11
+    title: The consultant ran once and left no receipt line
+    category: measurement-gap
+    evidence_count: 1
+    source_catchment: the consultant capture files against the session-log audit
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-11-08'
+    target_surface: the consultant receipt convention
+    detail_ref: >-
+      One dispatch reframed a gate-design decision, and the operator picked its first frame. The
+      framing sketch and the raw return are on file, but the session wrote no receipt line, so
+      whether the operator or the agent asked for it is not recorded. Of the six health metrics,
+      pick position and pick type are measurable at one dispatch, and the invocation-source ratio
+      is not.
+
+  - id: p30-12
+    title: All five routing-judgement skips came from one workspace, and seeded lessons still go uncited
+    category: measurement-gap
+    evidence_count: 5
+    source_catchment: the routing census over the window
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-11-08'
+    target_surface: the cross-pollination protocol's routing line
+    detail_ref: >-
+      Five of thirty gradeable entries skipped the routing judgement, all in one private workspace,
+      two of them writing the routing label in a form the census does not read. Cumulatively 47
+      seeded lessons have arrived, 9 were promoted where they landed, and none was cited.
+
+  - id: p30-13
+    title: A memory plugin refuses to load its handoff because its folder is a link
+    category: design-gap
+    evidence_count: 1
+    source_catchment: the operator, from the session-start output
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-11-15'
+    target_surface: the session-memory plugin's storage path
+    detail_ref: >-
+      The plugin refuses to read files under a folder that is a symbolic link, so it injected no
+      handoff this session. The startup briefing still carried the same carry-forward, so nothing
+      was lost. The operator asked for a backlog row; three shapes are listed there, each to be
+      confirmed at a real session start.
+
+  - id: p30-14
+    title: A timestamp rule fixed by doctrine did not hold, and its compliant form broke a dashboard cell
+    category: convergence-gap
+    evidence_count: 165
+    source_catchment: the retro's own state writes, then a count over every change log with the gate's pattern
+    recommendation: fix
+    status: approved
+    execution_target_week: '2026-11-08'
+    target_surface: the entry-stamp gate and the dashboard's status-cell reader
+    detail_ref: >-
+      Two weeks ago a stamp shape the commit gate cannot grade was ruled a writing habit to fix, with
+      a gate change named as the next step if the habit continued. Since then 165 of 234 timed
+      change-log lines still use it, in seven workspaces, and this retro's own first three entries
+      did too. Writing the zone the way the rule asks made the zone its own section, and the
+      dashboard reader then showed two workspace cells as a bare zone label. Both shapes are on one
+      backlog row. The operator chose the gate change: the commit gate will learn to grade the shape
+      the workspaces already write, with a design review before the build and a code review before
+      the commit.
+
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 8
+  notes: >-
+    The learning agent wrote three proposals and deferred eight items. Each proposal was checked
+    against its cited source before it reached the operator. The first was accepted as proposed,
+    the second in its narrower option, and the third as proposed. Deferred items stay in the
+    proposals file; one of them became a backlog row at the operator's ruling (finding 8).
+
+hook_health:
+  silent_hooks_observed: 2
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 1
+  enforcement_flips_verified_this_cycle: 0
+  notes: >-
+    Measured over a rolling seven days. Two hooks flagged silent, both carried: the identity hook,
+    healthy, whose result words the auditor does not recognise, and the sub-agent return guard,
+    whose rows are almost all compaction noise. One error-rate flag was the auditor's own
+    vocabulary (finding 6). The checkpoint grader's per-turn rate held at 97.7 percent, but the
+    share of turns it grades fell from 52.0 to 44.6 percent, a falling-share signal tracked on a
+    backlog row. The send-retraction gate auto-approved 33 calls to tools it has no category for,
+    as designed; two could act in a browser. The checkpoint ack gate did not flip: 23 denies in 23
+    sessions and 47 shadow denies, down from 292 last cycle, a drop not attributed here.
+
+discipline_metrics:
+  ritual_steps_defined: 17
+  ritual_steps_completed: 17
+  monthly_subritual_due: true
+  monthly_subritual_completed: true
+  quality_gate_traces_sampled: 4
+  quality_gate_traces_passing: 4
+  response_marker_missed_turns: 5
+  response_marker_graded_turns: 220
+  response_marker_blocking_fires: 16
+  response_marker_miss_rate: 0.02
+  response_marker_measured_at: '2026-11-01'
+  response_marker_note: >-
+    Per-turn form from the mandated tally over the retro window: 5 of 220, which rounds to 0.02,
+    the same as the last four cycles on the same method. The raw fire ratio, 16 of 3372, is not
+    comparable to the per-turn form. The window includes the retro day, so the counts were taken
+    while it was still running.
+  intent_confirmation_skip_rate: 0.0
+  notes: >-
+    SERIES BREAK: the ritual has seventeen numbered steps, and the five sidecars before this one
+    published sixteen (finding 4). The steps-completed figure is written only after the retro
+    artifact exists and the private close has committed. The monthly housecleaning pass ran: the
+    operational state file's head was at 95 percent of its bound, one build record of about 8 KB
+    moved verbatim to its history file, and the owner check now reads below its warning band; the
+    learning files have no size bound and were not swept. Every session with content logged an
+    intent line, so the skip rate is zero.
+
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 95
+  median_first_tool_latency_sec: 52
+  p95_first_tool_latency_sec: 1163
+  max_first_tool_latency_sec: 6630
+  threshold_sec: 120
+  threshold_violations: 21
+  notes: >-
+    Sessions rose from 92 to 95. The median fell from 55 to 52 seconds and violations from 26 to
+    21, while p95 rose from 661 to 1163 seconds. A startup briefing delivered after a first round
+    of reads still registers as a slow first tool call, and sessions left open before their first
+    call set the tail, so this is not a health signal on its own.
+
+fam_dispatch_distribution:
+  learning_agent: 2
+  adversarial_reviewer: 4
+  consultant: 1
+  external_validator: 13
+  notes: >-
+    Scope is unchanged and deliberately narrow: governance session root only, counting in-session
+    dispatch calls. The external-validator figure is corrected by hand from the session-log review
+    receipts, twelve by one validator and one by the other, counted by receipt line, so a review that
+    ran several rounds counts once. The mandated tally reported 319, of
+    which 313 were mentions of a launch command (finding 10). Parallel read-only helpers numbered
+    34 and are not in these four roles. Do not re-key the provenance trend card on this block.
+
+defect_ledger:
+  open_total: 115
+  live: 111
+  parked: 4
+  age_under_7d: 2
+  age_7_to_29d: 2
+  age_30d_plus: 111
+  age_undated: 0
+  median_age_days: 67
+  max_age_days: 99
+  measured_at: '2026-11-01'
+  measured_from: the operational state file, rendered through its own consumer functions
+  notes: >-
+    Owner split: 84 agent-side, 27 need an operator decision, 4 parked. Open rows rose from 113 to
+    115, and two rows are dated in the last seven days, one of them filed by this retrospective
+    (finding 14). The median age rose from 60 to 67 days. Age is read from the date in each row's
+    status tag. Measured after the retro's last row was filed, the same state as the backlog block.
+
+improvement_backlog:
+  total: 335
+  open: 145
+  done: 178
+  parked: 12
+  open_ready: 95
+  open_decision_gated: 48
+  open_upstream_blocked: 2
+  notes: >-
+    Measured through the backlog consumer's own scheduling predicate. The decision-gated figure is
+    every open item with a gate set; this cycle it is not split into decision and date gates. By
+    each item's own opened and closed dates, 8 items opened in the window and 1 closed; two of the
+    eight were opened on the boundary day and are also in last cycle's count. Four of the eight
+    were filed by this retrospective, one at the operator's request. The headline total is
+    cumulative.
+
+enforcement_coverage:
+  arms_built: 17
+  arms_armed: 17
+  arms_with_written_exit_criteria: 3
+  arms_with_falsifiable_exit: 2
+  arms_declared_permanent: 1
+  checks_enumerated: 18
+  checks_with_written_exit_criteria: null
+  checks_unit: stop-gate check headers
+  checks_unit_note: >-
+    Re-derived this cycle from the gate's own numbered check headers, eighteen including the
+    sub-checks. The five prior sidecars carried six. The exit-condition count was not re-derived
+    against the new denominator and is published as unmeasured (finding 5).
+  arms_unit: commit-boundary validator arms
+  arms_unit_note: >-
+    The commit-boundary hook is tracked and its last commit is 3 October, so its members are
+    unchanged at seventeen. The three exit-criteria figures are carried.
+  measured_at: '2026-11-01'
+  measured_from: the commit-boundary hook's commit history and the stop gate's check headers
+  notes: >-
+    No arm was added or retired, and none changed state.
+
+instrument_liveness:
+  silent_failures_observed: 3
+  caught_by_control: 0
+  caught_by_review: 3
+  caught_by_contradiction: 0
+  notes: >-
+    Hand-classified; the arms sum to the total. All three were caught while authoring this retro:
+    the ritual dial's stale denominator (finding 4), the auditor's error vocabulary, flagged by its
+    own control and found benign on review of the hook's code (finding 6), and the dashboard cell
+    that rendered a bare zone label (finding 14). The carried check
+    count and the tally's validator count are known defects on open rows and are not counted again.
+
+detection_provenance:
+  caught_by_control: 0
+  caught_by_operator: 1
+  caught_by_accident: 0
+  instrumented_from: p18
+  status: measured
+  relation_to_detection_source_distribution: >-
+    Same question, different population; read the two together or neither. This block grades
+    the findings in this retro in three buckets. The distribution block grades learning entries
+    across the cycle in its own buckets. The vocabularies are not yet mapped, the denominators
+    differ by construction, and the two will not sum. This one is the long-running series and
+    stays the trend card.
+  notes: >-
+    One of the fourteen findings was caught by the operator: the memory plugin's refusal
+    (finding 13). The rest came from the learning agent, the learning delta, audits, the tally and
+    the sidecar authoring step, none of which this three-bucket block grades.
+
+detection_source_distribution:
+  source: "the capture-format caught-by field, read from the learnings corpus"
+  learnings_files_scanned: 20
+  entries_in_window: 41
+  entries_since_ship: 41
+  entries_pre_design: 0
+  entries_annotated: 41
+  entries_since_ship_annotated: 41
+  annotation_coverage: 1.0
+  annotation_coverage_basis: entries_since_ship
+  status: measured-ninth-cycle
+  gate: 3
+  deputy: 7
+  external: 7
+  self: 17
+  rosie: 6
+  contradiction: 1
+  nothing: 0
+  by_name:
+    deputy:validator-a: 4
+    deputy:validator-b: 1
+    deputy:workspace-review-a: 2
+    external:weekly-digest: 6
+    external:study-note: 1
+    gate:stop-gate: 1
+    gate:sign-off: 1
+    gate:audit-card-provenance: 1
+  notes: >-
+    Coverage is on the since-ship basis. Every entry in the window carries a valid value. Named
+    deputies and one external source are published under generic labels. The operator bucket fell
+    from 21 to 6 as last cycle's label corrections stopped recurring, and the external bucket rose
+    from 0 to 7 with the weekly digest running again. The tally ran before this retro wrote its
+    own entry, so that entry is not counted. The nothing bucket is zero for the fifth cycle. Do
+    not re-key the provenance trend card on this block.
