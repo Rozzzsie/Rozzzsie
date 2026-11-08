@@ -304,6 +304,17 @@ fam_dispatch_distribution:
     between this cycle's run and last cycle's. Adversarial review fell from 25 to 6, and the
     external validator from 59 to 38, all on one route. Parallel read-only helpers numbered 62 and
     are not in these four roles. Do not re-key the provenance trend card on this block.
+    CORRECTION, added 2026-11-08 by the cycle four retros later, on the operator's ruling. The
+    external validator figure of 38 above is an over-count; the true value is far lower, probably
+    in the low single digits. The counting arm matches the validator's command name in any
+    transcript record, and the governance rules file naming that command is re-injected on every
+    tool call, so the overwhelming majority of matches are injected documentation rather than
+    dispatches. Measured on the 2026-11-08 cycle, 512 of 514 matches were documentation and 2 were
+    dispatches. The same defect inflates the 59 cited above as the prior cycle's figure, and the 13
+    published by the 2026-11-01 cycle. The figure is left as published rather than rewritten,
+    because this file records what that cycle published; this sentence records that it was wrong
+    and why. The three other roles are counted by a different route and are unaffected. The defect
+    sits on an open row and is not yet fixed.
 
 defect_ledger:
   open_total: 115
