@@ -1,0 +1,623 @@
+retro_id: '2026-11-15-p32'
+retro_date: '2026-11-15'
+prior_retro: '2026-11-08-p31'
+schema_version: '1.1'
+window_start: '2026-11-08'
+window_end: '2026-11-15'
+trigger_source: session-start-overdue-flag-interactive
+interactive_mode: true
+
+meta_finding: >-
+  Three of this cycle's findings came from running a producer I had already written instead of the
+  matcher I was about to trust, and the pattern across them is that my own matcher and the real
+  consumer disagreed every single time I checked. Two hand-rolled counts over the improvement
+  backlog returned different totals from each other, and only the producer could say which was
+  right; it was the looser one, which is the opposite of the intuition that a tighter pattern is a
+  safer one. Two sweeps over the commit-boundary hooks returned zero because the validators are
+  invoked through shell variables, so no file name appears on the invocation line at all, and a
+  zero there reads exactly like a clean surface. The cycle's sharpest structural lesson is about a
+  denominator. The ritual's own step text enumerates sixteen labels for the dial that scores it,
+  and the ritual has seventeen; the omitted one is the fold step, which this cycle ran. The dial was
+  not wrong, because the prior cycle had already published seventeen after catching a matcher that
+  dropped a letter-suffixed label — so the published series is correct and the instruction that
+  tells an author how to compute it is the stale surface. That is a failure direction worth naming:
+  a stale instruction beside a correct series will be resolved in the instruction's favour by any
+  author who reads the step and not the history, and the step is what an author reads.
+
+findings:
+  - id: p32-1
+    title: The ritual's own step text enumerates sixteen labels for the dial that measures it, and the ritual defines seventeen
+    category: instruction-drift
+    evidence_count: 2
+    source_catchment: reading the prior cycle's published record before trusting the step text
+    recommendation: fix
+    status: carried-open
+    execution_target_week: null
+    target_surface: the retrospective protocol unit's step that writes the completion dial
+    detail_ref: >-
+      The step that writes the completion dial names the labels it should be counted from and lists
+      sixteen. The unit defines seventeen; the missing one is the fold step, which has its own body
+      and its own ordering constraint and which this cycle executed. The same arithmetic propagates
+      into the same step's stated ceiling, which says the labels up to the presentation step number
+      fourteen when they number fifteen. The prior cycle published the denominator as seventeen, and
+      its own instrument note records catching a matcher that had dropped a letter-suffixed label
+      before it became a headline figure. So the published series is right and the instruction is
+      wrong, which is the dangerous configuration rather than the safe one: an author computing the
+      figure from the step text would publish sixteen, silently break a continuous series, and get
+      no contradiction from the step, because the step is internally consistent. Recorded rather
+      than fixed — correcting it is a governance edit and every build was deferred this cycle.
+
+  - id: p32-2
+    title: Two hand-rolled matchers over one backlog file disagreed, and the looser one was correct
+    category: instrument-defect
+    evidence_count: 2
+    source_catchment: contradiction between two of my own figures, settled by running the file's own loader
+    recommendation: watch
+    status: executed
+    execution_target_week: null
+    target_surface: this cycle's backlog figures
+    detail_ref: >-
+      A permissive identifier count returned three hundred and sixty-one rows and one hundred and
+      sixty-five open. A stricter row-boundary split of the same file returned three hundred and
+      fifty-five and one hundred and sixty-three. Both are mine, neither errored, each is plausible
+      alone. The file's own loader settled it at three hundred and sixty-one and one hundred and
+      sixty-five, which also reconciles exactly with the prior cycle's total plus the two rows added
+      this cycle. The stricter matcher was the wrong one, which inverts the intuition that a tighter
+      pattern is the safer one, and a narrowing can only remove rows so it yields a cleaner-looking
+      result that earns none of the scrutiny a worsening one gets for free. This is the prior
+      cycle's documented failure on the same file recurring with the error in the other direction,
+      and the remedy that worked was not a better pattern but abandoning patterns for the consumer.
+
+  - id: p32-3
+    title: Two sweeps over the commit-boundary hooks returned zero because the validators are invoked through shell variables
+    category: instrument-defect
+    evidence_count: 2
+    source_catchment: a positive control whose expected non-zero was stated before it was run
+    recommendation: watch
+    status: executed
+    execution_target_week: null
+    target_surface: this cycle's enforcement-coverage figures
+    detail_ref: >-
+      A sweep for invocation lines carrying a script file name returned zero across both
+      commit-boundary hooks, and so did a sweep for the flag that scopes a validator to the staged
+      set. Neither is an absence. The hooks assign each validator path to a shell variable and
+      invoke the variable, so no file name appears on any invocation line, and most file names that
+      do appear sit in explanatory comments. A positive control for the flag returned ten
+      occurrences, eight of them real invocations, and that is what exposed it. Both sweeps returned
+      a clean zero, which is the shape of a healthy surface, so no zero-keyed tripwire could fire.
+
+  - id: p32-4
+    title: The coverage block's armed figure was understated by six, and the prior cycle had already named why it could not be checked
+    category: metric-reframe
+    evidence_count: 1
+    source_catchment: re-derivation, once the sweep in finding three was shown to be blind
+    recommendation: reframe
+    status: executed
+    execution_target_week: null
+    target_surface: the enforcement-coverage block and its newly published member list
+    detail_ref: >-
+      The prior cycle published nineteen arms built and seventeen armed, noting that two were gated
+      on a staged-file set that may be empty, that the count did not reconcile, and that no member
+      list had ever been published. Re-derived from non-comment references with every path resolved
+      on disk, the invoked set is twenty-one distinct scripts, of which eight are scoped to the
+      staged set and are vacuous whenever that set holds no file of the kind they grade. That gives
+      thirteen unconditionally armed, not seventeen. Neither column reconciles, which is expected
+      rather than alarming because the prior cycle said its figure rested on an uncounted premise.
+      The direction is what matters: a smaller vacuous-gate count reads as better coverage, so the
+      understatement flattered the surface it described. Published as a declared break with the
+      member list attached, which closes the prior cycle's named residual; the break is a retraction
+      rather than a rename, since the earlier measurement was narrower than the property it claimed.
+
+  - id: p32-5
+    title: A learning agent's absence claim was relayed without being checked, and the row it said did not exist was three days old
+    category: verification-failure
+    evidence_count: 1
+    source_catchment: searching the ledger for the subject before opening a row
+    recommendation: watch
+    status: executed
+    execution_target_week: null
+    target_surface: the operational ledger row that already tracked the exposure
+    detail_ref: >-
+      The learning agent asserted that no open row tracked a particular exposure, and that assertion
+      was carried into the presentation step as an owed action. The row existed, was three days old,
+      and already carried a disposition matching the one being proposed. Filed as new, one item's
+      evidence would have split across two rows so neither read complete, and a duplicate row does
+      not look like an error — it looks like diligence. The governing rule is already written and
+      already says a report is a claim; holding a rule is not the same as it firing, and relaying a
+      deputy's finding does not present itself as making a claim. Merged into the existing row with
+      a dated confirmation. Recorded against this cycle rather than against the agent.
+
+  - id: p32-6
+    title: Two newly authored ledger rows were born mis-rendered, with the finding invisible in the one view anybody reads
+    category: authoring-defect
+    evidence_count: 2
+    source_catchment: running the three extractor functions rather than re-reading the file
+    recommendation: watch
+    status: executed
+    execution_target_week: null
+    target_surface: the two ledger rows opened for the deferred builds
+    detail_ref: >-
+      Both rows opened with the acceptance narrative, so the briefing renderer's hundred-and-ten
+      character cut landed entirely inside the sentence recording who approved what and when, and
+      neither row's finding reached the rendered line. The file text was correct and reads correctly,
+      so only the renderer can show this defect; every reading of the source confirms the row is
+      fine. This is the exact defect whose authoring obligation had been quoted, in this same
+      session, two steps earlier. Both leads were rewritten to state the finding first and
+      re-verified through the renderer.
+
+  - id: p32-7
+    title: A fold set of five was reported from subtracting field counts rather than counting entries
+    category: instrument-defect
+    evidence_count: 1
+    source_catchment: contradiction, when the derived set was enumerated and held two members
+    recommendation: watch
+    status: executed
+    execution_target_week: null
+    target_surface: the fold step's input set
+    detail_ref: >-
+      The set of entries eligible for the fold step was first given as five, derived by subtracting
+      the count of one dated-receipt field from another across the live capture file. The true figure
+      is two, of which one is in scope and one predates the step's cutoff. The subtraction was a unit
+      error: four entries carry two promotion receipts each, under the rule that a cross-workspace
+      learning owes two surfaces, so a field count and an entry count are different quantities and
+      the difference of two field counts is neither. Corrected before the fold ran and recorded as a
+      correction of record; the fold moved exactly one entry.
+
+  - id: p32-8
+    title: A field name invented for a capture annotation read exactly like the dated receipts the gate accepts
+    category: authoring-defect
+    evidence_count: 1
+    source_catchment: the write-path gate, at commit time
+    recommendation: watch
+    status: executed
+    execution_target_week: null
+    target_surface: the annotated capture entry
+    detail_ref: >-
+      An annotation appended to an existing capture entry was labelled with a field name that does
+      not exist in the format. The write-path gate refused it and its message enumerates the accepted
+      labels. The invented name was plausible precisely because it was shaped like the accepted ones,
+      a lower-case word followed by a colon in a block made entirely of those, so nothing about
+      writing it felt like introducing a new key. It fails closed and loses nothing, which is also
+      why it will recur: it costs one correction and never enough to remember.
+
+  - id: p32-9
+    title: A drift-scanning hook emits a passing verdict while its own warning tells the reader not to trust that scan
+    category: enforcement-gap
+    evidence_count: 3
+    source_catchment: reading the hook's source after the learning agent flagged its own premise as unverified
+    recommendation: fix
+    status: deferred
+    execution_target_week: null
+    target_surface: the drift-scanning hook's verdict assignment
+    detail_ref: >-
+      The scan carries a coverage invariant that fires when the number of rubrics it scanned does not
+      match the number it holds, and the warning it prints on that mismatch says in plain words to
+      treat the scan as incomplete coverage rather than a clean bill. The verdict tier is assigned at
+      two sites, both upstream of that invariant, and the mismatch path never reassigns it. The
+      verdict cannot read its own detector by construction rather than by accident, which makes the
+      evidence stronger rather than weaker, since the decoupling is structural and not a timing
+      coincidence. The agent had warned this was its weakest premise and that it would weaken to a
+      lower recurrence count if a timestamp adjacency proved non-causal; resolved in code instead, it
+      held. A passing verdict beside a warning that contradicts it will be read as passing, because
+      the verdict is the machine-readable half. Approved for repair and deferred with every other
+      build this cycle.
+
+  - id: p32-10
+    title: A rule named the surface it should govern and its own subject predicate could not match that surface's grammar
+    category: enforcement-gap
+    evidence_count: 1
+    source_catchment: reading the cited section in full instead of the pointer that cited it
+    recommendation: fix
+    status: deferred
+    execution_target_week: null
+    target_surface: the checklist section governing commitments written in the operator's voice
+    detail_ref: >-
+      The section's trigger already listed drafts written in the operator's voice among the surfaces
+      it covers, so the agent's premise that the surface was unnamed was false. The real defect is a
+      composition: the predicate scopes the section to any sentence whose subject is a named person,
+      and a first-person commitment has no named subject, so the rule reaches the surface and cannot
+      match the sentences that surface produces. Two widenings of the same trigger in fifteen days
+      both missed it, which is what a composition defect does — each clause is correct alone and only
+      the pair fails, so no review reading one clause at a time can see it. The agent's stated premise
+      was the flattering one, describing a missing rule, which is easier to add than a mismatched
+      predicate is to see. Had it been accepted as stated, two of the proposed framings would have
+      looked correct and the gap would have survived its own fix.
+
+  - id: p32-11
+    title: The three-arm instrument-liveness block has no bucket for a defect caught by a gate, so its arms cannot sum to its own total
+    category: schema-gap
+    evidence_count: 1
+    source_catchment: the arithmetic failing to close while every individual classification was defensible
+    recommendation: watch
+    status: carried-open
+    execution_target_week: null
+    target_surface: the instrument-liveness block's arm vocabulary
+    detail_ref: >-
+      Nine of my own measurement or authoring defects were observed this cycle. Three were caught by
+      a control, three by a contradiction between two of my own figures, two by reading a source or a
+      prior record. The ninth was caught by a commit-time gate, and this block's three arms are
+      control, review and contradiction, none of which a gate is. The arms therefore sum to eight
+      against a total of nine. Reassigning it to review would close the sum and misdescribe the
+      detection, which is the trade the block's own prior note assumed away by asserting the arms sum
+      to the total. Closing the sum is one keystroke and produces an internally consistent block, so
+      the honest version is the one that looks like an error. Published with the gap stated.
+
+  - id: p32-12
+    title: A control that disagreed with the prior cycle by ten rows is published as unattributed rather than explained
+    category: measurement-bound
+    evidence_count: 1
+    source_catchment: running the prior cycle's own stated control and getting a different number
+    recommendation: watch
+    status: carried-open
+    execution_target_week: null
+    target_surface: the defect-ledger block's age predicate
+    detail_ref: >-
+      The ledger predicate takes a row's age from the first date anywhere in the row rather than from
+      inside its status tag, because the prior cycle measured ten rows closing their emphasis span
+      before the bracket, which a tag-scoped reader would read as undated. Run as a control this
+      cycle, the tag-scoped reader finds zero undated rows, not ten. Either those rows were since
+      repaired or my tag predicate is not the one the prior cycle used, and nothing in either record
+      distinguishes the two, so the cause is published as unattributed rather than narrated. The
+      figure it guards is unaffected, since no row is undated under either reader. The agreeing half
+      carries the credibility here: the age buckets reconcile exactly and the maximum age is the
+      prior cycle's plus seven days, which invites stopping there.
+
+  - id: p32-13
+    title: No adversarial audit ran this cycle
+    category: coverage-gap
+    evidence_count: 1
+    source_catchment: the dispatch producer, read at the step that mandates running it
+    recommendation: watch
+    status: carried-open
+    execution_target_week: null
+    target_surface: the adversarial-review arm of this cycle
+    detail_ref: >-
+      The dispatch distribution measures zero adversarial-reviewer dispatches across the window,
+      against three consultant dispatches and two learning-agent dispatches. That zero rests on the
+      agent-tool-call arm, which is the sound one: the arm contaminated by injected documentation is
+      the validator arm, published as unmeasured in this cycle's dispatch block, and the two are
+      different mechanisms. A zero from an arm whose known defect INFLATES is also the safe
+      direction for this particular claim.
+      Three proposals were approved on verification I performed myself, and a fix is new code with no
+      reviewer present at the moment it is written. Self-verification that finds real defects reads
+      as sufficient verification, which is the trap. Stated rather than remedied: the approved builds
+      are deferred, so the adversarial pass is still available before any of them ships, which is
+      the right order.
+
+  - id: p32-14
+    title: Two status values in the published findings vocabulary have no style rule and have been rendering as unstyled pills for cycles
+    category: schema-gap
+    evidence_count: 9
+    source_catchment: the sidecar validator, when this cycle reached for one of the two
+    recommendation: fix
+    status: carried-open
+    execution_target_week: null
+    target_surface: the dashboard stylesheet's pill rules and the findings status vocabulary
+    detail_ref: >-
+      The stylesheet carries eight pill rules. The published sidecars use sixteen distinct status
+      spellings, of which two have no rule at all: one appears seven times across prior cycles and
+      the other twice. Both render unstyled, and the validator reports it per occurrence rather than
+      per value, so the signal has been present and reads as nine separate cosmetic notes rather
+      than as one vocabulary gap. This cycle reached for both of them independently, which is how it
+      surfaced, and both were remapped to styled values that describe the same state. The underlying
+      gap is untouched: either the stylesheet owes two rules or the vocabulary owes a closed list,
+      and nothing currently forces the choice. Quoted spellings and bare spellings are also counted
+      separately by the same matcher, so the sixteen is a count of spellings and not of states.
+
+  - id: p32-15
+    title: A gate was reported blind, and the blindness was my own invocation reading a sibling repository's empty
+      index
+    category: verification-failure
+    evidence_count: 1
+    source_catchment: the commit-time run of the same gate, which contradicted the manual run minutes later
+    recommendation: watch
+    status: executed
+    execution_target_week: null
+    target_surface: this cycle's own finding, withdrawn and replaced by the correction
+    detail_ref: 'WITHDRAWN AS ORIGINALLY FILED, AND REPLACED BY THE CORRECTION, WHICH IS THE REAL FINDING. The entry-stamp
+      gate was invoked by hand with its staged-diff flag and reported zero stamps recognised in zero graded lines,
+      while the staged diff of one capture file held nine added heading lines with well-formed stamps. That was written
+      up as a confirmed third instance of an enforcement arm failing open. Minutes later the identical gate ran in
+      the commit path and reported thirteen stamps recognised across two hundred and four graded lines, cleanly. The
+      contradiction is what forced the re-check. The mechanism: the shell''s working directory sits at the PARENT
+      tree, which is its own separate repository with this one nested inside it and ignored, so a staged-diff reader
+      resolving git against the ambient directory grades the PARENT''s index, which is empty. The gate is correct
+      and was correct throughout; the instrument pointed at the wrong repository. The whole-file arm is unaffected
+      because it walks paths rather than an index, which is exactly the asymmetry observed and exactly what this artefact
+      predicts. THE PRIOR ROW REPORTING THIS SYMPTOM SHOWS THE SAME ASYMMETRY and is therefore now a testable hypothesis
+      rather than a confirmed defect, by one command; it is not adjudicated here, because establishing that someone
+      else''s measurement was an artefact is a separate claim from establishing that mine was. Two standing rules
+      cover this exactly and both were available: a read whose directory is ambient returns a FALSE ABSENCE with no
+      tell, and a resolution against one repository says nothing when the tree nests another. The direction is the
+      costly one: a fabricated enforcement gap manufactures work and, published, would have attributed a defect to
+      a gate that does not have it.'
+  - id: p32-16
+    title: A mandated census was replaced by a script I wrote, and the substitute omitted the one line the
+      step exists to produce
+    category: verification-failure
+    evidence_count: 1
+    source_catchment: this cycle's own step 3, caught while measuring the completed-steps dial
+    recommendation: fix
+    status: executed
+    execution_target_week: '2026-11-15'
+    target_surface: the retro artifact's routing section
+    detail_ref: 'The step names one census script and says to paste its table plus its two summary lines
+      into the retro. That script was present and runnable. I used a scratchpad script of my own instead,
+      because the original pass ran before a context compaction and I could not recover its output at authoring
+      time. The reasoning was that I could not retrieve the mandated numbers; the correct inference from
+      that premise is to re-run the mandated tool, not to substitute one. Two costs, and the second is the
+      reason this is filed. The substitute measured a different population on a different window basis,
+      so its headline count was not comparable to the series. And it had no way to produce the reward line
+      at all, which I therefore published as not supplied. Re-running the mandated census supplied it immediately:
+      a hundred and fifty-four seed arrivals cumulatively, eleven promoted, none cited. The census also
+      returns its finding through an exit code, which a substitute cannot carry, and that code was non-zero.
+      The general shape is that a substituted instrument looks like a measurement and is one, but it answers
+      the question you were able to ask rather than the question the step asked, and nothing in its output
+      announces the difference.'
+  - id: p32-17
+    title: Routing receipts carry a reason for less than half the cases that need one, and the silence concentrates
+      in two sessions
+    category: coverage-gap
+    evidence_count: 34
+    source_catchment: the mandated routing census over the seven-day window
+    recommendation: watch
+    status: carried-open
+    execution_target_week: '2026-11-22'
+    target_surface: the cross-pollination protocol's receipt contract
+    detail_ref: 'Of the window''s entries that declined to seed anywhere while the helper would have offered
+      at least one destination, thirty-four of fifty-nine gradeable cases carry no stated reason. Capture
+      and tagging are at full coverage, so this is not a discipline collapse: every entry is tagged, every
+      receipt parses, nothing was re-routed after the fact, and the eighteen cases with no candidate at
+      all are correctly outside the penalty. What is missing is the sentence explaining a declined seed.
+      The useful half is the concentration rather than the rate: twenty-three of the thirty-four come from
+      one workspace and fifteen of those from two sessions on a single day, which points at a session-level
+      habit rather than a protocol that nobody follows. Deliberately not treated as a promotion question
+      this cycle. One of the thirty-four was this session''s own entry, cured here by adding the missing
+      reason, so the next run should return thirty-three; if it returns thirty-four the cure did not take
+      and the finding is about the receipt format rather than the habit.'
+proposal_backlog:
+  authored_this_cycle: 3
+  deferred_this_cycle: 3
+  notes: >-
+    The learning agent authored three proposals and the operator approved all three, with one
+    modification, and deferred every build to later sessions — approval and execution were
+    deliberately separated this cycle. Each proposal closed by naming the bounds it could not clear,
+    and clearing those bounds produced one refuted premise, one premise closed in the opposite
+    direction to the one feared, and three corrections to the surviving proposal's own figures. The
+    largest correction was a size estimate: the proposed clause measures six hundred and seventy-five
+    units against two hundred and thirty-three of available headroom, where the agent had estimated
+    roughly four hundred and fifty, so the compensating fold owed is about half again larger than its
+    risk section implied. All three builds are filed on the operational ledger rather than recorded
+    only in the cycle log, because a deferred promotion recorded only in a record sits on no ledger.
+
+hook_health:
+  silent_hooks_observed: 1
+  absent_hooks_observed: 0
+  audit_instrument_defects_found: 2
+  enforcement_flips_verified_this_cycle: 0
+  notes: >-
+    The one silent hook is finding p32-9, silent by construction rather than by fault: its verdict
+    is assigned upstream of its own coverage detector and the mismatch path never reassigns it. The
+    two audit-instrument defects are both mine and both in finding p32-3 — two sweeps over the
+    commit-boundary hooks that returned zero because those hooks invoke validators through shell
+    variables. No arm changed state this cycle.
+
+discipline_metrics:
+  ritual_steps_defined: 17
+  ritual_steps_completed: 16  # of 17 labels; the propagation step did not complete, see notes
+  notes: >-
+    SIXTEEN OF SEVENTEEN, AND THE MISSING ONE IS THE PROPAGATION STEP. The basis is labels, not
+    acts: the seventeen are the numbered steps in the ritual's own execution list, and a sub-part
+    skip inside a completed label does not subtract, which is why the public-narrative companion
+    being skip-passed costs nothing here, the step permitting it explicitly. The step that did not
+    complete is the one that says to propagate unpropagated learnings now. Its object is whatever
+    the preceding step identified, and that step identified eighty-two root-tier entries in the
+    window carrying no promotion receipt at all. None of the eighty-two was propagated. This cycle
+    did create and route its own captures, but those are the capture protocol's work and not this
+    step's object, so counting them here would be scoring a different step twice. The deferral the
+    operator issued covered three specific proposals from the learning agent and did not reach the
+    eighty-two, so the shortfall is not excused by it. Disclosed rather than rounded: a sixteen with
+    a named gap is worth more than a seventeen that had to be argued for. One further disclosure on
+    the arithmetic: the learnings step completed only during the publication step, late and after the
+    narrative artifact was already written, because the table originally published for it came from a
+    substituted instrument and the mandated census had to be run before this figure could be honest.
+    That history is a finding in its own right and does not change the count.
+  monthly_subritual_due: false
+  monthly_subritual_completed: null
+  quality_gate_traces_sampled: null  # not measured this cycle
+  quality_gate_traces_passing: null  # not measured this cycle
+  response_marker_missed_turns: 10
+  response_marker_graded_turns: 214
+  response_marker_blocking_fires: 194
+  response_marker_miss_rate: 0.05
+
+latency_observations:
+  source: ".claude/session-start-latency.log"
+  window_session_count: 126
+  median_first_tool_latency_sec: 26.0
+  p95_first_tool_latency_sec: 209
+  max_first_tool_latency_sec: 2478
+  threshold_violations: 17
+
+fam_dispatch_distribution:
+  learning_agent: 2
+  adversarial_reviewer: 0
+  consultant: 3
+  external_validator: null
+  notes: >-
+    THE VALIDATOR ARM IS PUBLISHED AS UNMEASURED, AND THE REASON IS THAT THE PRIOR CYCLE'S FINDING
+    ON THIS EXACT ARM IS STILL OPEN AND RECURRED HERE. The automated figure was four hundred and
+    fifty-six. Four hundred and forty-three of those are matches on a typed command name in
+    transcript text, and the rules file naming that command is re-injected on every tool call, which
+    is precisely the defect the prior cycle diagnosed and hand-corrected from five hundred and
+    fourteen to two. The remedy was never built, so the arm reported the same class of figure again.
+    Counting instead by receipt line, as the prior cycle did, the window's recent region shows two
+    review engagements, both of the same validator, with the other returning a model-not-found error
+    all cycle — but that enumeration was read from the log's recent region rather than partitioned by
+    date, so two is a FLOOR and not a count, and a floor published as a point figure would be the
+    same error in a smaller font. Hence null. THE OTHER THREE ARMS ARE SOUND AND ARE NOT AFFECTED:
+    they come from counting in-session agent tool-calls, a different mechanism from the text match
+    that contaminated the validator arm, so the contamination is isolated rather than general. The
+    adversarial reviewer is a measured zero on that sound arm, not an unmeasured blank.
+defect_ledger:
+  open_total: 139
+  live: 135
+  parked: 4
+  age_under_7d: 5
+  age_7_to_29d: 22
+  age_30d_plus: 112
+  age_undated: 0
+  median_age_days: 77
+  max_age_days: 113
+  measured_at: '2026-11-15'
+  measured_from: the operational state file, rendered through all three of its consumer functions
+  notes: >-
+    Open rows rose from one hundred and twenty-seven to one hundred and thirty-nine. The parked
+    count did not move: four last cycle and four now. Ownership splits as one hundred and two to the
+    orchestrator, thirty-three needing an operator decision, and four parked, which sums to the
+    total. Every row carries a date, so no row's age is unknown. PREDICATE, STATED SO THE FIGURE CAN
+    BE REPRODUCED. Rows are the qualifying rows of the operational state file's open region,
+    rendered through all three of its consumer functions and required to agree on cardinality; all
+    three return one hundred and thirty-nine. A row's age is taken from the first calendar date
+    anywhere in the row, not from inside its status tag. CONTROL, AND IT DISAGREES WITH THE PRIOR
+    CYCLE: that distinction was introduced because ten rows were measured to close their emphasis
+    span before the bracket, so a tag-scoped reader would read them as undated. Run again here, the
+    tag-scoped reader finds ZERO undated rows. Either those rows have since been repaired or my tag
+    predicate is not the prior cycle's, and nothing in either record distinguishes the two, so the
+    cause is published as UNATTRIBUTED rather than narrated — see finding p32-12. The figure itself
+    is unaffected, since no row is undated under either reader. Two consistency signals do hold: the
+    age buckets sum to the open total with no residue, and the maximum age is the prior cycle's plus
+    exactly seven days. This block has no producer script; every value is derived by hand, and the
+    predicate above is the only thing that lets the next cycle check it.
+
+improvement_backlog:
+  total: 361
+  open: 165
+  done: 184
+  parked: 12
+  open_ready: 115
+  open_decision_gated: 47
+  open_upstream_blocked: 3
+  notes: >-
+    Two rows were added this cycle, and the total reconciles exactly with the prior cycle's three
+    hundred and fifty-nine plus those two. Every figure here comes from the file's own loader and
+    classifier, not from a pattern, after two of my own matchers disagreed with each other by six
+    rows and two open rows — see finding p32-2. The looser matcher was the correct one, which only
+    the loader could establish. The open partition is the classifier's own buckets: one hundred and
+    fourteen ready plus one overdue are reported together as ready, forty-seven decision-gated and
+    three upstream-blocked, summing exactly to the open total.
+
+enforcement_coverage:
+  arms_built: 21
+  arms_armed: 13
+  arms_with_written_exit_criteria: null
+  arms_with_falsifiable_exit: null
+  arms_declared_permanent: null
+  checks_enumerated: 17
+  checks_with_written_exit_criteria: null
+  checks_unit: distinct stop-gate numbered check labels
+  checks_unit_note: >-
+    SERIES BREAK, DECLARED. The prior cycle published eighteen, counting header OCCURRENCES. There
+    are eighteen headers and seventeen DISTINCT labels, because one check number appears twice. The
+    labels also run out of numeric order, with a high number sitting between two low ones, so an
+    author reading the file top to bottom will not notice the repeat. Seventeen is the count of
+    distinct checks and is what is published here; the break is a retraction, in that the earlier
+    figure measured headers while naming checks.
+  arms_unit: distinct validator scripts invoked by the two commit-boundary hooks
+  arms_unit_note: >-
+    MEMBER LIST PUBLISHED FOR THE FIRST TIME, which closes the prior cycle's own named residual that
+    no member list had ever been published and its count did not reconcile. Twenty-one distinct
+    scripts are invoked across the two commit-boundary hooks, counted from non-comment references
+    with every path tested on disk; most file names appearing in those hooks sit in explanatory
+    comments and are excluded, and two further names resolve to libraries that are imported rather
+    than invoked and are also excluded. Of the twenty-one, EIGHT are invoked scoped to the staged
+    file set and are vacuous whenever that set holds no file of the kind they grade, giving thirteen
+    unconditionally armed. The prior cycle published nineteen built and seventeen armed on a premise
+    of two such gated arms. Both columns break, and the direction matters: the vacuous-gate exposure
+    was understated by six. The three exit-criteria figures remain unmeasured and are published as
+    null rather than carried forward again.
+  measured_at: '2026-11-15'
+  measured_from: the two commit-boundary hooks and the stop gate's check headers, read directly
+  notes: >-
+    No arm was added or retired this cycle. Both shifts are changes of matcher and unit rather than
+    changes of coverage, and both are published as declared breaks with their predicates stated. The
+    re-derivation happened only because two earlier sweeps of the same hooks returned zero and a
+    positive control showed the zero was blind — finding p32-3.
+
+instrument_liveness:
+  silent_failures_observed: 9
+  caught_by_control: 3
+  caught_by_review: 2
+  caught_by_contradiction: 3
+  notes: >-
+    Hand-classified, and THE ARMS DO NOT SUM TO THE TOTAL: eight against nine. The ninth was caught
+    by a commit-time gate, and this block's three arms are control, review and contradiction, none
+    of which a gate is. Reassigning it to review would close the sum and misdescribe the detection,
+    so the gap is published rather than closed — finding p32-11. All nine were my own measurement or
+    authoring predicates, found while running and writing this retro. By control: two sweeps of the
+    commit-boundary hooks whose zero was shown to be blind by a positive control with its expected
+    non-zero stated first, and a pair of ledger rows whose rendered lead was shown to hide the
+    finding the row exists to carry. By contradiction: two hand-rolled matchers over one backlog file
+    disagreeing with each other, a fold set reported as five that held two, and an earlier claim that
+    a trace file had lost blocks, refuted by direct measurement showing it had grown. By review: a
+    deputy's absence claim relayed without checking, refuted by a three-day-old row, and a
+    section-trigger premise refuted by reading the section in full. By gate: an invented field name,
+    refused at commit. None was caught by an alarm, and seven of the nine returned a plausible
+    result rather than an error.
+
+detection_provenance:
+  caught_by_control: 3
+  caught_by_operator: 1
+  caught_by_accident: 0
+  instrumented_from: p18
+  status: measured
+  relation_to_detection_source_distribution: >-
+    Same question, different population; read the two together or neither. This block grades the
+    findings in this retro in three buckets. The distribution block grades capture entries across the
+    cycle in its own buckets. The vocabularies are not mapped, the denominators differ by
+    construction, and the two will not sum. This one is the long-running series and stays the trend
+    card.
+  notes: >-
+    THE CONTROL BUCKET IS NON-ZERO FOR THE FIRST TIME, ending fourteen consecutive cycles of zero
+    that the prior cycle named as this block's standing weakness rather than a result. Three findings
+    were caught by a control built on purpose: the two blind hook sweeps, whose positive control had
+    its expected non-zero stated before it ran, and the ledger rows caught by running the renderer
+    rather than re-reading the file. One was caught by the operator, who asked whether the learning
+    agent had written its recommendations back; that question is what sent me into the proposals'
+    detail, where three corrections to their stated figures were found. Nothing was caught by
+    accident. The remaining findings came from the capture delta, the producers and this authoring
+    step, none of which this three-bucket block grades.
+
+detection_source_distribution:
+  source: "the capture-format caught-by field, read from the learnings corpus"
+  learnings_files_scanned: 20
+  entries_in_window: 196
+  entries_since_ship: 196
+  entries_pre_design: 0
+  entries_annotated: 196
+  entries_since_ship_annotated: 196
+  annotation_coverage: 1.0
+  annotation_coverage_basis: entries_since_ship
+  status: measured-eleventh-cycle
+  gate: 25
+  deputy: 7
+  external: 11
+  self: 82
+  rosie: 22
+  contradiction: 49
+  nothing: 0
+  notes: >-
+    Coverage is on the since-ship basis and every entry in the window carries a valid value. The
+    window is heavier again at a hundred and ninety-six entries against the prior cycle's hundred
+    and forty-five. The contradiction bucket holds at forty-nine, a quarter of the corpus, which
+    keeps the prior cycle's clearest signal intact: the dominant way a defect is found here is one of
+    my own figures failing to agree with another, not an instrument reporting. The deputy bucket
+    moved off zero to seven. The gate bucket rose from twenty to twenty-five. The nothing bucket is
+    zero for the seventh cycle, and it remains the bucket this metric exists to make countable.
+    THE NAMED-SOURCE BREAKDOWN IS OMITTED AGAIN, AND THIS CYCLE THE REASON IS SPECIFIC RATHER THAN
+    editorial: twenty-three named sources exist, and two of them identify third-party vendors that
+    this mirror anonymizes two blocks above in this same file, where the validators appear only by
+    role. Publishing the breakdown would have contradicted that anonymization inside one document.
+    It was drafted in full and cut at the sanitization pass, which is recorded because a consistent
+    omission and an unnoticed leak look identical from outside. Do not re-key the provenance trend
+    card on this block.

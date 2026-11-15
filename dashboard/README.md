@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.19** (2026-11-01) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.21** (2026-11-15) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,18 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.21 — 2026-11-15 (a correct instrument, pointed at the wrong subject, and believed)
+
+Re-render against `retros/2026-11-15-p32.yaml`, seventeen findings, n=30 sidecars in the trend.
+
+- **The cycle's shape.** Not a figure copied forward (v3.19) and not a wrong predicate (v3.20), but a sound instrument aimed at the wrong subject. A commit-stamp gate was measured as failing open and the finding was filed onto four surfaces; the identical gate then ran in the commit path and reported itself clean. The session's shell sat in a directory that is its own repository, with the governed tree nested inside it and ignored, so a staged-index read graded the parent's empty index. The gate was correct throughout. The whole-file arm was unaffected because it walks paths rather than an index — the asymmetry that read as the defect was the signature of the misaim.
+- **Why it is published rather than quietly fixed.** The verification ritual ran, and endorsed the wrong conclusion. Two hypotheses were available and one was named: the subject is broken, or the instrument is misaimed. No positive control was run, because the contradiction between the two arms already felt like one.
+- **The same shape, twice more.** A mandated census was replaced by a script written on the spot after a context compaction lost the original pass; the substitute measured a different population on a different window basis and could not produce the summary line the step exists for, which was published as *not supplied*. Re-running the mandated tool supplied it at once and flagged this session's own entry in its output. Separately, an invented field name for the dial's basis note was refused by the schema guard — the second instance this cycle of a class that is itself a published finding in the same file.
+- **The ritual dial is 16 of 17**, breaking three consecutive cycles at full marks. The propagation step did not complete: eighty-two entries in the window carry no promotion receipt and none was propagated. Disclosed rather than rounded.
+- **Schema note.** The dial's basis is recorded in the sidecar's `discipline_metrics.notes`, which the manifest declares and no renderer reads. It is readable in the published YAML and does not appear on the page — stated here so the record is not mistaken for a rendered one.
+- ⚠️ **Suite: 110 passed, 2 failed, 825 subtests passed.** Both failures are the pre-existing pair on an open row since 2026-09-27, asserting on p17 and p19 fixtures; this release's only code change is two literals (the version string and the default sidecar path), neither reachable from the validator those tests exercise.
+- ⚠️ **v3.20 shipped without a release note and left this header at v3.19.** Named rather than back-filled: inventing a note for a cycle this session did not run is the failure this layer exists to catch.
 
 ### v3.19 — 2026-11-01 (a number copied forward instead of derived)
 
