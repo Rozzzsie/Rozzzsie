@@ -373,8 +373,14 @@ findings:
       one workspace and fifteen of those from two sessions on a single day, which points at a session-level
       habit rather than a protocol that nobody follows. Deliberately not treated as a promotion question
       this cycle. One of the thirty-four was this session''s own entry, cured here by adding the missing
-      reason, so the next run should return thirty-three; if it returns thirty-four the cure did not take
-      and the finding is about the receipt format rather than the habit.'
+      reason, and a re-run after the cure was committed still returned thirty-four. The prediction was
+      wrong for a reason neither of its branches named: the census reads every entry AS FIRST COMMITTED,
+      stated in its own source, so a reason line added after the entry is already committed is invisible
+      to it by design. The cure is real in the file and uncountable by the instrument. The consequence is
+      the useful part. This figure is monotonic for the back catalogue, cannot be moved by retrofitting
+      reasons, and therefore measures reason-present-at-capture rather than reason-present, so only
+      capture-time discipline moves it. Corrected here rather than silently reconciled, because the
+      prediction was published.'
 proposal_backlog:
   authored_this_cycle: 3
   deferred_this_cycle: 3
