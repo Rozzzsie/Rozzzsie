@@ -6,6 +6,8 @@ For why CONTEXT lives in two surfaces (private narrative + public sanitized): se
 
 ---
 
+> **Retro cadence anchor — updated 2026-11-22 (P10 #33).** Cycle p33 published; window 2026-11-16 → 2026-11-22; dashboard v3.22 renders `retros/2026-11-22-p33.yaml` by default. Seventeen findings. The ritual dial reads 16 of 17, the incomplete step being propagation.
+
 ## Governance OS state (snapshot 2026-10-03)
 
 | Field | Value |

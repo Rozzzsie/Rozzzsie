@@ -1,6 +1,6 @@
 # Dashboard / Observability Layer
 
-**Current release: v3.21** (2026-11-15) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
+**Current release: v3.22** (2026-11-22) · [Source](https://github.com/Rozzzsie/Rozzzsie/tree/main/dashboard)
 
 **Live: [rozzzsie.github.io/Rozzzsie/dashboard/](https://rozzzsie.github.io/Rozzzsie/dashboard/)** — GitHub Pages serves the rendered `index.html` on every push to `main`. HTTPS enforced. Open `dashboard/index.html` directly in a browser to read locally — the render is fully self-contained (CSS in `assets/`, no JS).
 
@@ -13,6 +13,17 @@ Industry harness dashboards (LangSmith, Langfuse, DashChat) surface telemetry �
 **Why scope-honest matters.** A polished-looking dashboard with one data point is the kind of thing a sharp reviewer (CTO, interviewer, peer architect) catches and discounts. Sprint-1 is honest: this is what one retro looks like, here's the rendering contract, the next retro's sidecar will auto-render here when it lands. That's the L5-evidence move — *the OS observes itself* — without faking trends from n=1. Sprint-2 unlocks multi-retro trend rendering once 3+ sidecars accumulate (gated on schema v1.0 stability review at 2026-05-15).
 
 ## Release notes
+
+### v3.22 — 2026-11-22 (two numbers reproduced, one confessed)
+
+- **Renders `retros/2026-11-22-p33.yaml` by default.** Seventeen findings, every one statused. Code change is two literals — the version string and the default sidecar path.
+- **The cycle's shape: a published count is only as reproducible as its member list.** Two of three coverage figures reproduce the prior cycle exactly under its own stated units — seventeen distinct check labels and twenty-one validator arms built. The third does not. The prior cycle published thirteen arms armed on a premise of eight arms scoped to the staged file set, and named none of the eight; re-derivation under that same stated predicate finds three, so this release publishes **eighteen as a declared break of reproducibility, not of coverage**, and names its three gated members so the next cycle can reproduce or refute it. The prior cycle had closed exactly this residual one level up by publishing the built members for the first time — and the gated subset inherited it in the same edit.
+- **A third predicate was tried and abandoned when its own control refuted it.** Counting arms whose failure reaches a non-zero exit returns twenty, because several blocking exits belong to key-retirement guards that fire when a validator's path leaves the index rather than when its finding fails. Three predicates, three numbers, all defensible — which is the signal that the unit, not the matcher, was under-specified.
+- **Two metrics ship with their bounds named rather than suppressed, on the operator's ruling.** The enforcement-miss bucket publishes zero because the token it counts has never been written anywhere in the corpus, so the bucket is unreachable in practice and its zero certifies nothing. The external-validator counter publishes null for a third consecutive cycle: its raw value is five hundred and sixty because it matches a slash-command literal inside a file re-injected on every tool call, against an honest floor of twelve from wrapper invocations. Three cycles of null from one unfixed producer is not three independent observations, so the ledger row filed for it is the producer amendment rather than another record of it.
+- **The ritual dial publishes 16 of 17 and the incomplete step is NAMED.** It is the propagation step, the same step the prior cycle left incomplete, so the figure is continuous rather than coincidentally equal: roughly a dozen owed promotions were deliberately deferred onto ledger rows with release conditions. ⛔ **A first draft of that basis note named the monthly housekeeping pass instead and was wrong** — housekeeping was NOT DUE, a different category from incomplete, and the error was caught by reading the prior cycle's own changelog before publishing.
+- ⚠️ **Named gap: a dial's basis note does not reach this page.** `discipline_metrics.notes` and two other blocks' notes are carried in the sidecar YAML and are not surfaced by the renderer, so *published with its basis named* is true of the data file and not of the rendered page. The meta-finding and the arms unit note DO render, which is why both bounded metrics are legible to a page reader at all.
+- ⚠️ **No adversarial audit and no external model review this cycle.** The output is YAML and Markdown records rather than code, so the external-review protocol does not fire; the renderer was read, not modified beyond the two literals.
+- ⚠️ **Publication was verified by hand.** The private tree's stop gate cannot see this repository and returns an unearned green from inside it, so the five publication rungs were asserted directly rather than inherited from a close.
 
 ### v3.21 — 2026-11-15 (a correct instrument, pointed at the wrong subject, and believed)
 
