@@ -951,7 +951,7 @@ def render_fam_dispatch_widget(fam: dict[str, Any]) -> str:
             "<p class='kv-row'><span class='kv-key'>"
             "(no fam activity recorded this cycle)</span></p>"
         )
-    return "".join(sub_bands)
+    return "".join(sub_bands) + _note_foot(fam)
 
 
 def load_all_sidecars(retros_dir: Path) -> list[dict[str, Any]]:
@@ -1412,9 +1412,50 @@ def _withdrawn_dials(
     return out
 
 
+def _sidecar_note(block: Any) -> str:
+    """The cycle's own authored note for one sidecar block, collapsed to a line.
+
+    Returns "" when the block is absent or the note empty, so every call site
+    can append unconditionally. Whitespace is collapsed because these are
+    authored as YAML block scalars and arrive carrying their source newlines.
+
+    Unlike the derived prose it sits beside, a cycle note cannot drift away
+    from the numbers it explains: it was authored against THIS cycle's reading,
+    in the same file as the reading. That is why it is safe to publish as-is,
+    and it is the opposite shape to the pinned narrative the enforcement dial's
+    note had to be rewritten to avoid.
+    """
+    if not isinstance(block, dict):
+        return ""
+    raw = block.get("notes")
+    if raw is None:
+        return ""
+    return " ".join(str(raw).split())
+
+
+def _note_foot(block: Any, label: str = "") -> str:
+    """A band's cycle note as a foot paragraph, escaped.
+
+    Escaping happens per call site, not centrally: a dial's `cycle_note` is
+    escaped where its card is built, while a band interpolates straight into
+    its own markup and so must escape here. `_sidecar_note` deliberately
+    returns RAW text — a helper that pre-escaped would double-escape on the
+    dial path, and the damage would be visible only in the rendered page.
+    """
+    note = _sidecar_note(block)
+    if not note:
+        return ""
+    prefix = f"<strong>{html.escape(label)}:</strong> " if label else ""
+    return f'<p class="block-note">{prefix}{html.escape(note)}</p>'
+
+
 def _dial(key: str, label: str, value: float | None, detail: str, note: str = "") -> dict[str, Any]:
+    # `note` is DERIVED prose assembled from the measurement; `cycle_note` is
+    # prose AUTHORED against this cycle in the sidecar. Two fields, because
+    # they are two kinds of claim and the page renders them differently — the
+    # derived caption inline, the authored note as its own ruled paragraph.
     return {"key": key, "label": label, "value": value, "detail": detail,
-            "note": note, "withdrawn": False}
+            "note": note, "cycle_note": "", "withdrawn": False}
 
 
 def compute_health(
@@ -1598,6 +1639,40 @@ def compute_health(
             "Cannot be backfilled without fabricating attributions.",
         ))
 
+    # ─── Cycle-note pass ────────────────────────────────────────────────────
+    # Every block above may carry a `notes` string authored for THIS cycle.
+    # Nothing read any of them until this pass: ten blocks were carrying ~7.4K
+    # characters of stated bounds, published to the sidecar and never to the
+    # page. A bound nobody can read is not a bound.
+    #
+    # Done in ONE place rather than at each dial's construction site: a
+    # per-site edit would have reached only the branches that HAVE data,
+    # silently skipping each dial's no-data branch — where a cycle note
+    # explaining the absence is worth most.
+    #
+    # Ordered BEFORE the withdrawal pass deliberately, and that must stay true:
+    # it REPLACES `note` wholesale, so a withdrawn dial drops its cycle note.
+    # That is correct. On a withdrawn dial the retraction is the governing
+    # fact, and a note describing a measurement since retracted would read as
+    # if it still stood. Do not "fix" this by preserving the note.
+    #
+    # `discipline_metrics` feeds TWO dials (ritual + quality). Its note is
+    # attached to RITUAL only: the block is primarily the ritual block, and
+    # printing one 2,200-character note twice on one card is not disclosure.
+    # `hook_health` and `latency_observations` are absent by the same logic the
+    # schema already states — they are `record_only`, so their notes are silent
+    # by design, not by defect.
+    NOTE_SOURCES = {
+        "enforcement": "enforcement_coverage",
+        "ritual": "discipline_metrics",
+        "instrument": "instrument_liveness",
+        "provenance": "detection_provenance",
+    }
+    for d in dials:
+        block_key = NOTE_SOURCES.get(d["key"])
+        if block_key:
+            d["cycle_note"] = _sidecar_note(sc.get(block_key))
+
     # ─── Withdrawal pass ─────────────────────────────────────────────────────
     # Runs AFTER every dial is built, so no dial has to know about history. A
     # dial that produced a value is never reconsidered; only a `None` can be
@@ -1619,6 +1694,10 @@ def compute_health(
             "because nothing was caught. A withdrawn dial stays in the denominator: "
             "dropping a measured dial must never raise the composite."
         )
+        # Cleared for the same reason the derived note is replaced: on a
+        # withdrawn dial the retraction is the governing fact, and a cycle note
+        # describing a measurement since retracted would read as if it stood.
+        d["cycle_note"] = ""
 
     scored = [d for d in dials if isinstance(d["value"], (int, float))]
     composite = round(100 * sum(d["value"] for d in scored) / len(scored)) if scored else None
@@ -1678,12 +1757,14 @@ def render_health_widget(health: dict[str, Any]) -> str:
         else:
             cls = " hs-row-pending"
         note = f'<div class="hs-note">{html.escape(d["note"])}</div>' if d.get("note") else ""
+        cycle = (f'<p class="block-note">{html.escape(d["cycle_note"])}</p>'
+                 if d.get("cycle_note") else "")
         rows.append(f"""
         <div class="hs-row{cls}">
           <div class="hs-label">{html.escape(d["label"])}</div>
           <div class="hs-meter">{_bar(val)}</div>
           <div class="hs-pct">{pct}</div>
-          <div class="hs-detail">{html.escape(d["detail"])}{note}</div>
+          <div class="hs-detail">{html.escape(d["detail"])}{note}{cycle}</div>
         </div>""")
     coverage = (
         f'Composite derived from {health["scored_count"]} of {health["intended_count"]} '
@@ -1783,7 +1864,8 @@ def render_defect_inventory(dl: dict[str, Any]) -> str:
         record of that state, not a current count. The board moved during the
         session that measured it.
         {f'Basis: {html.escape(str(dl.get("measured_from")))}.' if dl.get("measured_from") else ""}
-      </div>"""
+      </div>
+      {_note_foot(dl)}"""
 
 
 def render_backlog_widget(bl: dict[str, Any], pb: dict[str, Any] | None = None) -> str:
@@ -1843,7 +1925,8 @@ def render_backlog_widget(bl: dict[str, Any], pb: dict[str, Any] | None = None) 
         Scheduling axis is a <strong>derived</strong> view — an item whose status carries an
         unrecognised value is dropped from it silently, so these are a claim about what
         classified, never about what exists. Reconciled: {html.escape(reconcile)}.
-      </div>"""
+      </div>
+      {_note_foot(bl, "Backlog")}{_note_foot(pb, "Proposal flow")}"""
 
 
 def render_dashboard(sc: dict[str, Any], all_sidecars: list[dict[str, Any]] | None = None) -> str:

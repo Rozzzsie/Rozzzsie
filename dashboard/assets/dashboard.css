@@ -841,6 +841,18 @@ section {
   line-height: 1.5;
 }
 
+/* A cycle's own authored note. Ruled on the left rather than topped like the
+   -foot blocks: the distinction between prose DERIVED from the numbers and
+   prose AUTHORED against them is the whole point of surfacing these. */
+.block-note {
+  margin-top: 0.7rem;
+  padding: 0.55rem 0.8rem;
+  border-left: 2px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+  line-height: 1.55;
+}
+
 .bk-split {
   display: flex;
   gap: 1.1rem;
